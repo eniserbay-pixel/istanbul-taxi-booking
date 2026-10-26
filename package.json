@@ -1,0 +1,10 @@
+{
+  "name": "istanbul-airport-taxi",
+  "private": true,
+  "description": "Istanbul airport taxi booking site. Static pages built into public/ by build/build.js; serverless functions in api/. No dependencies.",
+  "scripts": {
+    "build": "node build/build.js",
+    "test": "node tests/run.js"
+  },
+  "engines": { "node": ">=18" }
+}

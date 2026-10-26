@@ -1,0 +1,20 @@
+{
+ "brand": "Istanbul Airport Taxi",
+ "url": "https://www.example.com",
+ "phone": "+90 500 000 00 00",
+ "whatsapp": "905000000000",
+ "email": "info@example.com",
+ "tursab": "0000",
+ "company": "Şirket Unvanı Ltd. Şti.",
+ "address": "İstanbul, Türkiye",
+ "meet": {
+  "IST": {
+   "en": "Your driver waits in the arrivals hall, at the exit you name on booking (usually Exit 13), holding a sign with your name.",
+   "tr": "Şoförünüz geliş salonunda, rezervasyonda belirtilen çıkışta (genellikle 13 numaralı çıkış) adınızın yazılı olduğu tabelayla bekler."
+  },
+  "SAW": {
+   "en": "Your driver waits outside the arrivals exit of the international terminal, holding a sign with your name.",
+   "tr": "Şoförünüz dış hatlar geliş çıkışının önünde, adınızın yazılı olduğu tabelayla bekler."
+  }
+ }
+}
