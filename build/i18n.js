@@ -7,10 +7,11 @@ module.exports = {
       home: "/", book: "/book", prices: "/prices", terms: "/terms", privacy: "/privacy",
       IST: "/istanbul-airport-taxi", SAW: "/sabiha-gokcen-airport-taxi",
       route: (a, z) => a === "IST" ? `/istanbul-airport-taxi-to-${z}` : `/sabiha-gokcen-airport-taxi-to-${z}`,
-      airportPair: "/istanbul-airport-to-sabiha-gokcen-taxi"
+      airportPair: "/istanbul-airport-to-sabiha-gokcen-taxi", blog: "/blog"
     },
     assure: [["price", "Fixed prices", "No meter, no surprises"], ["cancel", "Free cancellation", "Up to 24 hours before pickup"], ["clock", "24/7 service", "Every flight, day and night"], ["shield", "Safe travel", "Professional drivers, insured cars"]],
-    nav: { prices: "Prices", fleet: "Fleet", how: "How it works", faq: "FAQ", book: "Book now", lang: "Türkçe" },
+    nav: { prices: "Prices", fleet: "Fleet", how: "How it works", faq: "FAQ", blog: "Blog", book: "Book now", lang: "Türkçe" },
+    blog: { title: "Istanbul Transfer Blog · Taxi Tips for Travellers", desc: "Practical guides for getting around Istanbul: why taxis are hard to find, taxi or transfer at the airport, and how to book your ride in a minute.", h1: "Istanbul transfer blog", lead: "Practical guides for arriving in Istanbul and getting to your hotel without stress.", read: "Read the guide", latest: "From our blog", more: "More guides", updated: "Updated", widgetH: "Book your transfer now" },
     form: {
       title: "Get your fixed price", from: "From", to: "To", date: "Date", time: "Pickup time", pax: "Passengers",
       ret: "Add a return transfer (10% off)", rdate: "Return date", rtime: "Return pickup time", submit: "See prices",
@@ -22,7 +23,7 @@ module.exports = {
       h1: "Istanbul airport taxi and transfer at a <em>fixed price</em>",
       lead: "{brand} is an Istanbul transfer company. We drive you from Istanbul Airport (IST) or Sabiha Gökçen (SAW) to your hotel in a private car, from €{min} per car. Your driver waits with your name sign and you pay in cash at the end of the ride.",
       fleetH: "Choose your car", fleetLead: "The price is per car, not per person. Tolls, parking and waiting time are included.",
-      routesH: "Popular airport taxi prices", routesLead: "Fixed prices per car, one way. Pickups at IST 15:00–19:00 and SAW 14:45–21:00 cost 30% more.",
+      routesH: "Popular transfer routes in Istanbul", routesLead: "Fixed prices per car, one way. Pickups at IST 15:00–19:00 and SAW 14:45–21:00 cost 30% more.",
       vsH: "Metered taxi or our airport taxi?",
       vs: [["Price", "Changes with traffic and the route the driver takes", "Fixed when you book"], ["At arrivals", "Queue at the taxi rank", "Driver waits with your name sign"], ["Flight delay", "-", "We track your flight, 60 min free waiting"], ["Luggage and groups", "Small yellow cab", "Sedan, minivan, V-Class or minibus up to 16"], ["Payment", "Meter, often cash only", "Cash to the driver in EUR, USD or TRY"]],
       vsCols: ["", "Street taxi", "{brand}"],
@@ -33,6 +34,9 @@ module.exports = {
       faqH: "Frequently asked questions"
     },
     faq: [
+      ["Is it hard to find a taxi in Istanbul?", "Often, yes. Istanbul has about one taxi per 1,000 residents, a number that has barely changed since the 1990s, and the most common complaint to the municipality is drivers choosing passengers and routes. Queues at the airports, rush hour and rain make it worse. <a href=\"/blog/why-is-it-hard-to-find-a-taxi-in-istanbul\">Read why</a>."],
+      ["Why should I book before I arrive?", "Because your car is then already waiting for you. Your driver tracks your flight and stands in the arrivals hall with your name sign: no taxi queue, no explaining your hotel address, no meter and no bargaining. You know the price before you fly. <a href=\"/blog/istanbul-airport-taxi-or-pre-booked-transfer\">Taxi or transfer compared</a>."],
+      ["How fast is booking with {brand}?", "About a minute. Choose your route, car and time, enter your name, phone, e-mail and flight number, and send. There is no account and no payment up front. You get a confirmation e-mail, usually within an hour. <a href=\"/blog/how-to-book-istanbul-airport-transfer\">See the steps</a>."],
       ["Is this a regular Istanbul taxi?", "No. {brand} is a licensed transfer company: you get a private car with a professional driver, booked in advance at a fixed price. Many travellers call it an airport taxi; unlike a street taxi there is no meter and the driver meets you inside the terminal."],
       ["How do I pay?", "You pay the driver in cash at the end of the ride, in euro, US dollar or Turkish lira. There is no online payment and no deposit."],
       ["When is my booking confirmed?", "Right after you send the form we e-mail you that we received your request. Once we assign a car we send a confirmation e-mail, usually within an hour."],
@@ -92,10 +96,11 @@ module.exports = {
       home: "/tr", book: "/tr/rezervasyon", prices: "/tr/fiyatlar", terms: "/tr/kosullar", privacy: "/tr/gizlilik",
       IST: "/tr/istanbul-havalimani-taksi", SAW: "/tr/sabiha-gokcen-taksi",
       route: (a, z) => a === "IST" ? `/tr/istanbul-havalimani-${z}-taksi` : `/tr/sabiha-gokcen-${z}-taksi`,
-      airportPair: "/tr/istanbul-havalimani-sabiha-gokcen-taksi"
+      airportPair: "/tr/istanbul-havalimani-sabiha-gokcen-taksi", blog: "/tr/blog"
     },
     assure: [["price", "Sabit fiyatlar", "Taksimetre yok, sürpriz yok"], ["cancel", "Ücretsiz iptal", "Alıştan 24 saat öncesine kadar"], ["clock", "7/24 hizmet", "Her uçuşa, gece gündüz"], ["shield", "Güvenli yolculuk", "Profesyonel şoför, sigortalı araç"]],
-    nav: { prices: "Fiyatlar", fleet: "Araçlar", how: "Nasıl çalışır", faq: "SSS", book: "Rezervasyon", lang: "English" },
+    nav: { prices: "Fiyatlar", fleet: "Araçlar", how: "Nasıl çalışır", faq: "SSS", blog: "Blog", book: "Rezervasyon", lang: "English" },
+    blog: { title: "İstanbul Transfer Blogu · Yolcular İçin Taksi Rehberi", desc: "İstanbul'da ulaşım için pratik rehberler: taksi bulmak neden zor, havalimanında taksi mi transfer mi, bir dakikada rezervasyon nasıl yapılır.", h1: "İstanbul transfer blogu", lead: "İstanbul'a gelişte otelinize stressiz ulaşmanız için pratik rehberler.", read: "Rehberi oku", latest: "Blogdan", more: "Diğer rehberler", updated: "Güncelleme", widgetH: "Transferinizi şimdi ayırın" },
     form: {
       title: "Sabit fiyatınızı görün", from: "Nereden", to: "Nereye", date: "Tarih", time: "Alış saati", pax: "Yolcu",
       ret: "Dönüş transferi ekle (%10 indirim)", rdate: "Dönüş tarihi", rtime: "Dönüş alış saati", submit: "Fiyatları gör",
@@ -107,7 +112,7 @@ module.exports = {
       h1: "<em>Sabit fiyatlı</em> İstanbul havalimanı transfer ve taksi",
       lead: "{brand} bir İstanbul transfer firmasıdır. İstanbul Havalimanı (IST) veya Sabiha Gökçen'den (SAW) otelinize özel araçla, araç başı en düşük €{min}. Şoförünüz adınızın yazılı olduğu tabelayla bekler, ödemeyi yolculuk sonunda nakit yaparsınız.",
       fleetH: "Aracınızı seçin", fleetLead: "Fiyat kişi başı değil, araç başıdır. Köprü, otoyol, otopark ve bekleme dahildir.",
-      routesH: "Popüler havalimanı taksi fiyatları", routesLead: "Araç başı sabit fiyatlar, tek yön. IST'de 15:00–19:00, SAW'da 14:45–21:00 arası alışlar %30 daha pahalıdır.",
+      routesH: "İstanbul'daki popüler transfer rotaları", routesLead: "Araç başı sabit fiyatlar, tek yön. IST'de 15:00–19:00, SAW'da 14:45–21:00 arası alışlar %30 daha pahalıdır.",
       vsH: "Taksimetreli taksi mi, bizim havalimanı taksimiz mi?",
       vs: [["Fiyat", "Trafiğe ve güzergâha göre değişir", "Rezervasyonda sabitlenir"], ["Gelişte", "Taksi kuyruğu", "Şoför adınızla bekler"], ["Uçuş rötarı", "-", "Uçuşu takip ederiz, 60 dk ücretsiz bekleme"], ["Bagaj ve grup", "Küçük sarı taksi", "Sedan, minivan, V-Class veya 16 kişilik minibüs"], ["Ödeme", "Taksimetre, çoğu zaman nakit", "Şoföre nakit: EUR, USD veya TL"]],
       vsCols: ["", "Sarı taksi", "{brand}"],
@@ -118,6 +123,9 @@ module.exports = {
       faqH: "Sık sorulan sorular"
     },
     faq: [
+      ["İstanbul'da taksi bulmak zor mu?", "Çoğu zaman evet. İstanbul'da 1.000 kişiye yaklaşık bir taksi düşüyor ve bu sayı 1990'lardan beri neredeyse değişmedi. Belediyeye gelen en yaygın şikâyet de şoförlerin yolcu ve güzergâh seçmesi. Havalimanı kuyrukları, yoğun saatler ve yağmur durumu daha da zorlaştırıyor. <a href=\"/tr/blog/istanbulda-taksi-bulmak-neden-zor\">Nedenini okuyun</a>."],
+      ["Neden gelmeden önce rezervasyon yapmalıyım?", "Çünkü aracınız sizi zaten bekliyor olur. Şoförünüz uçuşunuzu takip eder ve geliş salonunda adınızın yazılı olduğu tabelayla bekler: taksi kuyruğu yok, otel adresini anlatmak yok, taksimetre ve pazarlık yok. Fiyatı uçmadan önce bilirsiniz. <a href=\"/tr/blog/havalimaninda-taksi-mi-transfer-mi\">Taksi ve transfer karşılaştırması</a>."],
+      ["{brand} ile rezervasyon ne kadar hızlı?", "Yaklaşık bir dakika. Güzergâh, araç ve saati seçin; adınızı, telefonunuzu, e-postanızı ve uçuş numaranızı girip gönderin. Üyelik ve ön ödeme yoktur. Onay e-postası genellikle bir saat içinde gelir. <a href=\"/tr/blog/havalimani-transfer-rezervasyonu-nasil-yapilir\">Adımlara bakın</a>."],
       ["Bu normal bir İstanbul taksisi mi?", "Hayır. {brand} bir transfer firmasıdır: önceden, sabit fiyatla ayrılan, profesyonel şoförlü özel bir araçla yolculuk edersiniz. Yabancı yolcular bu hizmete havalimanı taksisi der; sarı taksiden farkı taksimetre olmaması ve şoförün sizi terminalde karşılamasıdır."],
       ["Nasıl ödeme yaparım?", "Yolculuk sonunda şoföre nakit ödersiniz: euro, ABD doları veya Türk lirası. Online ödeme ya da kapora yoktur."],
       ["Rezervasyonum ne zaman kesinleşir?", "Formu gönderdiğiniz anda talebinizi aldığımızı e-postayla bildiririz. Araç atandığında, genellikle bir saat içinde, onay e-postası göndeririz."],

@@ -9,6 +9,7 @@ const site = require("../data/site.json");
 const Q = require("../public/assets/quote.js");
 const I = require("./i18n");
 const legal = require("./legal");
+const POSTS = require("./blog");
 
 const OUT = path.join(__dirname, "..", "public");
 const URL_ = (process.env.SITE_URL || site.url).replace(/\/$/, "");
@@ -46,7 +47,7 @@ ${ld.map(x => `<script type="application/ld+json">${JSON.stringify(x)}</script>`
   const p = t.paths;
   const header = `<header class="top"><div class="wrap top-in">
 <a class="logo" href="${p.home}"><img src="/img/logo.webp" alt="${esc(site.brand)} – Istanbul Taxi Booking" width="92" height="52"></a>
-<nav class="nav"><a href="${p.prices}">${t.nav.prices}</a><a href="${p.home}#fleet">${t.nav.fleet}</a><a href="${p.home}#how">${t.nav.how}</a><a href="${p.home}#faq">${t.nav.faq}</a>
+<nav class="nav"><a href="${p.prices}">${t.nav.prices}</a><a href="${p.home}#fleet">${t.nav.fleet}</a><a href="${p.home}#how">${t.nav.how}</a><a href="${p.home}#faq">${t.nav.faq}</a><a href="${p.blog}">${t.nav.blog}</a>
 ${o.alt ? `<a class="lang" href="${o.alt}" hreflang="${other}" lang="${other}">${t.nav.lang}</a>` : ""}</nav>
 <a class="btn btn-y btn-sm" href="${p.book}">${t.nav.book}</a></div></header>`;
   const popular = [["IST", "sultanahmet"], ["IST", "taksim"], ["IST", "kadikoy"], ["SAW", "taksim"], ["SAW", "kadikoy"], ["SAW", "sultanahmet"]];
@@ -55,7 +56,7 @@ ${o.alt ? `<a class="lang" href="${o.alt}" hreflang="${other}" lang="${other}">$
 <p>${esc(site.company)}<br>${esc(site.address)}<br>${t.footer.tursab}: ${esc(site.tursab)}</p></div>
 <div><h3>${t.footer.routes}</h3>${popular.map(([a, z]) => `<a href="${p.route(a, Q.zone(P, z).slug)}">${esc(Q.zone(P, a).short[o.lang])} → ${esc(Q.zone(P, z).short[o.lang])}</a>`).join("")}</div>
 <div><h3>${t.footer.contact}</h3><a href="https://wa.me/${site.whatsapp}" rel="noopener">WhatsApp ${esc(site.phone)}</a><a href="tel:${site.phone.replace(/\s/g, "")}">${esc(site.phone)}</a><a href="mailto:${site.email}">${esc(site.email)}</a></div>
-<div><h3>${t.footer.legal}</h3><a href="${p.terms}">${o.lang === "en" ? "Terms" : "Koşullar"}</a><a href="${p.privacy}">${o.lang === "en" ? "Privacy" : "KVKK aydınlatma metni"}</a><a href="${p.prices}">${t.nav.prices}</a></div>
+<div><h3>${t.footer.legal}</h3><a href="${p.terms}">${o.lang === "en" ? "Terms" : "Koşullar"}</a><a href="${p.privacy}">${o.lang === "en" ? "Privacy" : "KVKK aydınlatma metni"}</a><a href="${p.prices}">${t.nav.prices}</a><a href="${p.blog}">${t.nav.blog}</a></div>
 </div><div class="wrap copy">© ${new Date().getFullYear()} ${esc(site.brand)}. ${t.footer.rights}</div></footer>
 <a class="wa-float" href="https://wa.me/${site.whatsapp}" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.8-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z"/></svg></a>
 <script>window.SITE=${JSON.stringify({ lang: o.lang, book: p.book, wa: site.whatsapp })};</script>
@@ -119,6 +120,31 @@ function fleet(lang, from, to) {
 function faqBlock(items) {
   return `<div class="faq">${items.map(([q, a]) => `<details><summary>${esc(q)}</summary><p>${a}</p></details>`).join("")}</div>`;
 }
+const postPath = (lang, post) => I[lang].paths.blog + "/" + post[lang].slug;
+function blogCards(lang, skip) {
+  return `<div class="posts">${POSTS.filter(x => x.id !== skip).map(x => `<a class="post-c" href="${postPath(lang, x)}"><h3>${esc(x[lang].title)}</h3><p>${esc(fill(x[lang].lead, { brand: site.brand }))}</p><span class="more">${I[lang].blog.read} →</span></a>`).join("")}</div>`;
+}
+// The booking box as it sits inside a blog post
+const blogWidget = lang => `<aside class="blog-widget"><h2>${I[lang].blog.widgetH}</h2>${searchForm(lang)}${assure(lang)}</aside>`;
+
+function blogIndex(lang) {
+  const t = I[lang], b = t.blog, other = lang === "en" ? "tr" : "en";
+  const body = `<section class="hero hero-s"><div class="wrap hero-in"><div class="hero-t"><h1>${b.h1}</h1><p class="lead">${b.lead}</p></div>${searchForm(lang)}${assure(lang)}</div></section>
+<section class="sec ice"><div class="wrap">${blogCards(lang)}</div></section>`;
+  page({ lang, path: t.paths.blog, alt: I[other].paths.blog, title: b.title, desc: b.desc, body });
+}
+
+function blogPost(lang, post) {
+  const t = I[lang], x = post[lang], other = lang === "en" ? "tr" : "en", v = { brand: site.brand };
+  const p = postPath(lang, post);
+  const body = `<section class="hero hero-s"><div class="wrap"><div class="hero-t"><nav class="crumbs"><a href="${t.paths.home}">${esc(site.brand)}</a> › <a href="${t.paths.blog}">Blog</a></nav>
+<h1>${esc(x.title)}</h1><p class="lead">${esc(fill(x.lead, v))}</p><p class="small" style="color:var(--ice-ink)">${t.blog.updated}: ${post.date}</p></div></div></section>
+<article class="sec"><div class="wrap narrow prose">${fill(x.body, v).replace(/\{widget\}/g, blogWidget(lang))}</div></article>
+<section class="sec ice"><div class="wrap"><h2>${t.blog.more}</h2>${blogCards(lang, post.id)}</div></section>`;
+  const ld = { "@context": "https://schema.org", "@type": "BlogPosting", headline: x.title, description: x.desc, datePublished: post.date, dateModified: post.date, inLanguage: lang, mainEntityOfPage: URL_ + p, author: { "@type": "Organization", name: site.brand }, publisher: { "@id": URL_ + "/#service" }, image: URL_ + "/img/og.png" };
+  page({ lang, path: p, alt: postPath(other, post), title: x.title, desc: x.desc, body, ld: [ld, crumbs([[site.brand, t.paths.home], ["Blog", t.paths.blog], [x.title, p]])] });
+}
+
 const faqLd = items => ({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: items.map(([q, a]) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a.replace(/<[^>]+>/g, "") } })) });
 const crumbs = list => ({ "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: list.map(([name, p], i) => ({ "@type": "ListItem", position: i + 1, name, item: URL_ + p })) });
 
@@ -134,7 +160,7 @@ const routePath = (lang, a, z) => z === "SAW" ? I[lang].paths.airportPair : I[la
 
 function home(lang) {
   const t = I[lang], h = t.home, other = lang === "en" ? "tr" : "en";
-  const faq = t.faq.map(([q, a]) => [q, fill(a, { brand: site.brand })]);
+  const faq = t.faq.map(([q, a]) => [fill(q, { brand: site.brand }), fill(a, { brand: site.brand })]);
   const popular = ROUTES.filter(([a, z]) => ["sultanahmet", "taksim", "besiktas", "kadikoy", "sisli", "SAW"].includes(z));
   const body = `<section class="hero"><div class="wrap hero-in"><div class="hero-t">
 <h1>${h.h1}</h1><p class="lead">${fill(h.lead, { min: minPrice, brand: site.brand })}</p></div>
@@ -149,6 +175,7 @@ ${popular.map(([a, z]) => `<tr><td><a href="${routePath(lang, a, z)}">${esc(Q.zo
 <tbody>${h.vs.map(r => `<tr><th scope="row">${r[0]}</th><td>${r[1]}</td><td class="ok">${r[2]}</td></tr>`).join("")}</tbody></table></div></div></section>
 <section class="sec" id="how"><div class="wrap"><h2>${h.howH}</h2><ol class="how">${h.how.map(([a, b]) => `<li><h3>${a}</h3><p>${b}</p></li>`).join("")}</ol></div></section>
 <section class="sec ice"><div class="wrap"><h2>${h.meetH}</h2>${meetCards(lang)}</div></section>
+<section class="sec ice"><div class="wrap"><h2>${t.blog.latest}</h2>${blogCards(lang)}</div></section>
 <section class="sec" id="faq"><div class="wrap narrow"><h2>${h.faqH}</h2>${faqBlock(faq)}</div></section>
 <section class="cta"><div class="wrap"><h2>${h.ctaH}</h2><p>${h.ctaP}</p><a class="btn btn-k" href="${t.paths.book}">${t.nav.book}</a></div></section>`;
   page({ lang, path: t.paths.home, alt: I[other].paths.home, title: fill(h.title, { min: minPrice, brand: site.brand }), desc: fill(h.desc, { min: minPrice, brand: site.brand }), body, ld: [faqLd(faq)] });
@@ -292,7 +319,7 @@ function admin() {
   fs.writeFileSync(path.join(OUT, "admin", "index.html"), html);
 }
 
-LANGS.forEach(l => { home(l); AIRPORTS.forEach(a => hub(l, a.id)); ROUTES.forEach(([a, z]) => route(l, a, z)); prices(l); book(l); legalPages(l); });
+LANGS.forEach(l => { home(l); AIRPORTS.forEach(a => hub(l, a.id)); ROUTES.forEach(([a, z]) => route(l, a, z)); prices(l); book(l); legalPages(l); blogIndex(l); POSTS.forEach(x => blogPost(l, x)); });
 notFound();
 admin();
 extras();

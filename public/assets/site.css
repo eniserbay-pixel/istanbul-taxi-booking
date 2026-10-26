@@ -247,4 +247,30 @@ p { margin: 0 0 1em; }
 .done { text-align: center; padding: 20px 0; }
 .done .tick { width: 72px; height: 72px; border-radius: 50%; background: var(--mustard); color: var(--black); font-size: 36px; display: grid; place-items: center; margin: 0 auto 16px; font-weight: 900; }
 
-.prose h2 { font-size: 22px; margin-top: 1.4em; }
+.prose h2 { font-size: 24px; margin-top: 1.4em; }
+.prose p, .prose li { font-size: 17px; }
+.prose a { color: var(--mustard-ink); font-weight: 600; }
+
+/* Blog */
+.posts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 20px; }
+.post-c { display: flex; flex-direction: column; background: var(--white); border-radius: var(--r); padding: 22px; text-decoration: none; border: 1.5px solid var(--ice-2); }
+.post-c:hover { border-color: var(--mustard); }
+.post-c p { color: var(--muted); font-size: 15px; }
+.post-c .more { margin-top: auto; }
+@media (max-width: 900px) { .posts { grid-template-columns: 1fr; } }
+.blog-widget { background: var(--black); border-radius: var(--r); padding: 22px; margin: 32px 0; display: grid; gap: 16px; }
+.blog-widget h2 { color: var(--white); margin: 0; font-size: 22px; }
+.blog-widget .search-h { display: none; }
+.blog-widget .search { box-shadow: none; }
+/* The text column is narrower than the desktop row, so the box stays stacked in posts; promises in 2 columns */
+.blog-widget .assure { grid-template-columns: 1fr 1fr; }
+@media (min-width: 1000px) {
+  .blog-widget .search.wide { grid-template-columns: 1fr auto 1fr; }
+  .blog-widget .search.wide .row2, .blog-widget .search.wide .ret { display: grid; }
+  .blog-widget .search.wide .row2 { grid-column: 1 / -1; grid-template-columns: 1fr auto 1fr; }
+  .blog-widget .search.wide .row3 { display: grid; grid-column: 1 / -1; }
+  .blog-widget .search.wide .ret { grid-column: 1 / -1; grid-template-columns: 1fr 1fr; }
+  .blog-widget .search.wide .check, .blog-widget .search.wide button[type=submit] { grid-row: auto; grid-column: 1 / -1; }
+  .blog-widget .search.wide button[type=submit] { width: 100%; }
+  .blog-widget .search.wide .ret label:first-child, .blog-widget .search.wide .ret label:last-child { grid-row: auto; grid-column: auto; }
+}
