@@ -7,11 +7,13 @@
    "slug": "istanbul-airport",
    "name": {
     "en": "Istanbul Airport (IST)",
-    "tr": "İstanbul Havalimanı (IST)"
+    "tr": "İstanbul Havalimanı (IST)",
+    "ru": "Аэропорт Стамбула (IST)"
    },
    "short": {
     "en": "Istanbul Airport",
-    "tr": "İstanbul Havalimanı"
+    "tr": "İstanbul Havalimanı",
+    "ru": "Аэропорт Стамбула"
    }
   },
   {
@@ -20,11 +22,13 @@
    "slug": "sabiha-gokcen-airport",
    "name": {
     "en": "Sabiha Gökçen Airport (SAW)",
-    "tr": "Sabiha Gökçen Havalimanı (SAW)"
+    "tr": "Sabiha Gökçen Havalimanı (SAW)",
+    "ru": "Аэропорт Сабиха Гёкчен (SAW)"
    },
    "short": {
     "en": "Sabiha Gökçen",
-    "tr": "Sabiha Gökçen"
+    "tr": "Sabiha Gökçen",
+    "ru": "Сабиха Гёкчен"
    }
   },
   {
@@ -33,15 +37,18 @@
    "slug": "sultanahmet",
    "name": {
     "en": "Sultanahmet / Old City",
-    "tr": "Sultanahmet / Tarihi Yarımada"
+    "tr": "Sultanahmet / Tarihi Yarımada",
+    "ru": "Султанахмет / Старый город"
    },
    "short": {
     "en": "Sultanahmet",
-    "tr": "Sultanahmet"
+    "tr": "Sultanahmet",
+    "ru": "Султанахмет"
    },
    "area": {
     "en": "Sultanahmet, Fatih, Sirkeci, Eminönü, Beyazıt, Laleli",
-    "tr": "Sultanahmet, Fatih, Sirkeci, Eminönü, Beyazıt, Laleli"
+    "tr": "Sultanahmet, Fatih, Sirkeci, Eminönü, Beyazıt, Laleli",
+    "ru": "Султанахмет, Фатих, Сиркеджи, Эминёню, Беязыт, Лалели"
    }
   },
   {
@@ -50,15 +57,18 @@
    "slug": "taksim",
    "name": {
     "en": "Taksim / Beyoğlu",
-    "tr": "Taksim / Beyoğlu"
+    "tr": "Taksim / Beyoğlu",
+    "ru": "Таксим / Бейоглу"
    },
    "short": {
     "en": "Taksim",
-    "tr": "Taksim"
+    "tr": "Taksim",
+    "ru": "Таксим"
    },
    "area": {
     "en": "Taksim, Beyoğlu, İstiklal Avenue, Cihangir, Harbiye",
-    "tr": "Taksim, Beyoğlu, İstiklal Caddesi, Cihangir, Harbiye"
+    "tr": "Taksim, Beyoğlu, İstiklal Caddesi, Cihangir, Harbiye",
+    "ru": "Таксим, Бейоглу, проспект Истикляль, Джихангир, Харбийе"
    }
   },
   {
@@ -67,15 +77,18 @@
    "slug": "karakoy",
    "name": {
     "en": "Karaköy / Galata",
-    "tr": "Karaköy / Galata"
+    "tr": "Karaköy / Galata",
+    "ru": "Каракёй / Галата"
    },
    "short": {
     "en": "Karaköy",
-    "tr": "Karaköy"
+    "tr": "Karaköy",
+    "ru": "Каракёй"
    },
    "area": {
     "en": "Karaköy, Galata, Tophane, Kasımpaşa",
-    "tr": "Karaköy, Galata, Tophane, Kasımpaşa"
+    "tr": "Karaköy, Galata, Tophane, Kasımpaşa",
+    "ru": "Каракёй, Галата, Топхане, Касымпаша"
    }
   },
   {
@@ -84,15 +97,18 @@
    "slug": "galataport-cruise-port",
    "name": {
     "en": "Galataport Cruise Port",
-    "tr": "Galataport Kruvaziyer Limanı"
+    "tr": "Galataport Kruvaziyer Limanı",
+    "ru": "Круизный порт Галатапорт"
    },
    "short": {
     "en": "Galataport",
-    "tr": "Galataport"
+    "tr": "Galataport",
+    "ru": "Галатапорт"
    },
    "area": {
     "en": "Galataport cruise terminal, Tophane",
-    "tr": "Galataport kruvaziyer terminali, Tophane"
+    "tr": "Galataport kruvaziyer terminali, Tophane",
+    "ru": "Круизный терминал Галатапорт, Топхане"
    }
   },
   {
@@ -101,15 +117,18 @@
    "slug": "besiktas",
    "name": {
     "en": "Beşiktaş / Ortaköy",
-    "tr": "Beşiktaş / Ortaköy"
+    "tr": "Beşiktaş / Ortaköy",
+    "ru": "Бешикташ / Ортакёй"
    },
    "short": {
     "en": "Beşiktaş",
-    "tr": "Beşiktaş"
+    "tr": "Beşiktaş",
+    "ru": "Бешикташ"
    },
    "area": {
     "en": "Beşiktaş, Ortaköy, Bebek, Levent, Etiler",
-    "tr": "Beşiktaş, Ortaköy, Bebek, Levent, Etiler"
+    "tr": "Beşiktaş, Ortaköy, Bebek, Levent, Etiler",
+    "ru": "Бешикташ, Ортакёй, Бебек, Левент, Этилер"
    }
   },
   {
@@ -118,15 +137,18 @@
    "slug": "sisli",
    "name": {
     "en": "Şişli / Nişantaşı",
-    "tr": "Şişli / Nişantaşı"
+    "tr": "Şişli / Nişantaşı",
+    "ru": "Шишли / Нишанташи"
    },
    "short": {
     "en": "Şişli",
-    "tr": "Şişli"
+    "tr": "Şişli",
+    "ru": "Шишли"
    },
    "area": {
     "en": "Şişli, Nişantaşı, Mecidiyeköy, Kağıthane, Maslak",
-    "tr": "Şişli, Nişantaşı, Mecidiyeköy, Kağıthane, Maslak"
+    "tr": "Şişli, Nişantaşı, Mecidiyeköy, Kağıthane, Maslak",
+    "ru": "Шишли, Нишанташи, Меджидиекёй, Кягытхане, Маслак"
    }
   },
   {
@@ -135,15 +157,18 @@
    "slug": "sariyer",
    "name": {
     "en": "Sarıyer",
-    "tr": "Sarıyer"
+    "tr": "Sarıyer",
+    "ru": "Сарыер"
    },
    "short": {
     "en": "Sarıyer",
-    "tr": "Sarıyer"
+    "tr": "Sarıyer",
+    "ru": "Сарыер"
    },
    "area": {
     "en": "Sarıyer, Tarabya, Yeniköy, İstinye, Emirgan",
-    "tr": "Sarıyer, Tarabya, Yeniköy, İstinye, Emirgan"
+    "tr": "Sarıyer, Tarabya, Yeniköy, İstinye, Emirgan",
+    "ru": "Сарыер, Тарабья, Йеникёй, Истинье, Эмирган"
    }
   },
   {
@@ -152,15 +177,18 @@
    "slug": "bakirkoy",
    "name": {
     "en": "Bakırköy / Yeşilköy",
-    "tr": "Bakırköy / Yeşilköy"
+    "tr": "Bakırköy / Yeşilköy",
+    "ru": "Бакыркёй / Ешилькёй"
    },
    "short": {
     "en": "Bakırköy",
-    "tr": "Bakırköy"
+    "tr": "Bakırköy",
+    "ru": "Бакыркёй"
    },
    "area": {
     "en": "Bakırköy, Yeşilköy, Ataköy, Zeytinburnu, Florya",
-    "tr": "Bakırköy, Yeşilköy, Ataköy, Zeytinburnu, Florya"
+    "tr": "Bakırköy, Yeşilköy, Ataköy, Zeytinburnu, Florya",
+    "ru": "Бакыркёй, Ешилькёй, Атакёй, Зейтинбурну, Флорья"
    }
   },
   {
@@ -169,15 +197,18 @@
    "slug": "beylikduzu",
    "name": {
     "en": "Beylikdüzü / Esenyurt",
-    "tr": "Beylikdüzü / Esenyurt"
+    "tr": "Beylikdüzü / Esenyurt",
+    "ru": "Бейликдюзю / Эсеньюрт"
    },
    "short": {
     "en": "Beylikdüzü",
-    "tr": "Beylikdüzü"
+    "tr": "Beylikdüzü",
+    "ru": "Бейликдюзю"
    },
    "area": {
     "en": "Beylikdüzü, Esenyurt, Avcılar, Küçükçekmece",
-    "tr": "Beylikdüzü, Esenyurt, Avcılar, Küçükçekmece"
+    "tr": "Beylikdüzü, Esenyurt, Avcılar, Küçükçekmece",
+    "ru": "Бейликдюзю, Эсеньюрт, Авджылар, Кючюкчекмедже"
    }
   },
   {
@@ -186,15 +217,18 @@
    "slug": "kadikoy",
    "name": {
     "en": "Kadıköy / Moda",
-    "tr": "Kadıköy / Moda"
+    "tr": "Kadıköy / Moda",
+    "ru": "Кадыкёй / Мода"
    },
    "short": {
     "en": "Kadıköy",
-    "tr": "Kadıköy"
+    "tr": "Kadıköy",
+    "ru": "Кадыкёй"
    },
    "area": {
     "en": "Kadıköy, Moda, Bağdat Avenue, Fenerbahçe",
-    "tr": "Kadıköy, Moda, Bağdat Caddesi, Fenerbahçe"
+    "tr": "Kadıköy, Moda, Bağdat Caddesi, Fenerbahçe",
+    "ru": "Кадыкёй, Мода, улица Багдат, Фенербахче"
    }
   },
   {
@@ -203,15 +237,18 @@
    "slug": "uskudar",
    "name": {
     "en": "Üsküdar",
-    "tr": "Üsküdar"
+    "tr": "Üsküdar",
+    "ru": "Ускюдар"
    },
    "short": {
     "en": "Üsküdar",
-    "tr": "Üsküdar"
+    "tr": "Üsküdar",
+    "ru": "Ускюдар"
    },
    "area": {
     "en": "Üsküdar, Beylerbeyi, Çengelköy, Kuzguncuk",
-    "tr": "Üsküdar, Beylerbeyi, Çengelköy, Kuzguncuk"
+    "tr": "Üsküdar, Beylerbeyi, Çengelköy, Kuzguncuk",
+    "ru": "Ускюдар, Бейлербейи, Ченгелькёй, Кузгунджук"
    }
   },
   {
@@ -220,15 +257,18 @@
    "slug": "atasehir",
    "name": {
     "en": "Ataşehir / Ümraniye",
-    "tr": "Ataşehir / Ümraniye"
+    "tr": "Ataşehir / Ümraniye",
+    "ru": "Аташехир / Умрание"
    },
    "short": {
     "en": "Ataşehir",
-    "tr": "Ataşehir"
+    "tr": "Ataşehir",
+    "ru": "Аташехир"
    },
    "area": {
     "en": "Ataşehir, Ümraniye, Kozyatağı, Maltepe",
-    "tr": "Ataşehir, Ümraniye, Kozyatağı, Maltepe"
+    "tr": "Ataşehir, Ümraniye, Kozyatağı, Maltepe",
+    "ru": "Аташехир, Умрание, Козятаги, Малтепе"
    }
   }
  ],
@@ -237,61 +277,81 @@
    "id": "sedan",
    "name": {
     "en": "Sedan",
-    "tr": "Sedan"
+    "tr": "Sedan",
+    "ru": "Седан"
    },
-   "models": "Skoda Octavia, Toyota Corolla or similar",
+   "models": {
+    "en": "Skoda Octavia, Toyota Corolla or similar",
+    "ru": "Skoda Octavia, Toyota Corolla или аналог"
+   },
    "seats": 3,
    "bags": 3,
    "img": "/img/sedan.webp",
    "note": {
     "en": "Couples and solo travellers",
-    "tr": "Tek kişi ve çiftler"
+    "tr": "Tek kişi ve çiftler",
+    "ru": "Пары и путешествующие в одиночку"
    }
   },
   {
    "id": "minivan",
    "name": {
     "en": "Minivan",
-    "tr": "Minivan"
+    "tr": "Minivan",
+    "ru": "Минивэн"
    },
-   "models": "Mercedes Vito, Ford Tourneo or similar",
+   "models": {
+    "en": "Mercedes Vito, Ford Tourneo or similar",
+    "ru": "Mercedes Vito, Ford Tourneo или аналог"
+   },
    "seats": 7,
    "bags": 7,
    "img": "/img/minivan.webp",
    "popular": true,
    "note": {
     "en": "Families and small groups",
-    "tr": "Aileler ve küçük gruplar"
+    "tr": "Aileler ve küçük gruplar",
+    "ru": "Семьи и небольшие группы"
    }
   },
   {
    "id": "vclass",
    "name": {
     "en": "Mercedes V-Class",
-    "tr": "Mercedes V-Class"
+    "tr": "Mercedes V-Class",
+    "ru": "Mercedes V-Class"
    },
-   "models": "Mercedes-Benz V-Class VIP",
+   "models": {
+    "en": "Mercedes-Benz V-Class VIP",
+    "ru": "Mercedes-Benz V-Class VIP"
+   },
    "seats": 6,
    "bags": 6,
    "img": "/img/vclass.webp",
    "note": {
     "en": "VIP comfort, business travel",
-    "tr": "VIP konfor, iş seyahati"
+    "tr": "VIP konfor, iş seyahati",
+    "ru": "VIP-комфорт, деловые поездки"
    }
   },
   {
    "id": "minibus",
    "name": {
     "en": "Minibus",
-    "tr": "Minibüs"
+    "tr": "Minibüs",
+    "ru": "Микроавтобус"
    },
-   "models": "Mercedes Sprinter or similar",
+   "models": {
+    "en": "Mercedes Sprinter or similar",
+    "ru": "Mercedes Sprinter или аналог"
+   },
    "seats": 16,
    "bags": 16,
    "img": "/img/minibus.webp",
    "note": {
     "en": "Groups up to 16",
-    "tr": "16 kişiye kadar gruplar"
+    "tr": "16 kişiye kadar gruplar",
+    "ru": "Группы до 16 человек"
    }
   }
  ],

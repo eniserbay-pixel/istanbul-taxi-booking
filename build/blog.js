@@ -1,4 +1,4 @@
-// Blog posts in English and Turkish. Each post: the same `id` in both languages, so the pages link to each other.
+// Blog posts in English and Russian. Each post: the same `id` in both languages, so the pages link to each other.
 // body: HTML; {widget} is replaced by the booking box, {brand} by the brand name, {book} by the booking page.
 // Facts with numbers carry their source link in the text.
 const SRC = {
@@ -33,27 +33,27 @@ module.exports = [
 <p>Booking takes about a minute: no account and no payment up front. You get an e-mail that we received your request, then a confirmation e-mail once your car is assigned.</p>
 {widget}`
     },
-    tr: {
-      slug: "istanbulda-taksi-bulmak-neden-zor",
-      title: "İstanbul'da Taksi Bulmak Neden Bu Kadar Zor?",
-      desc: "İstanbul'da 1.000 kişiye yaklaşık bir taksi düşüyor ve her yıl binlerce şikâyet var. Taksi bulmak neden zor ve önceden rezervasyonla sorun nasıl çözülür?",
-      lead: "İstanbul 16 milyonu aşan nüfusuyla dünyanın en büyük şehirlerinden biri, ama taksi sayısı 30 yılda neredeyse hiç artmadı. Bu yüzden özellikle havalimanında, yoğun saatte ya da yağmurda taksi bulmak uzun sürebiliyor.",
-      body: `<h2>Bu büyüklükte bir şehre çok az taksi</h2>
-<p>İstanbul Büyükşehir Belediyesi'nin 2021'de aktarılan verilerine göre şehirde <strong>17.395 taksi</strong> vardı; bu sayı 1990'lardan beri aynı. Aynı sürede nüfus 7,5 milyondan 16 milyonun üzerine çıktı. Yani <strong>1.000 kişiye yaklaşık bir taksi</strong> düşüyor. Karşılaştırma için New York'ta 8,4 milyon kişiye 13.587 taksi var (<a href="${SRC.density}" target="_blank" rel="noopener">kaynak</a>).</p>
-<p>Sonuç basit: yoğun saatlerde taksi arayan kişi sayısı taksi sayısından çok daha fazla.</p>
+    ru: {
+      slug: "pochemu-trudno-najti-taksi-v-stambule",
+      title: "Почему в Стамбуле так трудно найти такси?",
+      desc: "В Стамбуле около одного такси на 1000 жителей и тысячи жалоб в год. Почему трудно поймать такси и как решить проблему, заказав трансфер заранее.",
+      lead: "В Стамбуле живёт больше 16 миллионов человек, но парк такси почти не вырос за 30 лет. Поэтому поймать такси, особенно в аэропорту, в час пик или в дождь, бывает очень непросто.",
+      body: `<h2>Слишком мало такси для огромного города</h2>
+<p>По данным мэрии Стамбула, опубликованным в 2021 году, в городе было <strong>17 395 такси</strong> — столько же, сколько в 1990-х, хотя население за это время выросло с 7,5 до более чем 16 миллионов. Это <strong>примерно одно такси на 1000 жителей</strong>. Для сравнения: в Нью-Йорке 13 587 такси на 8,4 миллиона человек (<a href="${SRC.density}" target="_blank" rel="noopener">источник</a>).</p>
+<p>Итог простой: в часы пик людей, которым нужно такси, гораздо больше, чем самих такси.</p>
 {widget}
-<h2>Şoförler yolcu seçiyor</h2>
-<p>İstanbul taksileri hakkındaki en yaygın şikâyet fiyat değil, şoförlerin yolcu ve güzergâh seçmesi. 2023'ün ilk altı ayında belediyeye taksilerle ilgili <strong>33.878 şikâyet</strong> geldi. Bunların yarısından fazlası, <strong>18.079</strong> tanesi, yolcu veya güzergâh seçmekle ilgiliydi. Diğerleri fazla ücret alma (3.026), uzun yoldan gitme (1.386), kısa mesafeyi reddetme (1.290) ve taksimetreyi açmama (712) (<a href="${SRC.complaints}" target="_blank" rel="noopener">kaynak</a>).</p>
-<p>Bavuluyla gelen ve Türkçe bilmeyen bir turist için İstanbul'daki ilk saati stresli yapan da tam olarak bu.</p>
-<h2>En zor olduğu yerler</h2>
+<h2>Водители выбирают пассажиров</h2>
+<p>Самая частая жалоба на стамбульские такси — не цена, а то, что водители выбирают пассажиров и маршруты. За первые шесть месяцев 2023 года мэрия получила <strong>33 878 жалоб</strong> на такси. Больше половины, <strong>18 079</strong>, касались того, что водитель выбирал пассажира или направление. Остальные — завышенная цена (3026), объезд длинной дорогой (1386), отказ от коротких поездок (1290) и невключённый счётчик (712) (<a href="${SRC.complaints}" target="_blank" rel="noopener">источник</a>).</p>
+<p>Для туриста с чемоданами, который не говорит по-турецки, именно это делает первый час в Стамбуле стрессовым.</p>
+<h2>Где сложнее всего</h2>
 <ul>
-<li><strong>Gece inen uçuşlardan sonra havalimanında:</strong> taksi durağında uzun kuyruk; aileler ve gruplar çoğu zaman tek sarı taksiye sığmıyor.</li>
-<li><strong>Yoğun saatte ve yağmurda:</strong> taksiler dolu ya da şoförler trafiğe girmek istemiyor.</li>
-<li><strong>Kısa mesafeler ve Anadolu yakası:</strong> bazı şoförler kârlı bulmadığı yolculukları veya köprü geçişini reddediyor.</li>
+<li><strong>В аэропорту после позднего рейса:</strong> длинная очередь на стоянке такси, а семья или группа часто не помещается в одну жёлтую машину.</li>
+<li><strong>В час пик и в дождь:</strong> такси заняты, или водители отказываются ехать в пробки.</li>
+<li><strong>Короткие поездки и азиатская сторона:</strong> некоторые водители отказываются от невыгодных поездок или от переезда через Босфор.</li>
 </ul>
-<h2>Kolay yol: inmeden önce rezervasyon yapın</h2>
-<p>Önceden rezervasyonlu transfer bunların hepsini çözer. {brand} ile aracınızı seçer, sabit fiyatı yolculuktan önce görürsünüz. Şoförünüz uçuşunuzu takip eder ve geliş salonunda adınızın yazılı olduğu tabelayla bekler: kuyruk yok, pazarlık yok, taksimetre yok. Aynı fiyatı yolculuk sonunda şoföre nakit ödersiniz.</p>
-<p>Rezervasyon yaklaşık bir dakika sürer; üyelik ve ön ödeme yoktur. Önce talebinizi aldığımızı, araç atandığında da onayı e-postayla bildiririz.</p>
+<h2>Простое решение: заказать до прилёта</h2>
+<p>Заранее заказанный трансфер решает все эти проблемы. В {brand} вы выбираете машину и видите фиксированную цену ещё до поездки. Водитель следит за рейсом и ждёт в зале прилёта с табличкой с вашим именем: без очереди, без торга и без счётчика. Ту же цену вы платите наличными в конце поездки.</p>
+<p>Заказ занимает около минуты: без регистрации и предоплаты. Сначала мы пишем, что получили заявку, а когда машина назначена — присылаем подтверждение.</p>
 {widget}`
     }
   },
@@ -78,22 +78,22 @@ module.exports = [
 <p>If you land at a quiet time, travel light and alone, and your hotel is close, a taxi from the rank can be fine. For families, groups, late arrivals and anyone who wants to know the price in advance, booking ahead is simpler.</p>
 {widget}`
     },
-    tr: {
-      slug: "havalimaninda-taksi-mi-transfer-mi",
-      title: "Havalimanında Taksi mi, Önceden Rezervasyonlu Transfer mi?",
-      desc: "İstanbul Havalimanı veya Sabiha Gökçen'de duraktan taksi mi, uçmadan önce ayrılan özel transfer mi? Fiyat, bekleme, bagaj ve güvenlik karşılaştırması.",
-      lead: "İstanbul Havalimanı'na veya Sabiha Gökçen'e indiniz ve otelinize gitmeniz gerekiyor. Taksi kuyruğuna girebilir ya da sizi zaten bekleyen bir şoförle yola çıkabilirsiniz. İkisinin karşılaştırması:",
-      body: `<h2>Fiyat: taksimetre mi, sabit fiyat mı</h2>
-<p>Sarı taksi taksimetreyle çalışır; fiyat trafiğe ve şoförün seçtiği yola göre değişir. Fazla ücret ve uzun yoldan gitme, belediyeye gelen en yaygın taksi şikâyetleri arasında (<a href="${SRC.complaints}" target="_blank" rel="noopener">kaynak</a>). Önceden ayrılan transferde araç başı sabit fiyatı yolculuktan önce bilirsiniz. Köprü, otoyol ve otopark dahildir.</p>
+    ru: {
+      slug: "taksi-ili-transfer-iz-aeroporta-stambula",
+      title: "Аэропорт Стамбула: такси со стоянки или трансфер?",
+      desc: "Такси со стоянки в аэропорту Стамбула или Сабиха Гёкчен или трансфер, заказанный до вылета: сравниваем цену, ожидание, багаж и безопасность.",
+      lead: "Вы приземлились в аэропорту Стамбула или Сабиха Гёкчен, и нужно добраться до отеля. Можно встать в очередь на такси, а можно сесть в машину, водитель которой вас уже ждёт. Вот как они отличаются.",
+      body: `<h2>Цена: счётчик или фиксированная</h2>
+<p>Обычное такси работает по счётчику, поэтому цена зависит от пробок и маршрута, который выберет водитель. Завышенная цена и объезд длинной дорогой — среди самых частых жалоб на такси в мэрию Стамбула (<a href="${SRC.complaints}" target="_blank" rel="noopener">источник</a>). У трансфера цена за машину фиксирована, и вы знаете её до поездки. Платные дороги и парковка включены.</p>
 {widget}
-<h2>Bekleme: kuyruk mu, isim tabelası mı</h2>
-<p>Taksi durağında sıra beklersiniz; birkaç uçak aynı anda indiğinde bu uzun sürebilir. Transferde şoförünüz uçuşunuzu takip eder ve geliş salonunda adınızın yazılı olduğu tabelayla bekler. {brand} ile inişten sonraki ilk 60 dakika ücretsizdir; uzun pasaport kuyruğu ya da geç gelen bavul ek ücret getirmez.</p>
-<h2>Bagaj ve grup</h2>
-<p>Sarı taksi en fazla dört yolcu ve sınırlı bagaj alır. Transferde size uygun aracı seçersiniz: 3 kişiye kadar sedan, 7 kişiye kadar minivan, 6 kişiye kadar Mercedes V-Class veya 16 kişiye kadar minibüs. Fiyat kişi başı değil, araç başıdır.</p>
-<h2>Dil ve güvenlik</h2>
-<p>Otel adresinizi şoföre anlatmanız gerekmez, rezervasyonunuzda yazılıdır. Gideceğiniz yeri bilen profesyonel bir şoförle yolculuk eder, anlaşılan fiyatı yolculuk sonunda ödersiniz.</p>
-<h2>Taksi ne zaman yeterli?</h2>
-<p>Sakin bir saatte, tek başınıza ve az bagajla iniyorsanız ve oteliniz yakınsa duraktan taksi işinizi görebilir. Aileler, gruplar, gece inenler ve fiyatı önceden bilmek isteyenler için önceden rezervasyon daha kolaydır.</p>
+<h2>Ожидание: очередь или табличка с именем</h2>
+<p>На стоянке такси приходится стоять в очереди, иногда долго, если одновременно приземлилось несколько рейсов. При трансфере водитель следит за рейсом и ждёт в зале прилёта с табличкой с вашим именем. В {brand} первые 60 минут после посадки бесплатны, так что длинная очередь на паспортном контроле или задержка багажа ничего не стоят.</p>
+<h2>Багаж и группы</h2>
+<p>Жёлтое такси берёт до четырёх пассажиров и ограниченный багаж. При трансфере вы выбираете подходящую машину: седан до 3 человек, минивэн до 7, Mercedes V-Class до 6 или микроавтобус до 16. Цена за машину, а не за человека.</p>
+<h2>Язык и безопасность</h2>
+<p>Не нужно объяснять водителю адрес отеля по-турецки: он уже есть в заказе. Вы едете с профессиональным водителем, который знает, куда ехать, и платите оговорённую цену в конце.</p>
+<h2>Когда подойдёт обычное такси</h2>
+<p>Если вы прилетаете в спокойное время, путешествуете один, налегке, а отель недалеко, такси со стоянки может подойти. Семьям, группам, тем, кто прилетает поздно, и всем, кто хочет знать цену заранее, проще заказать трансфер.</p>
 {widget}`
     }
   },
@@ -118,22 +118,22 @@ module.exports = [
 <p>Your driver waits in the arrivals hall with your name sign. At the end of the ride you pay the fixed price in cash, in euro, US dollar or Turkish lira. Free cancellation up to 24 hours before pickup.</p>
 {widget}`
     },
-    tr: {
-      slug: "havalimani-transfer-rezervasyonu-nasil-yapilir",
-      title: "İstanbul Havalimanı Transferi Bir Dakikada Nasıl Ayrılır?",
-      desc: "ITB Transfer ile İstanbul havalimanı transferinizi yaklaşık bir dakikada ayırın: üyelik ve ön ödeme yok. Formu gönderdikten sonra neler olur, adım adım.",
-      lead: "{brand} ile transfer ayırmak taksi durağında beklemekten daha hızlıdır. Yaklaşık bir dakika sürer, üyelik ve ön ödeme gerekmez. Adım adım neler olduğu:",
-      body: `<h2>1. Güzergâh ve saati seçin</h2>
-<p>Rezervasyon kutusunda nereden (İstanbul Havalimanı, Sabiha Gökçen veya bir semt) ve nereye gideceğinizi, tarihi, alış saatini ve yolcu sayısını seçin. Havalimanından alışta iniş saatinizi yazın. Dönüş transferini %10 indirimle ekleyebilirsiniz.</p>
+    ru: {
+      slug: "kak-zakazat-transfer-iz-aeroporta-stambula",
+      title: "Как заказать трансфер из аэропорта Стамбула за минуту",
+      desc: "Закажите трансфер из аэропорта Стамбула в ITB Transfer примерно за минуту: без регистрации и предоплаты. Что происходит после отправки заявки, по шагам.",
+      lead: "Заказать трансфер в {brand} быстрее, чем стоять в очереди на такси. Это занимает около минуты, без регистрации и предоплаты. Вот что происходит на каждом шаге.",
+      body: `<h2>1. Выберите маршрут и время</h2>
+<p>В форме заказа выберите, откуда вы едете (аэропорт Стамбула, Сабиха Гёкчен или район города) и куда, затем дату, время подачи и число пассажиров. Если вас встречают в аэропорту, укажите время посадки. Обратный трансфер можно добавить со скидкой 10%.</p>
 {widget}
-<h2>2. Aracınızı seçin, sabit fiyatı görün</h2>
-<p>Dört aracı araç başı fiyatıyla görürsünüz: sedan, minivan, Mercedes V-Class ve minibüs. Grubunuza küçük gelen araçlar soluk görünür. Gördüğünüz fiyat ödeyeceğiniz fiyattır.</p>
-<h2>3. Bilgilerinizi girin</h2>
-<p>Ad soyad, ülke koduyla cep telefonu, e-posta ve uçuşunuzu takip edebilmemiz için uçuş numarası. Otelden alış veya otele bırakış varsa adresi yazın. Çocuk koltuğu ve şoföre not ekleyebilirsiniz.</p>
-<h2>4. Talebi gönderin</h2>
-<p>Özeti kontrol edip gönderin. Talebinizi aldığımızı hemen e-postayla bildiririz. Aracınız atandığında, genellikle bir saat içinde, buluşma noktasıyla birlikte onay e-postası gelir.</p>
-<h2>5. Şoförünüzle buluşun, nakit ödeyin</h2>
-<p>Şoförünüz geliş salonunda adınızın yazılı olduğu tabelayla bekler. Yolculuk sonunda sabit fiyatı nakit ödersiniz: euro, ABD doları veya Türk lirası. Alış saatinden 24 saat öncesine kadar iptal ücretsizdir.</p>
+<h2>2. Выберите автомобиль и посмотрите цену</h2>
+<p>Вы видите все четыре машины с ценой за машину: седан, минивэн, Mercedes V-Class и микроавтобус. Машины, в которые ваша группа не поместится, неактивны. Цена, которую вы видите, — это цена, которую вы платите.</p>
+<h2>3. Введите свои данные</h2>
+<p>Имя, мобильный телефон с кодом страны, e-mail и номер рейса, чтобы мы могли следить за ним. Если нужно забрать вас из отеля или отвезти в отель, укажите адрес. Можно добавить детские кресла и комментарий для водителя.</p>
+<h2>4. Отправьте заявку</h2>
+<p>Проверьте данные и отправьте заявку. Сразу придёт письмо о том, что мы её получили. Когда машина назначена, обычно в течение часа, вы получите письмо с подтверждением и местом встречи.</p>
+<h2>5. Встретьтесь с водителем и оплатите наличными</h2>
+<p>Водитель ждёт в зале прилёта с табличкой с вашим именем. В конце поездки вы платите фиксированную цену наличными: в евро, долларах США или турецких лирах. Отмена бесплатна не позднее чем за 24 часа до подачи.</p>
 {widget}`
     }
   }

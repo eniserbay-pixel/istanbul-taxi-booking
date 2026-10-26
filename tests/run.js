@@ -1,6 +1,6 @@
 // End-to-end check: builds nothing, uses public/ as built. Starts tests/server.js, then
 // 1. crawls every page in sitemap.xml: 200, one H1, title ≤ 65 chars, description ≤ 160, valid JSON-LD, internal links resolve
-// 2. books a transfer in the browser (EN and TR) and checks the "request received" mails
+// 2. books a transfer in the browser (EN and RU) and checks the "request received" mails
 // 3. signs in to /admin, confirms the booking and checks the confirmation mail
 // Needs Playwright (Chromium). Run: node tests/run.js   (SHOTS=1 also saves screenshots to shots/)
 const { spawn } = require("child_process");
@@ -84,12 +84,12 @@ const ok = (cond, msg) => { if (!cond) { failed++; console.log("FAIL " + msg); }
       if (process.env.SHOTS) await page.screenshot({ path: "shots/book-done-" + lang + ".png" });
     }
     await book("/", "en");
-    await book("/tr", "tr");
+    await book("/ru", "ru");
     ok(!errors.length, "page errors: " + errors.join("; "));
     let mails = await (await fetch(BASE + "/__mails")).json();
     ok(mails.length === 4, "4 mails after 2 bookings (customer + office), got " + mails.length);
     ok(mails.some(m => /We received your booking request/.test(m.subject)), "EN request-received mail");
-    ok(mails.some(m => /Rezervasyon talebinizi aldık/.test(m.subject)), "TR request-received mail");
+    ok(mails.some(m => /Мы получили вашу заявку/.test(m.subject)), "RU request-received mail");
 
     // Server refuses a tampered booking
     const bad = await fetch(BASE + "/api/booking", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ref: "IAT-261026-ABCD", from: "IST", to: "taksim", car: "sedan", pax: 9, date: "2099-01-01", time: "10:00", name: "x", phone: "1", email: "y" }) });
@@ -110,11 +110,11 @@ const ok = (cond, msg) => { if (!cond) { failed++; console.log("FAIL " + msg); }
     await adm.locator('.card.request [data-act="confirmed"]').first().click();
     await adm.waitForFunction(() => document.querySelectorAll(".card.request").length === 1);
     mails = await (await fetch(BASE + "/__mails")).json();
-    ok(mails.length === 5 && /confirmed|onaylandı/.test(mails[4].subject), "confirmation mail after approval: " + (mails[4] && mails[4].subject));
+    ok(mails.length === 5 && /confirmed|подтверждён/.test(mails[4].subject), "confirmation mail after approval: " + (mails[4] && mails[4].subject));
     if (process.env.SHOTS) fs.writeFileSync("shots/mail-confirmed.html", mails[4].html);
 
     if (process.env.SHOTS) {
-      for (const [u, n, w] of [["/", "home", 1366], ["/", "home-m", 390], ["/istanbul-airport-taxi-to-taksim", "route", 1366], ["/tr/sabiha-gokcen-kadikoy-taksi", "route-tr-m", 390]]) {
+      for (const [u, n, w] of [["/", "home", 1366], ["/", "home-m", 390], ["/istanbul-airport-taxi-to-taksim", "route", 1366], ["/ru/taksi-iz-sabiha-gokchen-v-kadikoy", "route-ru-m", 390], ["/ru", "home-ru", 1366], ["/ru/blog/pochemu-trudno-najti-taksi-v-stambule", "blog-ru-m", 390]]) {
         const p = await browser.newPage({ viewport: { width: w, height: 900 } });
         await p.goto(BASE + u);
         await p.screenshot({ path: "shots/" + n + ".png", fullPage: true });

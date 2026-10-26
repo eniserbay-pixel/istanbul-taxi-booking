@@ -14,6 +14,14 @@ const T = {
     ref: "Booking reference", route: "Route", when: "Pickup", back: "Return", car: "Vehicle", pax: "Passengers", flight: "Flight",
     total: "Total price", pay: "Payment", cash: "Cash to the driver (EUR, USD or TRY)", meet: "Meeting point", help: "Questions? WhatsApp or call us"
   },
+  ru: {
+    received: ["Мы получили вашу заявку", "Спасибо, {name}. Мы получили вашу заявку и скоро подтвердим её по e-mail. Заказ подтверждён только после нашего письма."],
+    confirmed: ["Ваш трансфер подтверждён", "{name}, ваш трансфер подтверждён. Водитель будет ждать вас с табличкой с вашим именем."],
+    declined: ["Не удалось подтвердить заявку", "К сожалению, {name}, мы не можем принять этот заказ. {reason}Напишите нам в WhatsApp, и мы поможем найти другой вариант."],
+    ref: "Номер заказа", route: "Маршрут", when: "Подача", back: "Обратно", car: "Автомобиль", pax: "Пассажиры", flight: "Рейс",
+    total: "Итоговая цена", pay: "Оплата", cash: "Наличными водителю (EUR, USD или TRY)", meet: "Место встречи", help: "Есть вопросы? Напишите в WhatsApp или позвоните"
+  },
+  // Turkish: the office's e-mail
   tr: {
     received: ["Rezervasyon talebinizi aldık", "Teşekkürler {name}. Talebinizi aldık, kısa süre içinde e-postayla onaylayacağız. Onay e-postası gelene kadar rezervasyon kesinleşmiş değildir."],
     confirmed: ["Transferiniz onaylandı", "{name}, transferiniz onaylandı. Şoförünüz sizi adınızın yazılı olduğu tabelayla karşılayacak."],

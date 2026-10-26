@@ -1,4 +1,4 @@
-// Page texts in English (the site's main language: visitors are travellers) and Turkish.
+// Page texts in English (the site's main language: visitors are travellers) and Russian (i18n-ru.js).
 // {brand} {from} {to} {price} {km} {min} are filled in by build.js.
 module.exports = {
   en: {
@@ -10,7 +10,8 @@ module.exports = {
       airportPair: "/istanbul-airport-to-sabiha-gokcen-taxi", blog: "/blog"
     },
     assure: [["price", "Fixed prices", "No meter, no surprises"], ["cancel", "Free cancellation", "Up to 24 hours before pickup"], ["clock", "24/7 service", "Every flight, day and night"], ["shield", "Safe travel", "Professional drivers, insured cars"]],
-    nav: { prices: "Prices", fleet: "Fleet", how: "How it works", faq: "FAQ", blog: "Blog", book: "Book now", lang: "Türkçe" },
+    nav: { prices: "Prices", fleet: "Fleet", how: "How it works", faq: "FAQ", blog: "Blog", book: "Book now", lang: "Русский" },
+    ui: { route: "Route", from: "from ", min: "min", terms: "Terms", privacy: "Privacy" },
     blog: { title: "Istanbul Transfer Blog · Taxi Tips for Travellers", desc: "Practical guides for getting around Istanbul: why taxis are hard to find, taxi or transfer at the airport, and how to book your ride in a minute.", h1: "Istanbul transfer blog", lead: "Practical guides for arriving in Istanbul and getting to your hotel without stress.", read: "Read the guide", latest: "From our blog", more: "More guides", updated: "Updated", widgetH: "Book your transfer now" },
     form: {
       title: "Get your fixed price", from: "From", to: "To", date: "Date", time: "Pickup time", pax: "Passengers",
@@ -90,93 +91,5 @@ module.exports = {
     footer: { rights: "All rights reserved.", tursab: "TÜRSAB licence", contact: "Contact", legal: "Legal", routes: "Popular routes" },
     notFound: { title: "Page not found", p: "This page does not exist. Find your airport taxi price below.", home: "Go to the home page" }
   },
-  tr: {
-    htmlLang: "tr",
-    paths: {
-      home: "/tr", book: "/tr/rezervasyon", prices: "/tr/fiyatlar", terms: "/tr/kosullar", privacy: "/tr/gizlilik",
-      IST: "/tr/istanbul-havalimani-taksi", SAW: "/tr/sabiha-gokcen-taksi",
-      route: (a, z) => a === "IST" ? `/tr/istanbul-havalimani-${z}-taksi` : `/tr/sabiha-gokcen-${z}-taksi`,
-      airportPair: "/tr/istanbul-havalimani-sabiha-gokcen-taksi", blog: "/tr/blog"
-    },
-    assure: [["price", "Sabit fiyatlar", "Taksimetre yok, sürpriz yok"], ["cancel", "Ücretsiz iptal", "Alıştan 24 saat öncesine kadar"], ["clock", "7/24 hizmet", "Her uçuşa, gece gündüz"], ["shield", "Güvenli yolculuk", "Profesyonel şoför, sigortalı araç"]],
-    nav: { prices: "Fiyatlar", fleet: "Araçlar", how: "Nasıl çalışır", faq: "SSS", blog: "Blog", book: "Rezervasyon", lang: "English" },
-    blog: { title: "İstanbul Transfer Blogu · Yolcular İçin Taksi Rehberi", desc: "İstanbul'da ulaşım için pratik rehberler: taksi bulmak neden zor, havalimanında taksi mi transfer mi, bir dakikada rezervasyon nasıl yapılır.", h1: "İstanbul transfer blogu", lead: "İstanbul'a gelişte otelinize stressiz ulaşmanız için pratik rehberler.", read: "Rehberi oku", latest: "Blogdan", more: "Diğer rehberler", updated: "Güncelleme", widgetH: "Transferinizi şimdi ayırın" },
-    form: {
-      title: "Sabit fiyatınızı görün", from: "Nereden", to: "Nereye", date: "Tarih", time: "Alış saati", pax: "Yolcu",
-      ret: "Dönüş transferi ekle (%10 indirim)", rdate: "Dönüş tarihi", rtime: "Dönüş alış saati", submit: "Fiyatları gör",
-      airports: "Havalimanları", districts: "İstanbul", port: "Kruvaziyer limanı", choose: "Seçin…", swap: "Yer değiştir"
-    },
-    home: {
-      title: "İstanbul Havalimanı Transfer ve Taksi · {brand}",
-      desc: "{brand} İstanbul transfer firması: IST ve Sabiha Gökçen'den sabit fiyatlı özel transfer, araç başı en düşük €{min}. Ücretsiz iptal, araçta nakit ödeme.",
-      h1: "<em>Sabit fiyatlı</em> İstanbul havalimanı transfer ve taksi",
-      lead: "{brand} bir İstanbul transfer firmasıdır. İstanbul Havalimanı (IST) veya Sabiha Gökçen'den (SAW) otelinize özel araçla, araç başı en düşük €{min}. Şoförünüz adınızın yazılı olduğu tabelayla bekler, ödemeyi yolculuk sonunda nakit yaparsınız.",
-      fleetH: "Aracınızı seçin", fleetLead: "Fiyat kişi başı değil, araç başıdır. Köprü, otoyol, otopark ve bekleme dahildir.",
-      routesH: "İstanbul'daki popüler transfer rotaları", routesLead: "Araç başı sabit fiyatlar, tek yön. IST'de 15:00–19:00, SAW'da 14:45–21:00 arası alışlar %30 daha pahalıdır.",
-      vsH: "Taksimetreli taksi mi, bizim havalimanı taksimiz mi?",
-      vs: [["Fiyat", "Trafiğe ve güzergâha göre değişir", "Rezervasyonda sabitlenir"], ["Gelişte", "Taksi kuyruğu", "Şoför adınızla bekler"], ["Uçuş rötarı", "-", "Uçuşu takip ederiz, 60 dk ücretsiz bekleme"], ["Bagaj ve grup", "Küçük sarı taksi", "Sedan, minivan, V-Class veya 16 kişilik minibüs"], ["Ödeme", "Taksimetre, çoğu zaman nakit", "Şoföre nakit: EUR, USD veya TL"]],
-      vsCols: ["", "Sarı taksi", "{brand}"],
-      howH: "Nasıl çalışır",
-      how: [["Talep", "Güzergâh, araç ve saati seçin. Bir dakika sürer, ödeme gerekmez."], ["Onay", "Müsaitliği kontrol eder, genellikle bir saat içinde onay e-postası göndeririz."], ["Yolculuk", "Şoförünüz sizi isim tabelasıyla karşılar. Sabit fiyatı yolculuk sonunda nakit ödersiniz."]],
-      meetH: "Şoförünüz nerede bekler",
-      ctaH: "Yakında İstanbul'a mı iniyorsunuz?", ctaP: "Havalimanı taksinizi şimdi isteyin, onayınızı e-postayla alın.",
-      faqH: "Sık sorulan sorular"
-    },
-    faq: [
-      ["İstanbul'da taksi bulmak zor mu?", "Çoğu zaman evet. İstanbul'da 1.000 kişiye yaklaşık bir taksi düşüyor ve bu sayı 1990'lardan beri neredeyse değişmedi. Belediyeye gelen en yaygın şikâyet de şoförlerin yolcu ve güzergâh seçmesi. Havalimanı kuyrukları, yoğun saatler ve yağmur durumu daha da zorlaştırıyor. <a href=\"/tr/blog/istanbulda-taksi-bulmak-neden-zor\">Nedenini okuyun</a>."],
-      ["Neden gelmeden önce rezervasyon yapmalıyım?", "Çünkü aracınız sizi zaten bekliyor olur. Şoförünüz uçuşunuzu takip eder ve geliş salonunda adınızın yazılı olduğu tabelayla bekler: taksi kuyruğu yok, otel adresini anlatmak yok, taksimetre ve pazarlık yok. Fiyatı uçmadan önce bilirsiniz. <a href=\"/tr/blog/havalimaninda-taksi-mi-transfer-mi\">Taksi ve transfer karşılaştırması</a>."],
-      ["{brand} ile rezervasyon ne kadar hızlı?", "Yaklaşık bir dakika. Güzergâh, araç ve saati seçin; adınızı, telefonunuzu, e-postanızı ve uçuş numaranızı girip gönderin. Üyelik ve ön ödeme yoktur. Onay e-postası genellikle bir saat içinde gelir. <a href=\"/tr/blog/havalimani-transfer-rezervasyonu-nasil-yapilir\">Adımlara bakın</a>."],
-      ["Bu normal bir İstanbul taksisi mi?", "Hayır. {brand} bir transfer firmasıdır: önceden, sabit fiyatla ayrılan, profesyonel şoförlü özel bir araçla yolculuk edersiniz. Yabancı yolcular bu hizmete havalimanı taksisi der; sarı taksiden farkı taksimetre olmaması ve şoförün sizi terminalde karşılamasıdır."],
-      ["Nasıl ödeme yaparım?", "Yolculuk sonunda şoföre nakit ödersiniz: euro, ABD doları veya Türk lirası. Online ödeme ya da kapora yoktur."],
-      ["Rezervasyonum ne zaman kesinleşir?", "Formu gönderdiğiniz anda talebinizi aldığımızı e-postayla bildiririz. Araç atandığında, genellikle bir saat içinde, onay e-postası göndeririz."],
-      ["Uçağım rötar yaparsa?", "Uçuşunuzu takip eder, alış saatini ona göre ayarlarız. İnişten sonraki ilk 60 dakika ücretsizdir."],
-      ["Fiyat kişi başı mı?", "Hayır, fiyat araç başıdır. Sedan 3, minivan 7, V-Class 6, minibüs 16 yolcuya kadar alır."],
-      ["İptal edebilir miyim?", "Evet, alış saatinden 24 saat öncesine kadar ücretsiz. Onay e-postasını yanıtlamanız veya WhatsApp'tan yazmanız yeterli."]
-    ],
-    route: {
-      title: "{from} {to} Taksi · Sabit €{price}",
-      desc: "{from} – {to} arası özel taksi: araç başı sabit €{price}, {km} km, yaklaşık {min} dk. İsimli karşılama, uçuş takibi, şoföre nakit ödeme.",
-      h1: "{from} – {to} taksi",
-      answer: "{fromLong} ile {toLong} arası özel taksi, 3 yolcuya kadar sedan araçla araç başı sabit <strong>€{price}</strong>. {km} km'lik yol, yoğun saat dışında yaklaşık {min} dakika sürer. Köprü, otoyol ve otopark dahildir; ödemeyi şoföre nakit yaparsınız.",
-      answerNoDist: "{fromLong} ile {toLong} arası özel taksi, 3 yolcuya kadar sedan araçla araç başı sabit <strong>€{price}</strong>. Köprü, otoyol ve otopark dahildir; ödemeyi şoföre nakit yaparsınız.",
-      pricesH: "{from} – {to} fiyatları", car: "Araç", seats: "Yolcu", bags: "Bavul", price: "Araç başı fiyat",
-      areaH: "Bu fiyatın geçerli olduğu bölgeler", meetH: "Şoförünüz nerede bekler",
-      faq: [
-        ["{from} – {to} taksi ne kadar?", "Bizimle sedan araçta araç başı sabit €{price}, 7 kişiye kadar minivanda €{van}, Mercedes V-Class'ta €{vclass}, 16 kişiye kadar minibüste €{bus}."],
-        ["Yol ne kadar sürer?", "Yoğun saat dışında {km} km yaklaşık {min} dakika. Hafta içi akşamları uzayabilir, fiyat değişmez."],
-        ["Uçağım gecikirse fazla öder miyim?", "Hayır. Uçuşunuzu takip ederiz, inişten sonraki ilk 60 dakika ücretsizdir."]
-      ],
-      faqNoDist: 1,
-      otherH: "{from} çıkışlı diğer güzergâhlar", back: "Tüm {from} taksi fiyatları"
-    },
-    hub: {
-      title: "{from} Taksi · Tüm İlçelere Sabit Fiyat",
-      desc: "{from} çıkışlı Sultanahmet, Taksim, Kadıköy ve tüm merkezi ilçelere sabit fiyatlı özel taksi, araç başı en düşük €{price}. İsimli karşılama ve uçuş takibi.",
-      h1: "{from} taksi fiyatları",
-      lead: "{fromLong} çıkışlı, İstanbul'un merkezi ilçelerine araç başı sabit fiyatlar. Dört aracın fiyatı için varış noktasını seçin."
-    },
-    prices: { title: "İstanbul Havalimanı Taksi Fiyatları · {brand}", desc: "İstanbul Havalimanı ve Sabiha Gökçen çıkışlı tüm sabit havalimanı taksi fiyatları; sedan, minivan, V-Class ve minibüs, araç başı.", h1: "Havalimanı taksi fiyatları", to: "Nereye" },
-    book: {
-      title: "Havalimanı taksi rezervasyonu · {brand}", h1: "Havalimanı taksi rezervasyonu",
-      steps: ["Araç", "Bilgiler", "Onay"],
-      noRoute: "Fiyatları görmek için nereden ve nereye gideceğinizi seçin.",
-      noPrice: "Bu güzergâh için henüz sabit fiyatımız yok. Fiyat için WhatsApp'tan yazın.",
-      tooMany: "Bu araç için yolcu sayısı fazla",
-      choose: "Seç", perCar: "araç başı", oneWay: "tek yön", withReturn: "dönüş dahil",
-      name: "Ad soyad", email: "E-posta", phone: "Cep telefonu (ülke koduyla)", flight: "Uçuş numarası",
-      flightHelp: "Uçuşunuzu takip edebilmemiz için", pickup: "Otel veya alış adresi", dropoff: "Otel veya bırakış adresi",
-      bags: "Bavul", seats: "Çocuk koltuğu (tanesi €{seat})", note: "Şoföre not (isteğe bağlı)",
-      retFlight: "Dönüş uçuş numarası (isteğe bağlı)", retPickup: "Dönüşte alış adresi",
-      next: "Devam", back: "Geri", send: "Rezervasyon talebini gönder",
-      terms: "<a href=\"/tr/kosullar\" target=\"_blank\">Koşulları</a> ve <a href=\"/tr/gizlilik\" target=\"_blank\">aydınlatma metnini</a> kabul ediyorum.",
-      review: "Rezervasyonunuzu kontrol edin", total: "Toplam", pay: "Ödeme: yolculuk sonunda şoföre nakit (EUR, USD veya TL).",
-      peak: "Yoğun saat farkı dahil", seatsLine: "Çocuk koltuğu",
-      required: "Bu alanı doldurun", invalidEmail: "E-posta adresinizi kontrol edin", invalidPhone: "Telefon numaranızı kontrol edin", accept: "Lütfen koşulları kabul edin",
-      doneH: "Talebiniz alındı", doneP: "Teşekkürler! Rezervasyon numaranız <strong>{ref}</strong>. Bilgileri {email} adresine gönderdik; rezervasyonunuzu kısa süre içinde e-postayla onaylayacağız. Onay e-postası gelene kadar rezervasyon kesinleşmiş değildir.",
-      error: "Talebiniz gönderilemedi. Tekrar deneyin veya WhatsApp'tan yazın.",
-      whatsapp: "WhatsApp'tan sor"
-    },
-    footer: { rights: "Tüm hakları saklıdır.", tursab: "TÜRSAB belge no", contact: "İletişim", legal: "Yasal", routes: "Popüler güzergâhlar" },
-    notFound: { title: "Sayfa bulunamadı", p: "Bu sayfa yok. Havalimanı taksi fiyatınızı aşağıda bulabilirsiniz.", home: "Ana sayfaya git" }
-  }
+  ru: require("./i18n-ru")
 };

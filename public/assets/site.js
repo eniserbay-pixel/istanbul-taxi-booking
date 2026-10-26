@@ -1,4 +1,4 @@
-// Search box on every page, and the three-step booking on /book (/tr/rezervasyon).
+// Search box on every page, and the three-step booking on /book (/ru/bronirovanie).
 (function () {
   "use strict";
   var $ = function (s, r) { return (r || document).querySelector(s); };
@@ -81,7 +81,7 @@
       var r = Quote.quote(P, { from: s.from, to: s.to, car: c.id, time: s.time, ret: s.ret, childSeats: 0 });
       var ok = Quote.fits(c, s.pax, 0);
       return '<div class="opt' + (c.popular ? " pop" : "") + '" aria-disabled="' + !ok + '"><img src="' + c.img + '" alt="" width="140" height="70">' +
-        "<div><h3>" + esc(c.name[L]) + '</h3><p class="models small">' + esc(c.models) + '</p><p class="cap small"><span>👤 ' + c.seats + "</span><span>🧳 " + c.bags + "</span></p>" +
+        "<div><h3>" + esc(c.name[L]) + '</h3><p class="models small">' + esc(c.models[L]) + '</p><p class="cap small"><span>👤 ' + c.seats + "</span><span>🧳 " + c.bags + "</span></p>" +
         (ok ? "" : '<p class="small" style="color:var(--err)">' + esc(T.tooMany) + "</p>") + "</div>" +
         '<div class="price"><div><strong>€' + r.total + "</strong><small>" + esc(s.ret ? T.withReturn : T.oneWay) + (peak ? " · " + esc(T.peak) : "") + "</small></div>" +
         '<button class="btn btn-y btn-sm" type="button" data-car="' + c.id + '"' + (ok ? "" : " disabled") + ">" + esc(T.choose) + "</button></div></div>";

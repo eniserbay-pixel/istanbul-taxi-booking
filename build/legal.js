@@ -21,24 +21,24 @@ module.exports = {
 <p>You can ask to see, correct or delete your data by writing to {email}.</p>`
     }
   },
-  tr: {
+  ru: {
     terms: {
-      title: "Hizmet koşulları",
-      desc: "Bu siteden yapılan İstanbul havalimanı taksi rezervasyonlarında rezervasyon, fiyat, nakit ödeme, bekleme ve ücretsiz iptal koşulları.",
-      html: `<p>Bu koşullar, {company} ({address}, TÜRSAB belge no {tursab}) tarafından işletilen bu siteden yapılan transfer rezervasyonları için geçerlidir.</p>
-<h2>Rezervasyon</h2><p>Rezervasyon formunu göndermek bir taleptir. Rezervasyon, size onay e-postası gönderdiğimizde kesinleşir. Talebinizi karşılayamazsak bunu e-postayla bildiririz.</p>
-<h2>Fiyat ve ödeme</h2><p>Rezervasyonda gösterilen fiyat araç başı sabittir; köprü, otoyol, otopark ve aşağıdaki bekleme süresi dahildir. Ödemeyi yolculuk sonunda şoföre nakit yaparsınız: euro, ABD doları veya günün kuruyla Türk lirası.</p>
-<h2>Bekleme süresi</h2><p>Havalimanlarında uçağın inişinden sonraki ilk 60 dakika ücretsizdir. Diğer adreslerde şoför rezervasyon saatinden sonra 15 dakika bekler.</p>
-<h2>Değişiklik ve iptal</h2><p>Alış saatinden 24 saat öncesine kadar onay e-postasını yanıtlayarak veya WhatsApp'tan ücretsiz değişiklik ya da iptal yapabilirsiniz. Haber vermeden gelinmezse yolculuk bedeli talep edilebilir.</p>
-<h2>Yolcu ve bagaj</h2><p>Yolcu ve bavul sayısı ayrılan araca uygun olmalıdır. Çocuklar için rezervasyonda çocuk koltuğu eklenmelidir.</p>
-<h2>İletişim</h2><p>{email} · {phone}</p>`
+      title: "Условия обслуживания",
+      desc: "Условия заказа, цена, оплата наличными, время ожидания и бесплатная отмена для трансферов из аэропорта Стамбула, заказанных на этом сайте.",
+      html: `<p>Эти условия действуют для трансферов, заказанных на этом сайте, которым управляет {company} ({address}), лицензия TÜRSAB {tursab}.</p>
+<h2>Заказ</h2><p>Отправка формы — это заявка. Заказ становится обязательным только после того, как мы пришлём письмо с подтверждением. Если мы не можем выполнить заявку, мы сообщим об этом по e-mail.</p>
+<h2>Цена и оплата</h2><p>Цена, показанная при заказе, фиксирована за машину и включает платные дороги, парковку и время ожидания, указанное ниже. Оплата — наличными водителю в конце поездки: в евро, долларах США или турецких лирах по курсу дня.</p>
+<h2>Время ожидания</h2><p>В аэропортах первые 60 минут после посадки рейса бесплатны. По другим адресам водитель ждёт 15 минут после заказанного времени.</p>
+<h2>Изменение и отмена</h2><p>Изменить или отменить заказ можно бесплатно не позднее чем за 24 часа до подачи, ответив на письмо с подтверждением или написав в WhatsApp. Если вы не пришли и не предупредили нас, мы можем попросить оплатить поездку.</p>
+<h2>Пассажиры и багаж</h2><p>Число пассажиров и чемоданов должно соответствовать заказанной машине. Для детей нужно детское кресло, его можно добавить при заказе.</p>
+<h2>Контакты</h2><p>{email} · {phone}</p>`
     },
     privacy: {
-      title: "KVKK aydınlatma metni",
-      desc: "Havalimanı taksi rezervasyonunda verdiğiniz ad, telefon, e-posta ve uçuş bilgilerinin KVKK kapsamında nasıl işlendiğine dair aydınlatma metni.",
-      html: `<p>Veri sorumlusu {company}, rezervasyon sırasında verdiğiniz kişisel verileri (ad soyad, e-posta, telefon, uçuş numarası, adresler, notlar) yalnızca transferinizi planlamak ve gerçekleştirmek, sizinle bu konuda iletişim kurmak ve U-ETDS gibi yasal yükümlülükleri yerine getirmek amacıyla, 6698 sayılı KVKK'nın 5. maddesindeki sözleşmenin ifası ve hukuki yükümlülük hukuki sebeplerine dayanarak işler.</p>
-<p>Verileriniz yalnızca yolculuğu yapan şoför veya iş ortağıyla ve bu siteyi çalıştırmak için kullandığımız hizmet sağlayıcılarla (barındırma, veritabanı, e-posta) paylaşılır ve mevzuatın gerektirdiği süre kadar saklanır.</p>
-<p>KVKK'nın 11. maddesindeki haklarınız için {email} adresine yazabilirsiniz.</p>`
+      title: "Политика конфиденциальности",
+      desc: "Как мы используем имя, телефон, e-mail и данные рейса, которые вы указываете при заказе трансфера в Стамбуле, и как с нами связаться по этому поводу.",
+      html: `<p>{company} обрабатывает персональные данные, которые вы указываете при заказе (имя, e-mail, телефон, номер рейса, адреса, комментарии), только для организации и выполнения трансфера, связи с вами по заказу и выполнения требований турецкого закона о защите персональных данных (KVKK) и учёта пассажиров.</p>
+<p>Ваши данные передаются только водителю или партнёру, выполняющему поездку, и поставщикам услуг, которые обеспечивают работу сайта (хостинг, база данных, e-mail). Они хранятся столько, сколько требует закон.</p>
+<p>Чтобы получить, исправить или удалить свои данные, напишите на {email}.</p>`
     }
   }
 };

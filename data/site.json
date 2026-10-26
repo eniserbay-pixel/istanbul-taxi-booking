@@ -10,11 +10,13 @@
  "meet": {
   "IST": {
    "en": "Your driver waits in the arrivals hall, at the exit you name on booking (usually Exit 13), holding a sign with your name.",
-   "tr": "Şoförünüz geliş salonunda, rezervasyonda belirtilen çıkışta (genellikle 13 numaralı çıkış) adınızın yazılı olduğu tabelayla bekler."
+   "tr": "Şoförünüz geliş salonunda, rezervasyonda belirtilen çıkışta (genellikle 13 numaralı çıkış) adınızın yazılı olduğu tabelayla bekler.",
+   "ru": "Водитель ждёт вас в зале прилёта у выхода, указанного в заказе (обычно выход 13), с табличкой с вашим именем."
   },
   "SAW": {
    "en": "Your driver waits outside the arrivals exit of the international terminal, holding a sign with your name.",
-   "tr": "Şoförünüz dış hatlar geliş çıkışının önünde, adınızın yazılı olduğu tabelayla bekler."
+   "tr": "Şoförünüz dış hatlar geliş çıkışının önünde, adınızın yazılı olduğu tabelayla bekler.",
+   "ru": "Водитель ждёт вас у выхода из зоны прилёта международного терминала с табличкой с вашим именем."
   }
  },
  "legalName": "ITB Transfer (Istanbul Taxi Booking)"

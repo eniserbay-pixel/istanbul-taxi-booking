@@ -1,5 +1,5 @@
 // Builds the static site into public/: home, booking page, route pages (airport × district), price list,
-// legal pages, sitemap.xml, robots.txt, llms.txt and 404.html, in English (/) and Turkish (/tr).
+// legal pages, sitemap.xml, robots.txt, llms.txt and 404.html, in English (/) and Russian (/ru).
 // Prices come from data/pricing.json, so a price change there updates every page on the next build.
 // Run: node build/build.js
 const fs = require("fs");
@@ -13,7 +13,8 @@ const POSTS = require("./blog");
 
 const OUT = path.join(__dirname, "..", "public");
 const URL_ = (process.env.SITE_URL || site.url).replace(/\/$/, "");
-const LANGS = ["en", "tr"];
+const LANGS = ["en", "ru"];
+const OTHER = l => l === "en" ? "ru" : "en";
 const AIRPORTS = P.zones.filter(z => z.type === "airport");
 const PLACES = P.zones.filter(z => z.type !== "airport");
 const CAR = id => P.cars.find(c => c.id === id);
@@ -28,7 +29,7 @@ const ver = require("crypto").createHash("md5").update(css + fs.readFileSync(pat
 
 // Every page: same head, header and footer. alt = the same page in the other language.
 function layout(o) {
-  const t = I[o.lang], other = o.lang === "en" ? "tr" : "en";
+  const t = I[o.lang], other = OTHER(o.lang);
   const ld = [{
     "@context": "https://schema.org", "@type": "TaxiService", "@id": URL_ + "/#service", name: site.brand, alternateName: "Istanbul Taxi Booking", url: URL_ + "/", logo: URL_ + "/img/icon-192.png", image: URL_ + "/img/og.png",
     telephone: site.phone, email: site.email, areaServed: { "@type": "City", name: "Istanbul" },
@@ -56,7 +57,7 @@ ${o.alt ? `<a class="lang" href="${o.alt}" hreflang="${other}" lang="${other}">$
 <p>${esc(site.company)}<br>${esc(site.address)}<br>${t.footer.tursab}: ${esc(site.tursab)}</p></div>
 <div><h3>${t.footer.routes}</h3>${popular.map(([a, z]) => `<a href="${p.route(a, Q.zone(P, z).slug)}">${esc(Q.zone(P, a).short[o.lang])} → ${esc(Q.zone(P, z).short[o.lang])}</a>`).join("")}</div>
 <div><h3>${t.footer.contact}</h3><a href="https://wa.me/${site.whatsapp}" rel="noopener">WhatsApp ${esc(site.phone)}</a><a href="tel:${site.phone.replace(/\s/g, "")}">${esc(site.phone)}</a><a href="mailto:${site.email}">${esc(site.email)}</a></div>
-<div><h3>${t.footer.legal}</h3><a href="${p.terms}">${o.lang === "en" ? "Terms" : "Koşullar"}</a><a href="${p.privacy}">${o.lang === "en" ? "Privacy" : "KVKK aydınlatma metni"}</a><a href="${p.prices}">${t.nav.prices}</a><a href="${p.blog}">${t.nav.blog}</a></div>
+<div><h3>${t.footer.legal}</h3><a href="${p.terms}">${t.ui.terms}</a><a href="${p.privacy}">${t.ui.privacy}</a><a href="${p.prices}">${t.nav.prices}</a><a href="${p.blog}">${t.nav.blog}</a></div>
 </div><div class="wrap copy">© ${new Date().getFullYear()} ${esc(site.brand)}. ${t.footer.rights}</div></footer>
 <a class="wa-float" href="https://wa.me/${site.whatsapp}" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.8-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z"/></svg></a>
 <script>window.SITE=${JSON.stringify({ lang: o.lang, book: p.book, wa: site.whatsapp })};</script>
@@ -110,10 +111,10 @@ function fleet(lang, from, to) {
   const t = I[lang];
   return `<div class="fleet">${P.cars.map(c => {
     const pr = from ? Q.base(P, from, to, c.id) : Math.min(...AIRPORTS.flatMap(a => PLACES.map(z => Q.base(P, a.id, z.id, c.id)).filter(Boolean)));
-    return `<article class="car${c.popular ? " pop" : ""}"><img src="${c.img}" alt="${esc(c.name[lang])} – ${esc(c.models)}" width="320" height="160" loading="lazy">
-<h3>${esc(c.name[lang])}</h3><p class="models">${esc(c.models)}</p>
+    return `<article class="car${c.popular ? " pop" : ""}"><img src="${c.img}" alt="${esc(c.name[lang])} – ${esc(c.models[lang])}" width="320" height="160" loading="lazy">
+<h3>${esc(c.name[lang])}</h3><p class="models">${esc(c.models[lang])}</p>
 <p class="cap"><span>👤 ${c.seats}</span><span>🧳 ${c.bags}</span></p><p class="note">${esc(c.note[lang])}</p>
-<p class="from">${from ? "" : (lang === "en" ? "from " : "en düşük ")}<strong>€${pr}</strong> <span>${t.book.perCar}</span></p></article>`;
+<p class="from">${from ? "" : t.ui.from}<strong>€${pr}</strong> <span>${t.book.perCar}</span></p></article>`;
   }).join("")}</div>`;
 }
 
@@ -128,21 +129,21 @@ function blogCards(lang, skip) {
 const blogWidget = lang => `<aside class="blog-widget"><h2>${I[lang].blog.widgetH}</h2>${searchForm(lang)}${assure(lang)}</aside>`;
 
 function blogIndex(lang) {
-  const t = I[lang], b = t.blog, other = lang === "en" ? "tr" : "en";
+  const t = I[lang], b = t.blog, other = OTHER(lang);
   const body = `<section class="hero hero-s"><div class="wrap hero-in"><div class="hero-t"><h1>${b.h1}</h1><p class="lead">${b.lead}</p></div>${searchForm(lang)}${assure(lang)}</div></section>
 <section class="sec ice"><div class="wrap">${blogCards(lang)}</div></section>`;
   page({ lang, path: t.paths.blog, alt: I[other].paths.blog, title: b.title, desc: b.desc, body });
 }
 
 function blogPost(lang, post) {
-  const t = I[lang], x = post[lang], other = lang === "en" ? "tr" : "en", v = { brand: site.brand };
+  const t = I[lang], x = post[lang], other = OTHER(lang), v = { brand: site.brand };
   const p = postPath(lang, post);
-  const body = `<section class="hero hero-s"><div class="wrap"><div class="hero-t"><nav class="crumbs"><a href="${t.paths.home}">${esc(site.brand)}</a> › <a href="${t.paths.blog}">Blog</a></nav>
+  const body = `<section class="hero hero-s"><div class="wrap"><div class="hero-t"><nav class="crumbs"><a href="${t.paths.home}">${esc(site.brand)}</a> › <a href="${t.paths.blog}">${t.nav.blog}</a></nav>
 <h1>${esc(x.title)}</h1><p class="lead">${esc(fill(x.lead, v))}</p><p class="small" style="color:var(--ice-ink)">${t.blog.updated}: ${post.date}</p></div></div></section>
 <article class="sec"><div class="wrap narrow prose">${fill(x.body, v).replace(/\{widget\}/g, blogWidget(lang))}</div></article>
 <section class="sec ice"><div class="wrap"><h2>${t.blog.more}</h2>${blogCards(lang, post.id)}</div></section>`;
   const ld = { "@context": "https://schema.org", "@type": "BlogPosting", headline: x.title, description: x.desc, datePublished: post.date, dateModified: post.date, inLanguage: lang, mainEntityOfPage: URL_ + p, author: { "@type": "Organization", name: site.brand }, publisher: { "@id": URL_ + "/#service" }, image: URL_ + "/img/og.png" };
-  page({ lang, path: p, alt: postPath(other, post), title: x.title, desc: x.desc, body, ld: [ld, crumbs([[site.brand, t.paths.home], ["Blog", t.paths.blog], [x.title, p]])] });
+  page({ lang, path: p, alt: postPath(other, post), title: x.title, desc: x.desc, body, ld: [ld, crumbs([[site.brand, t.paths.home], [t.nav.blog, t.paths.blog], [x.title, p]])] });
 }
 
 const faqLd = items => ({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: items.map(([q, a]) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a.replace(/<[^>]+>/g, "") } })) });
@@ -159,7 +160,7 @@ ROUTES.push(["IST", "SAW"]);
 const routePath = (lang, a, z) => z === "SAW" ? I[lang].paths.airportPair : I[lang].paths.route(a, Q.zone(P, z).slug);
 
 function home(lang) {
-  const t = I[lang], h = t.home, other = lang === "en" ? "tr" : "en";
+  const t = I[lang], h = t.home, other = OTHER(lang);
   const faq = t.faq.map(([q, a]) => [fill(q, { brand: site.brand }), fill(a, { brand: site.brand })]);
   const popular = ROUTES.filter(([a, z]) => ["sultanahmet", "taksim", "besiktas", "kadikoy", "sisli", "SAW"].includes(z));
   const body = `<section class="hero"><div class="wrap hero-in"><div class="hero-t">
@@ -168,7 +169,7 @@ function home(lang) {
 ${searchForm(lang)}${assure(lang)}</div></section>
 <section class="sec ice" id="fleet"><div class="wrap"><h2>${h.fleetH}</h2><p class="sub">${h.fleetLead}</p>${fleet(lang)}</div></section>
 <section class="sec"><div class="wrap"><h2>${h.routesH}</h2><p class="sub">${h.routesLead}</p>
-<div class="tbl-wrap"><table class="tbl"><thead><tr><th>${lang === "en" ? "Route" : "Güzergâh"}</th>${P.cars.map(c => `<th>${esc(c.name[lang])}</th>`).join("")}</tr></thead><tbody>
+<div class="tbl-wrap"><table class="tbl"><thead><tr><th>${t.ui.route}</th>${P.cars.map(c => `<th>${esc(c.name[lang])}</th>`).join("")}</tr></thead><tbody>
 ${popular.map(([a, z]) => `<tr><td><a href="${routePath(lang, a, z)}">${esc(Q.zone(P, a).short[lang])} → ${esc(Q.zone(P, z).short[lang])}</a></td>${P.cars.map(c => `<td>€${Q.base(P, a, z, c.id)}</td>`).join("")}</tr>`).join("")}
 </tbody></table></div><p><a class="more" href="${t.paths.prices}">${t.nav.prices} →</a></p></div></section>
 <section class="sec dark"><div class="wrap"><h2>${h.vsH}</h2><div class="tbl-wrap"><table class="tbl vs"><thead><tr>${h.vsCols.map(c => `<th>${esc(fill(c, { brand: site.brand }))}</th>`).join("")}</tr></thead>
@@ -182,7 +183,7 @@ ${popular.map(([a, z]) => `<tr><td><a href="${routePath(lang, a, z)}">${esc(Q.zo
 }
 
 function route(lang, a, z) {
-  const t = I[lang], r = t.route, other = lang === "en" ? "tr" : "en";
+  const t = I[lang], r = t.route, other = OTHER(lang);
   const A = Q.zone(P, a), Z = Q.zone(P, z), d = dist(a, z);
   const v = {
     from: A.short[lang], to: Z.short[lang], fromLong: A.name[lang], toLong: Z.name[lang], brand: site.brand,
@@ -195,7 +196,7 @@ function route(lang, a, z) {
   const body = `<section class="hero hero-s"><div class="wrap hero-in"><div class="hero-t">
 <nav class="crumbs"><a href="${t.paths.home}">${esc(site.brand)}</a> › <a href="${t.paths[a]}">${esc(A.short[lang])}</a></nav>
 <h1>${esc(fill(r.h1, v))}</h1><p class="lead answer">${fill(d ? r.answer : r.answerNoDist, v)}</p>
-${d ? `<ul class="facts"><li><strong>${d[0]} km</strong></li><li><strong>~${d[1]} ${lang === "en" ? "min" : "dk"}</strong></li><li><strong>€${v.price}</strong> ${t.book.perCar}</li></ul>` : ""}</div>
+${d ? `<ul class="facts"><li><strong>${d[0]} km</strong></li><li><strong>~${d[1]} ${t.ui.min}</strong></li><li><strong>€${v.price}</strong> ${t.book.perCar}</li></ul>` : ""}</div>
 ${searchForm(lang, { from: a, to: z })}${assure(lang)}</div></section>
 <section class="sec ice"><div class="wrap"><h2>${esc(fill(r.pricesH, v))}</h2>${fleet(lang, a, z)}
 <p class="sub small">${t.home.routesLead}</p></div></section>
@@ -215,7 +216,7 @@ ${Z.area ? `<section class="sec"><div class="wrap narrow"><h2>${r.areaH}</h2><p>
 }
 
 function hub(lang, a) {
-  const t = I[lang], hb = t.hub, other = lang === "en" ? "tr" : "en", A = Q.zone(P, a);
+  const t = I[lang], hb = t.hub, other = OTHER(lang), A = Q.zone(P, a);
   const list = ROUTES.filter(([x]) => x === a).concat(a === "SAW" ? [["SAW", "IST"]] : []);
   const v = { from: A.short[lang], fromLong: A.name[lang], brand: site.brand, price: Math.min(...list.map(([x, y]) => Q.base(P, x, y, "sedan"))) };
   const body = `<section class="hero hero-s"><div class="wrap hero-in"><div class="hero-t"><h1>${esc(fill(hb.h1, v))}</h1><p class="lead">${esc(fill(hb.lead, v))}</p></div>${searchForm(lang, { from: a })}${assure(lang)}</div></section>
@@ -227,7 +228,7 @@ ${list.map(([x, y]) => { const d = dist(x, y), href = y === "IST" || y === "SAW"
 }
 
 function prices(lang) {
-  const t = I[lang], other = lang === "en" ? "tr" : "en";
+  const t = I[lang], other = OTHER(lang);
   const body = `<section class="sec"><div class="wrap"><h1>${t.prices.h1}</h1><p class="sub">${t.home.routesLead}</p>
 ${AIRPORTS.map(a => `<h2>${esc(a.name[lang])}</h2><div class="tbl-wrap"><table class="tbl"><thead><tr><th>${t.prices.to}</th>${P.cars.map(c => `<th>${esc(c.name[lang])}</th>`).join("")}</tr></thead><tbody>
 ${ROUTES.filter(([x, y]) => x === a.id || y === a.id).map(([x, y]) => { const to = x === a.id ? y : x; return `<tr><td><a href="${routePath(lang, x, y)}">${esc(Q.zone(P, to).name[lang])}</a></td>${P.cars.map(c => `<td>€${Q.base(P, x, y, c.id)}</td>`).join("")}</tr>`; }).join("")}
@@ -236,7 +237,7 @@ ${ROUTES.filter(([x, y]) => x === a.id || y === a.id).map(([x, y]) => { const to
 }
 
 function book(lang) {
-  const t = I[lang], other = lang === "en" ? "tr" : "en";
+  const t = I[lang], other = OTHER(lang);
   const body = `<section class="sec book-sec"><div class="wrap book-in"><div class="book-side">${searchForm(lang, null, true)}</div>
 <div class="book-main" id="book" data-book><h1>${t.book.h1}</h1><ol class="steps">${t.book.steps.map((s, i) => `<li data-step-i="${i}">${s}</li>`).join("")}</ol>
 <div data-view><p class="sub">${t.book.noRoute}</p></div></div></div></section>`;
@@ -248,7 +249,7 @@ function book(lang) {
 }
 
 function legalPages(lang) {
-  const t = I[lang], other = lang === "en" ? "tr" : "en";
+  const t = I[lang], other = OTHER(lang);
   ["terms", "privacy"].forEach(k => {
     const L = legal[lang][k];
     page({ lang, path: t.paths[k], alt: I[other].paths[k], title: L.title + " · " + site.brand, desc: L.desc, body: `<section class="sec"><div class="wrap narrow prose"><h1>${L.title}</h1>${fill(L.html, site)}</div></section>` });
@@ -265,7 +266,7 @@ function extras() {
   const today = new Date().toISOString().slice(0, 10);
   fs.writeFileSync(path.join(OUT, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
-${pages.map(p => `<url><loc>${URL_}${p.path}</loc><lastmod>${today}</lastmod>${p.alt ? `<xhtml:link rel="alternate" hreflang="${p.lang}" href="${URL_}${p.path}"/><xhtml:link rel="alternate" hreflang="${p.lang === "en" ? "tr" : "en"}" href="${URL_}${p.alt}"/>` : ""}</url>`).join("\n")}
+${pages.map(p => `<url><loc>${URL_}${p.path}</loc><lastmod>${today}</lastmod>${p.alt ? `<xhtml:link rel="alternate" hreflang="${p.lang}" href="${URL_}${p.path}"/><xhtml:link rel="alternate" hreflang="${OTHER(p.lang)}" href="${URL_}${p.alt}"/>` : ""}</url>`).join("\n")}
 </urlset>
 `);
   fs.writeFileSync(path.join(OUT, "robots.txt"), `User-agent: *
@@ -308,7 +309,7 @@ ${ROUTES.map(([a, z]) => line(a, z)).join("\n")}
 ## Pages
 - Book: ${URL_}/book
 - All prices: ${URL_}/prices
-- Türkçe: ${URL_}/tr
+- Русский: ${URL_}/ru
 `);
 }
 

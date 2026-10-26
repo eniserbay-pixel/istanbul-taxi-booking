@@ -16,7 +16,7 @@ function clean(x) {
   const r = x.ret && typeof x.ret === "object" ? x.ret : null;
   const b = {
     ref: str(x.ref, 20),
-    lang: x.lang === "tr" ? "tr" : "en",
+    lang: x.lang === "ru" ? "ru" : "en",
     from: str(x.from, 20), to: str(x.to, 20), car: str(x.car, 20),
     date: str(x.date, 10), time: str(x.time, 5),
     flight: str(x.flight, 12).toUpperCase(),

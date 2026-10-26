@@ -1,6 +1,6 @@
 # ITB Transfer (Istanbul Taxi Booking)
 
-ITB Transfer firmasının sitesi: İstanbul Havalimanı (IST) ve Sabiha Gökçen (SAW) için sabit fiyatlı havalimanı taksi (özel transfer) sitesi. İngilizce (`/`) ve Türkçe (`/tr`).
+ITB Transfer firmasının sitesi: İstanbul Havalimanı (IST) ve Sabiha Gökçen (SAW) için sabit fiyatlı havalimanı taksi (özel transfer) sitesi. İngilizce (`/`) ve Rusça (`/ru`); yönetim paneli Türkçe. 
 
 - **Rezervasyon akışı:** müşteri formu gönderir → kayıt "Talep" olarak düşer, müşteriye "talebinizi aldık", ofise "yeni talep" e-postası gider → `/admin` panelinde **Onayla** → müşteriye onay e-postası gider. Ödeme yolculuk sonunda şoföre nakit.
 - **Araçlar:** Sedan (3), Minivan (7), Mercedes V-Class (6), Minibüs (16).
