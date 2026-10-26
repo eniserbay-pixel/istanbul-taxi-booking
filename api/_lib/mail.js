@@ -49,7 +49,7 @@ function html(b, kind, reason) {
   const rows = kind === "declined" ? [] : details(b);
   return `<!doctype html><html><body style="margin:0;background:#eef6f9;font-family:Arial,Helvetica,sans-serif;color:#111">
 <div style="max-width:560px;margin:0 auto;padding:24px">
-<div style="background:#0b0b0c;color:#e1ad01;padding:18px 22px;border-radius:12px 12px 0 0;font-weight:700;font-size:18px">${esc(site.brand)}</div>
+<div style="background:#000;color:#e1ad01;padding:18px 22px;border-radius:12px 12px 0 0;font-weight:700;font-size:18px">${esc(site.brand)}</div>
 <div style="background:#fff;padding:22px;border-radius:0 0 12px 12px">
 <h1 style="font-size:20px;margin:0 0 12px">${esc(title)}</h1><p style="line-height:1.5;margin:0 0 18px">${text}</p>
 ${rows.length ? `<table style="width:100%;border-collapse:collapse;font-size:14px">${rows.map(r => `<tr><td style="padding:7px 0;color:#555;border-top:1px solid #e6e6e6;width:42%">${esc(r[0])}</td><td style="padding:7px 0;border-top:1px solid #e6e6e6;font-weight:600">${esc(r[1])}</td></tr>`).join("")}</table>` : ""}

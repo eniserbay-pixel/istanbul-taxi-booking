@@ -29,7 +29,7 @@ const ver = require("crypto").createHash("md5").update(css + fs.readFileSync(pat
 function layout(o) {
   const t = I[o.lang], other = o.lang === "en" ? "tr" : "en";
   const ld = [{
-    "@context": "https://schema.org", "@type": "TaxiService", "@id": URL_ + "/#service", name: site.brand, url: URL_ + "/",
+    "@context": "https://schema.org", "@type": "TaxiService", "@id": URL_ + "/#service", name: site.brand, alternateName: "Istanbul Taxi Booking", url: URL_ + "/", logo: URL_ + "/img/icon-192.png", image: URL_ + "/img/og.png",
     telephone: site.phone, email: site.email, areaServed: { "@type": "City", name: "Istanbul" },
     provider: { "@type": "TravelAgency", name: site.company, telephone: site.phone, address: { "@type": "PostalAddress", addressLocality: "Istanbul", addressCountry: "TR" } }
   }].concat(o.ld || []);
@@ -38,20 +38,20 @@ function layout(o) {
 <link rel="canonical" href="${URL_}${o.path === "/" ? "/" : o.path}">
 ${o.alt ? `<link rel="alternate" hreflang="${o.lang}" href="${URL_}${o.path}"><link rel="alternate" hreflang="${other}" href="${URL_}${o.alt}"><link rel="alternate" hreflang="x-default" href="${URL_}${o.lang === "en" ? o.path : o.alt}">` : ""}
 <meta property="og:type" content="website"><meta property="og:title" content="${esc(o.title)}"><meta property="og:description" content="${esc(o.desc)}"><meta property="og:url" content="${URL_}${o.path}"><meta property="og:image" content="${URL_}/img/og.png"><meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#0b0b0c"><link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#000000"><link rel="icon" href="/img/favicon-32.png" sizes="32x32"><link rel="apple-touch-icon" href="/img/icon-192.png">
 ${o.noindex ? '<meta name="robots" content="noindex">' : ""}
 <link rel="stylesheet" href="/assets/site.css?v=${ver}">
 ${ld.map(x => `<script type="application/ld+json">${JSON.stringify(x)}</script>`).join("\n")}
 </head><body>`;
   const p = t.paths;
   const header = `<header class="top"><div class="wrap top-in">
-<a class="logo" href="${p.home}" aria-label="${esc(site.brand)}"><span class="roof">TAXI</span><span class="logo-t">${esc(site.brand)}</span></a>
+<a class="logo" href="${p.home}"><img src="/img/logo.webp" alt="${esc(site.brand)} – Istanbul Taxi Booking" width="92" height="52"></a>
 <nav class="nav"><a href="${p.prices}">${t.nav.prices}</a><a href="${p.home}#fleet">${t.nav.fleet}</a><a href="${p.home}#how">${t.nav.how}</a><a href="${p.home}#faq">${t.nav.faq}</a>
 ${o.alt ? `<a class="lang" href="${o.alt}" hreflang="${other}" lang="${other}">${t.nav.lang}</a>` : ""}</nav>
 <a class="btn btn-y btn-sm" href="${p.book}">${t.nav.book}</a></div></header>`;
   const popular = [["IST", "sultanahmet"], ["IST", "taksim"], ["IST", "kadikoy"], ["SAW", "taksim"], ["SAW", "kadikoy"], ["SAW", "sultanahmet"]];
   const footer = `<footer class="foot"><div class="wrap foot-in">
-<div><a class="logo" href="${p.home}"><span class="roof">TAXI</span><span class="logo-t">${esc(site.brand)}</span></a>
+<div><a class="logo" href="${p.home}"><img src="/img/logo.webp" alt="${esc(site.brand)}" width="141" height="80" loading="lazy"></a>
 <p>${esc(site.company)}<br>${esc(site.address)}<br>${t.footer.tursab}: ${esc(site.tursab)}</p></div>
 <div><h3>${t.footer.routes}</h3>${popular.map(([a, z]) => `<a href="${p.route(a, Q.zone(P, z).slug)}">${esc(Q.zone(P, a).short[o.lang])} → ${esc(Q.zone(P, z).short[o.lang])}</a>`).join("")}</div>
 <div><h3>${t.footer.contact}</h3><a href="https://wa.me/${site.whatsapp}" rel="noopener">WhatsApp ${esc(site.phone)}</a><a href="tel:${site.phone.replace(/\s/g, "")}">${esc(site.phone)}</a><a href="mailto:${site.email}">${esc(site.email)}</a></div>
@@ -75,14 +75,14 @@ function page(o) {
 }
 
 // The search box: from, to, date, time, passengers, optional return. Sends to the booking page.
-function searchForm(lang, pre) {
+function searchForm(lang, pre, side) {
   const t = I[lang].form;
   pre = pre || {};
   const opts = sel => `<option value="">${t.choose}</option>
 <optgroup label="${t.airports}">${AIRPORTS.map(z => `<option value="${z.id}"${sel === z.id ? " selected" : ""}>${esc(z.name[lang])}</option>`).join("")}</optgroup>
 <optgroup label="${t.districts}">${PLACES.filter(z => z.type === "district").map(z => `<option value="${z.id}"${sel === z.id ? " selected" : ""}>${esc(z.name[lang])}</option>`).join("")}</optgroup>
 <optgroup label="${t.port}">${PLACES.filter(z => z.type === "port").map(z => `<option value="${z.id}"${sel === z.id ? " selected" : ""}>${esc(z.name[lang])}</option>`).join("")}</optgroup>`;
-  return `<form class="search" action="${I[lang].paths.book}" method="get" data-search>
+  return `<form class="search${side ? "" : " wide"}" action="${I[lang].paths.book}" method="get" data-search>
 <h2 class="search-h">${t.title}</h2>
 <div class="row2"><label>${t.from}<select name="from" required>${opts(pre.from)}</select></label>
 <button type="button" class="swap" data-swap aria-label="${t.swap}" title="${t.swap}">⇅</button>
@@ -92,6 +92,17 @@ function searchForm(lang, pre) {
 <label class="check"><input type="checkbox" name="ret" value="1" data-ret> ${t.ret}</label>
 <div class="row2 ret" hidden><label>${t.rdate}<input type="date" name="rdate"></label><label>${t.rtime}<input type="time" name="rtime" step="300"></label></div>
 <button class="btn btn-y btn-block" type="submit">${t.submit}</button></form>`;
+}
+
+const ICONS = {
+  price: '<path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8Z"/><circle cx="7.5" cy="7.5" r="1.5"/>',
+  cancel: '<rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4M9.5 13.5l5 5M14.5 13.5l-5 5"/>',
+  clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  shield: '<path d="M12 3 4 6v6c0 4.5 3.4 8.3 8 9 4.6-.7 8-4.5 8-9V6l-8-3Z"/><path d="m8.5 12 2.5 2.5 4.5-5"/>'
+};
+// Four promises under the booking box
+function assure(lang) {
+  return `<ul class="assure">${I[lang].assure.map(([k, h, p]) => `<li><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[k]}</svg><div><strong>${h}</strong><span>${p}</span></div></li>`).join("")}</ul>`;
 }
 
 function fleet(lang, from, to) {
@@ -123,11 +134,12 @@ const routePath = (lang, a, z) => z === "SAW" ? I[lang].paths.airportPair : I[la
 
 function home(lang) {
   const t = I[lang], h = t.home, other = lang === "en" ? "tr" : "en";
+  const faq = t.faq.map(([q, a]) => [q, fill(a, { brand: site.brand })]);
   const popular = ROUTES.filter(([a, z]) => ["sultanahmet", "taksim", "besiktas", "kadikoy", "sisli", "SAW"].includes(z));
   const body = `<section class="hero"><div class="wrap hero-in"><div class="hero-t">
-<h1>${h.h1}</h1><p class="lead">${fill(h.lead, { min: minPrice })}</p>
-<ul class="badges">${h.badges.map(b => `<li>${b}</li>`).join("")}</ul></div>
-${searchForm(lang)}</div></section>
+<h1>${h.h1}</h1><p class="lead">${fill(h.lead, { min: minPrice, brand: site.brand })}</p></div>
+
+${searchForm(lang)}${assure(lang)}</div></section>
 <section class="sec ice" id="fleet"><div class="wrap"><h2>${h.fleetH}</h2><p class="sub">${h.fleetLead}</p>${fleet(lang)}</div></section>
 <section class="sec"><div class="wrap"><h2>${h.routesH}</h2><p class="sub">${h.routesLead}</p>
 <div class="tbl-wrap"><table class="tbl"><thead><tr><th>${lang === "en" ? "Route" : "Güzergâh"}</th>${P.cars.map(c => `<th>${esc(c.name[lang])}</th>`).join("")}</tr></thead><tbody>
@@ -137,9 +149,9 @@ ${popular.map(([a, z]) => `<tr><td><a href="${routePath(lang, a, z)}">${esc(Q.zo
 <tbody>${h.vs.map(r => `<tr><th scope="row">${r[0]}</th><td>${r[1]}</td><td class="ok">${r[2]}</td></tr>`).join("")}</tbody></table></div></div></section>
 <section class="sec" id="how"><div class="wrap"><h2>${h.howH}</h2><ol class="how">${h.how.map(([a, b]) => `<li><h3>${a}</h3><p>${b}</p></li>`).join("")}</ol></div></section>
 <section class="sec ice"><div class="wrap"><h2>${h.meetH}</h2>${meetCards(lang)}</div></section>
-<section class="sec" id="faq"><div class="wrap narrow"><h2>${h.faqH}</h2>${faqBlock(t.faq)}</div></section>
+<section class="sec" id="faq"><div class="wrap narrow"><h2>${h.faqH}</h2>${faqBlock(faq)}</div></section>
 <section class="cta"><div class="wrap"><h2>${h.ctaH}</h2><p>${h.ctaP}</p><a class="btn btn-k" href="${t.paths.book}">${t.nav.book}</a></div></section>`;
-  page({ lang, path: t.paths.home, alt: I[other].paths.home, title: fill(h.title, { min: minPrice, brand: site.brand }), desc: fill(h.desc, { min: minPrice }), body, ld: [faqLd(t.faq)] });
+  page({ lang, path: t.paths.home, alt: I[other].paths.home, title: fill(h.title, { min: minPrice, brand: site.brand }), desc: fill(h.desc, { min: minPrice, brand: site.brand }), body, ld: [faqLd(faq)] });
 }
 
 function route(lang, a, z) {
@@ -157,7 +169,7 @@ function route(lang, a, z) {
 <nav class="crumbs"><a href="${t.paths.home}">${esc(site.brand)}</a> › <a href="${t.paths[a]}">${esc(A.short[lang])}</a></nav>
 <h1>${esc(fill(r.h1, v))}</h1><p class="lead answer">${fill(d ? r.answer : r.answerNoDist, v)}</p>
 ${d ? `<ul class="facts"><li><strong>${d[0]} km</strong></li><li><strong>~${d[1]} ${lang === "en" ? "min" : "dk"}</strong></li><li><strong>€${v.price}</strong> ${t.book.perCar}</li></ul>` : ""}</div>
-${searchForm(lang, { from: a, to: z })}</div></section>
+${searchForm(lang, { from: a, to: z })}${assure(lang)}</div></section>
 <section class="sec ice"><div class="wrap"><h2>${esc(fill(r.pricesH, v))}</h2>${fleet(lang, a, z)}
 <p class="sub small">${t.home.routesLead}</p></div></section>
 ${Z.area ? `<section class="sec"><div class="wrap narrow"><h2>${r.areaH}</h2><p>${esc(Z.area[lang])}</p></div></section>` : ""}
@@ -179,7 +191,7 @@ function hub(lang, a) {
   const t = I[lang], hb = t.hub, other = lang === "en" ? "tr" : "en", A = Q.zone(P, a);
   const list = ROUTES.filter(([x]) => x === a).concat(a === "SAW" ? [["SAW", "IST"]] : []);
   const v = { from: A.short[lang], fromLong: A.name[lang], brand: site.brand, price: Math.min(...list.map(([x, y]) => Q.base(P, x, y, "sedan"))) };
-  const body = `<section class="hero hero-s"><div class="wrap hero-in"><div class="hero-t"><h1>${esc(fill(hb.h1, v))}</h1><p class="lead">${esc(fill(hb.lead, v))}</p></div>${searchForm(lang, { from: a })}</div></section>
+  const body = `<section class="hero hero-s"><div class="wrap hero-in"><div class="hero-t"><h1>${esc(fill(hb.h1, v))}</h1><p class="lead">${esc(fill(hb.lead, v))}</p></div>${searchForm(lang, { from: a })}${assure(lang)}</div></section>
 <section class="sec"><div class="wrap"><div class="tbl-wrap"><table class="tbl"><thead><tr><th>${t.prices.to}</th>${P.cars.map(c => `<th>${esc(c.name[lang])}</th>`).join("")}<th>km</th></tr></thead><tbody>
 ${list.map(([x, y]) => { const d = dist(x, y), href = y === "IST" || y === "SAW" ? t.paths.airportPair : routePath(lang, x, y); return `<tr><td><a href="${href}">${esc(Q.zone(P, y).name[lang])}</a></td>${P.cars.map(c => `<td>€${Q.base(P, x, y, c.id)}</td>`).join("")}<td>${d ? d[0] : ""}</td></tr>`; }).join("")}
 </tbody></table></div><p class="sub small">${t.home.routesLead}</p></div></section>
@@ -198,12 +210,12 @@ ${ROUTES.filter(([x, y]) => x === a.id || y === a.id).map(([x, y]) => { const to
 
 function book(lang) {
   const t = I[lang], other = lang === "en" ? "tr" : "en";
-  const body = `<section class="sec book-sec"><div class="wrap book-in"><div class="book-side">${searchForm(lang)}</div>
+  const body = `<section class="sec book-sec"><div class="wrap book-in"><div class="book-side">${searchForm(lang, null, true)}</div>
 <div class="book-main" id="book" data-book><h1>${t.book.h1}</h1><ol class="steps">${t.book.steps.map((s, i) => `<li data-step-i="${i}">${s}</li>`).join("")}</ol>
 <div data-view><p class="sub">${t.book.noRoute}</p></div></div></div></section>`;
   const data = { P, T: t.book, cars: P.cars, zones: P.zones, lang, terms: t.book.terms.replace(/\{seat\}/g, P.rules.childSeat) };
   page({
-    lang, path: t.paths.book, alt: I[other].paths.book, title: fill(t.book.title, { brand: site.brand }), desc: fill(t.home.desc, { min: minPrice }), body, noindex: true,
+    lang, path: t.paths.book, alt: I[other].paths.book, title: fill(t.book.title, { brand: site.brand }), desc: fill(t.home.desc, { min: minPrice, brand: site.brand }), body, noindex: true,
     scripts: `<script src="/assets/quote.js?v=${ver}"></script><script>window.BOOK=${JSON.stringify(data).replace(/</g, "\\u003c")};</script>`
   });
 }
@@ -252,7 +264,7 @@ Sitemap: ${URL_}/sitemap.xml
   const line = (a, z) => { const d = dist(a, z); return `- ${Q.zone(P, a).name.en} → ${Q.zone(P, z).name.en}: ${P.cars.map(c => `${c.name.en} €${Q.base(P, a, z, c.id)}`).join(", ")}${d ? ` (${d[0]} km, about ${d[1]} min)` : ""}. ${URL_}${routePath("en", a, z)}`; };
   fs.writeFileSync(path.join(OUT, "llms.txt"), `# ${site.brand}
 
-> Private airport taxi in Istanbul only: fixed-price cars with a driver from Istanbul Airport (IST) and Sabiha Gökçen Airport (SAW) to hotels and districts in Istanbul. Booked in advance, paid in cash to the driver (EUR, USD or TRY). Not a metered street taxi.
+> ${site.brand} (Istanbul Taxi Booking) is a transfer company serving Istanbul only: fixed-price private cars with a driver from Istanbul Airport (IST) and Sabiha Gökçen Airport (SAW) to hotels and districts in Istanbul. Booked in advance, paid in cash to the driver (EUR, USD or TRY). Not a metered street taxi.
 
 ## Key facts
 - Prices are per car, not per person, and fixed at booking. Tolls and parking are included.

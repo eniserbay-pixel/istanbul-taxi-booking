@@ -1,11 +1,11 @@
 {
- "brand": "Istanbul Airport Taxi",
+ "brand": "ITB Transfer",
  "url": "https://www.example.com",
  "phone": "+90 500 000 00 00",
  "whatsapp": "905000000000",
  "email": "info@example.com",
  "tursab": "0000",
- "company": "Şirket Unvanı Ltd. Şti.",
+ "company": "ITB Transfer Turizm Ltd. Şti.",
  "address": "İstanbul, Türkiye",
  "meet": {
   "IST": {
@@ -16,5 +16,6 @@
    "en": "Your driver waits outside the arrivals exit of the international terminal, holding a sign with your name.",
    "tr": "Şoförünüz dış hatlar geliş çıkışının önünde, adınızın yazılı olduğu tabelayla bekler."
   }
- }
+ },
+ "legalName": "ITB Transfer (Istanbul Taxi Booking)"
 }
