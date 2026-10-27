@@ -21,6 +21,34 @@ const T = {
     ref: "Номер заказа", route: "Маршрут", when: "Подача", back: "Обратно", car: "Автомобиль", pax: "Пассажиры", flight: "Рейс",
     total: "Итоговая цена", pay: "Оплата", cash: "Наличными водителю (EUR, USD или TRY)", meet: "Место встречи", help: "Есть вопросы? Напишите в WhatsApp или позвоните"
   },
+  de: {
+    received: ["Wir haben Ihre Buchungsanfrage erhalten", "Vielen Dank, {name}. Ihre Anfrage ist bei uns eingegangen und wir bestätigen sie in Kürze per E-Mail. Die Buchung ist erst mit unserer Bestätigung verbindlich."],
+    confirmed: ["Ihr Transfer ist bestätigt", "Gute Nachricht, {name}: Ihr Transfer ist bestätigt. Ihr Fahrer erwartet Sie mit einem Namensschild."],
+    declined: ["Wir konnten Ihre Anfrage nicht bestätigen", "Es tut uns leid, {name}, wir können diese Buchung nicht annehmen. {reason}Schreiben Sie uns bitte auf WhatsApp, wir helfen Ihnen gern bei einer anderen Lösung."],
+    ref: "Buchungsnummer", route: "Strecke", when: "Abholung", back: "Rückfahrt", car: "Fahrzeug", pax: "Fahrgäste", flight: "Flug",
+    total: "Gesamtpreis", pay: "Zahlung", cash: "Bar an den Fahrer (EUR, USD oder TRY)", meet: "Treffpunkt", help: "Fragen? Schreiben Sie uns auf WhatsApp oder rufen Sie an"
+  },
+  fr: {
+    received: ["Nous avons bien reçu votre demande de réservation", "Merci, {name}. Nous avons bien reçu votre demande et nous la confirmerons rapidement par e-mail. La réservation n'est ferme qu'après notre confirmation."],
+    confirmed: ["Votre transfert est confirmé", "Bonne nouvelle, {name} : votre transfert est confirmé. Votre chauffeur vous attendra avec une pancarte à votre nom."],
+    declined: ["Nous n'avons pas pu confirmer votre demande", "Désolés, {name}, nous ne pouvons pas accepter cette réservation. {reason}Écrivez-nous sur WhatsApp et nous vous aiderons à trouver une autre solution."],
+    ref: "Référence", route: "Trajet", when: "Prise en charge", back: "Retour", car: "Véhicule", pax: "Passagers", flight: "Vol",
+    total: "Prix total", pay: "Paiement", cash: "En espèces au chauffeur (EUR, USD ou TRY)", meet: "Point de rendez-vous", help: "Une question ? Écrivez-nous sur WhatsApp ou appelez-nous"
+  },
+  it: {
+    received: ["Abbiamo ricevuto la tua richiesta di prenotazione", "Grazie, {name}. Abbiamo ricevuto la tua richiesta e la confermeremo a breve via e-mail. La prenotazione è valida solo dopo la nostra conferma."],
+    confirmed: ["Il tuo transfer è confermato", "Buone notizie, {name}: il tuo transfer è confermato. L'autista ti aspetterà con un cartello con il tuo nome."],
+    declined: ["Non abbiamo potuto confermare la tua richiesta", "Ci dispiace, {name}, non possiamo accettare questa prenotazione. {reason}Scrivici su WhatsApp e ti aiuteremo a trovare un'alternativa."],
+    ref: "Codice prenotazione", route: "Percorso", when: "Partenza", back: "Ritorno", car: "Veicolo", pax: "Passeggeri", flight: "Volo",
+    total: "Prezzo totale", pay: "Pagamento", cash: "In contanti all'autista (EUR, USD o TRY)", meet: "Punto d'incontro", help: "Domande? Scrivici su WhatsApp o chiamaci"
+  },
+  nl: {
+    received: ["We hebben je boekingsaanvraag ontvangen", "Bedankt, {name}. We hebben je aanvraag ontvangen en bevestigen die binnenkort per e-mail. De boeking is pas definitief na onze bevestiging."],
+    confirmed: ["Je transfer is bevestigd", "Goed nieuws, {name}: je transfer is bevestigd. Je chauffeur wacht op je met een naambordje."],
+    declined: ["We konden je aanvraag niet bevestigen", "Sorry, {name}, we kunnen deze boeking niet aannemen. {reason}Stuur ons een bericht via WhatsApp, dan zoeken we samen een andere oplossing."],
+    ref: "Boekingsnummer", route: "Route", when: "Ophalen", back: "Terugrit", car: "Voertuig", pax: "Passagiers", flight: "Vlucht",
+    total: "Totaalprijs", pay: "Betaling", cash: "Contant aan de chauffeur (EUR, USD of TRY)", meet: "Ontmoetingspunt", help: "Vragen? Stuur ons een WhatsApp of bel ons"
+  },
   // Turkish: the office's e-mail
   tr: {
     received: ["Rezervasyon talebinizi aldık", "Teşekkürler {name}. Talebinizi aldık, kısa süre içinde e-postayla onaylayacağız. Onay e-postası gelene kadar rezervasyon kesinleşmiş değildir."],
@@ -32,10 +60,10 @@ const T = {
 };
 
 function zoneName(id, lang) { const z = Q.zone(P, id); return z ? z.name[lang] : id; }
-// 2026-10-28 → "28 Oct 2026" / "28 окт. 2026 г." / "28 Eki 2026"
+// 2026-10-28 → "28 Oct 2026" in the customer's language
 function day(d, lang) {
   const t = new Date(d + "T12:00:00Z");
-  return isNaN(t) ? d : t.toLocaleDateString({ en: "en-GB", ru: "ru-RU", tr: "tr-TR" }[lang] || "en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
+  return isNaN(t) ? d : t.toLocaleDateString({ en: "en-GB", ru: "ru-RU", de: "de-DE", fr: "fr-FR", it: "it-IT", nl: "nl-NL", tr: "tr-TR" }[lang] || "en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
 }
 function carName(id, lang) { const c = P.cars.find(x => x.id === id); return c ? c.name[lang] : id; }
 

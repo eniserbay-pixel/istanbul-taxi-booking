@@ -42,6 +42,10 @@
     });
   });
 
+  // Language menu closes on a click outside it
+  document.addEventListener("click", function (e) {
+    $$("details.langs[open]").forEach(function (d) { if (!d.contains(e.target)) d.open = false; });
+  });
   // The language link keeps the chosen route and time on the booking page
   if (location.search) $$("a.lang").forEach(function (a) { a.href = a.getAttribute("href") + location.search; });
 
@@ -55,7 +59,7 @@
   // 2026-10-28 → "28 Oct 2026" / "28 окт. 2026 г."
   var day = function (d) {
     var t = new Date(d + "T12:00:00Z");
-    return isNaN(t) ? d : t.toLocaleDateString(L === "ru" ? "ru-RU" : "en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
+    return isNaN(t) ? d : t.toLocaleDateString({ en: "en-GB", ru: "ru-RU", de: "de-DE", fr: "fr-FR", it: "it-IT", nl: "nl-NL" }[L] || "en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
   };
   var s = {
     from: params.get("from") || "", to: params.get("to") || "", date: params.get("date") || "", time: params.get("time") || "",
