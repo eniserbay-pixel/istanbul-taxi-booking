@@ -1,5 +1,6 @@
 // Builds the static site into public/: home, booking page, route pages (airport × district), price list,
-// legal pages, sitemap.xml, robots.txt, llms.txt and 404.html, in English (/) and Russian (/ru).
+// legal pages, sitemap.xml, robots.txt, llms.txt and 404.html, in English (/) and in Russian, German, French,
+// Italian and Dutch under /ru, /de, /fr, /it and /nl.
 // Prices come from data/pricing.json, so a price change there updates every page on the next build.
 // Run: node build/build.js
 const fs = require("fs");
@@ -10,11 +11,19 @@ const Q = require("../public/assets/quote.js");
 const I = require("./i18n");
 const legal = require("./legal");
 const POSTS = require("./blog");
+// German, French, Italian and Dutch: page texts, blog posts and legal texts in one file per language
+["de", "fr", "it", "nl"].forEach(l => {
+  const X = require("./lang/" + l);
+  I[l] = X.ui;
+  legal[l] = X.legal;
+  POSTS.forEach(p => { p[l] = X.blog[p.id]; });
+});
 
 const OUT = path.join(__dirname, "..", "public");
 const URL_ = (process.env.SITE_URL || site.url).replace(/\/$/, "");
-const LANGS = ["en", "ru"];
-const OTHER = l => l === "en" ? "ru" : "en";
+const LANGS = ["en", "ru", "de", "fr", "it", "nl"];
+// The same page in every language: { en: "/prices", ru: "/ru/ceny", ... }
+const ALL = fn => Object.fromEntries(LANGS.map(l => [l, fn(l)]));
 const AIRPORTS = P.zones.filter(z => z.type === "airport");
 const PLACES = P.zones.filter(z => z.type !== "airport");
 const CAR = id => P.cars.find(c => c.id === id);
@@ -27,9 +36,9 @@ const dist = (a, b) => (P.dist[a] && P.dist[a][b]) || (P.dist[b] && P.dist[b][a]
 const css = fs.readFileSync(path.join(OUT, "assets", "site.css"), "utf8");
 const ver = require("crypto").createHash("md5").update(css + fs.readFileSync(path.join(OUT, "assets", "site.js"), "utf8")).digest("hex").slice(0, 8);
 
-// Every page: same head, header and footer. alt = the same page in the other language.
+// Every page: same head, header and footer. alts = the same page in every language.
 function layout(o) {
-  const t = I[o.lang], other = OTHER(o.lang);
+  const t = I[o.lang], alts = o.alts || ALL(l => I[l].paths.home);
   const ld = [{
     "@context": "https://schema.org", "@type": "TaxiService", "@id": URL_ + "/#service", name: site.brand, alternateName: "Istanbul Taxi Booking", url: URL_ + "/", logo: URL_ + "/img/icon-192.png", image: URL_ + "/img/og.png",
     telephone: site.phone, email: site.email, areaServed: { "@type": "City", name: "Istanbul" },
@@ -38,7 +47,7 @@ function layout(o) {
   const head = `<!doctype html><html lang="${t.htmlLang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${esc(o.title)}</title><meta name="description" content="${esc(o.desc)}">
 <link rel="canonical" href="${URL_}${o.path === "/" ? "/" : o.path}">
-${o.alt ? `<link rel="alternate" hreflang="${o.lang}" href="${URL_}${o.path}"><link rel="alternate" hreflang="${other}" href="${URL_}${o.alt}"><link rel="alternate" hreflang="x-default" href="${URL_}${o.lang === "en" ? o.path : o.alt}">` : ""}
+${o.alts ? LANGS.map(l => `<link rel="alternate" hreflang="${l}" href="${URL_}${o.alts[l]}">`).join("") + `<link rel="alternate" hreflang="x-default" href="${URL_}${o.alts.en}">` : ""}
 <meta property="og:type" content="website"><meta property="og:title" content="${esc(o.title)}"><meta property="og:description" content="${esc(o.desc)}"><meta property="og:url" content="${URL_}${o.path}"><meta property="og:image" content="${URL_}/img/og.png"><meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#000000"><link rel="icon" href="/img/favicon-32.png" sizes="32x32"><link rel="apple-touch-icon" href="/img/icon-192.png">
 ${o.noindex ? '<meta name="robots" content="noindex">' : ""}
@@ -49,7 +58,7 @@ ${ld.map(x => `<script type="application/ld+json">${JSON.stringify(x)}</script>`
   const header = `<header class="top"><div class="wrap top-in">
 <a class="logo" href="${p.home}"><img src="/img/logo.webp" alt="${esc(site.brand)} – Istanbul Taxi Booking" width="92" height="52"></a>
 <nav class="nav"><a href="${p.prices}">${t.nav.prices}</a><a href="${p.home}#fleet">${t.nav.fleet}</a><a href="${p.home}#how">${t.nav.how}</a><a href="${p.home}#faq">${t.nav.faq}</a><a href="${p.blog}">${t.nav.blog}</a>
-${langSwitch(o.lang, o.alt || I[other].paths.home)}</nav>
+${langSwitch(o.lang, alts)}</nav>
 <a class="btn btn-y btn-sm" href="${p.book}">${t.nav.book}</a></div></header>`;
   const popular = [["IST", "sultanahmet"], ["IST", "taksim"], ["IST", "kadikoy"], ["SAW", "taksim"], ["SAW", "kadikoy"], ["SAW", "sultanahmet"]];
   const footer = `<footer class="foot"><div class="wrap foot-in">
@@ -73,22 +82,26 @@ function write(p, html) {
 }
 function page(o) {
   write(o.path, layout(o));
-  if (!o.noindex) pages.push({ path: o.path, alt: o.alt, lang: o.lang });
+  if (!o.noindex) pages.push({ path: o.path, alts: o.alts, lang: o.lang });
+}
+
+// Language menu in the header: the current language's flag, opening a list of all six
+const FLAGS = {
+  en: '<svg viewBox="0 0 60 30" width="22" height="11" aria-hidden="true"><clipPath id="fe"><path d="M0 0h60v30H0z"/></clipPath><clipPath id="ft"><path d="M30 15h30v15zv15H0zH0V0zV0h30z"/></clipPath><g clip-path="url(#fe)"><path d="M0 0v30h60V0z" fill="#012169"/><path d="M0 0l60 30m0-30L0 30" stroke="#fff" stroke-width="6"/><path d="M0 0l60 30m0-30L0 30" clip-path="url(#ft)" stroke="#C8102E" stroke-width="4"/><path d="M30 0v30M0 15h60" stroke="#fff" stroke-width="10"/><path d="M30 0v30M0 15h60" stroke="#C8102E" stroke-width="6"/></g></svg>',
+  ru: '<svg viewBox="0 0 9 6" width="17" height="11" aria-hidden="true"><path fill="#fff" d="M0 0h9v2H0z"/><path fill="#0039A6" d="M0 2h9v2H0z"/><path fill="#D52B1E" d="M0 4h9v2H0z"/></svg>',
+  de: '<svg viewBox="0 0 5 3" width="17" height="11" aria-hidden="true"><path d="M0 0h5v1H0z"/><path fill="#D00" d="M0 1h5v1H0z"/><path fill="#FFCE00" d="M0 2h5v1H0z"/></svg>',
+  fr: '<svg viewBox="0 0 3 2" width="17" height="11" aria-hidden="true"><path fill="#002654" d="M0 0h1v2H0z"/><path fill="#fff" d="M1 0h1v2H1z"/><path fill="#CE1126" d="M2 0h1v2H2z"/></svg>',
+  it: '<svg viewBox="0 0 3 2" width="17" height="11" aria-hidden="true"><path fill="#009246" d="M0 0h1v2H0z"/><path fill="#fff" d="M1 0h1v2H1z"/><path fill="#CE2B37" d="M2 0h1v2H2z"/></svg>',
+  nl: '<svg viewBox="0 0 9 6" width="17" height="11" aria-hidden="true"><path fill="#AE1C28" d="M0 0h9v2H0z"/><path fill="#fff" d="M0 2h9v2H0z"/><path fill="#21468B" d="M0 4h9v2H0z"/></svg>'
+};
+const LANG_NAME = { en: "English", ru: "Русский", de: "Deutsch", fr: "Français", it: "Italiano", nl: "Nederlands" };
+function langSwitch(lang, alts) {
+  return `<details class="langs"><summary aria-label="${LANG_NAME[lang]}">${FLAGS[lang]}${lang.toUpperCase()}</summary><div class="langs-menu">${LANGS.map(l => l === lang
+    ? `<span class="on" aria-current="true">${FLAGS[l]}${LANG_NAME[l]}</span>`
+    : `<a class="lang" href="${alts[l]}" hreflang="${l}" lang="${l}">${FLAGS[l]}${LANG_NAME[l]}</a>`).join("")}</div></details>`;
 }
 
 // The search box: from, to, date, time, passengers, optional return. Sends to the booking page.
-// Language choice in the header: both flags, the current one marked
-const FLAGS = {
-  en: '<svg viewBox="0 0 60 30" width="22" height="11" aria-hidden="true"><clipPath id="fe"><path d="M0 0h60v30H0z"/></clipPath><clipPath id="ft"><path d="M30 15h30v15zv15H0zH0V0zV0h30z"/></clipPath><g clip-path="url(#fe)"><path d="M0 0v30h60V0z" fill="#012169"/><path d="M0 0l60 30m0-30L0 30" stroke="#fff" stroke-width="6"/><path d="M0 0l60 30m0-30L0 30" clip-path="url(#ft)" stroke="#C8102E" stroke-width="4"/><path d="M30 0v30M0 15h60" stroke="#fff" stroke-width="10"/><path d="M30 0v30M0 15h60" stroke="#C8102E" stroke-width="6"/></g></svg>',
-  ru: '<svg viewBox="0 0 9 6" width="17" height="11" aria-hidden="true"><path fill="#fff" d="M0 0h9v2H0z"/><path fill="#0039A6" d="M0 2h9v2H0z"/><path fill="#D52B1E" d="M0 4h9v2H0z"/></svg>'
-};
-const LANG_NAME = { en: "English", ru: "Русский" };
-function langSwitch(lang, altHref) {
-  return `<span class="langs">${LANGS.map(l => l === lang
-    ? `<span class="on" aria-current="true" title="${LANG_NAME[l]}">${FLAGS[l]}${l.toUpperCase()}</span>`
-    : `<a class="lang" href="${altHref}" hreflang="${l}" lang="${l}" title="${LANG_NAME[l]}" aria-label="${LANG_NAME[l]}">${FLAGS[l]}${l.toUpperCase()}</a>`).join("")}</span>`;
-}
-
 function searchForm(lang, pre, side) {
   const t = I[lang].form;
   pre = pre || {};
@@ -141,21 +154,21 @@ function blogCards(lang, skip) {
 const blogWidget = lang => `<aside class="blog-widget"><h2>${I[lang].blog.widgetH}</h2>${searchForm(lang)}${assure(lang)}</aside>`;
 
 function blogIndex(lang) {
-  const t = I[lang], b = t.blog, other = OTHER(lang);
+  const t = I[lang], b = t.blog;
   const body = `<section class="hero hero-s"><div class="wrap hero-in"><div class="hero-t"><h1>${b.h1}</h1><p class="lead">${b.lead}</p></div>${searchForm(lang)}${assure(lang)}</div></section>
 <section class="sec ice"><div class="wrap">${blogCards(lang)}</div></section>`;
-  page({ lang, path: t.paths.blog, alt: I[other].paths.blog, title: b.title, desc: b.desc, body });
+  page({ lang, path: t.paths.blog, alts: ALL(l => I[l].paths.blog), title: b.title, desc: b.desc, body });
 }
 
 function blogPost(lang, post) {
-  const t = I[lang], x = post[lang], other = OTHER(lang), v = { brand: site.brand };
+  const t = I[lang], x = post[lang], v = { brand: site.brand };
   const p = postPath(lang, post);
   const body = `<section class="hero hero-s"><div class="wrap"><div class="hero-t"><nav class="crumbs"><a href="${t.paths.home}">${esc(site.brand)}</a> › <a href="${t.paths.blog}">${t.nav.blog}</a></nav>
 <h1>${esc(x.title)}</h1><p class="lead">${esc(fill(x.lead, v))}</p><p class="small" style="color:var(--ice-ink)">${t.blog.updated}: ${post.date}</p></div></div></section>
 <article class="sec"><div class="wrap narrow prose">${fill(x.body, v).replace(/\{widget\}/g, blogWidget(lang))}</div></article>
 <section class="sec ice"><div class="wrap"><h2>${t.blog.more}</h2>${blogCards(lang, post.id)}</div></section>`;
   const ld = { "@context": "https://schema.org", "@type": "BlogPosting", headline: x.title, description: x.desc, datePublished: post.date, dateModified: post.date, inLanguage: lang, mainEntityOfPage: URL_ + p, author: { "@type": "Organization", name: site.brand }, publisher: { "@id": URL_ + "/#service" }, image: URL_ + "/img/og.png" };
-  page({ lang, path: p, alt: postPath(other, post), title: x.title, desc: x.desc, body, ld: [ld, crumbs([[site.brand, t.paths.home], [t.nav.blog, t.paths.blog], [x.title, p]])] });
+  page({ lang, path: p, alts: ALL(l => postPath(l, post)), title: x.title, desc: x.desc, body, ld: [ld, crumbs([[site.brand, t.paths.home], [t.nav.blog, t.paths.blog], [x.title, p]])] });
 }
 
 const faqLd = items => ({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: items.map(([q, a]) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a.replace(/<[^>]+>/g, "") } })) });
@@ -172,7 +185,7 @@ ROUTES.push(["IST", "SAW"]);
 const routePath = (lang, a, z) => z === "SAW" ? I[lang].paths.airportPair : I[lang].paths.route(a, Q.zone(P, z).slug);
 
 function home(lang) {
-  const t = I[lang], h = t.home, other = OTHER(lang);
+  const t = I[lang], h = t.home;
   const faq = t.faq.map(([q, a]) => [fill(q, { brand: site.brand }), fill(a, { brand: site.brand })]);
   const popular = ROUTES.filter(([a, z]) => ["sultanahmet", "taksim", "besiktas", "kadikoy", "sisli", "SAW"].includes(z));
   const body = `<section class="hero"><div class="wrap hero-in"><div class="hero-t">
@@ -191,11 +204,11 @@ ${popular.map(([a, z]) => `<tr><td><a href="${routePath(lang, a, z)}">${esc(Q.zo
 <section class="sec ice"><div class="wrap"><h2>${t.blog.latest}</h2>${blogCards(lang)}</div></section>
 <section class="sec" id="faq"><div class="wrap narrow"><h2>${h.faqH}</h2>${faqBlock(faq)}</div></section>
 <section class="cta"><div class="wrap"><h2>${h.ctaH}</h2><p>${h.ctaP}</p><a class="btn btn-k" href="${t.paths.book}">${t.nav.book}</a></div></section>`;
-  page({ lang, path: t.paths.home, alt: I[other].paths.home, title: fill(h.title, { min: minPrice, brand: site.brand }), desc: fill(h.desc, { min: minPrice, brand: site.brand }), body, ld: [faqLd(faq)] });
+  page({ lang, path: t.paths.home, alts: ALL(l => I[l].paths.home), title: fill(h.title, { min: minPrice, brand: site.brand }), desc: fill(h.desc, { min: minPrice, brand: site.brand }), body, ld: [faqLd(faq)] });
 }
 
 function route(lang, a, z) {
-  const t = I[lang], r = t.route, other = OTHER(lang);
+  const t = I[lang], r = t.route;
   const A = Q.zone(P, a), Z = Q.zone(P, z), d = dist(a, z);
   const v = {
     from: A.short[lang], to: Z.short[lang], fromLong: A.name[lang], toLong: Z.name[lang], brand: site.brand,
@@ -222,13 +235,13 @@ ${Z.area ? `<section class="sec"><div class="wrap narrow"><h2>${r.areaH}</h2><p>
     areaServed: "Istanbul", offers: P.cars.map(c => ({ "@type": "Offer", name: c.name[lang], price: Q.base(P, a, z, c.id), priceCurrency: P.currency, eligibleQuantity: { "@type": "QuantitativeValue", maxValue: c.seats, unitText: "passengers" } }))
   };
   page({
-    lang, path: p, alt: routePath(other, a, z), title: fill(r.title, v), desc: fill(d ? r.desc : r.desc.replace(/,? ?\{km\}[^.]*\./, "."), v), body,
+    lang, path: p, alts: ALL(l => routePath(l, a, z)), title: fill(r.title, v), desc: fill(d ? r.desc : r.desc.replace(/,? ?\{km\}[^.]*\./, "."), v), body,
     ld: [offer, faqLd(faq), crumbs([[site.brand, t.paths.home], [A.short[lang], t.paths[a]], [fill(r.h1, v), p]])]
   });
 }
 
 function hub(lang, a) {
-  const t = I[lang], hb = t.hub, other = OTHER(lang), A = Q.zone(P, a);
+  const t = I[lang], hb = t.hub, A = Q.zone(P, a);
   const list = ROUTES.filter(([x]) => x === a).concat(a === "SAW" ? [["SAW", "IST"]] : []);
   const v = { from: A.short[lang], fromLong: A.name[lang], brand: site.brand, price: Math.min(...list.map(([x, y]) => Q.base(P, x, y, "sedan"))) };
   const body = `<section class="hero hero-s"><div class="wrap hero-in"><div class="hero-t"><h1>${esc(fill(hb.h1, v))}</h1><p class="lead">${esc(fill(hb.lead, v))}</p></div>${searchForm(lang, { from: a })}${assure(lang)}</div></section>
@@ -236,35 +249,35 @@ function hub(lang, a) {
 ${list.map(([x, y]) => { const d = dist(x, y), href = y === "IST" || y === "SAW" ? t.paths.airportPair : routePath(lang, x, y); return `<tr><td><a href="${href}">${esc(Q.zone(P, y).name[lang])}</a></td>${P.cars.map(c => `<td>€${Q.base(P, x, y, c.id)}</td>`).join("")}<td>${d ? d[0] : ""}</td></tr>`; }).join("")}
 </tbody></table></div><p class="sub small">${t.home.routesLead}</p></div></section>
 <section class="sec ice"><div class="wrap"><h2>${t.route.meetH}</h2>${meetCards(lang, a)}</div></section>`;
-  page({ lang, path: t.paths[a], alt: I[other].paths[a], title: fill(hb.title, v), desc: fill(hb.desc, v), body, ld: [crumbs([[site.brand, t.paths.home], [A.short[lang], t.paths[a]]])] });
+  page({ lang, path: t.paths[a], alts: ALL(l => I[l].paths[a]), title: fill(hb.title, v), desc: fill(hb.desc, v), body, ld: [crumbs([[site.brand, t.paths.home], [A.short[lang], t.paths[a]]])] });
 }
 
 function prices(lang) {
-  const t = I[lang], other = OTHER(lang);
+  const t = I[lang];
   const body = `<section class="sec"><div class="wrap"><h1>${t.prices.h1}</h1><p class="sub">${t.home.routesLead}</p>
 ${AIRPORTS.map(a => `<h2>${esc(a.name[lang])}</h2><div class="tbl-wrap"><table class="tbl"><thead><tr><th>${t.prices.to}</th>${P.cars.map(c => `<th>${esc(c.name[lang])}</th>`).join("")}</tr></thead><tbody>
 ${ROUTES.filter(([x, y]) => x === a.id || y === a.id).map(([x, y]) => { const to = x === a.id ? y : x; return `<tr><td><a href="${routePath(lang, x, y)}">${esc(Q.zone(P, to).name[lang])}</a></td>${P.cars.map(c => `<td>€${Q.base(P, x, y, c.id)}</td>`).join("")}</tr>`; }).join("")}
 </tbody></table></div>`).join("")}</div></section>`;
-  page({ lang, path: t.paths.prices, alt: I[other].paths.prices, title: fill(t.prices.title, { brand: site.brand }), desc: t.prices.desc, body });
+  page({ lang, path: t.paths.prices, alts: ALL(l => I[l].paths.prices), title: fill(t.prices.title, { brand: site.brand }), desc: t.prices.desc, body });
 }
 
 function book(lang) {
-  const t = I[lang], other = OTHER(lang);
+  const t = I[lang];
   const body = `<section class="sec book-sec"><div class="wrap book-in"><div class="book-side">${searchForm(lang, null, true)}</div>
 <div class="book-main" id="book" data-book><h1>${t.book.h1}</h1><ol class="steps">${t.book.steps.map((s, i) => `<li data-step-i="${i}">${s}</li>`).join("")}</ol>
 <div data-view><p class="sub">${t.book.noRoute}</p></div></div></div></section>`;
   const data = { P, T: t.book, cars: P.cars, zones: P.zones, lang, terms: t.book.terms.replace(/\{seat\}/g, P.rules.childSeat) };
   page({
-    lang, path: t.paths.book, alt: I[other].paths.book, title: fill(t.book.title, { brand: site.brand }), desc: fill(t.home.desc, { min: minPrice, brand: site.brand }), body, noindex: true,
+    lang, path: t.paths.book, alts: ALL(l => I[l].paths.book), title: fill(t.book.title, { brand: site.brand }), desc: fill(t.home.desc, { min: minPrice, brand: site.brand }), body, noindex: true,
     scripts: `<script src="/assets/quote.js?v=${ver}"></script><script>window.BOOK=${JSON.stringify(data).replace(/</g, "\\u003c")};</script>`
   });
 }
 
 function legalPages(lang) {
-  const t = I[lang], other = OTHER(lang);
+  const t = I[lang];
   ["terms", "privacy"].forEach(k => {
     const L = legal[lang][k];
-    page({ lang, path: t.paths[k], alt: I[other].paths[k], title: L.title + " · " + site.brand, desc: L.desc, body: `<section class="sec"><div class="wrap narrow prose"><h1>${L.title}</h1>${fill(L.html, { ...site, address: site.address[lang] })}</div></section>` });
+    page({ lang, path: t.paths[k], alts: ALL(l => I[l].paths[k]), title: L.title + " · " + site.brand, desc: L.desc, body: `<section class="sec"><div class="wrap narrow prose"><h1>${L.title}</h1>${fill(L.html, { ...site, address: site.address[lang] })}</div></section>` });
   });
 }
 
@@ -278,7 +291,7 @@ function extras() {
   const today = new Date().toISOString().slice(0, 10);
   fs.writeFileSync(path.join(OUT, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
-${pages.map(p => `<url><loc>${URL_}${p.path}</loc><lastmod>${today}</lastmod>${p.alt ? `<xhtml:link rel="alternate" hreflang="${p.lang}" href="${URL_}${p.path}"/><xhtml:link rel="alternate" hreflang="${OTHER(p.lang)}" href="${URL_}${p.alt}"/>` : ""}</url>`).join("\n")}
+${pages.map(p => `<url><loc>${URL_}${p.path}</loc><lastmod>${today}</lastmod>${p.alts ? LANGS.map(l => `<xhtml:link rel="alternate" hreflang="${l}" href="${URL_}${p.alts[l]}"/>`).join("") + `<xhtml:link rel="alternate" hreflang="x-default" href="${URL_}${p.alts.en}"/>` : ""}</url>`).join("\n")}
 </urlset>
 `);
   fs.writeFileSync(path.join(OUT, "robots.txt"), `User-agent: *
@@ -321,7 +334,7 @@ ${ROUTES.map(([a, z]) => line(a, z)).join("\n")}
 ## Pages
 - Book: ${URL_}/book
 - All prices: ${URL_}/prices
-- Русский: ${URL_}/ru
+- Other languages: ${LANGS.filter(l => l !== "en").map(l => `${LANG_NAME[l]} ${URL_}${I[l].paths.home}`).join(", ")}
 `);
 }
 

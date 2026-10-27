@@ -8,18 +8,30 @@
  "company": "ITB Transfer Turizm Ltd. Şti.",
  "address": {
   "en": "Istanbul, Türkiye",
-  "ru": "Стамбул, Турция"
+  "ru": "Стамбул, Турция",
+  "de": "Istanbul, Türkei",
+  "fr": "Istanbul, Turquie",
+  "it": "Istanbul, Turchia",
+  "nl": "Istanbul, Turkije"
  },
  "meet": {
   "IST": {
    "en": "Your driver waits in the arrivals hall, at the exit you name on booking (usually Exit 13), holding a sign with your name.",
    "tr": "Şoförünüz geliş salonunda, rezervasyonda belirtilen çıkışta (genellikle 13 numaralı çıkış) adınızın yazılı olduğu tabelayla bekler.",
-   "ru": "Водитель ждёт вас в зале прилёта у выхода, указанного в заказе (обычно выход 13), с табличкой с вашим именем."
+   "ru": "Водитель ждёт вас в зале прилёта у выхода, указанного в заказе (обычно выход 13), с табличкой с вашим именем.",
+   "de": "Ihr Fahrer wartet in der Ankunftshalle am bei der Buchung genannten Ausgang (meist Ausgang 13) mit einem Schild mit Ihrem Namen.",
+   "fr": "Votre chauffeur vous attend dans le hall des arrivées, à la sortie indiquée lors de la réservation (en général la sortie 13), avec une pancarte à votre nom.",
+   "it": "L'autista ti aspetta nella sala arrivi, all'uscita indicata nella prenotazione (di solito l'uscita 13), con un cartello con il tuo nome.",
+   "nl": "Je chauffeur wacht in de aankomsthal bij de uitgang die je bij het boeken opgeeft (meestal uitgang 13), met een bordje met je naam."
   },
   "SAW": {
    "en": "Your driver waits outside the arrivals exit of the international terminal, holding a sign with your name.",
    "tr": "Şoförünüz dış hatlar geliş çıkışının önünde, adınızın yazılı olduğu tabelayla bekler.",
-   "ru": "Водитель ждёт вас у выхода из зоны прилёта международного терминала с табличкой с вашим именем."
+   "ru": "Водитель ждёт вас у выхода из зоны прилёта международного терминала с табличкой с вашим именем.",
+   "de": "Ihr Fahrer wartet vor dem Ankunftsausgang des internationalen Terminals mit einem Schild mit Ihrem Namen.",
+   "fr": "Votre chauffeur vous attend devant la sortie des arrivées du terminal international, avec une pancarte à votre nom.",
+   "it": "L'autista ti aspetta fuori dall'uscita arrivi del terminal internazionale, con un cartello con il tuo nome.",
+   "nl": "Je chauffeur wacht buiten bij de aankomstuitgang van de internationale terminal, met een bordje met je naam."
   }
  },
  "legalName": "ITB Transfer (Istanbul Taxi Booking)"
