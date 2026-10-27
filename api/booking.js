@@ -36,7 +36,7 @@ module.exports = async (req, res) => {
     const failed = results.filter(r => r.status === "rejected");
     if (failed.length) {
       failed.forEach(f => console.error(f.reason));
-      saved.history.push({ at: new Date().toISOString(), text: "E-posta gönderilemedi" });
+      saved.history.push({ at: new Date().toISOString(), text: "E-posta gönderilemedi: " + failed.map(f => mail.why(f.reason)).join(" / ") });
       await store.saveBooking(saved).catch(e => console.error(e));
     }
     send(res, 200, { ok: true, ref: saved.ref });

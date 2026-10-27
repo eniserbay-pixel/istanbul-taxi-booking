@@ -52,7 +52,7 @@ module.exports = async (req, res) => {
           b.history.push({ at: now, text: sent ? "Müşteriye e-posta gönderildi" : "E-posta gönderilmedi (RESEND_API_KEY yok)" });
         } catch (e) {
           console.error(e);
-          b.history.push({ at: now, text: "E-posta gönderilemedi" });
+          b.history.push({ at: now, text: "E-posta gönderilemedi: " + mail.why(e) });
         }
       }
       return send(res, 200, { booking: await store.saveBooking(b) });

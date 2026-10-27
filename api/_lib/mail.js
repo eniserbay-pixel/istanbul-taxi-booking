@@ -110,6 +110,13 @@ async function send(to, subject, body) {
   return true;
 }
 
+// Short reason for the booking history, e.g. "resend 403 The domain is not verified"
+function why(e) {
+  const m = String((e && e.message) || e);
+  const j = m.match(/"message"\s*:\s*"([^"]*)"/);
+  return (j ? m.split(" ").slice(0, 2).join(" ") + " " + j[1] : m).slice(0, 200);
+}
+
 function toCustomer(b, kind, reason) {
   return send(b.email, T[b.lang][kind][0] + " · " + b.ref, html(b, kind, reason));
 }
@@ -120,4 +127,4 @@ function toOffice(b) {
   return send(process.env.OFFICE_EMAIL || site.email, "Yeni talep " + b.ref + " · " + b.date + " " + b.time, body);
 }
 
-module.exports = { toCustomer, toOffice, html };
+module.exports = { toCustomer, toOffice, html, why };
