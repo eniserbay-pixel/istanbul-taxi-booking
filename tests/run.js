@@ -59,7 +59,13 @@ const ok = (cond, msg) => { if (!cond) { failed++; console.log("FAIL " + msg); }
       await f.locator("[data-ret]").check();
       await f.locator("input[name=date]").fill("2099-01-01");
       await f.locator("input[name=rdate]").fill("2099-01-05");
-      await f.locator("input[name=rtime]").fill("09:30");
+      // return time through the time wheel: 09 in the hour column, 30 in the minute column
+      await f.locator(".ret .tbtn").click();
+      await page.locator('.tw-col[data-k=h] .tw-it[data-i="9"]').click();
+      await page.locator('.tw-col[data-k=m] .tw-it[data-i="2"]').click();
+      await page.waitForTimeout(800);
+      await page.keyboard.press("Escape");
+      ok(await f.locator("select[name=rtime]").inputValue() === "09:30", lang + ": time wheel sets 09:30");
       await f.locator("button[type=submit]").click();
       await page.waitForSelector("[data-car]");
       ok(await page.locator('[data-car="sedan"]').isDisabled(), lang + ": sedan disabled for 4 passengers");

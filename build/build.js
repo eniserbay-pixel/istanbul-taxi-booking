@@ -114,12 +114,15 @@ function searchForm(lang, pre, side) {
 <div class="row2"><label>${t.from}<select name="from" required>${opts(pre.from)}</select></label>
 <button type="button" class="swap" data-swap aria-label="${t.swap}" title="${t.swap}">⇅</button>
 <label>${t.to}<select name="to" required>${opts(pre.to)}</select></label></div>
-<div class="row3"><label>${t.date}<input type="date" name="date" required></label><label>${t.time}<input type="time" name="time" required step="300"></label>
+<div class="row3"><label>${t.date}<input type="date" name="date" required></label><label>${t.time}<select name="time" class="tsel" required>${TIMES}</select></label>
 <label>${t.pax}<select name="pax">${Array.from({ length: 16 }, (_, i) => `<option${i === 1 ? " selected" : ""}>${i + 1}</option>`).join("")}</select></label></div>
 <label class="check"><input type="checkbox" name="ret" value="1" data-ret> ${t.ret}</label>
-<div class="row2 ret" hidden><label>${t.rdate}<input type="date" name="rdate"></label><label>${t.rtime}<input type="time" name="rtime" step="300"></label></div>
+<div class="row2 ret" hidden><label>${t.rdate}<input type="date" name="rdate"></label><label>${t.rtime}<select name="rtime" class="tsel">${TIMES}</select></label></div>
 <button class="btn btn-y btn-block" type="submit">${t.submit}</button></form>`;
 }
+
+// Pickup times every 15 minutes, 24-hour clock; site.js puts the time wheel over these selects
+const TIMES = Array.from({ length: 96 }, (_, i) => { const v = String(i >> 2).padStart(2, "0") + ":" + String(i % 4 * 15).padStart(2, "0"); return `<option${v === "12:00" ? " selected" : ""}>${v}</option>`; }).join("");
 
 const ICONS = {
   price: '<path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8Z"/><circle cx="7.5" cy="7.5" r="1.5"/>',
