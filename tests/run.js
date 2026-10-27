@@ -107,18 +107,60 @@ const ok = (cond, msg) => { if (!cond) { failed++; console.log("FAIL " + msg); }
     const adm = await browser.newPage({ viewport: { width: 1280, height: 900 } });
     await adm.goto(BASE + "/admin");
     await adm.fill("input[name=pw]", "wrong");
-    await adm.click("form .y");
-    await adm.waitForSelector(".msg:text('Şifre yanlış')");
+    await adm.click("#login-form button[type=submit]");
+    await adm.waitForSelector("#login-err:text('Şifre yanlış')");
     await adm.fill("input[name=pw]", "test-pass");
-    await adm.click("form .y");
-    await adm.waitForSelector(".card");
-    ok(await adm.locator(".card.request").count() === 3, "3 requests in the panel");
+    await adm.click("#login-form button[type=submit]");
+    await adm.waitForSelector(".stats");
+    await adm.goto(BASE + "/admin#rezervasyonlar/request");
+    await adm.waitForSelector("table.t");
+    ok(await adm.locator("tbody tr.s-request").count() === 3, "3 requests in the panel");
+    ok(await adm.locator(".nav .badge").textContent() === "3", "pending badge in the menu");
     if (process.env.SHOTS) await adm.screenshot({ path: "shots/admin.png", fullPage: true });
     adm.on("dialog", d => d.accept());
-    await adm.locator('.card.request [data-act="confirmed"]').first().click();
-    await adm.waitForFunction(() => document.querySelectorAll(".card.request").length === 2);
+    // approve the first request from its detail page
+    await adm.locator('tbody tr.s-request a[title="Detay"]').first().click();
+    await adm.click('[data-s="confirmed"]');
+    await adm.waitForSelector(".dhead .st.s-confirmed");
     mails = await (await fetch(BASE + "/__mails")).json();
     ok(mails.length === 7 && /confirmed|подтверждён|bestätigt/.test(mails[6].subject), "confirmation mail after approval: " + (mails[6] && mails[6].subject));
+    ok(/VOUCHER/.test(mails[6].html), "confirmation mail carries the voucher band");
+
+    // a driver, then the transfer given to them on Operasyonlar
+    await adm.goto(BASE + "/admin#soforler");
+    await adm.click("#dadd");
+    await adm.fill('input[data-k="name"]', "Mehmet Yılmaz");
+    await adm.fill('input[data-k="phone"]', "+90 532 000 00 00");
+    await adm.fill('input[data-k="plate"]', "34 ITB 34");
+    await adm.click("#dsave");
+    await adm.waitForSelector("#dok:text('Kaydedildi.')");
+    await adm.goto(BASE + "/admin#operasyonlar/2099-01-01");
+    await adm.waitForSelector("select.drv");
+    await adm.locator("tbody tr.s-confirmed select.drv").first().selectOption({ label: "Mehmet Yılmaz · 34 ITB 34" });
+    await adm.waitForSelector('tbody tr.s-confirmed a.wa[href*="wa.me/905320000000"]');
+    ok(true, "driver assigned, WhatsApp link to the driver");
+
+    // a booking typed in the panel, with a time from the wheel and a price of its own
+    await adm.goto(BASE + "/admin#yeni");
+    await adm.fill("#bf input[name=name]", "Phone Customer");
+    await adm.fill("#bf input[name=phone]", "+44 7700 900123");
+    await adm.fill("#bf input[name=email]", "phone@example.com");
+    await adm.selectOption("#bf select[name=from]", "SAW");
+    await adm.selectOption("#bf select[name=to]", "taksim");
+    await adm.fill("#bf input[name=date]", "2099-02-01");
+    await adm.click("#bf .tbtn");
+    await adm.locator('.tw-col[data-k=h] .tw-it[data-i="7"]').click();
+    await adm.locator('.tw-col[data-k=m] .tw-it[data-i="3"]').click();
+    await adm.waitForTimeout(800);
+    await adm.keyboard.press("Escape");
+    ok(/listeye göre \d+ €/.test(await adm.locator("#phint").textContent()), "price list hint on the manual form");
+    await adm.fill("#bf input[name=price]", "70");
+    await adm.click("#bf button[type=submit]");
+    await adm.waitForSelector(".dhead .st.s-confirmed");
+    ok(/07:45/.test(await adm.locator("main").textContent()) && /70 €/.test(await adm.locator("main").textContent()), "manual booking saved with 07:45 and 70 €");
+    mails = await (await fetch(BASE + "/__mails")).json();
+    ok(mails.length === 8 && mails[7].to[0] === "phone@example.com", "confirmation mail for the manual booking");
+    if (process.env.SHOTS) await adm.screenshot({ path: "shots/admin-detail.png", fullPage: true });
     if (process.env.SHOTS) fs.writeFileSync("shots/mail-confirmed.html", mails[6].html);
 
     if (process.env.SHOTS) {

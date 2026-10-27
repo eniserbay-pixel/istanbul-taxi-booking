@@ -343,7 +343,9 @@ ${ROUTES.map(([a, z]) => line(a, z)).join("\n")}
 
 function admin() {
   const names = { zones: Object.fromEntries(P.zones.map(z => [z.id, z.short.tr])), cars: Object.fromEntries(P.cars.map(c => [c.id, c.name.tr])) };
-  const html = fs.readFileSync(path.join(__dirname, "admin.html"), "utf8").replace(/__BRAND__/g, esc(site.brand)).replace("__NAMES__", JSON.stringify(names));
+  const pricing = { zones: P.zones.map(z => ({ id: z.id, type: z.type })), cars: P.cars.map(c => ({ id: c.id, seats: c.seats, bags: c.bags })), prices: P.prices, rules: P.rules, currency: P.currency };
+  const html = fs.readFileSync(path.join(__dirname, "admin.html"), "utf8").replace(/__BRAND__/g, esc(site.brand)).replace("__NAMES__", JSON.stringify(names))
+    .replace("__PRICING__", JSON.stringify(pricing)).replace("__SITE__", JSON.stringify({ brand: site.brand }));
   fs.mkdirSync(path.join(OUT, "admin"), { recursive: true });
   fs.writeFileSync(path.join(OUT, "admin", "index.html"), html);
 }

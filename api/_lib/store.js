@@ -6,6 +6,7 @@
 //   bk:<id>     one booking as JSON
 //   bk:idx      sorted set of booking ids, scored by creation time
 //   bk:ref:<r>  site reference (IAT-...) → id, so a resent booking is not saved twice
+//   drv         drivers / vehicles of the admin panel, as one JSON list
 //   rl:...      rate limit counters
 const URL_ = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
 const TOKEN = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
@@ -80,4 +81,8 @@ async function listBookings(limit) {
   return rows.filter(Boolean).map(s => JSON.parse(s));
 }
 
-module.exports = { configured, allow, getBooking, saveBooking, createBooking, idForRef, listBookings };
+// Drivers and vehicles the office gives transfers to, as one list (drv)
+async function getDrivers() { const s = await cmd("GET", "drv"); return s ? JSON.parse(s) : []; }
+async function saveDrivers(list) { await cmd("SET", "drv", JSON.stringify(list)); return list; }
+
+module.exports = { configured, allow, getBooking, saveBooking, createBooking, idForRef, listBookings, getDrivers, saveDrivers };
