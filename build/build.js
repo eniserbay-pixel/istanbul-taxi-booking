@@ -49,7 +49,7 @@ ${ld.map(x => `<script type="application/ld+json">${JSON.stringify(x)}</script>`
   const header = `<header class="top"><div class="wrap top-in">
 <a class="logo" href="${p.home}"><img src="/img/logo.webp" alt="${esc(site.brand)} – Istanbul Taxi Booking" width="92" height="52"></a>
 <nav class="nav"><a href="${p.prices}">${t.nav.prices}</a><a href="${p.home}#fleet">${t.nav.fleet}</a><a href="${p.home}#how">${t.nav.how}</a><a href="${p.home}#faq">${t.nav.faq}</a><a href="${p.blog}">${t.nav.blog}</a>
-${o.alt ? `<a class="lang" href="${o.alt}" hreflang="${other}" lang="${other}">${t.nav.lang}</a>` : ""}</nav>
+${langSwitch(o.lang, o.alt || I[other].paths.home)}</nav>
 <a class="btn btn-y btn-sm" href="${p.book}">${t.nav.book}</a></div></header>`;
   const popular = [["IST", "sultanahmet"], ["IST", "taksim"], ["IST", "kadikoy"], ["SAW", "taksim"], ["SAW", "kadikoy"], ["SAW", "sultanahmet"]];
   const footer = `<footer class="foot"><div class="wrap foot-in">
@@ -77,6 +77,18 @@ function page(o) {
 }
 
 // The search box: from, to, date, time, passengers, optional return. Sends to the booking page.
+// Language choice in the header: both flags, the current one marked
+const FLAGS = {
+  en: '<svg viewBox="0 0 60 30" width="22" height="11" aria-hidden="true"><clipPath id="fe"><path d="M0 0h60v30H0z"/></clipPath><clipPath id="ft"><path d="M30 15h30v15zv15H0zH0V0zV0h30z"/></clipPath><g clip-path="url(#fe)"><path d="M0 0v30h60V0z" fill="#012169"/><path d="M0 0l60 30m0-30L0 30" stroke="#fff" stroke-width="6"/><path d="M0 0l60 30m0-30L0 30" clip-path="url(#ft)" stroke="#C8102E" stroke-width="4"/><path d="M30 0v30M0 15h60" stroke="#fff" stroke-width="10"/><path d="M30 0v30M0 15h60" stroke="#C8102E" stroke-width="6"/></g></svg>',
+  ru: '<svg viewBox="0 0 9 6" width="17" height="11" aria-hidden="true"><path fill="#fff" d="M0 0h9v2H0z"/><path fill="#0039A6" d="M0 2h9v2H0z"/><path fill="#D52B1E" d="M0 4h9v2H0z"/></svg>'
+};
+const LANG_NAME = { en: "English", ru: "Русский" };
+function langSwitch(lang, altHref) {
+  return `<span class="langs">${LANGS.map(l => l === lang
+    ? `<span class="on" aria-current="true" title="${LANG_NAME[l]}">${FLAGS[l]}${l.toUpperCase()}</span>`
+    : `<a class="lang" href="${altHref}" hreflang="${l}" lang="${l}" title="${LANG_NAME[l]}" aria-label="${LANG_NAME[l]}">${FLAGS[l]}${l.toUpperCase()}</a>`).join("")}</span>`;
+}
+
 function searchForm(lang, pre, side) {
   const t = I[lang].form;
   pre = pre || {};

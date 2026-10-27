@@ -54,12 +54,17 @@ p { margin: 0 0 1em; }
 .top .logo img { height: 60px; width: auto; }
 .top-in { min-height: 76px; }
 .foot .logo img { height: 80px; width: auto; }
-.nav { display: flex; gap: 18px; margin-left: auto; font-size: 15px; }
+.nav { display: flex; align-items: center; gap: 18px; margin-left: auto; font-size: 15px; }
 .nav a { text-decoration: none; color: var(--ice-ink); }
 .nav a:hover { color: var(--mustard); }
-.nav .lang { border: 1px solid #3a3d41; border-radius: 999px; padding: 2px 12px; }
+.nav .langs { display: inline-flex; border: 1px solid #3a3d41; border-radius: 999px; padding: 3px; gap: 2px; }
+.nav .langs > * { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px; font-size: 14px; font-weight: 700; line-height: 1.4; }
+.nav .langs .on { background: var(--mustard); color: var(--black); }
+.nav .langs a { color: var(--white); }
+.nav .langs a:hover { background: #2a2c2f; }
+.nav .langs svg { border-radius: 2px; flex: none; }
 @media (max-width: 860px) {
-  .nav a:not(.lang) { display: none; }
+  .nav > a { display: none; }
   .top-in { gap: 10px; }
   .top .logo img { height: 44px; }
 }
