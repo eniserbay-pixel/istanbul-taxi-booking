@@ -1,110 +1,602 @@
 <!doctype html>
 <html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="robots" content="noindex, nofollow"><title>Yönetim · __BRAND__</title>
+<meta name="robots" content="noindex, nofollow"><title>Yönetim Paneli · __BRAND__</title>
 <link rel="icon" href="/img/favicon-32.png">
 <style>
-:root { --black: #0b0b0c; --mustard: #e1ad01; --ice: #eaf4f8; --ice-2: #d5e9f1; --line: #d3dde3; --muted: #4b5761; --err: #b42318; --ok: #1d7a46; }
+/* Same layout as the Istanbul Airport Pickups panel, in the brand colors: black, mustard, ice */
+:root {
+  --black: #0b0b0c; --black-2: #17181a; --black-3: #232428; --mustard: #e1ad01; --mustard-2: #f2c230; --mustard-ink: #7a5c00;
+  --ice: #eaf4f8; --ice-2: #d5e9f1; --bg: #f3f8fa; --line: #d8e2e8; --muted: #56636d; --ink: #111316;
+  --ok: #1d7a46; --err: #b42318; --done: #3b5b8c; --gray: #7b858c; --wa: #1f9d55; --r: 12px;
+}
 * { box-sizing: border-box; }
-body { margin: 0; font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; background: var(--ice); color: #111; }
-header { background: var(--black); color: #fff; border-bottom: 3px solid var(--mustard); }
-.in { max-width: 1100px; margin: 0 auto; padding: 0 16px; }
-header .in { display: flex; align-items: center; gap: 14px; min-height: 58px; }
-.roof { background: var(--mustard); color: var(--black); font-size: 11px; font-weight: 900; letter-spacing: .14em; padding: 3px 7px; border-radius: 6px 6px 3px 3px; }
-header b { font-size: 16px; }
-header button { margin-left: auto; }
-button, .b { font: inherit; font-weight: 700; border: 0; border-radius: 999px; padding: 8px 14px; cursor: pointer; background: #fff; color: #111; box-shadow: inset 0 0 0 1.5px var(--line); text-decoration: none; display: inline-block; }
-.y { background: var(--mustard); box-shadow: none; }
-.k { background: var(--black); color: var(--mustard); box-shadow: none; }
-.r { color: var(--err); }
-button:disabled { opacity: .5; }
-.tabs { display: flex; gap: 8px; flex-wrap: wrap; margin: 18px 0; }
-.tabs button.on { background: var(--black); color: var(--mustard); box-shadow: none; }
-.card { background: #fff; border-radius: 14px; padding: 16px; margin-bottom: 12px; border-left: 6px solid var(--line); }
-.card.request { border-left-color: var(--mustard); }
-.card.confirmed { border-left-color: var(--ok); }
-.card.declined, .card.cancelled { border-left-color: var(--err); opacity: .8; }
-.head { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: baseline; }
-.head .when { font-size: 18px; font-weight: 800; }
-.st { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; padding: 2px 8px; border-radius: 999px; background: var(--ice); }
-.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 4px 18px; margin: 10px 0; color: var(--muted); }
-.grid b { color: #111; }
-.acts { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 10px; }
-.acts input { font: inherit; padding: 7px 10px; border: 1.5px solid var(--line); border-radius: 10px; min-width: 0; flex: 1 1 180px; }
-.hist { font-size: 13px; color: var(--muted); margin-top: 8px; }
-.login { max-width: 360px; margin: 80px auto; background: #fff; padding: 24px; border-radius: 14px; display: grid; gap: 12px; }
-.login input { font: inherit; padding: 11px 12px; border: 1.5px solid var(--line); border-radius: 10px; }
-.msg { color: var(--err); font-weight: 600; }
-.empty { text-align: center; color: var(--muted); padding: 40px 0; }
+[hidden] { display: none !important; }
+body { margin: 0; font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; background: var(--bg); color: var(--ink); }
+a { color: inherit; }
+button, input, select, textarea { font: inherit; color: inherit; }
+svg { width: 18px; height: 18px; flex: 0 0 auto; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* Sidebar */
+.side { position: fixed; inset: 0 auto 0 0; width: 240px; background: var(--black); color: #c9d0d5; display: flex; flex-direction: column; z-index: 40; }
+.brand { display: flex; align-items: center; gap: 10px; padding: 16px 18px 14px; border-bottom: 1px solid var(--black-3); text-decoration: none; }
+.brand img { width: 74px; height: auto; border-radius: 6px; }
+.brand b { display: block; color: #fff; font-size: 14px; line-height: 1.25; }
+.brand small { color: #8b949b; font-size: 12px; }
+.nav { flex: 1; overflow-y: auto; padding: 10px; }
+.nav .grp { font-size: 11px; font-weight: 800; letter-spacing: .1em; color: var(--mustard); padding: 14px 10px 6px; display: flex; align-items: center; gap: 6px; }
+.nav .grp::before { content: ""; width: 6px; height: 6px; border-radius: 2px; background: var(--mustard); }
+.nav a { display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: 9px; text-decoration: none; color: #d6dce0; font-weight: 500; margin: 2px 0; border-left: 3px solid transparent; }
+.nav a:hover { background: var(--black-2); color: #fff; }
+.nav a.on { background: var(--black-3); color: #fff; font-weight: 700; border-left-color: var(--mustard); }
+.nav a.on svg { color: var(--mustard); }
+.nav .badge { margin-left: auto; background: var(--mustard); color: var(--black); font-size: 12px; font-weight: 800; border-radius: 999px; min-width: 22px; padding: 1px 7px; text-align: center; }
+.side-foot { padding: 14px 18px; border-top: 1px solid var(--black-3); display: grid; gap: 10px; justify-items: start; }
+.side-foot a, .side-foot button { background: none; border: 1px solid var(--black-3); color: #d6dce0; border-radius: 8px; padding: 5px 10px; font-size: 13px; font-weight: 600; text-decoration: none; cursor: pointer; }
+.side-foot button { border: 0; padding: 0; }
+.top { display: none; }
+.shade { display: none; }
+
+/* Page */
+main { margin-left: 240px; padding: 26px 28px 60px; min-height: 100vh; border-top: 3px solid var(--mustard); }
+.ph { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
+.ph h1 { margin: 0; font-size: 24px; line-height: 1.2; padding-left: 12px; border-left: 4px solid var(--mustard); }
+.ph p { margin: 6px 0 0; color: var(--muted); }
+.box { background: #fff; border: 1px solid var(--line); border-radius: var(--r); padding: 18px; margin-bottom: 16px; }
+.box h2 { font-size: 16px; margin: 0 0 12px; }
+.muted { color: var(--muted); }
+.small { font-size: 13px; }
+
+/* Buttons and fields */
+.btn { display: inline-flex; align-items: center; gap: 7px; border: 1px solid var(--line); background: #fff; border-radius: 9px; padding: 8px 14px; font-weight: 700; cursor: pointer; text-decoration: none; white-space: nowrap; }
+.btn:hover { border-color: #b9c6ce; }
+.btn.y { background: var(--mustard); border-color: var(--mustard); color: var(--black); }
+.btn.y:hover { background: var(--mustard-2); }
+.btn.k { background: var(--black); border-color: var(--black); color: #fff; }
+.btn.g { background: var(--ok); border-color: var(--ok); color: #fff; }
+.btn.r { color: var(--err); }
+.btn.wa { background: var(--wa); border-color: var(--wa); color: #fff; }
+.btn.sm { padding: 5px 10px; font-size: 13px; }
+.btn:disabled { opacity: .5; cursor: default; }
+.ic { display: inline-grid; place-items: center; width: 32px; height: 32px; border-radius: 8px; border: 0; background: none; color: var(--muted); cursor: pointer; text-decoration: none; }
+.ic:hover { background: var(--ice); color: var(--ink); }
+.ic.wa { color: var(--wa); }
+label.f { display: grid; align-content: start; gap: 5px; font-size: 13px; font-weight: 600; color: var(--muted); min-width: 0; }
+.f input, .f select, .f textarea, .inp { width: 100%; min-width: 0; height: 40px; border: 1px solid #c9d4db; border-radius: 9px; background: #fff; padding: 0 11px; font-size: 15px; font-weight: 400; color: var(--ink); }
+.f textarea { height: auto; min-height: 76px; padding: 9px 11px; resize: vertical; }
+.f input:focus, .f select:focus, .f textarea:focus, .inp:focus { outline: none; border-color: var(--black); box-shadow: 0 0 0 3px rgba(225, 173, 1, .35); }
+.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px 14px; }
+.grid.g4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.grid.g2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.span2 { grid-column: span 2; }
+.span3 { grid-column: 1 / -1; }
+.check { display: flex; align-items: center; gap: 8px; font-weight: 600; cursor: pointer; }
+.check input { width: 18px; height: 18px; accent-color: var(--black); }
+.row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.err { background: #fde8e6; color: var(--err); border-radius: 9px; padding: 10px 12px; font-weight: 600; }
+.okmsg { background: #e3f3ea; color: var(--ok); border-radius: 9px; padding: 10px 12px; font-weight: 600; }
+
+/* Time wheel (timewheel.js) */
+.tsel-hid { position: absolute !important; width: 1px !important; height: 1px !important; opacity: 0; pointer-events: none; overflow: hidden; }
+.tbtn { display: block; width: 100%; height: 40px; border: 1px solid #c9d4db; border-radius: 9px; background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23111316' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M12 7v5l3 2'/%3E%3C/svg%3E") no-repeat right 11px center; padding: 0 34px 0 11px; font-size: 15px; font-weight: 600; text-align: start; cursor: pointer; font-variant-numeric: tabular-nums; color: var(--ink); }
+.tbtn:focus-visible, .tbtn[aria-expanded="true"] { border-color: var(--black); outline: none; box-shadow: 0 0 0 3px rgba(225, 173, 1, .35); }
+.twheel { position: absolute; z-index: 80; width: 200px; height: 220px; display: grid; grid-template-columns: 1fr 14px 1fr; align-items: center; background: #fff; border: 1px solid var(--line); border-radius: 14px; box-shadow: 0 14px 40px rgba(11, 11, 12, .22); padding: 0 8px; }
+.tw-band { position: absolute; left: 8px; right: 8px; top: 88px; height: 44px; background: var(--black); border-radius: 10px; }
+.tw-col { position: relative; height: 220px; overflow-y: auto; scroll-snap-type: y mandatory; overscroll-behavior: contain; scrollbar-width: none; outline: none; -webkit-mask-image: linear-gradient(transparent, #000 30%, #000 70%, transparent); mask-image: linear-gradient(transparent, #000 30%, #000 70%, transparent); }
+.tw-col::-webkit-scrollbar { display: none; }
+.tw-pad { height: 88px; }
+.tw-it { height: 44px; display: grid; place-items: center; scroll-snap-align: center; font-size: 20px; font-weight: 500; color: var(--muted); font-variant-numeric: tabular-nums; cursor: pointer; user-select: none; }
+.tw-it.on { color: var(--mustard); font-weight: 700; }
+.tw-sep { position: relative; text-align: center; color: var(--mustard); font-size: 20px; font-weight: 700; }
+
+/* Filters, counters, table */
+.chips { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 12px; font-size: 13px; color: var(--muted); }
+.chip { border: 1px solid var(--line); background: #fff; border-radius: 999px; padding: 3px 11px; cursor: pointer; font-size: 13px; color: var(--ink); }
+.chip.on { background: var(--black); border-color: var(--black); color: var(--mustard); }
+.chip.clear { margin-left: auto; color: var(--muted); }
+.fgrid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr auto; gap: 12px; align-items: end; }
+.counts { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; margin-bottom: 16px; }
+.count { background: #fff; border: 1px solid var(--line); border-radius: var(--r); padding: 14px; text-align: left; cursor: pointer; border-top: 4px solid var(--c, var(--line)); }
+.count b { display: block; font-size: 24px; line-height: 1.1; }
+.count span { font-size: 13px; color: var(--muted); }
+.count.on { outline: 2px solid var(--black); }
+.tbl-wrap { background: #fff; border: 1px solid var(--line); border-radius: var(--r); overflow-x: auto; }
+table.t { width: 100%; border-collapse: collapse; font-size: 14px; }
+.t th { text-align: left; font-size: 11.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-weight: 700; padding: 12px 10px; border-bottom: 1px solid var(--line); white-space: nowrap; background: #fbfdfe; }
+.t td { padding: 11px 10px; border-bottom: 1px solid #edf2f5; vertical-align: top; }
+.t tr:last-child td { border-bottom: 0; }
+.t td:first-child { border-left: 4px solid var(--c, transparent); }
+.t tbody tr:hover td { background: #fafcfd; }
+.t .sub { display: block; color: var(--muted); font-size: 12.5px; }
+.t .tel { white-space: nowrap; }
+.kv dd .ic { width: 26px; height: 26px; vertical-align: middle; }
+.t .num { text-align: right; white-space: nowrap; font-weight: 700; }
+.t .acts { white-space: nowrap; text-align: right; }
+.nowrap { white-space: nowrap; }
+.st { display: inline-block; font-size: 12px; font-weight: 800; border-radius: 999px; padding: 2px 9px; white-space: nowrap; background: var(--ice); color: var(--c, var(--ink)); }
+.s-request { --c: var(--mustard); } .s-request .st, .st.s-request { background: #fff4d1; color: var(--mustard-ink); }
+.s-confirmed { --c: var(--ok); } .st.s-confirmed { background: #e3f3ea; }
+.s-done { --c: var(--done); } .st.s-done { background: #e6edf7; }
+.s-declined { --c: var(--err); } .st.s-declined { background: #fde8e6; }
+.s-cancelled { --c: var(--gray); } .st.s-cancelled { background: #eef0f1; }
+.s-all { --c: var(--black); }
+.empty { text-align: center; color: var(--muted); padding: 34px 10px; }
+
+/* Overview */
+.stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-bottom: 16px; }
+.stat { background: #fff; border: 1px solid var(--line); border-radius: var(--r); padding: 16px; display: flex; gap: 12px; align-items: center; text-decoration: none; }
+.stat i { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 11px; background: var(--black); color: var(--mustard); font-style: normal; }
+.stat b { display: block; font-size: 24px; line-height: 1.1; }
+.stat span { font-size: 13px; color: var(--muted); }
+.cols { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.li { display: flex; gap: 12px; align-items: center; padding: 10px 0; border-bottom: 1px solid #edf2f5; text-decoration: none; }
+.li:last-child { border-bottom: 0; }
+.li .tm { font-weight: 800; font-variant-numeric: tabular-nums; min-width: 92px; }
+.li .grow { flex: 1; min-width: 0; }
+
+/* Operations */
+.op-date { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 14px; }
+.op-date .inp { width: auto; }
+.drv { min-width: 170px; height: 34px; font-size: 14px; }
+.leg-tag { font-size: 11px; font-weight: 800; border-radius: 6px; padding: 1px 6px; background: var(--ice); color: var(--muted); }
+.leg-tag.back { background: #fff4d1; color: var(--mustard-ink); }
+
+/* Booking detail */
+.dhead { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.dhead h1 { margin: 0; }
+.kv { display: grid; grid-template-columns: 140px 1fr; gap: 6px 12px; font-size: 14px; }
+.kv dt { color: var(--muted); }
+.kv dd { margin: 0; font-weight: 600; min-width: 0; overflow-wrap: anywhere; }
+.hist { list-style: none; margin: 0; padding: 0; font-size: 13.5px; }
+.hist li { padding: 7px 0 7px 16px; border-left: 2px solid var(--ice-2); position: relative; }
+.hist li::before { content: ""; position: absolute; left: -5px; top: 13px; width: 8px; height: 8px; border-radius: 50%; background: var(--mustard); }
+.hist time { color: var(--muted); display: block; font-size: 12px; }
+.price-hint { font-size: 12.5px; color: var(--muted); font-weight: 400; }
+
+/* Login */
+.login { position: fixed; inset: 0; background: var(--black); display: grid; place-items: center; padding: 16px; z-index: 100; }
+.login form { background: #fff; border-radius: 16px; padding: 26px; width: min(360px, 100%); display: grid; gap: 14px; border-top: 5px solid var(--mustard); }
+.login img { width: 120px; margin: 0 auto; border-radius: 8px; }
+.login h2 { margin: 0; text-align: center; font-size: 18px; }
+
+@media (max-width: 1100px) {
+  .counts { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .fgrid { grid-template-columns: 1fr 1fr; }
+  .fgrid .q { grid-column: 1 / -1; }
+}
+@media (max-width: 860px) {
+  .side { transform: translateX(-100%); transition: transform .2s; }
+  .side.open { transform: none; }
+  .shade.open { display: block; position: fixed; inset: 0; background: rgba(0, 0, 0, .45); z-index: 30; }
+  .top { display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 20; background: var(--black); color: #fff; padding: 10px 16px; border-bottom: 3px solid var(--mustard); }
+  .top button { background: none; border: 0; color: #fff; padding: 4px; cursor: pointer; }
+  .top svg { width: 22px; height: 22px; }
+  .top b { font-size: 15px; }
+  main { margin-left: 0; padding: 18px 16px 50px; border-top: 0; }
+  .grid, .grid.g4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cols { grid-template-columns: 1fr; }
+  .counts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .kv { grid-template-columns: 110px 1fr; }
+}
+@media (max-width: 520px) {
+  .grid, .grid.g4, .grid.g2, .fgrid { grid-template-columns: minmax(0, 1fr); }
+  .span2 { grid-column: auto; }
+  .stats { grid-template-columns: minmax(0, 1fr); }
+  .ph h1 { font-size: 21px; }
+}
 </style></head>
 <body>
-<header><div class="in"><img src="/img/logo.webp" alt="__BRAND__" height="40"><b>Yönetim</b><button id="out" hidden>Çıkış</button></div></header>
-<div class="in" id="app"></div>
+<div class="login" id="login" hidden><form id="login-form"><img src="/img/logo.webp" alt="__BRAND__"><h2>Yönetim Paneli</h2>
+<label class="f">Şifre<input type="password" name="pw" autocomplete="current-password" required></label>
+<p class="err" id="login-err" hidden></p><button class="btn y" type="submit" style="justify-content:center">Giriş yap</button></form></div>
+
+<aside class="side" id="side">
+  <a class="brand" href="#genel-bakis"><img src="/img/logo.webp" alt=""><span><b>__BRAND__</b><small>Yönetim Paneli</small></span></a>
+  <nav class="nav" id="nav"></nav>
+  <div class="side-foot"><a href="/" target="_blank" rel="noopener">Siteyi aç ↗</a><button type="button" id="logout">Çıkış yap</button></div>
+</aside>
+<div class="shade" id="shade"></div>
+<div class="top"><button type="button" id="menu" aria-label="Menü"><svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button><b>Yönetim Paneli</b></div>
+<main id="main"></main>
+
+<script src="/assets/quote.js"></script>
+<script src="/assets/timewheel.js"></script>
 <script>
-var N = __NAMES__;
-var LABEL = { request: "Talep", confirmed: "Onaylandı", declined: "Reddedildi", done: "Tamamlandı", cancelled: "İptal" };
-var app = document.getElementById("app"), filter = "request", list = [];
-var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
-function api(a, data) {
-  return fetch("/api/admin?a=" + a, data ? { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) } : {})
-    .then(function (r) { return r.json().then(function (j) { if (!r.ok) throw new Error(j.error || "Hata " + r.status); return j; }); });
-}
-function login(err) {
-  document.getElementById("out").hidden = true;
-  app.innerHTML = '<form class="login"><h2>Giriş</h2><input type="password" name="pw" placeholder="Şifre" autocomplete="current-password" required><button class="y">Giriş yap</button><p class="msg">' + esc(err || "") + "</p></form>";
-  app.querySelector("form").onsubmit = function (e) {
-    e.preventDefault();
-    api("login", { password: this.pw.value }).then(load).catch(function (x) { login(x.message); });
+(function () {
+  "use strict";
+  var N = __NAMES__, PR = __PRICING__, SITE = __SITE__;
+  var LABEL = { request: "Talep", confirmed: "Onaylandı", done: "Tamamlandı", declined: "Reddedildi", cancelled: "İptal" };
+  var ORDER = ["request", "confirmed", "done", "declined", "cancelled"];
+  var LANG = { en: "İngilizce", ru: "Rusça", de: "Almanca", fr: "Fransızca", it: "İtalyanca", nl: "Felemenkçe" };
+  var ICON = {
+    home: '<path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',
+    ops: '<path d="M4 6h16M4 12h10M4 18h6"/><circle cx="18" cy="16" r="3"/>',
+    list: '<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/>',
+    plus: '<path d="M12 5v14M5 12h14"/>',
+    car: '<path d="M5 17h14M6 17v2M18 17v2M4 13l2-6h12l2 6v4H4z"/><circle cx="8" cy="14" r="1"/><circle cx="16" cy="14" r="1"/>',
+    eye: '<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
+    edit: '<path d="M4 20h4L19 9l-4-4L4 16z"/>',
+    wa: '<path d="M4 20l1.4-4A8 8 0 1 1 8 18.6z"/><path d="M9 9.5c.5 2 2 3.5 4 4l1.2-1 2 1-.6 1.8c-3.6.2-7.6-3.8-7.4-7.4L10 7.3l1 2z"/>',
+    cal: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+    clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+    euro: '<path d="M17 6a7 7 0 1 0 0 12M4 10h9M4 14h9"/>',
+    alert: '<path d="M12 3l9 16H3z"/><path d="M12 10v4M12 17h.01"/>'
   };
-}
-function load() {
-  document.getElementById("out").hidden = false;
-  return api("list").then(function (j) { list = j.bookings; draw(); }).catch(function (x) { if (/Giriş/.test(x.message)) login(); else app.innerHTML = '<p class="msg">' + esc(x.message) + "</p>"; });
-}
-function draw() {
-  var counts = {}; list.forEach(function (b) { counts[b.status] = (counts[b.status] || 0) + 1; });
-  var tabs = ["request", "confirmed", "done", "declined", "cancelled", "all"];
-  // Upcoming first for open bookings, newest first for the rest
-  var rows = list.filter(function (b) { return filter === "all" || b.status === filter; });
-  if (filter === "request" || filter === "confirmed") rows.sort(function (a, b) { return (a.date + a.time).localeCompare(b.date + b.time); });
-  app.innerHTML = '<div class="tabs">' + tabs.map(function (t) { return '<button data-f="' + t + '" class="' + (t === filter ? "on" : "") + '">' + (t === "all" ? "Tümü" : LABEL[t]) + " (" + (t === "all" ? list.length : counts[t] || 0) + ")</button>"; }).join("") +
-    '<button data-reload>Yenile</button></div>' + (rows.length ? rows.map(card).join("") : '<p class="empty">Kayıt yok</p>');
-  app.querySelectorAll("[data-f]").forEach(function (b) { b.onclick = function () { filter = b.getAttribute("data-f"); draw(); }; });
-  app.querySelector("[data-reload]").onclick = load;
-  app.querySelectorAll("[data-act]").forEach(function (b) { b.onclick = function () { act(b); }; });
-}
-function card(b) {
-  var z = function (id) { return N.zones[id] || id; };
-  var wa = b.phone.replace(/[^0-9]/g, "");
-  var acts = {
-    request: '<button class="y" data-act="confirmed" data-id="' + b.id + '">Onayla ve mail gönder</button><button class="r" data-act="declined" data-id="' + b.id + '">Reddet</button>',
-    confirmed: '<button class="k" data-act="done" data-id="' + b.id + '">Tamamlandı</button><button class="r" data-act="cancelled" data-id="' + b.id + '">İptal</button>',
-    done: "", declined: "", cancelled: ""
-  }[b.status];
-  return '<div class="card ' + b.status + '"><div class="head"><span class="when">' + esc(b.date) + " " + esc(b.time) + "</span><b>" + esc(z(b.from)) + " → " + esc(z(b.to)) + '</b><span class="st">' + LABEL[b.status] + "</span><span>" + esc(b.ref) + "</span></div>" +
-    '<div class="grid"><span>Araç: <b>' + esc(N.cars[b.car] || b.car) + "</b> · 👤 " + b.pax + " · 🧳 " + b.bags + (b.childSeats ? " · çocuk koltuğu " + b.childSeats : "") + "</span>" +
-    "<span>Fiyat: <b>€" + b.price.total + "</b> · nakit</span>" +
-    "<span>Müşteri: <b>" + esc(b.name) + '</b></span><span><a href="tel:' + esc(b.phone) + '">' + esc(b.phone) + '</a> · <a href="https://wa.me/' + wa + '" target="_blank">WhatsApp</a></span><span>' + esc(b.email) + "</span>" +
-    (b.flight ? "<span>Uçuş: <b>" + esc(b.flight) + "</b></span>" : "") + (b.pickup ? "<span>Alış: <b>" + esc(b.pickup) + "</b></span>" : "") + (b.dropoff ? "<span>Bırakış: <b>" + esc(b.dropoff) + "</b></span>" : "") +
-    (b.ret ? "<span>Dönüş: <b>" + esc(b.ret.date) + " " + esc(b.ret.time) + "</b>" + (b.ret.flight ? " · " + esc(b.ret.flight) : "") + (b.ret.pickup ? " · " + esc(b.ret.pickup) : "") + "</span>" : "") +
-    (b.note ? "<span>Not: <b>" + esc(b.note) + "</b></span>" : "") + "<span>Dil: " + b.lang.toUpperCase() + "</span></div>" +
-    '<div class="acts">' + acts + '<input data-driver="' + b.id + '" placeholder="Şoför / plaka" value="' + esc(b.driver) + '"><input data-note="' + b.id + '" placeholder="İç not" value="' + esc(b.adminNote) + '"><button data-act="edit" data-id="' + b.id + '">Kaydet</button></div>' +
-    '<div class="hist">' + b.history.map(function (h) { return esc(new Date(h.at).toLocaleString("tr-TR", { timeZone: "Europe/Istanbul" })) + " · " + esc(h.text); }).join("<br>") + "</div></div>";
-}
-function act(btn) {
-  var id = +btn.getAttribute("data-id"), a = btn.getAttribute("data-act"), b = list.filter(function (x) { return x.id === id; })[0];
-  var req;
-  if (a === "edit") req = api("edit", { id: id, updatedAt: b.updatedAt, driver: app.querySelector('[data-driver="' + id + '"]').value, adminNote: app.querySelector('[data-note="' + id + '"]').value });
-  else {
-    var reason = "";
-    if (a === "declined") { reason = prompt("Ret nedeni (müşteriye e-postada gider, boş bırakılabilir):", ""); if (reason === null) return; }
-    else if (a === "confirmed" && !confirm("Onaylansın ve müşteriye onay e-postası gitsin mi?")) return;
-    req = api("status", { id: id, updatedAt: b.updatedAt, status: a, reason: reason });
+  var ic = function (n) { return '<svg viewBox="0 0 24 24" aria-hidden="true">' + ICON[n] + "</svg>"; };
+  var S = { list: [], drivers: [], f: { q: "", status: "active", from: "", to: "" }, opsDate: "" };
+  var main = document.getElementById("main");
+  var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return [].slice.call((r || document).querySelectorAll(s)); };
+
+  function api(a, data) {
+    return fetch("/api/admin?a=" + a, data ? { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) } : {})
+      .then(function (r) {
+        return r.json().catch(function () { return {}; }).then(function (j) {
+          if (r.status === 401 && a !== "login") { showLogin(); throw new Error("Oturum kapalı"); }
+          if (!r.ok) throw new Error(j.error || "Hata " + r.status);
+          return j;
+        });
+      });
   }
-  btn.disabled = true;
-  req.then(function (j) { list = list.map(function (x) { return x.id === id ? j.booking : x; }); draw(); })
-    .catch(function (x) { btn.disabled = false; alert(x.message); });
-}
-document.getElementById("out").onclick = function () { api("logout", {}).then(function () { login(); }); };
-api("me").then(function (j) { j.signedIn ? load() : login(); }).catch(function (x) { app.innerHTML = '<p class="msg">' + esc(x.message) + "</p>"; });
+
+  // ---- Dates in Istanbul (UTC+3) ----
+  function today(plus) { return new Date(Date.now() + 3 * 3600e3 + (plus || 0) * 864e5).toISOString().slice(0, 10); }
+  function addDays(d, n) { var t = new Date(d + "T12:00:00Z"); t.setUTCDate(t.getUTCDate() + n); return t.toISOString().slice(0, 10); }
+  function trDate(d) { return d ? d.slice(8, 10) + "." + d.slice(5, 7) + "." + d.slice(0, 4) : ""; }
+  function dayName(d) { return new Date(d + "T12:00:00Z").toLocaleDateString("tr-TR", { weekday: "long", timeZone: "UTC" }); }
+  function stamp(iso) { return new Date(iso).toLocaleString("tr-TR", { timeZone: "Europe/Istanbul", day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" }); }
+
+  var zn = function (id) { return N.zones[id] || id; };
+  var cn = function (id) { return N.cars[id] || id; };
+  var isAirport = function (id) { return id === "IST" || id === "SAW"; };
+  var money = function (b) { return (b.price && b.price.total || 0) + " " + (b.currency === "EUR" || !b.currency ? "€" : b.currency); };
+  var digits = function (p) { return String(p || "").replace(/[^\d]/g, "").replace(/^00/, ""); };
+  var byId = function (id) { return S.list.filter(function (b) { return String(b.id) === String(id); })[0]; };
+
+  // The transfers of a booking: the outbound one and, with a return, the way back
+  function legs(b) {
+    var out = [{ b: b, leg: "out", date: b.date, time: b.time, from: b.from, to: b.to, flight: b.flight, fromAddr: b.pickup, toAddr: b.dropoff, drv: b.assign && b.assign.out }];
+    if (b.ret) out.push({ b: b, leg: "back", date: b.ret.date, time: b.ret.time, from: b.to, to: b.from, flight: b.ret.flight, fromAddr: b.ret.pickup || b.dropoff, toAddr: b.pickup, drv: b.assign && b.assign.back });
+    return out;
+  }
+  var active = function (b) { return b.status === "request" || b.status === "confirmed"; };
+
+  // WhatsApp text for the driver, in Turkish
+  function driverText(l) {
+    var b = l.b;
+    return ["*" + SITE.brand + " · Transfer*", "Ref: " + b.ref,
+      "Tarih: " + trDate(l.date) + " " + dayName(l.date) + " · " + l.time,
+      "Alış: " + zn(l.from) + (l.flight ? " · Uçuş " + l.flight : "") + (l.fromAddr ? " · " + l.fromAddr : ""),
+      "Bırakış: " + zn(l.to) + (l.toAddr ? " · " + l.toAddr : ""),
+      "Yolcu: " + b.name + " · " + b.phone,
+      "Kişi: " + b.pax + (b.bags ? " · Bagaj: " + b.bags : "") + (b.childSeats ? " · Çocuk koltuğu: " + b.childSeats : "") + " · Araç: " + cn(b.car),
+      l.leg === "out" || !b.ret ? "Tahsilat: " + money(b) + " nakit" + (b.ret ? " (gidiş + dönüş)" : "") : "Tahsilat: gidişte alındı",
+      b.note ? "Not: " + b.note : "", b.adminNote ? "Ofis notu: " + b.adminNote : ""].filter(Boolean).join("\n");
+  }
+  function waLink(phone, text) { return "https://wa.me/" + digits(phone) + (text ? "?text=" + encodeURIComponent(text) : ""); }
+
+  // ---- Navigation ----
+  var PAGES = [
+    ["genel-bakis", "Genel Bakış", "home"],
+    ["grp", "Operasyon"],
+    ["operasyonlar", "Operasyonlar", "ops"],
+    ["rezervasyonlar", "Rezervasyonlar", "list"],
+    ["yeni", "Manuel Rezervasyon", "plus"],
+    ["soforler", "Şoförler / Araçlar", "car"]
+  ];
+  function drawNav(cur) {
+    var pending = S.list.filter(function (b) { return b.status === "request"; }).length;
+    $("#nav").innerHTML = PAGES.map(function (p) {
+      if (p[0] === "grp") return '<div class="grp">' + esc(p[1].toUpperCase()) + "</div>";
+      return '<a href="#' + p[0] + '"' + (cur === p[0] ? ' class="on" aria-current="page"' : "") + ">" + ic(p[2]) + esc(p[1]) +
+        (p[0] === "rezervasyonlar" && pending ? '<span class="badge">' + pending + "</span>" : "") + "</a>";
+    }).join("");
+  }
+  function closeMenu() { $("#side").classList.remove("open"); $("#shade").classList.remove("open"); }
+  $("#menu").addEventListener("click", function () { $("#side").classList.add("open"); $("#shade").classList.add("open"); });
+  $("#shade").addEventListener("click", closeMenu);
+
+  function route() {
+    var h = location.hash.replace(/^#/, "") || "genel-bakis", parts = h.split("/");
+    closeMenu();
+    var page = parts[0];
+    drawNav(page === "rezervasyon" || page === "duzenle" ? "rezervasyonlar" : page);
+    window.scrollTo(0, 0);
+    if (page === "operasyonlar") return ops();
+    if (page === "rezervasyonlar") return listView();
+    if (page === "yeni") return form(null);
+    if (page === "duzenle") return form(byId(parts[1]));
+    if (page === "rezervasyon") return detail(byId(parts[1]));
+    if (page === "soforler") return drivers();
+    return overview();
+  }
+  window.addEventListener("hashchange", route);
+  function head(title, sub, right) {
+    return '<div class="ph"><div><h1>' + esc(title) + "</h1>" + (sub ? "<p>" + sub + "</p>" : "") + "</div>" + (right || "") + "</div>";
+  }
+  function fail(e) { alert(e.message); }
+  function replace(b) {
+    var i = S.list.findIndex(function (x) { return x.id === b.id; });
+    if (i < 0) S.list.unshift(b); else S.list[i] = b;
+  }
+
+  // ---- Genel Bakış ----
+  function overview() {
+    var t0 = today(), t1 = today(1), all = [];
+    S.list.filter(active).forEach(function (b) { all = all.concat(legs(b)); });
+    var on = function (d) { return all.filter(function (l) { return l.date === d; }); };
+    var pending = S.list.filter(function (b) { return b.status === "request"; });
+    var month = t0.slice(0, 7), revenue = 0;
+    S.list.forEach(function (b) { if ((b.status === "confirmed" || b.status === "done") && b.date.slice(0, 7) === month) revenue += b.price && b.price.total || 0; });
+    var next = all.filter(function (l) { return l.date + l.time >= t0 + new Date(Date.now() + 3 * 3600e3).toISOString().slice(11, 16) && l.date <= t1; })
+      .sort(function (a, b) { return (a.date + a.time).localeCompare(b.date + b.time); });
+    var noDriver = all.filter(function (l) { return l.b.status === "confirmed" && !l.drv && l.date >= t0 && l.date <= t1; })
+      .sort(function (a, b) { return (a.date + a.time).localeCompare(b.date + b.time); });
+    var stat = function (href, icon, n, label) { return '<a class="stat" href="' + href + '"><i>' + ic(icon) + "</i><div><b>" + n + "</b><span>" + esc(label) + "</span></div></a>"; };
+    main.innerHTML = head("Genel Bakış", "Bugün " + trDate(t0) + ", " + dayName(t0) + ".") +
+      '<div class="stats">' + stat("#operasyonlar", "cal", on(t0).length, "Bugünkü transfer") + stat("#operasyonlar/" + t1, "clock", on(t1).length, "Yarınki transfer") +
+      stat("#rezervasyonlar/request", "alert", pending.length, "Onay bekleyen talep") + stat("#rezervasyonlar", "euro", revenue + " €", "Bu ayın cirosu (onaylı)") + "</div>" +
+      '<div class="cols"><div class="box"><h2>Sıradaki transferler (bugün ve yarın)</h2>' +
+      (next.length ? next.map(legLine).join("") : '<p class="empty">Bugün ve yarın için transfer yok.</p>') + "</div>" +
+      '<div><div class="box"><h2>Onay bekleyen talepler</h2>' +
+      (pending.length ? pending.map(function (b) { return legLine(legs(b)[0]); }).join("") : '<p class="empty">Bekleyen talep yok.</p>') + "</div>" +
+      '<div class="box"><h2>Şoförü atanmamış (bugün ve yarın)</h2>' +
+      (noDriver.length ? noDriver.map(legLine).join("") : '<p class="empty">Hepsine şoför atanmış.</p>') + "</div></div></div>";
+  }
+  function legLine(l) {
+    return '<a class="li" href="#rezervasyon/' + l.b.id + '"><span class="tm">' + trDate(l.date).slice(0, 5) + " " + l.time + '</span><span class="grow"><b>' + esc(zn(l.from)) + " → " + esc(zn(l.to)) +
+      '</b><span class="muted small" style="display:block">' + esc(l.b.name) + " · " + l.b.pax + " kişi · " + esc(cn(l.b.car)) + (l.flight ? " · " + esc(l.flight) : "") + "</span></span>" +
+      '<span class="st s-' + l.b.status + '">' + LABEL[l.b.status] + "</span></a>";
+  }
+
+  // ---- Rezervasyonlar ----
+  function listView() {
+    var parts = location.hash.split("/");
+    if (parts[1] && (LABEL[parts[1]] || parts[1] === "active" || parts[1] === "all")) S.f.status = parts[1];
+    var f = S.f;
+    var match = function (b) {
+      var q = f.q.toLowerCase().trim();
+      if (q && [b.ref, b.name, b.phone, b.email, b.flight, b.ret && b.ret.flight, b.pickup, b.dropoff].join(" ").toLowerCase().indexOf(q) < 0) return false;
+      var d = legs(b).map(function (l) { return l.date; });
+      if (f.from && !d.some(function (x) { return x >= f.from; })) return false;
+      if (f.to && !d.some(function (x) { return x <= f.to; })) return false;
+      return true;
+    };
+    var base = S.list.filter(match);
+    var counts = { all: base.length, active: base.filter(active).length };
+    ORDER.forEach(function (s) { counts[s] = base.filter(function (b) { return b.status === s; }).length; });
+    var rows = base.filter(function (b) { return f.status === "all" || (f.status === "active" ? active(b) : b.status === f.status); });
+    // Open bookings by pickup time, soonest first; finished ones newest first
+    if (f.status === "active" || f.status === "request" || f.status === "confirmed") rows.sort(function (a, b) { return (a.date + a.time).localeCompare(b.date + b.time); });
+    var quick = [["Bugün", today(), today()], ["Yarın", today(1), today(1)], ["Bu hafta", today(), today(6)], ["Dün", today(-1), today(-1)], ["Geçen hafta", today(-7), today(-1)]];
+    var count = function (k, label, cls) { return '<button type="button" class="count ' + cls + (f.status === k ? " on" : "") + '" data-st="' + k + '"><b>' + counts[k] + "</b><span>" + esc(label) + "</span></button>"; };
+    main.innerHTML = head("Rezervasyonlar", "Siteden gelenler <b>Talep</b> olarak düşer; detayda onaylayın, reddedin ya da düzenleyin.", '<a class="btn y" href="#yeni">' + ic("plus") + "Manuel rezervasyon</a>") +
+      '<form class="box" id="filters"><div class="fgrid"><label class="f q">Arama<input name="q" value="' + esc(f.q) + '" placeholder="İsim, telefon, e-posta, uçuş, rezervasyon no"></label>' +
+      '<label class="f">Başlangıç tarihi<input type="date" name="from" value="' + f.from + '"></label><label class="f">Bitiş tarihi<input type="date" name="to" value="' + f.to + '"></label>' +
+      '<label class="f">Durum<select name="status"><option value="active">Açık (talep + onaylı)</option><option value="all">Tümü</option>' + ORDER.map(function (s) { return '<option value="' + s + '">' + LABEL[s] + "</option>"; }).join("") + "</select></label>" +
+      '<button class="btn k" type="submit">Listele</button></div><div class="chips">Hızlı: ' +
+      quick.map(function (x) { return '<button type="button" class="chip' + (f.from === x[1] && f.to === x[2] ? " on" : "") + '" data-from="' + x[1] + '" data-to="' + x[2] + '">' + x[0] + "</button>"; }).join("") +
+      '<button type="button" class="chip clear" data-clear>Filtreleri temizle</button></div></form>' +
+      '<div class="counts">' + count("active", "Açık", "s-all") + count("request", "Talep", "s-request") + count("confirmed", "Onaylandı", "s-confirmed") + count("done", "Tamamlandı", "s-done") +
+      count("declined", "Reddedildi", "s-declined") + count("cancelled", "İptal", "s-cancelled") + "</div>" +
+      '<div class="tbl-wrap"><table class="t"><thead><tr><th>Tarih</th><th>Saat</th><th>Uçuş</th><th>Alış yeri</th><th>Bırakış yeri</th><th>Yolcu</th><th>Araç</th><th>Kişi</th><th class="num">Fiyat</th><th>Durum</th><th></th></tr></thead><tbody>' +
+      (rows.length ? rows.map(row).join("") : '<tr><td colspan="11" class="empty">Bu filtreye uyan rezervasyon yok.</td></tr>') + "</tbody></table></div>";
+    var fm = $("#filters");
+    fm.elements.status.value = f.status;
+    fm.addEventListener("submit", function (e) { e.preventDefault(); f.q = fm.elements.q.value; f.from = fm.elements.from.value; f.to = fm.elements.to.value; f.status = fm.elements.status.value; history.replaceState(null, "", "#rezervasyonlar"); listView(); });
+    $$("[data-from]", fm).forEach(function (c) { c.addEventListener("click", function () { f.from = c.getAttribute("data-from"); f.to = c.getAttribute("data-to"); listView(); }); });
+    $("[data-clear]", fm).addEventListener("click", function () { S.f = { q: "", status: "active", from: "", to: "" }; history.replaceState(null, "", "#rezervasyonlar"); listView(); });
+    $$("[data-st]").forEach(function (c) { c.addEventListener("click", function () { f.status = c.getAttribute("data-st"); history.replaceState(null, "", "#rezervasyonlar"); listView(); }); });
+  }
+  function row(b) {
+    var l = legs(b)[0], ret = b.ret ? '<span class="sub">Dönüş: ' + trDate(b.ret.date) + " " + b.ret.time + "</span>" : "";
+    return '<tr class="s-' + b.status + '"><td class="nowrap"><b>' + trDate(b.date) + "</b>" + ret + '</td><td><b>' + b.time + "</b></td><td>" + esc(b.flight || "-") + "</td>" +
+      "<td>" + esc(zn(l.from)) + (l.fromAddr ? '<span class="sub">' + esc(l.fromAddr) + "</span>" : "") + "</td><td>" + esc(zn(l.to)) + (l.toAddr ? '<span class="sub">' + esc(l.toAddr) + "</span>" : "") + "</td>" +
+      "<td><b>" + esc(b.name) + '</b><span class="sub tel">' + esc(b.phone) + "</span></td><td>" + esc(cn(b.car)) + "</td><td>" + b.pax + (b.bags ? "/" + b.bags : "") + "</td>" +
+      '<td class="num">' + money(b) + '</td><td><span class="st s-' + b.status + '">' + LABEL[b.status] + '</span><span class="sub nowrap">' + esc(b.ref) + "</span></td>" +
+      '<td class="acts"><a class="ic" href="#rezervasyon/' + b.id + '" title="Detay" aria-label="Detay">' + ic("eye") + '</a><a class="ic" href="#duzenle/' + b.id + '" title="Düzenle" aria-label="Düzenle">' + ic("edit") + "</a>" +
+      '<a class="ic wa" href="' + waLink(b.phone) + '" target="_blank" rel="noopener" title="Müşteriye WhatsApp" aria-label="Müşteriye WhatsApp">' + ic("wa") + "</a></td></tr>";
+  }
+
+  // ---- Operasyonlar: every transfer of a day, with its driver ----
+  function ops() {
+    var p = location.hash.split("/")[1];
+    if (/^\d{4}-\d{2}-\d{2}$/.test(p || "")) S.opsDate = p;
+    var d = S.opsDate || today();
+    var rows = [];
+    S.list.filter(function (b) { return b.status !== "declined" && b.status !== "cancelled"; }).forEach(function (b) { legs(b).forEach(function (l) { if (l.date === d) rows.push(l); }); });
+    rows.sort(function (a, b) { return a.time.localeCompare(b.time); });
+    var opt = function (l) { return '<option value="">Şoför seçin</option>' + S.drivers.map(function (v) { return '<option value="' + esc(v.id) + '"' + (l.drv && l.drv.id === v.id ? " selected" : "") + ">" + esc(v.name + (v.plate ? " · " + v.plate : "")) + "</option>"; }).join("") +
+      (l.drv && !S.drivers.some(function (v) { return v.id === l.drv.id; }) ? '<option value="' + esc(l.drv.id) + '" selected>' + esc(l.drv.name) + " (silinmiş)</option>" : ""); };
+    main.innerHTML = head("Operasyonlar", "Günün bütün transferleri saat sırasıyla. Şoför atayın, şoföre WhatsApp'tan gönderin, bitince tamamlandı işaretleyin.") +
+      '<div class="op-date"><button type="button" class="btn sm" data-d="-1">‹ Önceki gün</button><input type="date" class="inp" id="opd" value="' + d + '"><button type="button" class="btn sm" data-d="1">Sonraki gün ›</button>' +
+      '<button type="button" class="chip' + (d === today() ? " on" : "") + '" data-day="' + today() + '">Bugün</button><button type="button" class="chip' + (d === today(1) ? " on" : "") + '" data-day="' + today(1) + '">Yarın</button>' +
+      '<span class="muted">' + trDate(d) + ", " + dayName(d) + " · " + rows.length + " transfer</span></div>" +
+      (S.drivers.length ? "" : '<p class="okmsg" style="background:#fff4d1;color:var(--mustard-ink)">Henüz şoför eklenmemiş. <a href="#soforler">Şoförler / Araçlar</a> sayfasından ekleyin.</p>') +
+      '<div class="tbl-wrap"><table class="t"><thead><tr><th>Saat</th><th>Güzergâh</th><th>Uçuş</th><th>Yolcu</th><th>Araç / kişi</th><th class="num">Tahsilat</th><th>Şoför</th><th></th></tr></thead><tbody>' +
+      (rows.length ? rows.map(function (l, i) {
+        var b = l.b;
+        return '<tr class="s-' + b.status + '"><td><b>' + l.time + '</b> <span class="leg-tag' + (l.leg === "back" ? " back" : "") + '">' + (l.leg === "back" ? "DÖNÜŞ" : "GİDİŞ") + "</span></td>" +
+          "<td><b>" + esc(zn(l.from)) + " → " + esc(zn(l.to)) + "</b>" + (l.fromAddr ? '<span class="sub">Alış: ' + esc(l.fromAddr) + "</span>" : "") + (l.toAddr ? '<span class="sub">Bırakış: ' + esc(l.toAddr) + "</span>" : "") + "</td>" +
+          "<td>" + esc(l.flight || "-") + "</td><td><b>" + esc(b.name) + '</b><span class="sub tel">' + esc(b.phone) + "</span></td><td>" + esc(cn(b.car)) + '<span class="sub">' + b.pax + " kişi" + (b.bags ? ", " + b.bags + " bagaj" : "") + "</span></td>" +
+          '<td class="num">' + (l.leg === "out" || !b.ret ? money(b) : "-") + "</td>" +
+          '<td><select class="inp drv" data-i="' + i + '">' + opt(l) + "</select>" + (b.status === "request" ? '<span class="sub" style="color:var(--mustard-ink)">Henüz onaylanmadı</span>' : "") + "</td>" +
+          '<td class="acts">' + (l.drv && l.drv.phone ? '<a class="btn wa sm" href="' + waLink(l.drv.phone, driverText(l)) + '" target="_blank" rel="noopener">' + ic("wa") + "Şoföre gönder</a> " : "") +
+          (b.status === "confirmed" ? '<button type="button" class="btn sm" data-done="' + b.id + '">Tamamlandı</button> ' : b.status === "done" ? '<span class="st s-done">Tamamlandı</span> ' : "") +
+          '<a class="ic" href="#rezervasyon/' + b.id + '" title="Detay" aria-label="Detay">' + ic("eye") + "</a></td></tr>";
+      }).join("") : '<tr><td colspan="8" class="empty">Bu gün için transfer yok.</td></tr>') + "</tbody></table></div>";
+    var go = function (x) { S.opsDate = x; history.replaceState(null, "", "#operasyonlar/" + x); ops(); };
+    $("#opd").addEventListener("change", function () { if (this.value) go(this.value); });
+    $$("[data-d]").forEach(function (bt) { bt.addEventListener("click", function () { go(addDays(d, +bt.getAttribute("data-d"))); }); });
+    $$("[data-day]").forEach(function (bt) { bt.addEventListener("click", function () { go(bt.getAttribute("data-day")); }); });
+    $$("select.drv").forEach(function (sel) {
+      sel.addEventListener("change", function () {
+        var l = rows[+sel.getAttribute("data-i")];
+        sel.disabled = true;
+        api("assign", { id: l.b.id, leg: l.leg, driver: sel.value, updatedAt: l.b.updatedAt }).then(function (j) { replace(j.booking); ops(); }).catch(function (e) { fail(e); ops(); });
+      });
+    });
+    $$("[data-done]").forEach(function (bt) { bt.addEventListener("click", function () { setStatus(byId(bt.getAttribute("data-done")), "done", "", ops); }); });
+  }
+
+  function setStatus(b, s, reason, then, notify) {
+    return api("status", { id: b.id, status: s, reason: reason, updatedAt: b.updatedAt, notify: notify !== false }).then(function (j) { replace(j.booking); drawNav(); (then || route)(); }).catch(fail);
+  }
+
+  // ---- Rezervasyon detayı ----
+  function detail(b) {
+    if (!b) { main.innerHTML = head("Rezervasyon bulunamadı") + '<a class="btn" href="#rezervasyonlar">Listeye dön</a>'; return; }
+    var kv = function (rows) { return '<dl class="kv">' + rows.filter(Boolean).map(function (r) { return "<dt>" + esc(r[0]) + "</dt><dd>" + r[1] + "</dd>"; }).join("") + "</dl>"; };
+    var legBox = function (l) {
+      return '<div class="box"><h2>' + (l.leg === "back" ? "Dönüş transferi" : "Gidiş transferi") + "</h2>" + kv([
+        ["Tarih", "<b>" + trDate(l.date) + " " + l.time + "</b> · " + dayName(l.date)],
+        ["Alış", esc(zn(l.from)) + (l.fromAddr ? " · " + esc(l.fromAddr) : "")],
+        ["Bırakış", esc(zn(l.to)) + (l.toAddr ? " · " + esc(l.toAddr) : "")],
+        l.flight ? ["Uçuş", esc(l.flight)] : null,
+        ["Şoför", l.drv ? esc(l.drv.name) + (l.drv.plate ? " · " + esc(l.drv.plate) : "") + (l.drv.phone ? " · " + esc(l.drv.phone) : "") : '<span class="muted">Atanmadı</span>']
+      ]) + '<div class="row" style="margin-top:12px"><select class="inp drv" data-leg="' + l.leg + '" style="max-width:260px"><option value="">Şoför seçin</option>' +
+        S.drivers.map(function (v) { return '<option value="' + esc(v.id) + '"' + (l.drv && l.drv.id === v.id ? " selected" : "") + ">" + esc(v.name + (v.plate ? " · " + v.plate : "")) + "</option>"; }).join("") + "</select>" +
+        (l.drv && l.drv.phone ? '<a class="btn wa sm" href="' + waLink(l.drv.phone, driverText(l)) + '" target="_blank" rel="noopener">' + ic("wa") + "Şoföre gönder</a>" : "") + "</div></div>";
+    };
+    var acts = [];
+    if (b.status === "request") acts.push('<button class="btn g" data-s="confirmed">Onayla ve mail gönder</button>', '<button class="btn r" data-s="declined">Reddet</button>');
+    if (b.status === "confirmed") acts.push('<button class="btn k" data-s="done">Tamamlandı</button>', '<button class="btn r" data-s="cancelled">İptal et</button>');
+    if (b.status === "declined" || b.status === "cancelled") acts.push('<button class="btn" data-s="request">Talebe geri al</button>');
+    main.innerHTML = '<div class="ph"><div><div class="dhead"><h1>' + esc(b.ref) + '</h1><span class="st s-' + b.status + '">' + LABEL[b.status] + "</span></div><p>" +
+      (b.source === "panel" ? "Panelden eklendi" : "Siteden geldi") + " · " + stamp(b.createdAt) + "</p></div>" +
+      '<div class="row"><a class="btn" href="#duzenle/' + b.id + '">' + ic("edit") + "Düzenle</a>" + acts.join("") + "</div></div>" +
+      '<div class="cols"><div>' + legs(b).map(legBox).join("") + "</div><div>" +
+      '<div class="box"><h2>Müşteri</h2>' + kv([["Ad soyad", "<b>" + esc(b.name) + "</b>"], ["Telefon", esc(b.phone) + ' <a class="ic wa" href="' + waLink(b.phone) + '" target="_blank" rel="noopener" aria-label="WhatsApp">' + ic("wa") + "</a>"],
+        ["E-posta", b.email ? '<a href="mailto:' + esc(b.email) + '">' + esc(b.email) + "</a>" : "-"], ["Dil", LANG[b.lang] || b.lang]]) + "</div>" +
+      '<div class="box"><h2>Rezervasyon</h2>' + kv([["Araç", esc(cn(b.car))], ["Kişi / bagaj", b.pax + " / " + (b.bags || 0)], b.childSeats ? ["Çocuk koltuğu", b.childSeats] : null,
+        ["Fiyat", "<b>" + money(b) + "</b>" + (b.price && b.price.manual ? ' <span class="muted small">(elle girildi)</span>' : "")], ["Ödeme", "Araçta şoföre nakit"],
+        b.note ? ["Müşteri notu", esc(b.note)] : null, b.adminNote ? ["Ofis notu", esc(b.adminNote)] : null, b.driver ? ["Şoför (eski)", esc(b.driver)] : null]) + "</div>" +
+      '<div class="box"><h2>Geçmiş</h2><ul class="hist">' + (b.history || []).slice().reverse().map(function (h) { return "<li><time>" + stamp(h.at) + "</time>" + esc(h.text) + "</li>"; }).join("") + "</ul></div></div></div>";
+    $$("[data-s]").forEach(function (bt) {
+      bt.addEventListener("click", function () {
+        var s = bt.getAttribute("data-s"), reason = "";
+        if (s === "declined" || s === "cancelled") { reason = prompt(s === "declined" ? "Red sebebi (müşteriye giden maile yazılır, boş bırakılabilir):" : "İptal sebebi (geçmişe yazılır):", ""); if (reason === null) return; }
+        if (s === "confirmed" && !b.email && !confirm("Müşterinin e-postası yok, mail gönderilmeyecek. Onaylansın mı?")) return;
+        bt.disabled = true;
+        setStatus(b, s, reason, function () { detail(byId(b.id)); });
+      });
+    });
+    $$("select.drv").forEach(function (sel) {
+      sel.addEventListener("change", function () {
+        sel.disabled = true;
+        api("assign", { id: b.id, leg: sel.getAttribute("data-leg"), driver: sel.value, updatedAt: b.updatedAt }).then(function (j) { replace(j.booking); detail(j.booking); }).catch(function (e) { fail(e); detail(b); });
+      });
+    });
+  }
+
+  // ---- Manuel rezervasyon / düzenle ----
+  var TIMES = (function () { var o = []; for (var i = 0; i < 96; i++) o.push(("0" + (i >> 2)).slice(-2) + ":" + ("0" + i % 4 * 15).slice(-2)); return o; })();
+  function timeSel(name, v) {
+    var list = v && TIMES.indexOf(v) < 0 ? [v].concat(TIMES) : TIMES;
+    return '<select name="' + name + '" class="tsel">' + list.map(function (t) { return "<option" + (t === (v || "12:00") ? " selected" : "") + ">" + t + "</option>"; }).join("") + "</select>";
+  }
+  function zoneOpts(v) {
+    var g = { airport: "Havalimanları", district: "Semtler", port: "Liman" };
+    return '<option value="">Seçin</option>' + Object.keys(g).map(function (t) {
+      return '<optgroup label="' + g[t] + '">' + PR.zones.filter(function (z) { return z.type === t; }).map(function (z) { return '<option value="' + z.id + '"' + (v === z.id ? " selected" : "") + ">" + esc(zn(z.id)) + "</option>"; }).join("") + "</optgroup>";
+    }).join("");
+  }
+  function form(b) {
+    var edit = !!b;
+    if (location.hash.indexOf("#duzenle") === 0 && !b) { main.innerHTML = head("Rezervasyon bulunamadı") + '<a class="btn" href="#rezervasyonlar">Listeye dön</a>'; return; }
+    b = b || { lang: "en", from: "", to: "", car: "sedan", date: today(1), time: "12:00", pax: 2, bags: 2, childSeats: 0, ret: null };
+    var r = b.ret || {};
+    var f = function (label, html, cls) { return '<label class="f' + (cls ? " " + cls : "") + '">' + label + html + "</label>"; };
+    var inp = function (name, v, type, ph) { return '<input name="' + name + '" type="' + (type || "text") + '" value="' + esc(v == null ? "" : v) + '"' + (ph ? ' placeholder="' + esc(ph) + '"' : "") + ">"; };
+    var num = function (name, v, max) { var o = ""; for (var i = name === "pax" ? 1 : 0; i <= max; i++) o += "<option" + (+v === i ? " selected" : "") + ">" + i + "</option>"; return '<select name="' + name + '">' + o + "</select>"; };
+    main.innerHTML = head(edit ? "Rezervasyonu düzenle · " + b.ref : "Manuel rezervasyon", edit ? "Değişiklikler kaydedilince geçmişe yazılır." : "Telefonla veya WhatsApp'tan gelen rezervasyonları buradan ekleyin.",
+      edit ? '<a class="btn" href="#rezervasyon/' + b.id + '">Vazgeç</a>' : "") +
+      '<form id="bf" novalidate>' +
+      '<div class="box"><h2>Müşteri</h2><div class="grid">' + f("Ad soyad *", inp("name", b.name)) + f("Telefon *", inp("phone", b.phone, "tel", "+44 7700 900123")) + f("E-posta", inp("email", b.email, "email")) +
+      f("Mail dili", '<select name="lang">' + Object.keys(LANG).map(function (k) { return '<option value="' + k + '"' + (b.lang === k ? " selected" : "") + ">" + LANG[k] + "</option>"; }).join("") + "</select>") + "</div></div>" +
+      '<div class="box"><h2>Transfer</h2><div class="grid g4">' + f("Nereden *", '<select name="from">' + zoneOpts(b.from) + "</select>") + f("Nereye *", '<select name="to">' + zoneOpts(b.to) + "</select>") +
+      f("Tarih *", inp("date", b.date, "date")) + f("Alış saati *", timeSel("time", b.time)) +
+      f("Uçuş kodu", inp("flight", b.flight, "text", "TK1980")) + f("Alış adresi / otel", inp("pickup", b.pickup), "span2") + f("Bırakış adresi / otel", inp("dropoff", b.dropoff)) + "</div>" +
+      '<label class="check" style="margin-top:14px"><input type="checkbox" name="hasRet"' + (b.ret ? " checked" : "") + "> Dönüş transferi var</label>" +
+      '<div class="grid g4" id="retbox" style="margin-top:12px"' + (b.ret ? "" : " hidden") + ">" + f("Dönüş tarihi", inp("rdate", r.date || b.date, "date")) + f("Dönüş saati", timeSel("rtime", r.time || "10:00")) +
+      f("Dönüş uçuş kodu", inp("rflight", r.flight)) + f("Dönüşte alış adresi", inp("rpickup", r.pickup)) + "</div></div>" +
+      '<div class="box"><h2>Araç, kişi ve fiyat</h2><div class="grid g4">' +
+      f("Araç *", '<select name="car">' + PR.cars.map(function (c) { return '<option value="' + c.id + '"' + (b.car === c.id ? " selected" : "") + ">" + esc(cn(c.id)) + " (en çok " + c.seats + " kişi)</option>"; }).join("") + "</select>") +
+      f("Kişi", num("pax", b.pax, 16)) + f("Bagaj", num("bags", b.bags || 0, 30)) + f("Çocuk koltuğu", num("childSeats", b.childSeats || 0, 4)) +
+      f('Fiyat (€) <span class="price-hint" id="phint"></span>', inp("price", b.price && b.price.manual ? b.price.total : "", "number", "Boşsa fiyat listesinden")) +
+      f("Müşteri notu", '<textarea name="note">' + esc(b.note || "") + "</textarea>", "span2") + f("Ofis notu (müşteri görmez)", '<textarea name="adminNote">' + esc(b.adminNote || "") + "</textarea>") + "</div></div>" +
+      '<div class="box"><div class="row">' + (edit ? "" : '<label class="f" style="min-width:200px">Durum<select name="status"><option value="confirmed">Onaylandı</option><option value="request">Talep (sonra onaylanacak)</option></select></label>') +
+      '<label class="check" style="margin-top:' + (edit ? "0" : "20px") + '"><input type="checkbox" name="notify"' + (edit ? "" : " checked") + "> " + (edit ? "Güncel bilgileri müşteriye mail at (onaylıysa)" : "Müşteriye onay maili gönder") + "</label></div>" +
+      '<p class="err" id="ferr" hidden style="margin-top:12px"></p><div class="row" style="margin-top:14px"><button class="btn y" type="submit">' + (edit ? "Kaydet" : "Rezervasyonu kaydet") + "</button>" +
+      (edit ? '<a class="btn" href="#rezervasyon/' + b.id + '">Vazgeç</a>' : "") + "</div></div></form>";
+    var fm = $("#bf"), el = fm.elements;
+    $$("select.tsel", fm).forEach(TimeWheel.attach);
+    el.hasRet.addEventListener("change", function () { $("#retbox").hidden = !el.hasRet.checked; hint(); });
+    // Price list price as a hint; the typed price wins
+    function hint() {
+      var q = el.from.value && el.to.value ? Quote.quote(PR, { from: el.from.value, to: el.to.value, car: el.car.value, time: el.time.value, ret: el.hasRet.checked ? { time: el.rtime.value } : null, childSeats: +el.childSeats.value }) : null;
+      $("#phint").textContent = q ? "· listeye göre " + q.total + " €" : el.from.value && el.to.value ? "· listede fiyat yok, elle girin" : "";
+    }
+    ["from", "to", "car", "time", "rtime", "childSeats"].forEach(function (n) { el[n].addEventListener("change", hint); });
+    hint();
+    fm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var x = {
+        lang: el.lang.value, name: el.name.value, phone: el.phone.value, email: el.email.value, from: el.from.value, to: el.to.value, date: el.date.value, time: el.time.value,
+        flight: el.flight.value, pickup: el.pickup.value, dropoff: el.dropoff.value, car: el.car.value, pax: +el.pax.value, bags: +el.bags.value, childSeats: +el.childSeats.value,
+        price: el.price.value, note: el.note.value, adminNote: el.adminNote.value, notify: el.notify.checked,
+        ret: el.hasRet.checked ? { date: el.rdate.value, time: el.rtime.value, flight: el.rflight.value, pickup: el.rpickup.value } : null
+      };
+      if (edit) { x.id = b.id; x.updatedAt = b.updatedAt; } else x.status = el.status.value;
+      var btn = $("button[type=submit]", fm);
+      btn.disabled = true; $("#ferr").hidden = true;
+      api("save", x).then(function (j) { replace(j.booking); drawNav(); location.hash = "#rezervasyon/" + j.booking.id; })
+        .catch(function (err) { btn.disabled = false; $("#ferr").textContent = err.message; $("#ferr").hidden = false; });
+    });
+  }
+
+  // ---- Şoförler / Araçlar ----
+  function drivers() {
+    var list = S.drivers.map(function (d) { return Object.assign({}, d); });
+    function draw() {
+      main.innerHTML = head("Şoförler / Araçlar", "Transferleri verdiğiniz şoförler. Telefon WhatsApp için uluslararası biçimde olmalı (+90 5xx ...).") +
+        '<div class="tbl-wrap"><table class="t"><thead><tr><th>Ad soyad</th><th>Telefon</th><th>Plaka</th><th>Araç</th><th>Not</th><th></th></tr></thead><tbody>' +
+        (list.length ? list.map(function (d, i) {
+          var c = function (k, ph) { return '<td><input class="inp" data-i="' + i + '" data-k="' + k + '" value="' + esc(d[k] || "") + '" placeholder="' + ph + '"></td>'; };
+          return "<tr>" + c("name", "Ad soyad") + c("phone", "+90 5xx xxx xx xx") + c("plate", "34 ABC 123") + c("car", "Vito, siyah") + c("note", "") +
+            '<td class="acts"><button type="button" class="btn sm r" data-del="' + i + '">Sil</button></td></tr>';
+        }).join("") : '<tr><td colspan="6" class="empty">Henüz şoför yok.</td></tr>') + "</tbody></table></div>" +
+        '<p class="err" id="derr" hidden style="margin-top:12px"></p><div class="row" style="margin-top:14px"><button type="button" class="btn" id="dadd">' + ic("plus") + 'Şoför ekle</button><button type="button" class="btn y" id="dsave">Kaydet</button><span id="dok" class="muted"></span></div>';
+      $$("input[data-k]").forEach(function (x) { x.addEventListener("input", function () { list[+x.getAttribute("data-i")][x.getAttribute("data-k")] = x.value; $("#dok").textContent = "Kaydedilmemiş değişiklik var"; }); });
+      $$("[data-del]").forEach(function (x) { x.addEventListener("click", function () { list.splice(+x.getAttribute("data-del"), 1); draw(); $("#dok").textContent = "Kaydedilmemiş değişiklik var"; }); });
+      $("#dadd").addEventListener("click", function () { list.push({ name: "", phone: "", plate: "", car: "", note: "" }); draw(); var ins = $$("input[data-k=name]"); ins[ins.length - 1].focus(); });
+      $("#dsave").addEventListener("click", function () {
+        var bt = this; bt.disabled = true;
+        api("drivers", { drivers: list.filter(function (d) { return String(d.name || "").trim(); }) }).then(function (j) { S.drivers = j.drivers; list = j.drivers.map(function (d) { return Object.assign({}, d); }); draw(); $("#dok").textContent = "Kaydedildi."; })
+          .catch(function (e) { bt.disabled = false; $("#derr").textContent = e.message; $("#derr").hidden = false; });
+      });
+    }
+    draw();
+  }
+
+  // ---- Start ----
+  function load() {
+    return Promise.all([api("list"), api("drivers")]).then(function (r) { S.list = r[0].bookings; S.drivers = r[1].drivers; $("#login").hidden = true; route(); });
+  }
+  function showLogin(msg) {
+    $("#login").hidden = false;
+    var e = $("#login-err"); e.hidden = !msg; e.textContent = msg || "";
+    setTimeout(function () { $("#login-form").elements.pw.focus(); }, 0);
+  }
+  $("#login-form").addEventListener("submit", function (e) {
+    e.preventDefault();
+    api("login", { password: this.elements.pw.value }).then(load).catch(function (err) { showLogin(err.message); });
+  });
+  $("#logout").addEventListener("click", function () { api("logout", {}).then(function () { location.reload(); }); });
+  api("me").then(function (j) { if (j.signedIn) return load(); showLogin(); }).catch(function (e) { main.innerHTML = '<p class="err">' + esc(e.message) + "</p>"; });
+  // Bookings made meanwhile on the site come in when the tab is opened again
+  document.addEventListener("visibilitychange", function () { if (!document.hidden && $("#login").hidden && !$("#bf")) load().catch(function () {}); });
+})();
 </script>
 </body></html>

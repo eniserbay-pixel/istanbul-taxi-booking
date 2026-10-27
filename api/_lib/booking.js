@@ -47,10 +47,41 @@ function problems(b) {
   return out;
 }
 
+// A booking typed in the admin panel (phone, WhatsApp) or edited there. Same fields as the site's, plus the
+// price the office agreed (when empty the price list's) and its own note. E-mail is optional here.
+const LANGS = ["en", "ru", "de", "fr", "it", "nl"];
+function cleanAdmin(x) {
+  x = x || {};
+  const b = clean(Object.assign({}, x, { ref: "" }));
+  b.lang = LANGS.includes(x.lang) ? x.lang : "en";
+  const price = Number(x.price);
+  b.manualPrice = Number.isFinite(price) && price > 0 && price < 100000 ? Math.round(price) : 0;
+  b.adminNote = str(x.adminNote, 600);
+  return b;
+}
+function adminProblems(b) {
+  const out = [];
+  const car = P.cars.find(c => c.id === b.car);
+  if (!Q.zone(P, b.from) || !Q.zone(P, b.to) || b.from === b.to) out.push("Güzergâh");
+  if (!car) out.push("Araç");
+  if (!DATE.test(b.date) || !TIME.test(b.time)) out.push("Tarih / saat");
+  if (b.ret && (!DATE.test(b.ret.date) || !TIME.test(b.ret.time) || b.ret.date + b.ret.time <= b.date + b.time)) out.push("Dönüş tarihi / saati");
+  if (b.name.length < 2) out.push("Ad soyad");
+  if (!/^\+?[0-9 ()-]{7,20}$/.test(b.phone)) out.push("Telefon");
+  if (b.email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(b.email)) out.push("E-posta");
+  if (!b.manualPrice && !Q.quote(P, b)) out.push("Fiyat (bu güzergâh için fiyat listesinde fiyat yok, elle girin)");
+  return out;
+}
+// Price of a booking: what the office typed, else the price list's
+function priceOf(b) {
+  const q = Q.quote(P, b) || { out: 0, back: 0, seats: 0, total: 0 };
+  return b.manualPrice ? { out: b.manualPrice, back: 0, seats: 0, total: b.manualPrice, manual: true } : q;
+}
+
 // Pickup date in Istanbul must not be in the past
 function inPast(b) {
   const now = new Date(Date.now() + 3 * 3600e3).toISOString().slice(0, 16).replace("T", " ");
   return b.date + " " + b.time < now;
 }
 
-module.exports = { STATUSES, clean, problems, inPast, str, P, Q };
+module.exports = { STATUSES, clean, problems, cleanAdmin, adminProblems, priceOf, inPast, str, P, Q };
