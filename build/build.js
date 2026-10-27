@@ -54,7 +54,7 @@ ${o.alt ? `<a class="lang" href="${o.alt}" hreflang="${other}" lang="${other}">$
   const popular = [["IST", "sultanahmet"], ["IST", "taksim"], ["IST", "kadikoy"], ["SAW", "taksim"], ["SAW", "kadikoy"], ["SAW", "sultanahmet"]];
   const footer = `<footer class="foot"><div class="wrap foot-in">
 <div><a class="logo" href="${p.home}"><img src="/img/logo.webp" alt="${esc(site.brand)}" width="141" height="80" loading="lazy"></a>
-<p>${esc(site.company)}<br>${esc(site.address)}<br>${t.footer.tursab}: ${esc(site.tursab)}</p></div>
+<p>${esc(site.company)}<br>${esc(site.address[o.lang])}<br>${t.footer.tursab}: ${esc(site.tursab)}</p></div>
 <div><h3>${t.footer.routes}</h3>${popular.map(([a, z]) => `<a href="${p.route(a, Q.zone(P, z).slug)}">${esc(Q.zone(P, a).short[o.lang])} → ${esc(Q.zone(P, z).short[o.lang])}</a>`).join("")}</div>
 <div><h3>${t.footer.contact}</h3><a href="https://wa.me/${site.whatsapp}" rel="noopener">WhatsApp ${esc(site.phone)}</a><a href="tel:${site.phone.replace(/\s/g, "")}">${esc(site.phone)}</a><a href="mailto:${site.email}">${esc(site.email)}</a></div>
 <div><h3>${t.footer.legal}</h3><a href="${p.terms}">${t.ui.terms}</a><a href="${p.privacy}">${t.ui.privacy}</a><a href="${p.prices}">${t.nav.prices}</a><a href="${p.blog}">${t.nav.blog}</a></div>
@@ -252,7 +252,7 @@ function legalPages(lang) {
   const t = I[lang], other = OTHER(lang);
   ["terms", "privacy"].forEach(k => {
     const L = legal[lang][k];
-    page({ lang, path: t.paths[k], alt: I[other].paths[k], title: L.title + " · " + site.brand, desc: L.desc, body: `<section class="sec"><div class="wrap narrow prose"><h1>${L.title}</h1>${fill(L.html, site)}</div></section>` });
+    page({ lang, path: t.paths[k], alt: I[other].paths[k], title: L.title + " · " + site.brand, desc: L.desc, body: `<section class="sec"><div class="wrap narrow prose"><h1>${L.title}</h1>${fill(L.html, { ...site, address: site.address[lang] })}</div></section>` });
   });
 }
 

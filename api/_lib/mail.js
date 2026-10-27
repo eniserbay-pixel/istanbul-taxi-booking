@@ -32,6 +32,11 @@ const T = {
 };
 
 function zoneName(id, lang) { const z = Q.zone(P, id); return z ? z.name[lang] : id; }
+// 2026-10-28 → "28 Oct 2026" / "28 окт. 2026 г." / "28 Eki 2026"
+function day(d, lang) {
+  const t = new Date(d + "T12:00:00Z");
+  return isNaN(t) ? d : t.toLocaleDateString({ en: "en-GB", ru: "ru-RU", tr: "tr-TR" }[lang] || "en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
+}
 function carName(id, lang) { const c = P.cars.find(x => x.id === id); return c ? c.name[lang] : id; }
 
 function details(b) {
@@ -39,9 +44,9 @@ function details(b) {
   const rows = [
     [t.ref, b.ref],
     [t.route, zoneName(b.from, L) + " → " + zoneName(b.to, L)],
-    [t.when, b.date + " " + b.time + (b.pickup ? " · " + b.pickup : "")],
+    [t.when, day(b.date, L) + " " + b.time + (b.pickup ? " · " + b.pickup : "")],
     b.flight ? [t.flight, b.flight] : null,
-    b.ret ? [t.back, b.ret.date + " " + b.ret.time + (b.ret.flight ? " · " + b.ret.flight : "")] : null,
+    b.ret ? [t.back, day(b.ret.date, L) + " " + b.ret.time + (b.ret.flight ? " · " + b.ret.flight : "")] : null,
     [t.car, carName(b.car, L)],
     [t.pax, String(b.pax)],
     [t.total, b.price.total + " " + P.currency],

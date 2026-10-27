@@ -94,14 +94,14 @@ p { margin: 0 0 1em; }
 /* Search form */
 .search { background: var(--ice); color: var(--ink); border-radius: var(--r); padding: 22px; box-shadow: var(--shadow); display: grid; gap: 12px; }
 .search-h { font-size: 20px; margin: 0; }
-.search label { display: grid; gap: 4px; font-size: 13px; font-weight: 700; color: var(--muted); }
+.search label { display: grid; gap: 4px; min-width: 0; font-size: 13px; font-weight: 700; color: var(--muted); }
 .search select, .search input, .form input, .form select, .form textarea {
-  width: 100%; font: inherit; font-size: 16px; color: var(--ink); background: var(--white); border: 1.5px solid var(--line); border-radius: 10px; padding: 0 12px; height: 46px; }
+  width: 100%; min-width: 0; font: inherit; font-size: 16px; color: var(--ink); background: var(--white); border: 1.5px solid var(--line); border-radius: 10px; padding: 0 12px; height: 46px; }
 .form textarea { height: auto; padding: 11px 12px; }
 .search select:focus, .search input:focus, .form input:focus, .form select:focus, .form textarea:focus { border-color: var(--black); outline: none; box-shadow: 0 0 0 3px rgba(225, 173, 1, .45); }
 .row2 { display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; align-items: end; }
 .row2.ret { grid-template-columns: 1fr 1fr; }
-.row3 { display: grid; grid-template-columns: 1.2fr 1fr .8fr; gap: 10px; }
+.row3 { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, .8fr); gap: 10px; }
 /* Wide (horizontal) booking box on desktop: one row of fields, the return option under it */
 @media (min-width: 1000px) {
   .search.wide { grid-template-columns: 1.4fr auto 1.4fr 1.05fr .85fr .6fr auto; align-items: end; padding: 20px 22px; column-gap: 10px; }
@@ -121,6 +121,12 @@ p { margin: 0 0 1em; }
   .row2 { grid-template-columns: 1fr; }
   .swap { justify-self: end; margin: -6px 0; height: 34px; }
 }
+/* Narrow box beside the booking steps: stack the fields as on a phone */
+.book-side .row3 { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+.book-side .row3 label:last-child { grid-column: span 2; }
+.book-side .row2 { grid-template-columns: 1fr; }
+.book-side .row2.ret { grid-template-columns: 1fr 1fr; }
+.book-side .swap { justify-self: end; margin: -6px 0; height: 34px; }
 
 /* Sections */
 .sec { padding: 64px 0; }

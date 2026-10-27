@@ -6,7 +6,10 @@
  "email": "info@istanbultaxibooking.com",
  "tursab": "0000",
  "company": "ITB Transfer Turizm Ltd. Şti.",
- "address": "İstanbul, Türkiye",
+ "address": {
+  "en": "Istanbul, Türkiye",
+  "ru": "Стамбул, Турция"
+ },
  "meet": {
   "IST": {
    "en": "Your driver waits in the arrivals hall, at the exit you name on booking (usually Exit 13), holding a sign with your name.",
