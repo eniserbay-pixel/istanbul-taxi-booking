@@ -1,0 +1,1029 @@
+{
+ "currency": "EUR",
+ "zones": [
+  {
+   "id": "IST",
+   "type": "airport",
+   "slug": "istanbul-airport",
+   "name": {
+    "en": "Istanbul Airport (IST)",
+    "tr": "İstanbul Havalimanı (IST)",
+    "ru": "Аэропорт Стамбула (IST)"
+   },
+   "short": {
+    "en": "Istanbul Airport",
+    "tr": "İstanbul Havalimanı",
+    "ru": "Аэропорт Стамбула"
+   }
+  },
+  {
+   "id": "SAW",
+   "type": "airport",
+   "slug": "sabiha-gokcen-airport",
+   "name": {
+    "en": "Sabiha Gökçen Airport (SAW)",
+    "tr": "Sabiha Gökçen Havalimanı (SAW)",
+    "ru": "Аэропорт Сабиха Гёкчен (SAW)"
+   },
+   "short": {
+    "en": "Sabiha Gökçen",
+    "tr": "Sabiha Gökçen",
+    "ru": "Сабиха Гёкчен"
+   }
+  },
+  {
+   "id": "sultanahmet",
+   "type": "district",
+   "slug": "sultanahmet",
+   "name": {
+    "en": "Sultanahmet / Old City",
+    "tr": "Sultanahmet / Tarihi Yarımada",
+    "ru": "Султанахмет / Старый город"
+   },
+   "short": {
+    "en": "Sultanahmet",
+    "tr": "Sultanahmet",
+    "ru": "Султанахмет"
+   },
+   "area": {
+    "en": "Sultanahmet, Fatih, Sirkeci, Eminönü, Beyazıt, Laleli",
+    "tr": "Sultanahmet, Fatih, Sirkeci, Eminönü, Beyazıt, Laleli",
+    "ru": "Султанахмет, Фатих, Сиркеджи, Эминёню, Беязыт, Лалели"
+   }
+  },
+  {
+   "id": "taksim",
+   "type": "district",
+   "slug": "taksim",
+   "name": {
+    "en": "Taksim / Beyoğlu",
+    "tr": "Taksim / Beyoğlu",
+    "ru": "Таксим / Бейоглу"
+   },
+   "short": {
+    "en": "Taksim",
+    "tr": "Taksim",
+    "ru": "Таксим"
+   },
+   "area": {
+    "en": "Taksim, Beyoğlu, İstiklal Avenue, Cihangir, Harbiye",
+    "tr": "Taksim, Beyoğlu, İstiklal Caddesi, Cihangir, Harbiye",
+    "ru": "Таксим, Бейоглу, проспект Истикляль, Джихангир, Харбийе"
+   }
+  },
+  {
+   "id": "karakoy",
+   "type": "district",
+   "slug": "karakoy",
+   "name": {
+    "en": "Karaköy / Galata",
+    "tr": "Karaköy / Galata",
+    "ru": "Каракёй / Галата"
+   },
+   "short": {
+    "en": "Karaköy",
+    "tr": "Karaköy",
+    "ru": "Каракёй"
+   },
+   "area": {
+    "en": "Karaköy, Galata, Tophane, Kasımpaşa",
+    "tr": "Karaköy, Galata, Tophane, Kasımpaşa",
+    "ru": "Каракёй, Галата, Топхане, Касымпаша"
+   }
+  },
+  {
+   "id": "galataport",
+   "type": "port",
+   "slug": "galataport-cruise-port",
+   "name": {
+    "en": "Galataport Cruise Port",
+    "tr": "Galataport Kruvaziyer Limanı",
+    "ru": "Круизный порт Галатапорт"
+   },
+   "short": {
+    "en": "Galataport",
+    "tr": "Galataport",
+    "ru": "Галатапорт"
+   },
+   "area": {
+    "en": "Galataport cruise terminal, Tophane",
+    "tr": "Galataport kruvaziyer terminali, Tophane",
+    "ru": "Круизный терминал Галатапорт, Топхане"
+   }
+  },
+  {
+   "id": "besiktas",
+   "type": "district",
+   "slug": "besiktas",
+   "name": {
+    "en": "Beşiktaş / Ortaköy",
+    "tr": "Beşiktaş / Ortaköy",
+    "ru": "Бешикташ / Ортакёй"
+   },
+   "short": {
+    "en": "Beşiktaş",
+    "tr": "Beşiktaş",
+    "ru": "Бешикташ"
+   },
+   "area": {
+    "en": "Beşiktaş, Ortaköy, Bebek, Levent, Etiler",
+    "tr": "Beşiktaş, Ortaköy, Bebek, Levent, Etiler",
+    "ru": "Бешикташ, Ортакёй, Бебек, Левент, Этилер"
+   }
+  },
+  {
+   "id": "sisli",
+   "type": "district",
+   "slug": "sisli",
+   "name": {
+    "en": "Şişli / Nişantaşı",
+    "tr": "Şişli / Nişantaşı",
+    "ru": "Шишли / Нишанташи"
+   },
+   "short": {
+    "en": "Şişli",
+    "tr": "Şişli",
+    "ru": "Шишли"
+   },
+   "area": {
+    "en": "Şişli, Nişantaşı, Mecidiyeköy, Kağıthane, Maslak",
+    "tr": "Şişli, Nişantaşı, Mecidiyeköy, Kağıthane, Maslak",
+    "ru": "Шишли, Нишанташи, Меджидиекёй, Кягытхане, Маслак"
+   }
+  },
+  {
+   "id": "sariyer",
+   "type": "district",
+   "slug": "sariyer",
+   "name": {
+    "en": "Sarıyer",
+    "tr": "Sarıyer",
+    "ru": "Сарыер"
+   },
+   "short": {
+    "en": "Sarıyer",
+    "tr": "Sarıyer",
+    "ru": "Сарыер"
+   },
+   "area": {
+    "en": "Sarıyer, Tarabya, Yeniköy, İstinye, Emirgan",
+    "tr": "Sarıyer, Tarabya, Yeniköy, İstinye, Emirgan",
+    "ru": "Сарыер, Тарабья, Йеникёй, Истинье, Эмирган"
+   }
+  },
+  {
+   "id": "bakirkoy",
+   "type": "district",
+   "slug": "bakirkoy",
+   "name": {
+    "en": "Bakırköy / Yeşilköy",
+    "tr": "Bakırköy / Yeşilköy",
+    "ru": "Бакыркёй / Ешилькёй"
+   },
+   "short": {
+    "en": "Bakırköy",
+    "tr": "Bakırköy",
+    "ru": "Бакыркёй"
+   },
+   "area": {
+    "en": "Bakırköy, Yeşilköy, Ataköy, Zeytinburnu, Florya",
+    "tr": "Bakırköy, Yeşilköy, Ataköy, Zeytinburnu, Florya",
+    "ru": "Бакыркёй, Ешилькёй, Атакёй, Зейтинбурну, Флорья"
+   }
+  },
+  {
+   "id": "beylikduzu",
+   "type": "district",
+   "slug": "beylikduzu",
+   "name": {
+    "en": "Beylikdüzü / Esenyurt",
+    "tr": "Beylikdüzü / Esenyurt",
+    "ru": "Бейликдюзю / Эсеньюрт"
+   },
+   "short": {
+    "en": "Beylikdüzü",
+    "tr": "Beylikdüzü",
+    "ru": "Бейликдюзю"
+   },
+   "area": {
+    "en": "Beylikdüzü, Esenyurt, Avcılar, Küçükçekmece",
+    "tr": "Beylikdüzü, Esenyurt, Avcılar, Küçükçekmece",
+    "ru": "Бейликдюзю, Эсеньюрт, Авджылар, Кючюкчекмедже"
+   }
+  },
+  {
+   "id": "kadikoy",
+   "type": "district",
+   "slug": "kadikoy",
+   "name": {
+    "en": "Kadıköy / Moda",
+    "tr": "Kadıköy / Moda",
+    "ru": "Кадыкёй / Мода"
+   },
+   "short": {
+    "en": "Kadıköy",
+    "tr": "Kadıköy",
+    "ru": "Кадыкёй"
+   },
+   "area": {
+    "en": "Kadıköy, Moda, Bağdat Avenue, Fenerbahçe",
+    "tr": "Kadıköy, Moda, Bağdat Caddesi, Fenerbahçe",
+    "ru": "Кадыкёй, Мода, улица Багдат, Фенербахче"
+   }
+  },
+  {
+   "id": "uskudar",
+   "type": "district",
+   "slug": "uskudar",
+   "name": {
+    "en": "Üsküdar",
+    "tr": "Üsküdar",
+    "ru": "Ускюдар"
+   },
+   "short": {
+    "en": "Üsküdar",
+    "tr": "Üsküdar",
+    "ru": "Ускюдар"
+   },
+   "area": {
+    "en": "Üsküdar, Beylerbeyi, Çengelköy, Kuzguncuk",
+    "tr": "Üsküdar, Beylerbeyi, Çengelköy, Kuzguncuk",
+    "ru": "Ускюдар, Бейлербейи, Ченгелькёй, Кузгунджук"
+   }
+  },
+  {
+   "id": "atasehir",
+   "type": "district",
+   "slug": "atasehir",
+   "name": {
+    "en": "Ataşehir / Ümraniye",
+    "tr": "Ataşehir / Ümraniye",
+    "ru": "Аташехир / Умрание"
+   },
+   "short": {
+    "en": "Ataşehir",
+    "tr": "Ataşehir",
+    "ru": "Аташехир"
+   },
+   "area": {
+    "en": "Ataşehir, Ümraniye, Kozyatağı, Maltepe",
+    "tr": "Ataşehir, Ümraniye, Kozyatağı, Maltepe",
+    "ru": "Аташехир, Умрание, Козятаги, Малтепе"
+   }
+  }
+ ],
+ "cars": [
+  {
+   "id": "sedan",
+   "name": {
+    "en": "Sedan",
+    "tr": "Sedan",
+    "ru": "Седан"
+   },
+   "models": {
+    "en": "Skoda Octavia, Toyota Corolla or similar",
+    "ru": "Skoda Octavia, Toyota Corolla или аналог"
+   },
+   "seats": 3,
+   "bags": 3,
+   "img": "/img/sedan.webp",
+   "note": {
+    "en": "Couples and solo travellers",
+    "tr": "Tek kişi ve çiftler",
+    "ru": "Пары и путешествующие в одиночку"
+   }
+  },
+  {
+   "id": "minivan",
+   "name": {
+    "en": "Minivan",
+    "tr": "Minivan",
+    "ru": "Минивэн"
+   },
+   "models": {
+    "en": "Mercedes Vito, Ford Tourneo or similar",
+    "ru": "Mercedes Vito, Ford Tourneo или аналог"
+   },
+   "seats": 7,
+   "bags": 7,
+   "img": "/img/minivan.webp",
+   "popular": true,
+   "note": {
+    "en": "Families and small groups",
+    "tr": "Aileler ve küçük gruplar",
+    "ru": "Семьи и небольшие группы"
+   }
+  },
+  {
+   "id": "vclass",
+   "name": {
+    "en": "Mercedes V-Class",
+    "tr": "Mercedes V-Class",
+    "ru": "Mercedes V-Class"
+   },
+   "models": {
+    "en": "Mercedes-Benz V-Class VIP",
+    "ru": "Mercedes-Benz V-Class VIP"
+   },
+   "seats": 6,
+   "bags": 6,
+   "img": "/img/vclass.webp",
+   "note": {
+    "en": "VIP comfort, business travel",
+    "tr": "VIP konfor, iş seyahati",
+    "ru": "VIP-комфорт, деловые поездки"
+   }
+  },
+  {
+   "id": "minibus",
+   "name": {
+    "en": "Minibus",
+    "tr": "Minibüs",
+    "ru": "Микроавтобус"
+   },
+   "models": {
+    "en": "Mercedes Sprinter or similar",
+    "ru": "Mercedes Sprinter или аналог"
+   },
+   "seats": 16,
+   "bags": 16,
+   "img": "/img/minibus.webp",
+   "note": {
+    "en": "Groups up to 16",
+    "tr": "16 kişiye kadar gruplar",
+    "ru": "Группы до 16 человек"
+   }
+  }
+ ],
+ "rules": {
+  "returnDiscountPct": 10,
+  "childSeat": 10,
+  "freeWaitMin": 60,
+  "peak": {
+   "IST": {
+    "from": "15:00",
+    "to": "19:00",
+    "pct": 30
+   },
+   "SAW": {
+    "from": "14:45",
+    "to": "21:00",
+    "pct": 30
+   }
+  }
+ },
+ "prices": {
+  "IST|SAW": {
+   "sedan": 67,
+   "minivan": 95,
+   "vclass": 141,
+   "minibus": 140
+  },
+  "IST|galataport": {
+   "sedan": 44,
+   "minivan": 58,
+   "vclass": 89,
+   "minibus": 89
+  },
+  "IST|taksim": {
+   "sedan": 42,
+   "minivan": 58,
+   "vclass": 89,
+   "minibus": 89
+  },
+  "IST|sultanahmet": {
+   "sedan": 46,
+   "minivan": 64,
+   "vclass": 97,
+   "minibus": 97
+  },
+  "IST|karakoy": {
+   "sedan": 44,
+   "minivan": 58,
+   "vclass": 89,
+   "minibus": 89
+  },
+  "IST|besiktas": {
+   "sedan": 44,
+   "minivan": 58,
+   "vclass": 89,
+   "minibus": 89
+  },
+  "IST|sisli": {
+   "sedan": 42,
+   "minivan": 58,
+   "vclass": 89,
+   "minibus": 89
+  },
+  "IST|sariyer": {
+   "sedan": 44,
+   "minivan": 60,
+   "vclass": 94,
+   "minibus": 94
+  },
+  "IST|bakirkoy": {
+   "sedan": 46,
+   "minivan": 62,
+   "vclass": 97,
+   "minibus": 95
+  },
+  "IST|beylikduzu": {
+   "sedan": 48,
+   "minivan": 67,
+   "vclass": 101,
+   "minibus": 100
+  },
+  "IST|kadikoy": {
+   "sedan": 55,
+   "minivan": 78,
+   "vclass": 117,
+   "minibus": 117
+  },
+  "IST|uskudar": {
+   "sedan": 48,
+   "minivan": 67,
+   "vclass": 101,
+   "minibus": 100
+  },
+  "IST|atasehir": {
+   "sedan": 58,
+   "minivan": 83,
+   "vclass": 123,
+   "minibus": 122
+  },
+  "SAW|galataport": {
+   "sedan": 46,
+   "minivan": 64,
+   "vclass": 97,
+   "minibus": 97
+  },
+  "SAW|taksim": {
+   "sedan": 50,
+   "minivan": 64,
+   "vclass": 97,
+   "minibus": 97
+  },
+  "SAW|sultanahmet": {
+   "sedan": 50,
+   "minivan": 67,
+   "vclass": 101,
+   "minibus": 100
+  },
+  "SAW|karakoy": {
+   "sedan": 46,
+   "minivan": 64,
+   "vclass": 97,
+   "minibus": 97
+  },
+  "SAW|besiktas": {
+   "sedan": 44,
+   "minivan": 61,
+   "vclass": 93,
+   "minibus": 92
+  },
+  "SAW|sisli": {
+   "sedan": 44,
+   "minivan": 61,
+   "vclass": 93,
+   "minibus": 92
+  },
+  "SAW|sariyer": {
+   "sedan": 49,
+   "minivan": 68,
+   "vclass": 103,
+   "minibus": 102
+  },
+  "SAW|bakirkoy": {
+   "sedan": 50,
+   "minivan": 71,
+   "vclass": 106,
+   "minibus": 106
+  },
+  "SAW|beylikduzu": {
+   "sedan": 64,
+   "minivan": 91,
+   "vclass": 135,
+   "minibus": 134
+  },
+  "SAW|kadikoy": {
+   "sedan": 45,
+   "minivan": 61,
+   "vclass": 94,
+   "minibus": 93
+  },
+  "SAW|uskudar": {
+   "sedan": 41,
+   "minivan": 56,
+   "vclass": 86,
+   "minibus": 85
+  },
+  "SAW|atasehir": {
+   "sedan": 38,
+   "minivan": 53,
+   "vclass": 82,
+   "minibus": 82
+  },
+  "galataport|taksim": {
+   "sedan": 40,
+   "minivan": 50,
+   "vclass": 65,
+   "minibus": 60
+  },
+  "galataport|sultanahmet": {
+   "sedan": 45,
+   "minivan": 55,
+   "vclass": 70,
+   "minibus": 70
+  },
+  "galataport|karakoy": {
+   "sedan": 40,
+   "minivan": 50,
+   "vclass": 65,
+   "minibus": 60
+  },
+  "besiktas|galataport": {
+   "sedan": 40,
+   "minivan": 50,
+   "vclass": 65,
+   "minibus": 60
+  },
+  "galataport|sisli": {
+   "sedan": 40,
+   "minivan": 50,
+   "vclass": 65,
+   "minibus": 60
+  },
+  "galataport|sariyer": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "bakirkoy|galataport": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "beylikduzu|galataport": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "galataport|kadikoy": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "galataport|uskudar": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "atasehir|galataport": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "sultanahmet|taksim": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "karakoy|taksim": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "besiktas|taksim": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "sisli|taksim": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "sariyer|taksim": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "bakirkoy|taksim": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "beylikduzu|taksim": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "kadikoy|taksim": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "taksim|uskudar": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "atasehir|taksim": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "karakoy|sultanahmet": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "besiktas|sultanahmet": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "sisli|sultanahmet": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "sariyer|sultanahmet": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "bakirkoy|sultanahmet": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "beylikduzu|sultanahmet": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "kadikoy|sultanahmet": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "sultanahmet|uskudar": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "atasehir|sultanahmet": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "besiktas|karakoy": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "karakoy|sisli": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "karakoy|sariyer": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "bakirkoy|karakoy": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "beylikduzu|karakoy": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "kadikoy|karakoy": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "karakoy|uskudar": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "atasehir|karakoy": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "besiktas|sisli": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "besiktas|sariyer": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "bakirkoy|besiktas": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "besiktas|beylikduzu": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "besiktas|kadikoy": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "besiktas|uskudar": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "atasehir|besiktas": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "sariyer|sisli": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "bakirkoy|sisli": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "beylikduzu|sisli": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "kadikoy|sisli": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "sisli|uskudar": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "atasehir|sisli": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "bakirkoy|sariyer": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "beylikduzu|sariyer": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "kadikoy|sariyer": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "sariyer|uskudar": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "atasehir|sariyer": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "bakirkoy|beylikduzu": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "bakirkoy|kadikoy": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "bakirkoy|uskudar": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "atasehir|bakirkoy": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "beylikduzu|kadikoy": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "beylikduzu|uskudar": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "atasehir|beylikduzu": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "kadikoy|uskudar": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "atasehir|kadikoy": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  },
+  "atasehir|uskudar": {
+   "sedan": 31,
+   "minivan": 41,
+   "vclass": 65,
+   "minibus": 64
+  }
+ },
+ "dist": {
+  "IST": {
+   "SAW": [
+    78,
+    80
+   ],
+   "taksim": [
+    42,
+    55
+   ],
+   "sultanahmet": [
+    48,
+    60
+   ],
+   "karakoy": [
+    45,
+    57
+   ],
+   "galataport": [
+    45,
+    57
+   ],
+   "besiktas": [
+    43,
+    55
+   ],
+   "sisli": [
+    37,
+    50
+   ],
+   "sariyer": [
+    35,
+    40
+   ],
+   "bakirkoy": [
+    38,
+    40
+   ],
+   "beylikduzu": [
+    50,
+    50
+   ],
+   "kadikoy": [
+    55,
+    65
+   ],
+   "uskudar": [
+    50,
+    60
+   ],
+   "atasehir": [
+    58,
+    65
+   ]
+  },
+  "SAW": {
+   "taksim": [
+    48,
+    60
+   ],
+   "sultanahmet": [
+    50,
+    60
+   ],
+   "karakoy": [
+    48,
+    58
+   ],
+   "galataport": [
+    48,
+    58
+   ],
+   "besiktas": [
+    45,
+    55
+   ],
+   "sisli": [
+    45,
+    55
+   ],
+   "sariyer": [
+    52,
+    60
+   ],
+   "bakirkoy": [
+    55,
+    60
+   ],
+   "beylikduzu": [
+    75,
+    80
+   ],
+   "kadikoy": [
+    37,
+    45
+   ],
+   "uskudar": [
+    40,
+    45
+   ],
+   "atasehir": [
+    28,
+    30
+   ]
+  }
+ }
+}
