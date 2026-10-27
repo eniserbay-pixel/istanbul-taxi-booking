@@ -42,6 +42,9 @@
     });
   });
 
+  // The language link keeps the chosen route and time on the booking page
+  if (location.search) $$("a.lang").forEach(function (a) { a.href = a.getAttribute("href") + location.search; });
+
   // ---- Booking ----
   var root = $("[data-book]");
   if (!root || !window.BOOK) return;
@@ -49,6 +52,11 @@
   var view = $("[data-view]", root);
   var zoneName = function (id) { var z = Quote.zone(P, id); return z ? z.name[L] : ""; };
   var isAirport = function (id) { var z = Quote.zone(P, id); return z && z.type === "airport"; };
+  // 2026-10-28 → "28 Oct 2026" / "28 окт. 2026 г."
+  var day = function (d) {
+    var t = new Date(d + "T12:00:00Z");
+    return isNaN(t) ? d : t.toLocaleDateString(L === "ru" ? "ru-RU" : "en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
+  };
   var s = {
     from: params.get("from") || "", to: params.get("to") || "", date: params.get("date") || "", time: params.get("time") || "",
     pax: Math.max(1, Math.min(16, +params.get("pax") || 2)),
@@ -65,8 +73,8 @@
     $$("[data-step-i]", root).forEach(function (li, i) { li.className = i === s.step ? "on" : i < s.step ? "done" : ""; });
   }
   function summary() {
-    return '<div class="summary"><span><b>' + esc(zoneName(s.from)) + " → " + esc(zoneName(s.to)) + "</b></span><span>" + esc(s.date) + " " + esc(s.time) +
-      "</span><span>👤 " + s.pax + "</span>" + (s.ret ? "<span>↩ " + esc(s.ret.date) + " " + esc(s.ret.time) + "</span>" : "") + "</div>";
+    return '<div class="summary"><span><b>' + esc(zoneName(s.from)) + " → " + esc(zoneName(s.to)) + "</b></span><span>" + esc(day(s.date)) + " " + esc(s.time) +
+      "</span><span>👤 " + s.pax + "</span>" + (s.ret ? "<span>↩ " + esc(day(s.ret.date)) + " " + esc(s.ret.time) + "</span>" : "") + "</div>";
   }
   function wa(text) { return "https://wa.me/" + window.SITE.wa + "?text=" + encodeURIComponent(text); }
 
@@ -110,7 +118,7 @@
       (isAirport(s.to) ? "" : field("dropoff", T.dropoff, "text", { req: 1 })) +
       field("bags", T.bags, "select", { options: range(car.bags) }) +
       field("childSeats", fill(T.seats, { seat: P.rules.childSeat }), "select", { options: range(4) }) +
-      (s.ret ? '<fieldset><legend>↩ ' + esc(s.ret.date) + " " + esc(s.ret.time) + "</legend>" +
+      (s.ret ? '<fieldset><legend>↩ ' + esc(day(s.ret.date)) + " " + esc(s.ret.time) + "</legend>" +
         (isAirport(s.to) ? field("retFlight", T.retFlight, "text") : field("retPickup", T.retPickup, "text", { req: 1, full: 1 })) + "</fieldset>" : "") +
       field("note", T.note, "textarea", { full: 1 }) +
       '<input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">' +
@@ -145,9 +153,9 @@
   function stepReview() {
     var r = q(), car = B.cars.filter(function (c) { return c.id === s.car; })[0];
     var rows = [
-      [zoneName(s.from) + " → " + zoneName(s.to), s.date + " " + s.time + (s.flight ? " · " + s.flight : "") + (s.pickup ? " · " + s.pickup : "")],
+      [zoneName(s.from) + " → " + zoneName(s.to), day(s.date) + " " + s.time + (s.flight ? " · " + s.flight : "") + (s.pickup ? " · " + s.pickup : "")],
       s.dropoff ? [T.dropoff, s.dropoff] : null,
-      s.ret ? ["↩ " + zoneName(s.to) + " → " + zoneName(s.from), s.ret.date + " " + s.ret.time + (s.retFlight ? " · " + s.retFlight : "") + (s.retPickup ? " · " + s.retPickup : "")] : null,
+      s.ret ? ["↩ " + zoneName(s.to) + " → " + zoneName(s.from), day(s.ret.date) + " " + s.ret.time + (s.retFlight ? " · " + s.retFlight : "") + (s.retPickup ? " · " + s.retPickup : "")] : null,
       [car.name[L], "👤 " + s.pax + " · 🧳 " + s.bags],
       s.childSeats ? [T.seatsLine, s.childSeats + " × €" + P.rules.childSeat + (s.ret ? " × 2" : "")] : null,
       [T.name, s.name + " · " + s.phone + " · " + s.email],
