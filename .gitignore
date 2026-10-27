@@ -1,0 +1,11 @@
+node_modules/
+.vercel/
+.env*
+shots/
+# built by build/build.js (Vercel runs it on every deploy)
+public/*.html
+public/tr/
+public/admin/
+public/sitemap.xml
+public/robots.txt
+public/llms.txt
