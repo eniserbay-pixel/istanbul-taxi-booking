@@ -34,7 +34,7 @@ const fill = (t, v) => String(t).replace(/\{(\w+)\}/g, (m, k) => v[k] != null ? 
 const minPrice = Math.min(...AIRPORTS.flatMap(a => PLACES.map(z => Q.base(P, a.id, z.id, "sedan")).filter(Boolean)));
 const dist = (a, b) => (P.dist[a] && P.dist[a][b]) || (P.dist[b] && P.dist[b][a]) || null;
 const css = fs.readFileSync(path.join(OUT, "assets", "site.css"), "utf8");
-const ver = require("crypto").createHash("md5").update(css + fs.readFileSync(path.join(OUT, "assets", "site.js"), "utf8")).digest("hex").slice(0, 8);
+const ver = require("crypto").createHash("md5").update(css + fs.readFileSync(path.join(OUT, "assets", "site.js"), "utf8") + fs.readFileSync(path.join(OUT, "assets", "timewheel.js"), "utf8")).digest("hex").slice(0, 8);
 
 // Every page: same head, header and footer. alts = the same page in every language.
 function layout(o) {
@@ -70,7 +70,7 @@ ${langSwitch(o.lang, alts)}</nav>
 </div><div class="wrap copy">© ${new Date().getFullYear()} ${esc(site.brand)}. ${t.footer.rights}</div></footer>
 <a class="wa-float" href="https://wa.me/${site.whatsapp}" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.8-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z"/></svg></a>
 <script>window.SITE=${JSON.stringify({ lang: o.lang, book: p.book, wa: site.whatsapp })};</script>
-${o.scripts || ""}<script src="/assets/site.js?v=${ver}" defer></script></body></html>`;
+${o.scripts || ""}<script src="/assets/timewheel.js?v=${ver}" defer></script><script src="/assets/site.js?v=${ver}" defer></script></body></html>`;
   return head + header + "<main>" + o.body + "</main>" + footer;
 }
 
@@ -121,7 +121,7 @@ function searchForm(lang, pre, side) {
 <button class="btn btn-y btn-block" type="submit">${t.submit}</button></form>`;
 }
 
-// Pickup times every 15 minutes, 24-hour clock; site.js puts the time wheel over these selects
+// Pickup times every 15 minutes, 24-hour clock; timewheel.js puts the wheel over these selects
 const TIMES = Array.from({ length: 96 }, (_, i) => { const v = String(i >> 2).padStart(2, "0") + ":" + String(i % 4 * 15).padStart(2, "0"); return `<option${v === "12:00" ? " selected" : ""}>${v}</option>`; }).join("");
 
 const ICONS = {
