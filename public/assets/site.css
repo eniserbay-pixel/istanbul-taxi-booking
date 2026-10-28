@@ -91,6 +91,9 @@ p { margin: 0 0 1em; }
 .crumbs { font-size: 14px; color: var(--ice-ink); margin-bottom: 14px; }
 .crumbs a { color: var(--ice-ink); }
 @media (max-width: 900px) { .hero { padding: 32px 0 48px; } }
+/* Home page: a photo behind the hero, darkened on the text side so the headline stays readable */
+.hero-home { background: linear-gradient(90deg, rgba(0,0,0,.94) 0%, rgba(0,0,0,.80) 40%, rgba(0,0,0,.25) 75%, rgba(0,0,0,.15) 100%), url(/img/hero.webp) right 20% / cover no-repeat, var(--black); }
+@media (max-width: 900px) { .hero-home { background: linear-gradient(180deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,.85) 40%, var(--black) 60%), url(/img/hero-960.webp) 70% top / 190% auto no-repeat, var(--black); } }
 
 /* Four promises under the booking box */
 .assure { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
