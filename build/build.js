@@ -16,6 +16,7 @@ const CO = require("./company");
 const GUIDES = require("./guides");
 const DI = require("./districts");
 const PL = require("./places");
+const SV = require("./services");
 // German, French, Italian and Dutch: page texts, blog posts and legal texts in one file per language
 ["de", "fr", "it", "nl"].forEach(l => {
   const X = require("./lang/" + l);
@@ -81,6 +82,7 @@ ${langSwitch(o.lang, alts)}</nav>
 <div><a class="logo" href="${p.home}"><img src="/img/logo.webp" alt="${esc(site.brand)}" width="141" height="80" loading="lazy"></a>
 <p>${esc(site.company)}<br>${esc(site.address[o.lang])}<br>${t.footer.tursab}: ${esc(site.tursab)}</p></div>
 <div><h3>${t.footer.routes}</h3>${popular.map(([a, z]) => `<a href="${p.route(a, Q.zone(P, z).slug)}">${esc(Q.zone(P, a).short[o.lang])} → ${esc(Q.zone(P, z).short[o.lang])}</a>`).join("")}<a href="${PORT[o.lang].path}">${esc(Q.zone(P, "galataport").name[o.lang])}</a>${o.lang === "en" ? GUIDES.map(g => `<a href="${g.path}">${esc(g.nav)}</a>`).join("") : ""}</div>
+<div><h3>${SV.T[o.lang].head}</h3>${SV.S.map(x => `<a href="${x[o.lang].path}">${esc(x[o.lang].nav)}</a>`).join("")}</div>
 <div><h3>${CO.T[o.lang].head}</h3>${CO.ORDER.map(k => `<a href="${CO.path(o.lang, k)}">${CO.T[o.lang].pages[k].nav}</a>`).join("")}</div>
 <div><h3>${t.footer.contact}</h3><a href="https://wa.me/${site.whatsapp}" rel="noopener">WhatsApp ${esc(site.phone)}</a><a href="tel:${site.phone.replace(/\s/g, "")}">${esc(site.phone)}</a><a href="mailto:${site.email}">${esc(site.email)}</a></div>
 <div><h3>${t.footer.legal}</h3><a href="${p.terms}">${t.ui.terms}</a><a href="${p.privacy}">${t.ui.privacy}</a><a href="${p.prices}">${t.nav.prices}</a><a href="${p.blog}">${t.nav.blog}</a></div>
@@ -152,14 +154,15 @@ function assure(lang) {
   return `<ul class="assure">${I[lang].assure.map(([k, h, p]) => `<li><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[k]}</svg><div><strong>${h}</strong><span>${p}</span></div></li>`).join("")}</ul>`;
 }
 
-function fleet(lang, from, to) {
+// noPrice: the cars only, for the service pages, whose prices are on request
+function fleet(lang, from, to, noPrice) {
   const t = I[lang];
   return `<div class="fleet">${P.cars.map(c => {
     const pr = from ? Q.base(P, from, to, c.id) : Math.min(...AIRPORTS.flatMap(a => PLACES.map(z => Q.base(P, a.id, z.id, c.id)).filter(Boolean)));
     return `<article class="car${c.popular ? " pop" : ""}"><img src="${c.img}" alt="${esc(c.name[lang])} – ${esc(c.models[lang])}" width="320" height="160" loading="lazy">
 <h3>${esc(c.name[lang])}</h3><p class="models">${esc(c.models[lang])}</p>
 <p class="cap"><span>👤 ${c.seats}</span><span>🧳 ${c.bags}</span></p><p class="note">${esc(c.note[lang])}</p>
-<p class="from">${from ? "" : t.ui.from}<strong>€${pr}</strong> <span>${t.book.perCar}</span></p></article>`;
+${noPrice ? "" : `<p class="from">${from ? "" : t.ui.from}<strong>€${pr}</strong> <span>${t.book.perCar}</span></p>`}</article>`;
   }).join("")}</div>`;
 }
 
@@ -312,6 +315,24 @@ ${AIRPORTS.map(a => `<tr><td><a href="${routePath(lang, a.id, z)}">${esc(a.name[
     offers: AIRPORTS.flatMap(a => P.cars.map(c => ({ "@type": "Offer", name: `${a.short[lang]} → ${pl.name[lang]} · ${c.name[lang]}`, price: Q.base(P, a.id, z, c.id), priceCurrency: P.currency })))
   };
   page({ lang, path: p, alts: ALL(l => PL.T[l].path(pl.id)), title: F(T.title), desc: F(T.desc), body, ld: [offer, faqLd(faq), crumbs([[site.brand, t.paths.home], [t.nav.prices, t.paths.prices], [F(T.h1), p]])] });
+}
+
+// Service page (build/services.js): chauffeur by the hour, city tour, wedding and event cars. Priced on request on WhatsApp.
+function service(lang, sv) {
+  const t = I[lang], T = SV.T[lang], x = sv[lang];
+  const wa = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(fill(T.waText, { service: x.nav }))}`;
+  const cta = `<p class="cta-row"><a class="btn btn-y" href="${wa}" rel="noopener">${esc(T.ask)}</a> <span class="small">${esc(T.call)} <a href="tel:${site.phone.replace(/\s/g, "")}">${esc(site.phone)}</a></span></p>`;
+  const corp = sv.id === "wedding" ? ` <a href="${CO.path(lang, "corporate")}">${esc(CO.T[lang].pages.corporate.nav)}</a>` : "";
+  const faq = x.faq.map(([q, a], i) => [q, a + (i === x.faq.length - 1 ? corp : "")]);
+  const body = `<section class="hero hero-s"><div class="wrap"><div class="hero-t"><nav class="crumbs"><a href="${t.paths.home}">${esc(site.brand)}</a> › ${esc(T.head)}</nav>
+<h1>${esc(x.h1)}</h1><p class="lead answer">${esc(x.lead)}</p>${cta}</div></div></section>
+<section class="sec ice"><div class="wrap narrow prose"><h2>${esc(T.whatH)}</h2><ul>${x.points.map(p => `<li>${esc(p)}</li>`).join("")}</ul></div></section>
+<section class="sec" id="how"><div class="wrap"><h2>${esc(T.howH)}</h2><ol class="how">${x.how.map(([a, b]) => `<li><h3>${esc(a)}</h3><p>${esc(b)}</p></li>`).join("")}</ol>${cta}</div></section>
+<section class="sec ice"><div class="wrap"><h2>${esc(T.cars)}</h2>${fleet(lang, null, null, true)}</div></section>
+<section class="sec"><div class="wrap narrow"><h2>${t.home.faqH}</h2>${faqBlock(faq)}</div></section>
+<section class="sec ice"><div class="wrap"><h2>${esc(T.head)}</h2><div class="chips">${SV.S.filter(y => y.id !== sv.id).map(y => `<a href="${y[lang].path}">${esc(y[lang].nav)}</a>`).join("")}<a href="${t.paths.IST}">${esc(Q.zone(P, "IST").short[lang])}</a><a href="${t.paths.SAW}">${esc(Q.zone(P, "SAW").short[lang])}</a></div></div></section>`;
+  const ld = { "@context": "https://schema.org", "@type": "Service", serviceType: sv.en.nav, name: x.h1, description: x.desc, provider: { "@id": URL_ + "/#service" }, areaServed: { "@type": "City", name: "Istanbul" } };
+  page({ lang, path: x.path, alts: ALL(l => sv[l].path), title: x.title, desc: x.desc, body, ld: [ld, faqLd(faq), crumbs([[site.brand, t.paths.home], [x.h1, x.path]])] });
 }
 
 function hub(lang, a) {
@@ -502,7 +523,7 @@ function admin() {
   fs.readdirSync(path.join(__dirname, "static", "fonts")).forEach(f => put("static/fonts/" + f, "fonts/" + f));
 }
 
-LANGS.forEach(l => { home(l); AIRPORTS.forEach(a => hub(l, a.id)); portHub(l); CO.ORDER.forEach(k => companyPage(l, k)); ROUTES.forEach(([a, z]) => route(l, a, z)); PL.L.forEach(x => place(l, x)); prices(l); book(l); legalPages(l); blogIndex(l); POSTS.forEach(x => blogPost(l, x)); });
+LANGS.forEach(l => { home(l); AIRPORTS.forEach(a => hub(l, a.id)); portHub(l); CO.ORDER.forEach(k => companyPage(l, k)); ROUTES.forEach(([a, z]) => route(l, a, z)); PL.L.forEach(x => place(l, x)); SV.S.forEach(x => service(l, x)); prices(l); book(l); legalPages(l); blogIndex(l); POSTS.forEach(x => blogPost(l, x)); });
 GUIDES.forEach(guide);
 notFound();
 admin();
