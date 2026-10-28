@@ -82,7 +82,7 @@ function layout(o) {
     }
   }].concat(o.ld || []);
   const head = `<!doctype html><html lang="${t.htmlLang}"${t.dir ? ` dir="${t.dir}"` : ""}><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>${esc(o.title)}</title><meta name="description" content="${esc(o.desc)}">${site.googleVerification && o.path === I.en.paths.home ? `<meta name="google-site-verification" content="${esc(site.googleVerification)}">` : ""}
+<title>${esc(o.title)}</title><meta name="description" content="${esc(o.desc)}">${site.googleVerification && o.path === I.en.paths.home ? `<meta name="google-site-verification" content="${esc(site.googleVerification)}">` : ""}${site.yandexVerification && o.path === I.en.paths.home ? `<meta name="yandex-verification" content="${esc(site.yandexVerification)}">` : ""}
 <link rel="canonical" href="${URL_}${o.path === "/" ? "/" : o.path}">
 ${o.alts ? LANGS.map(l => `<link rel="alternate" hreflang="${l}" href="${URL_}${o.alts[l]}">`).join("") + `<link rel="alternate" hreflang="x-default" href="${URL_}${o.alts.en}">` : ""}
 <meta property="og:type" content="website"><meta property="og:title" content="${esc(o.title)}"><meta property="og:description" content="${esc(o.desc)}"><meta property="og:url" content="${URL_}${o.path}"><meta property="og:image" content="${URL_}/img/og.png"><meta name="twitter:card" content="summary_large_image">
@@ -520,6 +520,14 @@ Disallow: /b2b
 Sitemap: ${URL_}/sitemap.xml
 `);
   // IndexNow: the key file Bing, Yandex and the other engines check (api/admin.js ?a=indexnow sends the new URLs)
+  // Yandex Webmaster's verification file (the home page also carries its meta tag)
+  if (site.yandexVerification) fs.writeFileSync(path.join(OUT, "yandex_" + site.yandexVerification + ".html"), `<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+    <body>Verification: ${site.yandexVerification}</body>
+</html>
+`);
   if (site.indexnowKey) fs.writeFileSync(path.join(OUT, site.indexnowKey + ".txt"), site.indexnowKey);
   const line = (a, z) => { const d = dist(a, z); return `- ${Q.zone(P, a).name.en} → ${Q.zone(P, z).name.en}: ${P.cars.map(c => `${c.name.en} €${Q.base(P, a, z, c.id)}`).join(", ")}${d ? ` (${d[0]} km, about ${d[1]} min)` : ""}. ${URL_}${routePath("en", a, z)}`; };
   fs.writeFileSync(path.join(OUT, "llms.txt"), `# ${site.brand}
