@@ -19,9 +19,9 @@ module.exports = {
       airports: "Airports", districts: "Istanbul", port: "Cruise port", choose: "Choose…", swap: "Swap"
     },
     home: {
-      title: "Istanbul Airport Taxi & Transfer from €{min} · {brand}",
+      title: "Istanbul Airport Taxi & Private Transfer from €{min} · {brand}",
       desc: "{brand} is an Istanbul transfer company: private airport taxi from IST and Sabiha Gökçen at fixed prices from €{min} per car. Free cancellation, pay in cash.",
-      h1: "Istanbul airport taxi and transfer at a <em>fixed price</em>",
+      h1: "Istanbul airport taxi and private transfer at a <em>fixed price</em>",
       lead: "{brand} is an Istanbul transfer company. We drive you from Istanbul Airport (IST) or Sabiha Gökçen (SAW) to your hotel in a private car, from €{min} per car. Your driver waits with your name sign and you pay in cash at the end of the ride.",
       fleetH: "Choose your car", fleetLead: "The price is per car, not per person. Tolls, parking and waiting time are included.",
       routesH: "Popular transfer routes in Istanbul", routesLead: "Fixed prices per car, one way. Pickups at IST 15:00–19:00 and SAW 14:45–21:00 cost 30% more.",

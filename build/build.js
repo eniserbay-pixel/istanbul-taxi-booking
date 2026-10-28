@@ -82,7 +82,7 @@ function layout(o) {
     }
   }].concat(o.ld || []);
   const head = `<!doctype html><html lang="${t.htmlLang}"${t.dir ? ` dir="${t.dir}"` : ""}><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>${esc(o.title)}</title><meta name="description" content="${esc(o.desc)}">
+<title>${esc(o.title)}</title><meta name="description" content="${esc(o.desc)}">${site.googleVerification && o.path === I.en.paths.home ? `<meta name="google-site-verification" content="${esc(site.googleVerification)}">` : ""}
 <link rel="canonical" href="${URL_}${o.path === "/" ? "/" : o.path}">
 ${o.alts ? LANGS.map(l => `<link rel="alternate" hreflang="${l}" href="${URL_}${o.alts[l]}">`).join("") + `<link rel="alternate" hreflang="x-default" href="${URL_}${o.alts.en}">` : ""}
 <meta property="og:type" content="website"><meta property="og:title" content="${esc(o.title)}"><meta property="og:description" content="${esc(o.desc)}"><meta property="og:url" content="${URL_}${o.path}"><meta property="og:image" content="${URL_}/img/og.png"><meta name="twitter:card" content="summary_large_image">
