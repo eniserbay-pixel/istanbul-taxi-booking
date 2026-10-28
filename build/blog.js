@@ -1,13 +1,11 @@
 // Blog posts in English and Russian (German, French, Italian and Dutch are in build/lang/). Each post has one `id` in every language, so the pages link to each other.
 // body: HTML; {widget} is replaced by the booking box, {brand} by the brand name, {book} by the booking page.
 // Facts with numbers carry their source link in the text.
-const SRC = {
-  density: "https://www.duvarenglish.com/istanbul-has-one-of-worlds-lowest-taxi-densities-says-municipality-news-58745",
-  complaints: "https://www.duvarenglish.com/istanbul-municipality-receives-thousands-of-complaints-about-taxi-drivers-being-picky-with-passengers-news-62652"
-};
+const SRC = require("./blog-src");
 
 module.exports = [
-  // newest first; in every language in its own file
+  // newest first; in every language in their own files
+  ...require("./blog-guides"),
   require("./blog-galataport"),
   {
     id: "taxi-shortage",
