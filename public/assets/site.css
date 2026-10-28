@@ -336,3 +336,13 @@ p { margin: 0 0 1em; }
 [dir=rtl] .review td:first-child { padding-right: 0; padding-left: 10px; }
 [dir=rtl] .co-pts li { border-left: 0; border-right: 4px solid var(--mustard); }
 [dir=rtl] input[type=email], [dir=rtl] input[type=tel] { direction: ltr; text-align: right; }
+
+/* About us: values as cards, company facts as a list of label and value */
+.vals { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+.vals li { background: var(--white); border-top: 4px solid var(--mustard); border-radius: var(--r); padding: 20px; }
+.vals h3 { margin: 0 0 6px; font-size: 18px; }
+.vals p { margin: 0; color: var(--muted); }
+.kv { display: grid; grid-template-columns: minmax(120px, 220px) 1fr; gap: 12px 20px; margin: 0; }
+.kv dt { font-weight: 700; }
+.kv dd { margin: 0; }
+@media (max-width: 620px) { .kv { grid-template-columns: 1fr; gap: 2px; } .kv dd { margin-bottom: 12px; } }
