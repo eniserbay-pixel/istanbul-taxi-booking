@@ -199,7 +199,7 @@ function home(lang) {
   const t = I[lang], h = t.home;
   const faq = t.faq.map(([q, a]) => [fill(q, { brand: site.brand }), fill(a, { brand: site.brand })]);
   const popular = ROUTES.filter(([a, z]) => ["sultanahmet", "taksim", "besiktas", "kadikoy", "sisli", "SAW"].includes(z));
-  const body = `<section class="hero"><div class="wrap hero-in"><div class="hero-t">
+  const body = `<section class="hero hero-home"><div class="wrap hero-in"><div class="hero-t">
 <h1>${h.h1}</h1><p class="lead">${fill(h.lead, { min: minPrice, brand: site.brand })}</p></div>
 
 ${searchForm(lang)}${assure(lang)}</div></section>
