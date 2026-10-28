@@ -320,3 +320,19 @@ p { margin: 0 0 1em; }
 .co-form .checks { display: flex; flex-wrap: wrap; gap: 8px 18px; }
 .co-form .check { font-size: 15px !important; font-weight: 400 !important; }
 @media (max-width: 860px) { .co-in { grid-template-columns: 1fr; } }
+
+/* Arabic pages, right to left: mirror what is placed on one side */
+[dir=rtl] .nav { margin-left: 0; margin-right: auto; }
+[dir=rtl] .langs summary::after { margin-left: 0; margin-right: 2px; }
+[dir=rtl] .langs-menu { right: auto; left: 0; }
+[dir=rtl] .hero-home { background: linear-gradient(270deg, rgba(0,0,0,.94) 0%, rgba(0,0,0,.80) 40%, rgba(0,0,0,.25) 75%, rgba(0,0,0,.15) 100%), url(/img/hero.webp) left 20% / cover no-repeat, var(--black); }
+[dir=rtl] .car.pop::before { right: auto; left: 12px; }
+[dir=rtl] .tbl th, [dir=rtl] .tbl td { text-align: right; }
+[dir=rtl] .meet-c { border-left: 0; border-right: 5px solid var(--mustard); }
+[dir=rtl] .wa-float { right: auto; left: 16px; }
+[dir=rtl] .opt .price { text-align: left; }
+@media (max-width: 620px) { [dir=rtl] .opt .price { text-align: right; } }
+[dir=rtl] .tbtn { background-position: left 12px center; padding: 0 12px 0 38px; }
+[dir=rtl] .review td:first-child { padding-right: 0; padding-left: 10px; }
+[dir=rtl] .co-pts li { border-left: 0; border-right: 4px solid var(--mustard); }
+[dir=rtl] input[type=email], [dir=rtl] input[type=tel] { direction: ltr; text-align: right; }
