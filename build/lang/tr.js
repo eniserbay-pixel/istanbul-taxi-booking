@@ -33,9 +33,9 @@ const ui = {
     airports: "Havalimanları", districts: "İstanbul", port: "Kruvaziyer limanı", choose: "Seçin…", swap: "Değiştir"
   },
   home: {
-    title: "İstanbul Havalimanı Taksi ve Transfer €{min}'dan · {brand}",
+    title: "İstanbul Havalimanı Taksi ve Özel Transfer €{min}'dan · {brand}",
     desc: "{brand} bir İstanbul transfer firmasıdır: İstanbul Havalimanı ve Sabiha Gökçen'den araç başı €{min}'dan başlayan sabit fiyatlı özel transfer. Ödeme şoföre nakit.",
-    h1: "İstanbul havalimanı taksi ve transfer, <em>sabit fiyatla</em>",
+    h1: "İstanbul havalimanı taksi ve özel transfer, <em>sabit fiyatla</em>",
     lead: "{brand} bir İstanbul transfer firmasıdır. Sizi İstanbul Havalimanı (IST) veya Sabiha Gökçen'den (SAW) otelinize özel araçla, araç başı €{min}'dan başlayan fiyatlarla götürürüz. Şoförünüz isminizin yazılı olduğu tabelayla bekler, ödemeyi yolculuk sonunda nakit yaparsınız.",
     fleetH: "Aracınızı seçin", fleetLead: "Fiyat kişi başı değil, araç başıdır. Köprü-otoyol, otopark ve bekleme süresi dahildir.",
     routesH: "İstanbul'da popüler transfer güzergahları", routesLead: "Araç başı sabit fiyatlar, tek yön. IST'de 15:00–19:00, SAW'da 14:45–21:00 arası alışlar %30 daha pahalıdır.",

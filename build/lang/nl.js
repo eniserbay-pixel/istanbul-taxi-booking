@@ -24,9 +24,9 @@ const ui = {
     airports: "Luchthavens", districts: "Istanbul", port: "Cruisehaven", choose: "Kies…", swap: "Omdraaien"
   },
   home: {
-    title: "Taxi en transfer luchthaven Istanbul vanaf €{min} · {brand}",
+    title: "Taxi en privétransfer luchthaven Istanbul vanaf €{min} · {brand}",
     desc: "{brand} is een transferbedrijf in Istanbul: privétaxi vanaf luchthaven IST en Sabiha Gökçen voor een vaste prijs vanaf €{min} per auto. Contant betalen.",
-    h1: "Luchthaventaxi en transfer in Istanbul voor een <em>vaste prijs</em>",
+    h1: "Luchthaventaxi en privétransfer in Istanbul voor een <em>vaste prijs</em>",
     lead: "{brand} is een transferbedrijf in Istanbul. We brengen je met een privéauto van luchthaven Istanbul (IST) of Sabiha Gökçen (SAW) naar je hotel, vanaf €{min} per auto. Je chauffeur wacht met een naambordje en je betaalt contant aan het einde van de rit.",
     fleetH: "Kies je auto", fleetLead: "De prijs is per auto, niet per persoon. Tol, parkeren en wachttijd zijn inbegrepen.",
     routesH: "Populaire transferroutes in Istanbul", routesLead: "Vaste prijzen per auto, enkele reis. Ophalen op IST van 15:00 tot 19:00 en op SAW van 14:45 tot 21:00 kost 30% meer.",
