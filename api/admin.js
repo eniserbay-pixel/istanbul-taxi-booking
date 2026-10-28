@@ -25,6 +25,7 @@
 //   POST fxset {manual}      the office's own EUR and USD rates in TL, and whether they are used ({on, EUR, USD})
 //   GET  stats&days=         Site Analitiği: page views, visits, countries, sources, clicks of the last days (_lib/stats.js)
 //   GET  gsc&days=[&fresh=1] Google Search Console: search words, pages, countries (7, 28 or 90 days; _lib/gsc.js)
+//   GET  indexnow            Vercel cron: send the sitemap's new URLs to IndexNow (Bing, Yandex); not for the panel
 //   POST cost {id, leg, try}      supplier fee of a leg typed in TL on Operasyonlar; saved as costTry and, at today's
 //                                  rate, as cost in the booking's currency (what Raporlar counts)
 //   POST done {id, leg, done}    mark a transfer leg done on Operasyonlar (or take it back); when every leg is done the
@@ -95,6 +96,22 @@ module.exports = async (req, res) => {
     const sec = process.env.CRON_SECRET;
     if (sec ? req.headers.authorization !== "Bearer " + sec : !/vercel-cron/.test(String(req.headers["user-agent"] || ""))) return send(res, 403, { error: "forbidden" });
     return send(res, 200, { ok: await telegram.daily().catch(e => { console.error(e); return false; }) });
+  }
+  // Vercel cron (vercel.json), every morning: the site's sitemap URLs that IndexNow (Bing, which ChatGPT search uses,
+  // Yandex and others) has not been told about yet, so new pages are crawled within days. Sent URLs are kept in inx:sent.
+  if (a === "indexnow" && req.method === "GET") {
+    const sec = process.env.CRON_SECRET;
+    if (sec ? req.headers.authorization !== "Bearer " + sec : !/vercel-cron/.test(String(req.headers["user-agent"] || ""))) return send(res, 403, { error: "forbidden" });
+    try {
+      const base = (process.env.SITE_URL || blog.SHELL.base).replace(/\/$/, "");
+      const xml = await (await fetch(base + "/sitemap.xml", { signal: AbortSignal.timeout(8000) })).text();
+      const all = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m => m[1]);
+      const sent = new Set(store.configured() ? JSON.parse(await store.cmd("GET", "inx:sent") || "[]") : []);
+      const urls = all.filter(u => !sent.has(u)).slice(0, 10000);
+      const ok = await blog.ping(urls);
+      if (ok && store.configured()) await store.cmd("SET", "inx:sent", JSON.stringify(all.filter(u => sent.has(u) || urls.includes(u))));
+      return send(res, 200, { ok, sent: ok ? urls.length : 0, total: all.length });
+    } catch (e) { console.error("indexnow", e); return send(res, 500, { error: "failed" }); }
   }
   // Every few minutes from .github/workflows/telegram-tick.yml: half-finished site bookings. Open to anyone, but each item is sent only once, and calls are limited.
   if (a === "tgtick" && req.method === "GET") {

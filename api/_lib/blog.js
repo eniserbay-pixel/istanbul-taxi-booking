@@ -259,17 +259,18 @@ async function getImage(id) {
   return s ? JSON.parse(s) : null;
 }
 
-// Tell Bing, Yandex and the other IndexNow engines that pages changed (Google reads the sitemap)
-const INDEXNOW_KEY = "8f3c2a71d94e4b6fa05e1c7b2d9e6a43";
+// Tell Bing, Yandex and the other IndexNow engines that pages changed (Google reads the sitemap); true when accepted
+const INDEXNOW_KEY = require("../../data/site.json").indexnowKey;
 async function ping(urls) {
-  if (!urls.length || !process.env.VERCEL_ENV || process.env.VERCEL_ENV !== "production") return;
+  if (!urls.length || !process.env.VERCEL_ENV || process.env.VERCEL_ENV !== "production") return false;
   const host = SHELL.base.replace(/^https?:\/\//, "");
   try {
-    await fetch("https://api.indexnow.org/indexnow", {
+    const r = await fetch("https://api.indexnow.org/indexnow", {
       method: "POST", headers: { "Content-Type": "application/json; charset=utf-8" }, signal: AbortSignal.timeout(4000),
       body: JSON.stringify({ host, key: INDEXNOW_KEY, keyLocation: SHELL.base + "/" + INDEXNOW_KEY + ".txt", urlList: urls })
     });
-  } catch (e) { console.error("indexnow", e.message); }
+    return r.ok;
+  } catch (e) { console.error("indexnow", e.message); return false; }
 }
 
 module.exports = { SHELL, today, live, clean, list, get, save, remove, saveImage, getImage, ping, inline, safeHref, wordCount };
