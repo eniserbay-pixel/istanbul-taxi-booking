@@ -1,5 +1,5 @@
 // Italian: page texts (same keys as the English block in i18n.js), blog posts and legal texts.
-const SRC = require("../blog").SRC;
+const SRC = require("../blog-src");
 const B = {
   shortage: "perche-e-difficile-trovare-un-taxi-a-istanbul",
   versus: "aeroporto-istanbul-taxi-o-transfer",

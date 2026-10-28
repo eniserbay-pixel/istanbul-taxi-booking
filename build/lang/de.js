@@ -1,5 +1,5 @@
 // German: page texts (same keys as the English block in i18n.js), blog posts and legal texts.
-const SRC = require("../blog").SRC;
+const SRC = require("../blog-src");
 const B = {
   shortage: "warum-ist-es-schwer-in-istanbul-ein-taxi-zu-finden",
   versus: "istanbul-flughafen-taxi-oder-transfer",

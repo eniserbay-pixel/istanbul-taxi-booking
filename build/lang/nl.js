@@ -1,5 +1,5 @@
 // Dutch: page texts (same keys as the English block in i18n.js), blog posts and legal texts.
-const SRC = require("../blog").SRC;
+const SRC = require("../blog-src");
 const B = {
   shortage: "waarom-is-het-moeilijk-om-een-taxi-te-vinden-in-istanbul",
   versus: "luchthaven-istanbul-taxi-of-transfer",
