@@ -14,6 +14,7 @@ const POSTS = require("./blog");
 const PORT = require("./port");
 const CO = require("./company");
 const GUIDES = require("./guides");
+const DI = require("./districts");
 // German, French, Italian and Dutch: page texts, blog posts and legal texts in one file per language
 ["de", "fr", "it", "nl"].forEach(l => {
   const X = require("./lang/" + l);
@@ -253,7 +254,7 @@ ${d ? `<ul class="facts"><li><strong>${d[0]} km</strong></li><li><strong>~${d[1]
 ${searchForm(lang, { from: a, to: z })}${assure(lang)}</div></section>
 <section class="sec ice"><div class="wrap"><h2>${esc(fill(r.pricesH, v))}</h2>${fleet(lang, a, z)}
 <p class="sub small">${t.home.routesLead}</p></div></section>
-${Z.area ? `<section class="sec"><div class="wrap narrow"><h2>${r.areaH}</h2><p>${esc(Z.area[lang])}</p></div></section>` : ""}
+${about(lang, z)}
 <section class="sec ice"><div class="wrap"><h2>${port ? port.meetH : r.meetH}</h2>${port ? portMeet(lang) : meetCards(lang, a === "SAW" ? "SAW" : "IST")}</div></section>
 <section class="sec"><div class="wrap narrow"><h2>${t.home.faqH}</h2>${faqBlock(faq)}</div></section>
 <section class="sec ice"><div class="wrap"><h2>${esc(fill(r.otherH, v))}</h2><div class="chips">${others.map(([href, y, price]) => `<a href="${href}">${esc(Q.zone(P, y).short[lang])} <b>€${price}</b></a>`).join("")}</div>
@@ -266,6 +267,20 @@ ${Z.area ? `<section class="sec"><div class="wrap narrow"><h2>${r.areaH}</h2><p>
     lang, path: p, alts: ALL(l => routePath(l, a, z)), title: fill(r.title, v), desc: fill(port ? port.desc : d ? r.desc : r.desc.replace(/,? ?\{km\}[^.]*\./, "."), v), body,
     ld: [offer, faqLd(faq), crumbs([[site.brand, t.paths.home], [A.short[lang], hubPath(lang, a)], [fill(r.h1, v), p]])]
   });
+}
+
+// "About Taksim" on a route page: what the place is like, sights, the driver's tip, the areas at this price and
+// how far each airport is (build/districts.js)
+function about(lang, z) {
+  const Z = Q.zone(P, z), D = DI.Z[z] && DI.Z[z][lang], T = DI.T[lang];
+  if (!D) return Z.area ? `<section class="sec"><div class="wrap narrow"><h2>${I[lang].route.areaH}</h2><p>${esc(Z.area[lang])}</p></div></section>` : "";
+  const far = AIRPORTS.map(a => [a, dist(a.id, z)]).filter(([, d]) => d).sort((x, y) => x[1][0] - y[1][0]);
+  const row = (k, v) => `<li><strong>${esc(k)}:</strong> ${v}</li>`;
+  return `<section class="sec"><div class="wrap narrow prose"><h2>${esc(fill(T.aboutH, { to: Z.short[lang] }))}</h2><p>${esc(D.about)}</p><ul>
+${row(T.sights, esc(D.sights.join(", ")))}
+${Z.area ? row(T.areas, esc(Z.area[lang])) : ""}
+${far.length > 1 ? row(T.closer, far.map(([a, d]) => `${esc(a.short[lang])} (${fill(T.km, { km: d[0], min: d[1] })})`).join(" · ")) : ""}
+${row(T.tip, esc(D.tip))}</ul></div></section>`;
 }
 
 function hub(lang, a) {
