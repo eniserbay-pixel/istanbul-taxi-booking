@@ -9,7 +9,7 @@ ITB Transfer firmasının sitesi: İstanbul Havalimanı (IST) ve Sabiha Gökçen
 
 ## Yapı
 
-- `build/build.js` sayfaları `public/` içine üretir: ana sayfa, rezervasyon, 2 havalimanı sayfası, 25 rota sayfası, fiyat listesi, yasal sayfalar, `sitemap.xml`, `robots.txt`, `llms.txt`, `404.html`, `/admin`. Metinler `build/i18n.js`, yasal metinler `build/legal.js` (taslak, avukat kontrolünden geçmeli).
+- `build/build.js` sayfaları `public/` içine üretir: ana sayfa, rezervasyon, 2 havalimanı sayfası, 25 rota sayfası, fiyat listesi, yasal sayfalar, 4 İngilizce rehber sayfası (`build/guides.js`: cheap / private / black taxi, best airport transfer), `sitemap.xml`, `robots.txt`, `llms.txt`, `404.html`, `/admin`. Metinler `build/i18n.js`, yasal metinler `build/legal.js` (taslak, avukat kontrolünden geçmeli).
 - `public/assets/` stil (`site.css`), rezervasyon ve arama kutusu (`site.js`), fiyat hesabı (`quote.js`, tarayıcı ve sunucu ortak).
 - `api/booking.js` talebi kaydeder, `api/admin.js` panelin API'si. Paket bağımlılığı yok.
 

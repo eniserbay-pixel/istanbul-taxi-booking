@@ -13,6 +13,7 @@ const legal = require("./legal");
 const POSTS = require("./blog");
 const PORT = require("./port");
 const CO = require("./company");
+const GUIDES = require("./guides");
 // German, French, Italian and Dutch: page texts, blog posts and legal texts in one file per language
 ["de", "fr", "it", "nl"].forEach(l => {
   const X = require("./lang/" + l);
@@ -34,6 +35,9 @@ const pages = [];
 const esc = s => String(s == null ? "" : s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const fill = (t, v) => String(t).replace(/\{(\w+)\}/g, (m, k) => v[k] != null ? v[k] : m);
 const minPrice = Math.min(...AIRPORTS.flatMap(a => PLACES.map(z => Q.base(P, a.id, z.id, "sedan")).filter(Boolean)));
+// Highest one-way price of any route and car, for the price range in the structured data
+const maxPrice = () => Math.max(...ROUTES.flatMap(([a, z]) => P.cars.map(c => Q.base(P, a, z, c.id)).filter(Boolean)));
+const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 const dist = (a, b) => (P.dist[a] && P.dist[a][b]) || (P.dist[b] && P.dist[b][a]) || null;
 const css = fs.readFileSync(path.join(OUT, "assets", "site.css"), "utf8");
 const ver = require("crypto").createHash("md5").update(css + fs.readFileSync(path.join(OUT, "assets", "site.js"), "utf8") + fs.readFileSync(path.join(OUT, "assets", "timewheel.js"), "utf8")).digest("hex").slice(0, 8);
@@ -44,7 +48,15 @@ function layout(o) {
   const ld = [{
     "@context": "https://schema.org", "@type": "TaxiService", "@id": URL_ + "/#service", name: site.brand, alternateName: "Istanbul Taxi Booking", url: URL_ + "/", logo: URL_ + "/img/icon-192.png", image: URL_ + "/img/og.png",
     telephone: site.phone, email: site.email, areaServed: { "@type": "City", name: "Istanbul" },
-    provider: { "@type": "TravelAgency", name: site.company, telephone: site.phone, address: { "@type": "PostalAddress", addressLocality: "Istanbul", addressCountry: "TR" } }
+    hoursAvailable: { "@type": "OpeningHoursSpecification", dayOfWeek: DAYS, opens: "00:00", closes: "23:59" },
+    offers: { "@type": "AggregateOffer", priceCurrency: P.currency, lowPrice: minPrice, highPrice: maxPrice(), offerCount: ROUTES.length * P.cars.length },
+    provider: {
+      "@type": "TravelAgency", "@id": URL_ + "/#company", name: site.company, alternateName: site.brand, url: URL_ + "/", telephone: site.phone, email: site.email,
+      address: { "@type": "PostalAddress", addressLocality: "Istanbul", addressCountry: "TR" }, areaServed: { "@type": "City", name: "Istanbul" },
+      priceRange: `€${minPrice}–€${maxPrice()}`, openingHoursSpecification: { "@type": "OpeningHoursSpecification", dayOfWeek: DAYS, opens: "00:00", closes: "23:59" },
+      knowsLanguage: LANGS, identifier: { "@type": "PropertyValue", name: "TÜRSAB licence", value: site.tursab },
+      ...(site.profiles && site.profiles.length ? { sameAs: site.profiles } : {})
+    }
   }].concat(o.ld || []);
   const head = `<!doctype html><html lang="${t.htmlLang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${esc(o.title)}</title><meta name="description" content="${esc(o.desc)}">
@@ -66,7 +78,7 @@ ${langSwitch(o.lang, alts)}</nav>
   const footer = `<footer class="foot"><div class="wrap foot-in">
 <div><a class="logo" href="${p.home}"><img src="/img/logo.webp" alt="${esc(site.brand)}" width="141" height="80" loading="lazy"></a>
 <p>${esc(site.company)}<br>${esc(site.address[o.lang])}<br>${t.footer.tursab}: ${esc(site.tursab)}</p></div>
-<div><h3>${t.footer.routes}</h3>${popular.map(([a, z]) => `<a href="${p.route(a, Q.zone(P, z).slug)}">${esc(Q.zone(P, a).short[o.lang])} → ${esc(Q.zone(P, z).short[o.lang])}</a>`).join("")}<a href="${PORT[o.lang].path}">${esc(Q.zone(P, "galataport").name[o.lang])}</a></div>
+<div><h3>${t.footer.routes}</h3>${popular.map(([a, z]) => `<a href="${p.route(a, Q.zone(P, z).slug)}">${esc(Q.zone(P, a).short[o.lang])} → ${esc(Q.zone(P, z).short[o.lang])}</a>`).join("")}<a href="${PORT[o.lang].path}">${esc(Q.zone(P, "galataport").name[o.lang])}</a>${o.lang === "en" ? GUIDES.map(g => `<a href="${g.path}">${esc(g.nav)}</a>`).join("") : ""}</div>
 <div><h3>${CO.T[o.lang].head}</h3>${CO.ORDER.map(k => `<a href="${CO.path(o.lang, k)}">${CO.T[o.lang].pages[k].nav}</a>`).join("")}</div>
 <div><h3>${t.footer.contact}</h3><a href="https://wa.me/${site.whatsapp}" rel="noopener">WhatsApp ${esc(site.phone)}</a><a href="tel:${site.phone.replace(/\s/g, "")}">${esc(site.phone)}</a><a href="mailto:${site.email}">${esc(site.email)}</a></div>
 <div><h3>${t.footer.legal}</h3><a href="${p.terms}">${t.ui.terms}</a><a href="${p.privacy}">${t.ui.privacy}</a><a href="${p.prices}">${t.nav.prices}</a><a href="${p.blog}">${t.nav.blog}</a></div>
@@ -305,6 +317,48 @@ ${CO.FORMS[kind].map(field).join("\n")}
     ld: [crumbs([[site.brand, I[lang].paths.home], [x.h1, CO.path(lang, kind)]])] });
 }
 
+// English guide pages for the big searches (build/guides.js): a quotable answer, a price table, sections, FAQ
+function guide(g) {
+  const lang = "en", t = I.en, sedan = (a, z) => Q.base(P, a, z, "sedan");
+  const lowest = (car, a) => Math.min(...ROUTES.filter(([x]) => !a || x === a).map(([x, y]) => Q.base(P, x, y, car)).filter(Boolean));
+  const v = {
+    brand: site.brand, min: minPrice, istMin: lowest("sedan", "IST"), sawMin: lowest("sedan", "SAW"), van: lowest("minivan"), vip: lowest("vclass"), bus: lowest("minibus"),
+    istSult: sedan("IST", "sultanahmet"), seat: P.rules.childSeat, wait: P.rules.freeWaitMin, peak: P.rules.peak.IST.pct, ret: P.rules.returnDiscountPct, tursab: site.tursab
+  };
+  const F = x => fill(x, v);
+  const name = (a, z) => `${esc(Q.zone(P, a).short[lang])} → ${esc(Q.zone(P, z).short[lang])}`;
+  const popular = ROUTES.filter(([a, z]) => a !== "galataport" && ["sultanahmet", "taksim", "besiktas", "kadikoy", "sisli", "SAW"].includes(z));
+  const row = (a, z, cells) => `<tr><td><a href="${routePath(lang, a, z)}">${name(a, z)}</a></td>${cells.map(c => `<td>${c}</td>`).join("")}</tr>`;
+  let head, rows;
+  if (g.table === "cheap") {
+    const cheap = ROUTES.filter(([a]) => a !== "galataport").sort((x, y) => sedan(...x) - sedan(...y)).slice(0, 10);
+    const car = id => CAR(id).name[lang] + " (" + CAR(id).seats + ")";
+    head = [t.ui.route, car("sedan"), "Per person", car("minivan"), "Per person"];
+    rows = cheap.map(([a, z]) => { const s = sedan(a, z), m = Q.base(P, a, z, "minivan"); return row(a, z, [`€${s}`, `€${Math.ceil(s / CAR("sedan").seats)}`, `€${m}`, `€${Math.ceil(m / CAR("minivan").seats)}`]); });
+  } else if (g.table === "vip") {
+    head = [t.ui.route, CAR("vclass").name[lang], "Per person (6)"];
+    rows = popular.map(([a, z]) => { const p = Q.base(P, a, z, "vclass"); return row(a, z, [`€${p}`, `€${Math.ceil(p / CAR("vclass").seats)}`]); });
+  } else {
+    head = [t.ui.route].concat(P.cars.map(c => c.name[lang]));
+    rows = popular.map(([a, z]) => row(a, z, P.cars.map(c => `€${Q.base(P, a, z, c.id)}`)));
+  }
+  const faq = g.faq.map(([q, a]) => [F(q), F(a)]);
+  const body = `<section class="hero hero-s"><div class="wrap hero-in"><div class="hero-t"><nav class="crumbs"><a href="${t.paths.home}">${esc(site.brand)}</a></nav>
+<h1>${esc(F(g.h1))}</h1><p class="lead answer">${F(g.lead)}</p></div>${searchForm(lang)}${assure(lang)}</div></section>
+<section class="sec ice"><div class="wrap"><h2>${esc(F(g.tableH))}</h2><div class="tbl-wrap"><table class="tbl"><thead><tr>${head.map(h => `<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>
+${rows.join("\n")}</tbody></table></div><p class="sub small">${esc(g.tableNote)} ${t.home.routesLead}</p><p><a class="more" href="${t.paths.prices}">${t.nav.prices} →</a></p></div></section>
+${g.id === "black" ? "" : `<section class="sec"><div class="wrap"><h2>${t.home.fleetH}</h2><p class="sub">${t.home.fleetLead}</p>${fleet(lang)}</div></section>`}
+${g.sections.map(([h, html], i) => `<section class="sec${i % 2 ? " ice" : ""}"><div class="wrap narrow prose"><h2>${esc(F(h))}</h2>${F(html)}</div></section>`).join("\n")}
+<section class="sec"><div class="wrap narrow"><h2>${t.home.faqH}</h2>${faqBlock(faq)}</div></section>
+<section class="sec ice"><div class="wrap"><h2>More guides</h2><div class="chips">${GUIDES.filter(x => x.id !== g.id).map(x => `<a href="${x.path}">${esc(x.nav)}</a>`).join("")}<a href="${t.paths.IST}">${esc(Q.zone(P, "IST").short[lang])}</a><a href="${t.paths.SAW}">${esc(Q.zone(P, "SAW").short[lang])}</a></div></div></section>
+<section class="cta"><div class="wrap"><h2>${t.home.ctaH}</h2><p>${t.home.ctaP}</p><a class="btn btn-k" href="${t.paths.book}">${t.nav.book}</a></div></section>`;
+  const offer = {
+    "@context": "https://schema.org", "@type": "Service", serviceType: g.service, name: F(g.h1), description: F(g.desc), provider: { "@id": URL_ + "/#service" }, areaServed: { "@type": "City", name: "Istanbul" },
+    offers: (g.table === "vip" ? [CAR("vclass")] : P.cars).map(c => ({ "@type": "AggregateOffer", name: c.name[lang], priceCurrency: P.currency, lowPrice: lowest(c.id), highPrice: Math.max(...ROUTES.map(([x, y]) => Q.base(P, x, y, c.id)).filter(Boolean)), eligibleQuantity: { "@type": "QuantitativeValue", maxValue: c.seats, unitText: "passengers" } }))
+  };
+  page({ lang, path: g.path, title: F(g.title), desc: F(g.desc), body, ld: [offer, faqLd(faq), crumbs([[site.brand, t.paths.home], [F(g.h1), g.path]])] });
+}
+
 function prices(lang) {
   const t = I[lang];
   const body = `<section class="sec"><div class="wrap"><h1>${t.prices.h1}</h1><p class="sub">${t.home.routesLead}</p>
@@ -347,26 +401,19 @@ function extras() {
 ${pages.map(p => `<url><loc>${URL_}${p.path}</loc><lastmod>${today}</lastmod>${p.alts ? LANGS.map(l => `<xhtml:link rel="alternate" hreflang="${l}" href="${URL_}${p.alts[l]}"/>`).join("") + `<xhtml:link rel="alternate" hreflang="x-default" href="${URL_}${p.alts.en}"/>` : ""}</url>`).join("\n")}
 </urlset>
 `);
-  fs.writeFileSync(path.join(OUT, "robots.txt"), `User-agent: *
+  // AI search and answer bots get the same rules as everyone (a bot's own group replaces the * group, so it is one group)
+  const BOTS = ["*", "GPTBot", "OAI-SearchBot", "ChatGPT-User", "PerplexityBot", "Perplexity-User", "ClaudeBot", "Claude-SearchBot", "Claude-User",
+    "Google-Extended", "Googlebot", "Bingbot", "Applebot", "Applebot-Extended", "DuckAssistBot", "Meta-ExternalAgent", "MistralAI-User", "YandexBot"];
+  fs.writeFileSync(path.join(OUT, "robots.txt"), `${BOTS.map(b => "User-agent: " + b).join("\n")}
 Allow: /
 Disallow: /api/
 Disallow: /admin
-
-User-agent: GPTBot
-Allow: /
-User-agent: OAI-SearchBot
-Allow: /
-User-agent: ChatGPT-User
-Allow: /
-User-agent: PerplexityBot
-Allow: /
-User-agent: ClaudeBot
-Allow: /
-User-agent: Google-Extended
-Allow: /
+Disallow: /b2b
 
 Sitemap: ${URL_}/sitemap.xml
 `);
+  // IndexNow: the key file Bing, Yandex and the other engines check (api/admin.js ?a=indexnow sends the new URLs)
+  if (site.indexnowKey) fs.writeFileSync(path.join(OUT, site.indexnowKey + ".txt"), site.indexnowKey);
   const line = (a, z) => { const d = dist(a, z); return `- ${Q.zone(P, a).name.en} → ${Q.zone(P, z).name.en}: ${P.cars.map(c => `${c.name.en} €${Q.base(P, a, z, c.id)}`).join(", ")}${d ? ` (${d[0]} km, about ${d[1]} min)` : ""}. ${URL_}${routePath("en", a, z)}`; };
   fs.writeFileSync(path.join(OUT, "llms.txt"), `# ${site.brand}
 
@@ -379,10 +426,17 @@ Sitemap: ${URL_}/sitemap.xml
 - The driver waits with a name sign; flights are tracked and the first ${P.rules.freeWaitMin} minutes after landing are free.
 - Booking flow: the customer sends a request, gets a "request received" e-mail, then a confirmation e-mail once the office confirms.
 - Free cancellation up to 24 hours before pickup.
+- Pickups 24 hours a day, 7 days a week. Prices from €${minPrice} to €${maxPrice()} per car, one way.
+- Areas: Istanbul only. Istanbul Airport (IST), Sabiha Gökçen (SAW), Galataport cruise port and the central districts on both sides of the Bosphorus.
 - Contact: WhatsApp ${site.phone}, ${site.email}. TÜRSAB licence ${site.tursab}.
 
 ## Prices
 ${ROUTES.map(([a, z]) => line(a, z)).join("\n")}
+
+## Guides
+${GUIDES.map(g => `- ${g.nav}: ${URL_}${g.path}`).join("\n")}
+- Istanbul Airport taxi prices: ${URL_}${I.en.paths.IST}
+- Sabiha Gökçen taxi prices: ${URL_}${I.en.paths.SAW}
 
 ## Pages
 - Book: ${URL_}/book
@@ -402,6 +456,7 @@ function admin() {
 }
 
 LANGS.forEach(l => { home(l); AIRPORTS.forEach(a => hub(l, a.id)); portHub(l); CO.ORDER.forEach(k => companyPage(l, k)); ROUTES.forEach(([a, z]) => route(l, a, z)); prices(l); book(l); legalPages(l); blogIndex(l); POSTS.forEach(x => blogPost(l, x)); });
+GUIDES.forEach(guide);
 notFound();
 admin();
 extras();

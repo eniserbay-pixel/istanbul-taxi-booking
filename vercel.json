@@ -4,7 +4,7 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "regions": ["fra1"],
-  "crons": [{ "path": "/api/admin?a=tgdaily", "schedule": "0 17 * * *" }],
+  "crons": [{ "path": "/api/admin?a=tgdaily", "schedule": "0 17 * * *" }, { "path": "/api/admin?a=indexnow", "schedule": "0 6 * * *" }],
   "functions": { "api/*.js": { "includeFiles": "{data/**,public/assets/quote.js,api/_lib/voucher/**}" } },
   "rewrites": [
     { "source": "/api/hit", "destination": "/api/lead?hit=1" }
