@@ -17,6 +17,7 @@ const GUIDES = require("./guides");
 const DI = require("./districts");
 const PL = require("./places");
 const SV = require("./services");
+const AB = require("./about");
 // German, French, Italian and Dutch: page texts, blog posts and legal texts in one file per language
 ["de", "fr", "it", "nl"].forEach(l => {
   const X = require("./lang/" + l);
@@ -73,7 +74,7 @@ function layout(o) {
     hoursAvailable: { "@type": "OpeningHoursSpecification", dayOfWeek: DAYS, opens: "00:00", closes: "23:59" },
     offers: { "@type": "AggregateOffer", priceCurrency: P.currency, lowPrice: minPrice, highPrice: maxPrice(), offerCount: ROUTES.length * P.cars.length },
     provider: {
-      "@type": "TravelAgency", "@id": URL_ + "/#company", name: site.company, alternateName: site.brand, url: URL_ + "/", telephone: site.phone, email: site.email,
+      "@type": "TravelAgency", "@id": URL_ + "/#company", name: site.company, alternateName: site.brand, foundingDate: site.founded, url: URL_ + "/", telephone: site.phone, email: site.email,
       address: { "@type": "PostalAddress", addressLocality: "Istanbul", addressCountry: "TR" }, areaServed: { "@type": "City", name: "Istanbul" },
       priceRange: `€${minPrice}–€${maxPrice()}`, openingHoursSpecification: { "@type": "OpeningHoursSpecification", dayOfWeek: DAYS, opens: "00:00", closes: "23:59" },
       knowsLanguage: LANGS, identifier: { "@type": "PropertyValue", name: "TÜRSAB licence", value: site.tursab },
@@ -102,7 +103,7 @@ ${langSwitch(o.lang, alts)}</nav>
 <p><bdi>${esc(site.company)}</bdi><br>${esc(site.address[o.lang])}<br>${t.footer.tursab}: ${esc(site.tursab)}</p></div>
 <div><h3>${t.footer.routes}</h3>${popular.map(([a, z]) => `<a href="${p.route(a, Q.zone(P, z).slug)}">${esc(Q.zone(P, a).short[o.lang])} → ${esc(Q.zone(P, z).short[o.lang])}</a>`).join("")}<a href="${PORT[o.lang].path}">${esc(Q.zone(P, "galataport").name[o.lang])}</a>${o.lang === "en" ? GUIDES.map(g => `<a href="${g.path}">${esc(g.nav)}</a>`).join("") : ""}</div>
 <div><h3>${SV.T[o.lang].head}</h3>${SV.S.map(x => `<a href="${x[o.lang].path}">${esc(x[o.lang].nav)}</a>`).join("")}</div>
-<div><h3>${CO.T[o.lang].head}</h3>${CO.ORDER.map(k => `<a href="${CO.path(o.lang, k)}">${CO.T[o.lang].pages[k].nav}</a>`).join("")}</div>
+<div><h3>${CO.T[o.lang].head}</h3><a href="${AB[o.lang].path}">${esc(AB[o.lang].nav)}</a>${CO.ORDER.map(k => `<a href="${CO.path(o.lang, k)}">${CO.T[o.lang].pages[k].nav}</a>`).join("")}</div>
 <div><h3>${t.footer.contact}</h3><a href="https://wa.me/${site.whatsapp}" rel="noopener">WhatsApp <bdi dir="ltr">${esc(site.phone)}</bdi></a><a href="tel:${site.phone.replace(/\s/g, "")}"><bdi dir="ltr">${esc(site.phone)}</bdi></a><a href="mailto:${site.email}">${esc(site.email)}</a></div>
 <div><h3>${t.footer.legal}</h3><a href="${p.terms}">${t.ui.terms}</a><a href="${p.privacy}">${t.ui.privacy}</a><a href="${p.prices}">${t.nav.prices}</a><a href="${p.blog}">${t.nav.blog}</a></div>
 </div><div class="wrap copy">© ${new Date().getFullYear()} ${esc(site.brand)}. ${t.footer.rights}</div></footer>
@@ -408,6 +409,20 @@ ${CO.FORMS[kind].map(field).join("\n")}
     ld: [crumbs([[site.brand, I[lang].paths.home], [x.h1, CO.path(lang, kind)]])] });
 }
 
+// About us: why the company was started, what it stands for, and the facts a guest can check
+function aboutPage(lang) {
+  const t = I[lang], x = AB[lang], F = s => fill(s, { brand: site.brand, company: site.company, tursab: site.tursab }), f = x.facts;
+  const facts = [[f.company, `<bdi>${esc(site.company)}</bdi>`], [f.licence, esc(site.tursab)], [f.founded, esc(f.foundedOn)], [f.area, esc(f.areaText)], [f.hours, esc(f.hoursText)]];
+  const body = `<section class="hero hero-s"><div class="wrap"><div class="hero-t"><nav class="crumbs"><a href="${t.paths.home}">${esc(site.brand)}</a> › ${esc(CO.T[lang].head)}</nav>
+<h1>${esc(F(x.h1))}</h1><p class="lead answer">${esc(F(x.lead))}</p></div></div></section>
+<section class="sec"><div class="wrap narrow prose"><h2>${esc(x.storyH)}</h2>${x.story.map(p => `<p>${fill(esc(p), { brand: esc(site.brand), company: `<bdi>${esc(site.company)}</bdi>`, tursab: esc(site.tursab) })}</p>`).join("")}</div></section>
+<section class="sec ice"><div class="wrap"><h2>${esc(x.valuesH)}</h2><ul class="vals">${x.values.map(([h, p]) => `<li><h3>${esc(h)}</h3><p>${esc(p)}</p></li>`).join("")}</ul></div></section>
+<section class="sec"><div class="wrap narrow"><h2>${esc(x.factsH)}</h2><dl class="kv">${facts.map(([k, v]) => `<dt>${esc(k)}</dt><dd>${v}</dd>`).join("")}</dl></div></section>
+<section class="cta"><div class="wrap"><h2>${esc(x.ctaH)}</h2><p>${esc(x.ctaP)}</p><a class="btn btn-k" href="${t.paths.book}">${t.nav.book}</a></div></section>`;
+  const ld = { "@context": "https://schema.org", "@type": "AboutPage", name: F(x.title), description: x.desc, url: URL_ + x.path, inLanguage: lang, about: { "@id": URL_ + "/#company" } };
+  page({ lang, path: x.path, alts: ALL(l => AB[l].path), title: F(x.title), desc: F(x.desc), body, ld: [ld, crumbs([[site.brand, t.paths.home], [F(x.h1), x.path]])] });
+}
+
 // English guide pages for the big searches (build/guides.js): a quotable answer, a price table, sections, FAQ
 function guide(g) {
   const lang = "en", t = I.en, sedan = (a, z) => Q.base(P, a, z, "sedan");
@@ -518,6 +533,7 @@ Sitemap: ${URL_}/sitemap.xml
 - The driver waits with a name sign; flights are tracked and the first ${P.rules.freeWaitMin} minutes after landing are free.
 - Booking flow: the customer sends a request, gets a "request received" e-mail, then a confirmation e-mail once the office confirms.
 - Free cancellation up to 24 hours before pickup.
+- Founded on 15 October 2026 in Istanbul; run by ${site.company}. About us: ${URL_}${AB.en.path}
 - Pickups 24 hours a day, 7 days a week. Prices from €${minPrice} to €${maxPrice()} per car, one way.
 - Areas: Istanbul only. Istanbul Airport (IST), Sabiha Gökçen (SAW), Galataport cruise port and the central districts on both sides of the Bosphorus.
 - Contact: WhatsApp ${site.phone}, ${site.email}. TÜRSAB licence ${site.tursab}.
@@ -547,7 +563,7 @@ function admin() {
   fs.readdirSync(path.join(__dirname, "static", "fonts")).forEach(f => put("static/fonts/" + f, "fonts/" + f));
 }
 
-LANGS.forEach(l => { home(l); AIRPORTS.forEach(a => hub(l, a.id)); portHub(l); CO.ORDER.forEach(k => companyPage(l, k)); ROUTES.forEach(([a, z]) => route(l, a, z)); PL.L.forEach(x => place(l, x)); SV.S.forEach(x => service(l, x)); prices(l); book(l); legalPages(l); blogIndex(l); POSTS.forEach(x => blogPost(l, x)); });
+LANGS.forEach(l => { home(l); AIRPORTS.forEach(a => hub(l, a.id)); portHub(l); aboutPage(l); CO.ORDER.forEach(k => companyPage(l, k)); ROUTES.forEach(([a, z]) => route(l, a, z)); PL.L.forEach(x => place(l, x)); SV.S.forEach(x => service(l, x)); prices(l); book(l); legalPages(l); blogIndex(l); POSTS.forEach(x => blogPost(l, x)); });
 GUIDES.forEach(guide);
 notFound();
 admin();
