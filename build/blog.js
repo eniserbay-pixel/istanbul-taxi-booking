@@ -7,6 +7,8 @@ const SRC = {
 };
 
 module.exports = [
+  // newest first; in every language in its own file
+  require("./blog-galataport"),
   {
     id: "taxi-shortage",
     date: "2026-10-26",
