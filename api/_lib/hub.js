@@ -3,7 +3,7 @@
 // decline, cancellation, thank-you), which api/hub.js sends from here in this site's look and saves on the booking.
 // Settings (Vercel → Environment Variables):
 //   HUB_SECRET  the same value as HUB_SECRET_ITB on the Transfer3E project; without it nothing is sent there
-//   HUB_URL     only to test against a preview (default https://www.transfer3e.com)
+//   HUB_URL     only to test against a preview (default https://transfer3e.com)
 // Every call either way is signed: X-Hub-Site, X-Hub-Time (unix seconds) and X-Hub-Sig = HMAC-SHA256 of
 // "<time>.<body>" with the secret; a call older than five minutes is refused.
 const crypto = require("crypto");
@@ -11,7 +11,7 @@ const store = require("./store");
 
 const KEY = "itb";
 const SECRET = () => process.env.HUB_SECRET || "";
-const URL_ = () => (process.env.HUB_URL || "https://www.transfer3e.com").replace(/\/$/, "");
+const URL_ = () => (process.env.HUB_URL || "https://transfer3e.com").replace(/\/$/, "");
 function configured() { return !!SECRET(); }
 
 const sign = (time, raw) => crypto.createHmac("sha256", SECRET()).update(time + "." + raw).digest("hex");
