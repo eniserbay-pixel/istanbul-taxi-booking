@@ -1,17 +1,19 @@
-// Applications from the corporate pages: /corporate/supplier (transport companies and drivers who
-// want work from us) and /corporate/b2b (agencies and companies that want to send us work).
+// Applications from the Company pages (/company/...): corporate accounts (companies that want transfers for
+// their staff), suppliers (transport companies and drivers who want work from us), B2B (agencies that send
+// us work) and partnerships (hotels, guides, creators).
 // Saved for the panel (Başvurular). The page offers WhatsApp when this fails.
 const store = require("./_lib/store");
 const { str } = require("./_lib/booking");
 const { body, ip, send } = require("./_lib/http");
 
-// Allowed fields per form (see src/seo/corporate.py), with their maximum length; arrays are lists of short codes
+// Allowed fields per form (see build/company.js), with their maximum length; arrays are lists of short codes
 const FIELDS = {
-  supplier: { stype: 20, company: 200, taxno: 200, name: 200, phone: 40, email: 200, city: 200, fleet: 6, drivers: 6, classes: [], vehicles: 1500,
-              airports: [], docs: [], years: 4, langs: 200, avail: 20, msg: 1500 },
-  b2b: { company: 200, ctype: 20, country: 200, website: 200, name: 200, role: 200, email: 200, phone: 40, volume: 20, services: [], billing: 20, msg: 1500 }
+  corporate: { company: 200, sector: 200, name: 200, role: 200, email: 200, phone: 40, volume: 20, msg: 1500 },
+  supplier: { stype: 20, company: 200, name: 200, phone: 40, email: 200, city: 200, fleet: 6, classes: [], docs: [], msg: 1500 },
+  b2b: { company: 200, ctype: 20, country: 200, website: 200, name: 200, email: 200, phone: 40, volume: 20, msg: 1500 },
+  partner: { ptype: 20, company: 200, name: 200, email: 200, phone: 40, website: 200, msg: 1500 }
 };
-const REQUIRED = { supplier: ["name", "phone", "city"], b2b: ["company", "name", "email", "phone"] };
+const REQUIRED = { corporate: ["company", "name", "email", "phone"], supplier: ["stype", "name", "phone", "city"], b2b: ["company", "name", "email", "phone"], partner: ["ptype", "name", "email", "phone"] };
 
 module.exports = async (req, res) => {
   if (req.method !== "POST") return send(res, 405, { error: "method" });

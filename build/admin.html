@@ -3155,15 +3155,16 @@ dialog.bl-dlg::backdrop { background: rgba(15, 27, 45, .45); }
 
   // ---------- Applications from the corporate pages (supplier, B2B) ----------
   var APP_ST = { yeni: "Yeni", gorusuldu: "Görüşüldü", anlasildi: "Anlaşıldı", olumsuz: "Olumsuz" };
-  var APP_KIND = { supplier: "Tedarikçi", b2b: "B2B iş ortağı" };
+  var APP_KIND = { corporate: "Kurumsal müşteri", supplier: "Taşıyıcı", b2b: "B2B acente", partner: "İşbirliği" };
   var APP_F = {
-    stype: ["Başvuru türü", { company: "Taşımacılık firması", driver: "Bireysel şoför" }], company: ["Firma"], taxno: ["Vergi dairesi / no"], ctype: ["Faaliyet alanı", { agency: "Seyahat acentesi", operator: "Tur operatörü / DMC", hotel: "Otel", clinic: "Klinik / hastane", event: "Etkinlik / MICE acentesi", corporate: "Şirket", platform: "Online platform", other: "Diğer" }],
+    stype: ["Başvuru türü", { company: "Taşımacılık firması", driver: "Kendi aracıyla şoför" }], company: ["Firma"], taxno: ["Vergi dairesi / no"], ctype: ["Faaliyet alanı", { other: "Diğer", agency: "Seyahat acentesi", operator: "Tur operatörü / DMC", hotel: "Otel", clinic: "Klinik / hastane", event: "Etkinlik / MICE acentesi", corporate: "Şirket", platform: "Online platform", other: "Diğer" }],
+    sector: ["Sektör"], ptype: ["İşbirliği türü", { hotel: "Otel", guide: "Rehber", influencer: "Influencer / içerik üretici", blog: "Seyahat sitesi / blog", other: "Diğer" }],
     name: ["Ad soyad / yetkili"], role: ["Görevi"], phone: ["Telefon"], email: ["E-posta"], country: ["Ülke / şehir"], website: ["Web sitesi"], city: ["İlçe"],
-    fleet: ["Araç sayısı"], drivers: ["Şoför sayısı"], classes: ["Araç sınıfları", { eco: "Ekonomi", std: "Standart", first: "First Class", van: "Van", vanf: "VIP van", bus: "Minibüs", coach: "Midibüs / otobüs" }],
+    fleet: ["Araç sayısı"], drivers: ["Şoför sayısı"], classes: ["Araç sınıfları", { sedan: "Sedan", minivan: "Minivan", vclass: "Mercedes V-Class", minibus: "Minibüs" }],
     vehicles: ["Araçlar"], airports: ["Çalışma bölgesi", { IST: "IST", SAW: "SAW", eu: "Avrupa yakası", as: "Anadolu yakası", long: "Şehir dışı" }],
     docs: ["Belgeler", { d2: "D2 yetki", seat: "Koltuk sigortası", src: "SRC2", psy: "Psikoteknik", rec: "Adli sicil", tursab: "TÜRSAB" }],
     years: ["Deneyim (yıl)"], langs: ["Diller"], avail: ["Çalışma durumu", { full: "Tam zamanlı", part: "Yarı zamanlı", peak: "Yoğun saatlerde" }],
-    volume: ["Aylık transfer", { event: "Tek etkinlik" }], services: ["Hizmetler", { airport: "Havalimanı", hotel: "Otel", clinic: "Klinik-hastane", chauffeur: "Şoförlü araç", mice: "MICE", ski: "Kayak" }],
+    volume: ["Aylık transfer", { event: "Tek etkinlik", lt10: "10’dan az", "10to50": "10–50", gt50: "50’den fazla" }], services: ["Hizmetler", { airport: "Havalimanı", hotel: "Otel", clinic: "Klinik-hastane", chauffeur: "Şoförlü araç", mice: "MICE", ski: "Kayak" }],
     billing: ["Ödeme", { monthly: "Aylık fatura", prepaid: "Rezervasyon başına", guest: "Misafir öder" }], msg: ["Mesaj"]
   };
   function appVal(k, v) {
@@ -3191,8 +3192,8 @@ dialog.bl-dlg::backdrop { background: rgba(15, 27, 45, .45); }
     var all = S.apps || [];
     var list = all.filter(function (a) { return (!S.ak || a.kind === S.ak) && (!S.as || a.status === S.as); });
     var n = function (k, v) { return all.filter(function (a) { return !v || a[k] === v; }).length; };
-    $("main").innerHTML = '<h1>Başvurular</h1><p class="sub">Sitedeki Kurumsal sayfalarından gelen başvurular: bizimle çalışmak isteyen taşıyıcı firmalar ve şoförler (Tedarikçi), bize iş vermek isteyen acenteler ve firmalar (B2B).</p>' +
-      '<div class="chips" style="margin:0 0 8px">' + [["", "Tümü"], ["supplier", "Tedarikçi"], ["b2b", "B2B"]].map(function (c) {
+    $("main").innerHTML = '<h1>Başvurular</h1><p class="sub">Sitenin alt kısmındaki Company sayfalarından gelen başvurular: personeli için transfer isteyen firmalar (Kurumsal müşteri), bizimle çalışmak isteyen taşıma firmaları ve şoförler (Taşıyıcı), bize iş gönderen acenteler (B2B) ve oteller, rehberler, içerik üreticiler (İşbirliği).</p>' +
+      '<div class="chips" style="margin:0 0 8px">' + [["", "Tümü"], ["corporate", "Kurumsal müşteri"], ["supplier", "Taşıyıcı"], ["b2b", "B2B acente"], ["partner", "İşbirliği"]].map(function (c) {
         return '<button type="button" class="chip' + (S.ak === c[0] ? " on" : "") + '" data-ak="' + c[0] + '">' + c[1] + ' (' + n("kind", c[0]) + ')</button>';
       }).join("") + '</div><div class="chips" style="margin:0 0 14px">' + [["", "Her durum"]].concat(Object.keys(APP_ST).map(function (k) { return [k, APP_ST[k]]; })).map(function (c) {
         return '<button type="button" class="chip' + (S.as === c[0] ? " on" : "") + '" data-as="' + c[0] + '">' + c[1] + ' (' + n("status", c[0]) + ')</button>';

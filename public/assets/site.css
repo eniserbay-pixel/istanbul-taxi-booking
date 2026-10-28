@@ -202,7 +202,7 @@ p { margin: 0 0 1em; }
 
 /* Footer */
 .foot { background: var(--black); color: var(--ice-ink); padding: 48px 0 20px; font-size: 15px; }
-.foot-in { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 28px; }
+.foot-in { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr 1fr; gap: 28px; }
 .foot h3 { color: var(--mustard); font-size: 15px; text-transform: uppercase; letter-spacing: .06em; }
 .foot a { display: block; text-decoration: none; margin: 4px 0; }
 .foot a:hover { color: var(--mustard); }
@@ -307,3 +307,13 @@ p { margin: 0 0 1em; }
 .tw-it { height: 44px; display: grid; place-items: center; scroll-snap-align: center; font-size: 20px; font-weight: 500; color: var(--muted); font-variant-numeric: tabular-nums; cursor: pointer; user-select: none; }
 .tw-it.on { color: var(--mustard); font-weight: 700; }
 .tw-sep { position: relative; text-align: center; color: var(--mustard); font-size: 20px; font-weight: 700; }
+
+/* Company pages: what we offer on the left, the application form on the right */
+.co-in { display: grid; grid-template-columns: 1fr 1.6fr; gap: 32px; align-items: start; }
+.co-pts { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+.co-pts li { background: var(--ice); border-left: 4px solid var(--mustard); border-radius: 10px; padding: 14px 16px; font-weight: 600; }
+.co-form fieldset { border: 0; padding: 0; margin: 0; }
+.co-form legend { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+.co-form .checks { display: flex; flex-wrap: wrap; gap: 8px 18px; }
+.co-form .check { font-size: 15px !important; font-weight: 400 !important; }
+@media (max-width: 860px) { .co-in { grid-template-columns: 1fr; } }

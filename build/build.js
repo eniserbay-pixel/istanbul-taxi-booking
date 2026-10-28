@@ -12,6 +12,7 @@ const I = require("./i18n");
 const legal = require("./legal");
 const POSTS = require("./blog");
 const PORT = require("./port");
+const CO = require("./company");
 // German, French, Italian and Dutch: page texts, blog posts and legal texts in one file per language
 ["de", "fr", "it", "nl"].forEach(l => {
   const X = require("./lang/" + l);
@@ -66,6 +67,7 @@ ${langSwitch(o.lang, alts)}</nav>
 <div><a class="logo" href="${p.home}"><img src="/img/logo.webp" alt="${esc(site.brand)}" width="141" height="80" loading="lazy"></a>
 <p>${esc(site.company)}<br>${esc(site.address[o.lang])}<br>${t.footer.tursab}: ${esc(site.tursab)}</p></div>
 <div><h3>${t.footer.routes}</h3>${popular.map(([a, z]) => `<a href="${p.route(a, Q.zone(P, z).slug)}">${esc(Q.zone(P, a).short[o.lang])} → ${esc(Q.zone(P, z).short[o.lang])}</a>`).join("")}<a href="${PORT[o.lang].path}">${esc(Q.zone(P, "galataport").name[o.lang])}</a></div>
+<div><h3>${CO.T[o.lang].head}</h3>${CO.ORDER.map(k => `<a href="${CO.path(o.lang, k)}">${CO.T[o.lang].pages[k].nav}</a>`).join("")}</div>
 <div><h3>${t.footer.contact}</h3><a href="https://wa.me/${site.whatsapp}" rel="noopener">WhatsApp ${esc(site.phone)}</a><a href="tel:${site.phone.replace(/\s/g, "")}">${esc(site.phone)}</a><a href="mailto:${site.email}">${esc(site.email)}</a></div>
 <div><h3>${t.footer.legal}</h3><a href="${p.terms}">${t.ui.terms}</a><a href="${p.privacy}">${t.ui.privacy}</a><a href="${p.prices}">${t.nav.prices}</a><a href="${p.blog}">${t.nav.blog}</a></div>
 </div><div class="wrap copy">© ${new Date().getFullYear()} ${esc(site.brand)}. ${t.footer.rights}</div></footer>
@@ -280,6 +282,29 @@ ${list.map(([[x, y], to]) => { const d = dist(x, y); return `<tr><td><a href="${
   page({ lang, path: X.path, alts: ALL(l => PORT[l].path), title: fill(X.hub.title, v), desc: fill(X.hub.desc, v), body, ld: [crumbs([[site.brand, t.paths.home], [A.short[lang], X.path]])] });
 }
 
+// Company pages: what we offer the group, and its application form (sent to api/apply.js, panel: Başvurular)
+function companyPage(lang, kind) {
+  const C = CO.T[lang], x = C.pages[kind];
+  const field = ([name, type, req, opts]) => {
+    const label = C.labels[name] + (req ? " *" : ""), full = type === "textarea" || type === "checks";
+    const input = type === "textarea" ? `<textarea name="${name}" rows="4"></textarea>`
+      : type === "select" ? `<select name="${name}"${req ? " required" : ""}><option value="">–</option>${opts.map(v => `<option value="${v}">${esc(C.opts[v])}</option>`).join("")}</select>`
+      : type === "checks" ? `<span class="checks">${opts.map(v => `<label class="check"><input type="checkbox" name="${name}" value="${v}"> <span>${esc(C.opts[v])}</span></label>`).join("")}</span>`
+      : `<input name="${name}" type="${type}"${type === "number" ? ' min="0" max="9999"' : ""}${req ? " required" : ""}>`;
+    return type === "checks" ? `<fieldset class="full"><legend>${esc(label)}</legend>${input}</fieldset>` : `<label${full ? ' class="full"' : ""}>${esc(label)}${input}</label>`;
+  };
+  const body = `<section class="hero hero-s"><div class="wrap"><div class="hero-t"><nav class="crumbs"><a href="${I[lang].paths.home}">${esc(site.brand)}</a> › ${esc(C.head)}</nav>
+<h1>${esc(x.h1)}</h1><p class="lead">${esc(x.lead)}</p></div></div></section>
+<section class="sec"><div class="wrap co-in"><ul class="co-pts">${x.points.map(p => `<li>${esc(p)}</li>`).join("")}</ul>
+<form class="form co-form" data-apply="${kind}" data-ok="${esc(C.ok)}" data-err="${esc(C.err)}" data-req="${esc(C.req)}" novalidate>
+${CO.FORMS[kind].map(field).join("\n")}
+<input class="hp" name="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+<div class="full" data-msg></div><div class="full"><button class="btn btn-y" type="submit">${esc(C.send)}</button></div></form></div></section>
+<section class="sec ice"><div class="wrap"><h2>${esc(C.head)}</h2><div class="chips">${CO.ORDER.filter(k => k !== kind).map(k => `<a href="${CO.path(lang, k)}">${esc(C.pages[k].nav)}</a>`).join("")}</div></div></section>`;
+  page({ lang, path: CO.path(lang, kind), alts: ALL(l => CO.path(l, kind)), title: fill(x.title, { brand: site.brand }), desc: x.desc, body,
+    ld: [crumbs([[site.brand, I[lang].paths.home], [x.h1, CO.path(lang, kind)]])] });
+}
+
 function prices(lang) {
   const t = I[lang];
   const body = `<section class="sec"><div class="wrap"><h1>${t.prices.h1}</h1><p class="sub">${t.home.routesLead}</p>
@@ -376,7 +401,7 @@ function admin() {
   fs.readdirSync(path.join(__dirname, "static", "fonts")).forEach(f => put("static/fonts/" + f, "fonts/" + f));
 }
 
-LANGS.forEach(l => { home(l); AIRPORTS.forEach(a => hub(l, a.id)); portHub(l); ROUTES.forEach(([a, z]) => route(l, a, z)); prices(l); book(l); legalPages(l); blogIndex(l); POSTS.forEach(x => blogPost(l, x)); });
+LANGS.forEach(l => { home(l); AIRPORTS.forEach(a => hub(l, a.id)); portHub(l); CO.ORDER.forEach(k => companyPage(l, k)); ROUTES.forEach(([a, z]) => route(l, a, z)); prices(l); book(l); legalPages(l); blogIndex(l); POSTS.forEach(x => blogPost(l, x)); });
 notFound();
 admin();
 extras();
