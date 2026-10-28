@@ -32,3 +32,5 @@ node build/build.js
 node tests/server.js 4321      # http://127.0.0.1:4321, sahte Redis ve e-posta kaydı (/__mails)
 node tests/run.js              # tarama + tarayıcıda rezervasyon + panelden onay; Playwright gerekir
 ```
+
+Transfer3E panel (`api/_lib/hub.js`, `api/hub.js`): with `HUB_SECRET` set (same value as `HUB_SECRET_<SITE>` on the Transfer3E project) every booking saved here (site form, B2B page, a customer's answer to a change) is also sent to transfer3e.com/admin, where the office handles it; one that could not be sent is marked and sent again with the next booking or Telegram tick. The panel sends back approvals, declines, cancellations and thank-yous, which go to the customer from here with this site's e-mails and voucher, and edits, which are saved on the booking here. While `HUB_SECRET` is set the Telegram messages carry no Onayla / Reddet buttons and link to the Transfer3E panel. `HUB_URL` only to test against a preview.

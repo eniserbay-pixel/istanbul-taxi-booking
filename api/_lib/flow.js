@@ -6,6 +6,7 @@ const store = require("./store");
 const mail = require("./mail");
 const ga = require("./ga");
 const telegram = require("./telegram");
+const hub = require("./hub");
 
 // Telegram message to the office (_lib/telegram.js), next to the office e-mail; `decide`: with Onayla / Reddet buttons
 const tgOffice = (title, b, decide) => telegram.booking(title, b, decide);
@@ -28,7 +29,11 @@ async function received(b) {
   ]);
   log(b, mailNote(office, "Ofis bildirim", mail.OFFICE()));
   log(b, mailNote(cust, "Talep alındı", b.customer.email));
-  return store.saveBooking(b);
+  // the office handles it in the Transfer3E panel (_lib/hub.js)
+  await hub.push(b);
+  b = await store.saveBooking(b);
+  await hub.flush().catch(e => console.error(e));
+  return b;
 }
 
 // `by`: "musteri" (accepted a change), "telegram" (the button under the Telegram message, pressed by `who`), else the panel
@@ -111,7 +116,7 @@ async function answer(b, accept) {
     b = await approve(b, "musteri");
     await mail.send(mail.officeMail("Müşteri değişikliği kabul etti, rezervasyon onaylandı", b, pr.message ? "Gönderdiğiniz not: " + pr.message : ""));
     await tgOffice("✅ Müşteri değişikliği kabul etti, rezervasyon onaylandı", b);
-    return b;
+    return toHub(b);
   }
   b.status = "yeni";
   delete b.proposal;
@@ -119,7 +124,14 @@ async function answer(b, accept) {
   b = await store.saveBooking(b);
   await mail.send(mail.officeMail("Müşteri değişikliği kabul etmedi", b, "Rezervasyon tekrar Yeni durumuna döndü. Müşteriyle iletişime geçin ya da reddedin."));
   await tgOffice("⚠️ Müşteri değişikliği kabul etmedi, rezervasyon tekrar Yeni", b);
-  return b;
+  return toHub(b);
+}
+
+// The customer's answer changed the booking: the Transfer3E panel gets it too
+async function toHub(b) {
+  if (!hub.configured()) return b;
+  await hub.push(b);
+  return store.saveBooking(b).catch(e => { console.error(e); return b; });
 }
 
 module.exports = { received, approve, reject, cancel, askReview, propose, answer, completed };

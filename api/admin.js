@@ -116,6 +116,8 @@ module.exports = async (req, res) => {
   // Every few minutes from .github/workflows/telegram-tick.yml: half-finished site bookings. Open to anyone, but each item is sent only once, and calls are limited.
   if (a === "tgtick" && req.method === "GET") {
     if (!store.configured() || !(await store.allow("rl:tgtick", 3, 60))) return send(res, 429, { error: "too_many" });
+    // bookings the Transfer3E panel did not get yet (_lib/hub.js) go again
+    await require("./_lib/hub").flush().catch(e => console.error(e));
     return send(res, 200, await telegram.tick().catch(e => { console.error(e); return { error: "failed" }; }));
   }
   if (req.method === "POST" && req.headers["x-iap-admin"] !== "1") return send(res, 403, { error: "forbidden" });

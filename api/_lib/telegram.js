@@ -165,10 +165,12 @@ async function text(title, b) {
 // Buttons: Onayla / Reddet (only while the booking waits for the office), WhatsApp to the customer, the voucher PDF, the panel
 function keyboard(b, decide) {
   const rows = [];
-  if (decide && ["yeni", "talep"].includes(b.status)) rows.push([{ text: "✅ Onayla", callback_data: "ok:" + b.id }, { text: "⛔ Reddet", callback_data: "no:" + b.id }]);
+  // with the Transfer3E panel (_lib/hub.js) the office approves there, so the message only informs
+  if (decide && !require("./hub").configured() && ["yeni", "talep"].includes(b.status)) rows.push([{ text: "✅ Onayla", callback_data: "ok:" + b.id }, { text: "⛔ Reddet", callback_data: "no:" + b.id }]);
   const wa = digits(b.customer && b.customer.phone || b.passenger && b.passenger.phone);
   rows.push([wa.length >= 8 ? { text: "💬 WhatsApp", url: "https://wa.me/" + wa } : null, { text: "📄 Voucher", callback_data: "v:" + b.id }].filter(Boolean));
-  if (/^https:/.test(SITE())) rows.push([{ text: "🖥 Panelde aç", url: SITE() + "/admin#rezervasyonlar" }]);
+  if (require("./hub").configured()) rows.push([{ text: "🖥 Transfer3E panelinde aç", url: require("./hub").PANEL() }]);
+  else if (/^https:/.test(SITE())) rows.push([{ text: "🖥 Panelde aç", url: SITE() + "/admin#rezervasyonlar" }]);
   return rows;
 }
 const SITE = () => require("./mail").SITE();
@@ -209,6 +211,10 @@ async function press(q) {
   }
   // Onayla / Reddet ask once more, since each sends the customer an e-mail
   const rest = keyboard(b, false);
+  if (["ok", "no", "ok!", "no!"].includes(act) && require("./hub").configured()) {
+    await tg("editMessageReplyMarkup", Object.assign({ reply_markup: { inline_keyboard: rest } }, msg)).catch(() => {});
+    return answer("Onay ve red artık Transfer3E panelinden veriliyor.");
+  }
   if (act === "ok" || act === "no") {
     if (!["yeni", "talep"].includes(b.status)) {
       await tg("editMessageReplyMarkup", Object.assign({ reply_markup: { inline_keyboard: rest } }, msg)).catch(() => {});

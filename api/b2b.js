@@ -232,6 +232,7 @@ module.exports = async (req, res) => {
       const sent = await mail.send(mail.officeMail("Yeni B2B rezervasyon talebi: " + p.name, saved)).catch(e => { console.error(e); return false; });
       saved.history.push({ at: now(), text: "Ofis bildirim e-postası " + (sent ? "gönderildi" : "gönderilemedi") });
       await telegram.booking("🆕 Yeni B2B rezervasyon", saved, true);
+      await require("./_lib/hub").push(saved);
       await store.saveBooking(saved);
       return send(res, 200, { booking: brief(saved) });
     }
