@@ -1,10 +1,16 @@
 {
   "name": "istanbul-airport-taxi",
   "private": true,
-  "description": "Istanbul airport taxi booking site. Static pages built into public/ by build/build.js; serverless functions in api/. No dependencies.",
+  "description": "Istanbul airport taxi booking site. Static pages built into public/ by build/build.js; serverless functions in api/. Dependencies: pdfkit for the booking voucher PDF, @anthropic-ai/sdk for the panel's autofill and translations.",
   "scripts": {
     "build": "node build/build.js",
     "test": "node tests/run.js"
   },
-  "engines": { "node": ">=18" }
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.133.0",
+    "pdfkit": "^0.17.2"
+  },
+  "engines": {
+    "node": ">=18"
+  }
 }

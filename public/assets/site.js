@@ -49,6 +49,27 @@
   // The language link keeps the chosen route and time on the booking page
   if (location.search) $$("a.lang").forEach(function (a) { a.href = a.getAttribute("href") + location.search; });
 
+  // ---- Visit counter (panel: Site Analitiği, api/_lib/stats.js): one cookieless request per page view ----
+  // The first page of the tab and where the visitor came from are kept for the tab and sent with a booking (Kaynak).
+  var origin = null;
+  (function () {
+    if (navigator.webdriver || /localhost|127\.0\.0\.1/.test(location.host)) return;
+    var qp = function (n) { var m = location.search.match(new RegExp("[?&]" + n + "=([^&]*)")); try { return m ? decodeURIComponent(m[1].replace(/\+/g, " ")).slice(0, 60) : ""; } catch (e) { return ""; } };
+    var rh = "";
+    try { rh = document.referrer ? new URL(document.referrer).hostname : ""; } catch (e) { /* no referrer */ }
+    var own = rh && rh.replace(/^www\./, "") === location.hostname.replace(/^www\./, "");
+    var utm = qp("utm_source");
+    try {
+      var b = JSON.stringify({ t: "v", p: location.pathname, r: own ? "" : rh, u: utm, l: document.documentElement.lang.slice(0, 5).toLowerCase() });
+      if (!(navigator.sendBeacon && navigator.sendBeacon("/api/hit", b))) fetch("/api/hit", { method: "POST", body: b, keepalive: true });
+    } catch (e) { /* counting is best effort */ }
+    try {
+      var ck = qp("gclid") || qp("gbraid") || qp("wbraid") ? "g" : qp("msclkid") ? "b" : qp("ttclid") ? "t" : qp("fbclid") ? "f" : "";
+      if (!sessionStorage.getItem("itb-src") || utm || ck || rh && !own) sessionStorage.setItem("itb-src", JSON.stringify({ r: own ? "" : rh, u: utm, p: location.pathname, k: ck, m: qp("utm_medium"), c: qp("utm_campaign") }));
+      origin = JSON.parse(sessionStorage.getItem("itb-src"));
+    } catch (e) { /* storage off */ }
+  })();
+
   // ---- Booking ----
   var root = $("[data-book]");
   if (!root || !window.BOOK) return;
@@ -68,6 +89,11 @@
     car: "", bags: 0, childSeats: 0, name: "", email: "", phone: "", flight: "", pickup: "", dropoff: "", note: "",
     retFlight: "", retPickup: "", step: 0
   };
+  // Prices saved in the panel since the site was built; the car list is drawn again when they arrive
+  fetch("/api/pricing").then(function (r) { return r.ok ? r.json() : null; }).then(function (cfg) {
+    P = Quote.live(P, cfg);
+    if (s.step === 0) stepCar();
+  }).catch(function () { /* the built prices stay */ });
   try { var saved = JSON.parse(sessionStorage.getItem("bk:who") || "null"); if (saved) ["name", "email", "phone"].forEach(function (k) { s[k] = saved[k] || ""; }); } catch (e) { /* storage off */ }
 
   function q() {
@@ -91,6 +117,7 @@
     var peak = Quote.peakPct(P, s.from, s.time);
     view.innerHTML = summary() + '<div class="pick">' + B.cars.map(function (c) {
       var r = Quote.quote(P, { from: s.from, to: s.to, car: c.id, time: s.time, ret: s.ret, childSeats: 0 });
+      if (!r) return "";
       var ok = Quote.fits(c, s.pax, 0);
       return '<div class="opt' + (c.popular ? " pop" : "") + '" aria-disabled="' + !ok + '"><img src="' + c.img + '" alt="" width="140" height="70">' +
         "<div><h3>" + esc(c.name[L]) + '</h3><p class="models small">' + esc(c.models[L]) + '</p><p class="cap small"><span>👤 ' + c.seats + "</span><span>🧳 " + c.bags + "</span></p>" +
@@ -190,7 +217,7 @@
     var payload = {
       ref: s.ref, lang: L, from: s.from, to: s.to, car: s.car, date: s.date, time: s.time, flight: s.flight, pickup: s.pickup, dropoff: s.dropoff,
       pax: s.pax, bags: s.bags, childSeats: s.childSeats, name: s.name, phone: s.phone, email: s.email, note: s.note, website: s.website,
-      ret: s.ret ? { date: s.ret.date, time: s.ret.time, flight: s.retFlight, pickup: s.retPickup } : null
+      ret: s.ret ? { date: s.ret.date, time: s.ret.time, flight: s.retFlight, pickup: s.retPickup } : null, origin: origin
     };
     fetch("/api/booking", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) })
       .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
