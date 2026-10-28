@@ -147,6 +147,25 @@ const ok = (cond, msg) => { if (!cond) { failed++; console.log("FAIL " + msg); }
       await adm.goto(BASE + "/admin#" + v);
       await adm.waitForTimeout(500);
     }
+    // an application from a Company page shows under Başvurular
+    const ap = await browser.newPage({ viewport: { width: 390, height: 844 } });
+    await ap.goto(BASE + "/company/become-a-supplier");
+    await ap.click(".co-form button[type=submit]");
+    ok(await ap.locator(".co-form .alert").count() === 1, "application: required fields are reported");
+    await ap.selectOption(".co-form select[name=stype]", "driver");
+    await ap.fill(".co-form input[name=name]", "Hasan Sürücü");
+    await ap.fill(".co-form input[name=phone]", "+90 532 222 22 22");
+    await ap.fill(".co-form input[name=city]", "Pendik");
+    await ap.check('.co-form input[name=classes][value=minivan]');
+    await ap.click(".co-form button[type=submit]");
+    await ap.waitForSelector(".co-form .done");
+    if (process.env.SHOTS) await ap.screenshot({ path: "shots/company.png", fullPage: true });
+    await ap.close();
+    await adm.goto(BASE + "/admin#basvurular");
+    await adm.reload();
+    await adm.waitForSelector(".apc");
+    const apc = await adm.locator(".apc").first().textContent();
+    ok(/Hasan Sürücü/.test(apc) && /Taşıyıcı/.test(apc) && /Minivan/.test(apc), "application in the panel: " + apc.slice(0, 80));
     ok(!admErr.length, "panel page errors: " + admErr.join("; "));
     // the partners' page and the page a customer answers a change on
     for (const u of ["/b2b", "/booking-change?t=x"]) ok((await fetch(BASE + u)).status === 200, u + " opens");

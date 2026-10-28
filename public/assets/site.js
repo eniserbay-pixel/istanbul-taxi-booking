@@ -70,6 +70,35 @@
     } catch (e) { /* storage off */ }
   })();
 
+  // ---- Company pages: application forms (api/apply.js, panel: Başvurular) ----
+  $$("[data-apply]").forEach(function (f) {
+    var msg = $("[data-msg]", f);
+    f.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var miss = $$("[required]", f).filter(function (el) { return !el.value.trim(); });
+      if (miss.length) { msg.innerHTML = '<p class="alert">' + esc(f.getAttribute("data-req")) + "</p>"; miss[0].focus(); return; }
+      var data = {};
+      $$("input, select, textarea", f).forEach(function (el) {
+        if (!el.name || el.name === "hp") return;
+        if (el.type === "checkbox") { if (el.checked) (data[el.name] = data[el.name] || []).push(el.value); }
+        else if (el.value.trim()) data[el.name] = el.value.trim();
+      });
+      var btn = $("button[type=submit]", f);
+      btn.disabled = true;
+      fetch("/api/apply", { method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ kind: f.getAttribute("data-apply"), lang: document.documentElement.lang, data: data, hp: f.elements.hp.value }) })
+        .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+        .then(function () {
+          f.innerHTML = '<div class="done full"><div class="tick">✓</div><p>' + esc(f.getAttribute("data-ok")) + "</p></div>";
+          if (window.gtag) window.gtag("event", "application_sent", { form: f.getAttribute("data-apply") });
+        })
+        .catch(function () {
+          btn.disabled = false;
+          msg.innerHTML = '<p class="alert">' + esc(f.getAttribute("data-err")) + ' <a href="https://wa.me/' + window.SITE.wa + '">WhatsApp</a></p>';
+        });
+    });
+  });
+
   // ---- Booking ----
   var root = $("[data-book]");
   if (!root || !window.BOOK) return;
