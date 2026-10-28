@@ -1,4 +1,5 @@
 // Small helpers shared by the API functions
+// `max`: largest body accepted when the platform has not parsed it already (default 50 kB)
 function body(req, max) {
   if (req.body && typeof req.body === "object") return Promise.resolve(req.body);
   if (typeof req.body === "string") { try { return Promise.resolve(JSON.parse(req.body)); } catch (e) { return Promise.resolve(null); } }

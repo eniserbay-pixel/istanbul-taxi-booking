@@ -341,13 +341,14 @@ ${ROUTES.map(([a, z]) => line(a, z)).join("\n")}
 `);
 }
 
+// The office panel, the partners' booking page and the page where a customer answers a change the office sent.
+// They talk to api/ (admin.js, b2b.js, respond.js) and are copied as they are, with their fonts.
 function admin() {
-  const names = { zones: Object.fromEntries(P.zones.map(z => [z.id, z.short.tr])), cars: Object.fromEntries(P.cars.map(c => [c.id, c.name.tr])) };
-  const pricing = { zones: P.zones.map(z => ({ id: z.id, type: z.type })), cars: P.cars.map(c => ({ id: c.id, seats: c.seats, bags: c.bags })), prices: P.prices, rules: P.rules, currency: P.currency };
-  const html = fs.readFileSync(path.join(__dirname, "admin.html"), "utf8").replace(/__BRAND__/g, esc(site.brand)).replace("__NAMES__", JSON.stringify(names))
-    .replace("__PRICING__", JSON.stringify(pricing)).replace("__SITE__", JSON.stringify({ brand: site.brand }));
-  fs.mkdirSync(path.join(OUT, "admin"), { recursive: true });
-  fs.writeFileSync(path.join(OUT, "admin", "index.html"), html);
+  const put = (src, dest) => { fs.mkdirSync(path.dirname(path.join(OUT, dest)), { recursive: true }); fs.copyFileSync(path.join(__dirname, src), path.join(OUT, dest)); };
+  put("admin.html", "admin/index.html");
+  put("pages/b2b.html", "b2b/index.html");
+  put("pages/booking-change.html", "booking-change.html");
+  fs.readdirSync(path.join(__dirname, "static", "fonts")).forEach(f => put("static/fonts/" + f, "fonts/" + f));
 }
 
 LANGS.forEach(l => { home(l); AIRPORTS.forEach(a => hub(l, a.id)); ROUTES.forEach(([a, z]) => route(l, a, z)); prices(l); book(l); legalPages(l); blogIndex(l); POSTS.forEach(x => blogPost(l, x)); });

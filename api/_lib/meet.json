@@ -1,0 +1,134 @@
+{
+ "en": {
+  "m043": "At Istanbul Airport (IST)",
+  "m046": "Leave the arrivals hall through Exit 13. Our team waits at the 3E sign with your name.",
+  "m048": "At Sabiha Gökçen Airport (SAW)",
+  "m051": "Walk out of the terminal. Our 3E team waits inside the TÜRSAB building opposite column 5: just tell reception you are here for 3E.",
+  "m053": "Can't see your driver?",
+  "m054": "Call or WhatsApp us at any hour and we will connect you within minutes.",
+  "m074": "TÜRSAB Meeting Point, opposite column 5",
+  "m076": "Tell reception you are here for 3E",
+  "m077": "Follow the signs to Exit 13. As soon as you walk out, the 3E sign stands on your left."
+ },
+ "tr": {
+  "m043": "İstanbul Havalimanı'nda (IST)",
+  "m046": "Geliş salonundan 13 numaralı çıkıştan çıkın. Ekibimiz 3E tabelasının yanında adınızla bekler.",
+  "m048": "Sabiha Gökçen Havalimanı'nda (SAW)",
+  "m051": "Terminalden dışarı çıkın. 3E ekibimiz 5 numaralı kolonun karşısındaki TÜRSAB binasının içinde bekler: resepsiyona 3E'ye geldiğinizi söylemeniz yeterli.",
+  "m053": "Şoförünüzü göremiyor musunuz?",
+  "m054": "Bizi her saatte arayın veya WhatsApp'tan yazın, dakikalar içinde sizi bağlayalım.",
+  "m074": "TÜRSAB Meeting Point, 5 numaralı kolonun karşısı",
+  "m076": "Resepsiyona 3E'ye geldiğinizi söyleyin",
+  "m077": "13 numaralı çıkış kapısının tabelalarını takip edin. Kapıdan çıkınca 3E tabelasını hemen sol tarafınızda göreceksiniz."
+ },
+ "de": {
+  "m043": "Am Flughafen Istanbul (IST)",
+  "m046": "Verlassen Sie die Ankunftshalle durch Ausgang 13. Unser Team wartet am Schild 3E mit Ihrem Namen.",
+  "m048": "Am Flughafen Sabiha Gökçen (SAW)",
+  "m051": "Verlassen Sie das Terminal. Unser 3E-Team wartet im TÜRSAB-Gebäude gegenüber Säule 5: Sagen Sie einfach an der Rezeption, dass Sie zu 3E möchten.",
+  "m053": "Sie sehen Ihren Fahrer nicht?",
+  "m054": "Rufen Sie uns jederzeit an oder schreiben Sie per WhatsApp, wir verbinden Sie in wenigen Minuten.",
+  "m074": "TÜRSAB Meeting Point, gegenüber Säule 5",
+  "m076": "Sagen Sie an der Rezeption: „3E“",
+  "m077": "Folgen Sie den Schildern zu Ausgang 13. Direkt nach dem Ausgang steht das 3E-Schild links von Ihnen."
+ },
+ "fr": {
+  "m043": "À l'aéroport d'Istanbul (IST)",
+  "m046": "Quittez le hall des arrivées par la sortie 13. Notre équipe vous attend au panneau 3E avec votre nom.",
+  "m048": "À l'aéroport Sabiha Gökçen (SAW)",
+  "m051": "Sortez du terminal. Notre équipe 3E attend dans le bâtiment TÜRSAB en face du pilier 5 : dites simplement à la réception que vous venez pour 3E.",
+  "m053": "Vous ne voyez pas votre chauffeur ?",
+  "m054": "Appelez-nous ou écrivez-nous sur WhatsApp à toute heure, nous vous mettons en contact en quelques minutes.",
+  "m074": "TÜRSAB Meeting Point, en face du pilier 5",
+  "m076": "Dites à la réception que vous venez pour 3E",
+  "m077": "Suivez les panneaux vers la sortie 13. Dès que vous sortez, le panneau 3E se trouve sur votre gauche."
+ },
+ "it": {
+  "m043": "All'aeroporto di Istanbul (IST)",
+  "m046": "Esci dalla sala arrivi dall'uscita 13. Il nostro team ti aspetta al cartello 3E con il tuo nome.",
+  "m048": "All'aeroporto Sabiha Gökçen (SAW)",
+  "m051": "Esci dal terminal. Il nostro team 3E ti aspetta dentro l'edificio TÜRSAB di fronte alla colonna 5: basta dire alla reception che sei lì per 3E.",
+  "m053": "Non vedi il tuo autista?",
+  "m054": "Chiamaci o scrivici su WhatsApp a qualsiasi ora: ti mettiamo in contatto in pochi minuti.",
+  "m074": "TÜRSAB Meeting Point, di fronte alla colonna 5",
+  "m076": "Di' alla reception che sei lì per 3E",
+  "m077": "Segui le indicazioni per l'uscita 13. Appena esci, il cartello 3E è subito alla tua sinistra."
+ },
+ "es": {
+  "m043": "En el Aeropuerto de Estambul (IST)",
+  "m046": "Salga de la sala de llegadas por la salida 13. Nuestro equipo le espera en el cartel 3E con su nombre.",
+  "m048": "En el Aeropuerto Sabiha Gökçen (SAW)",
+  "m051": "Sal de la terminal. Nuestro equipo 3E espera dentro del edificio TÜRSAB frente a la columna 5: basta con decir en recepción que vienes por 3E.",
+  "m053": "¿No ve a su conductor?",
+  "m054": "Llámenos o escríbanos por WhatsApp a cualquier hora y le pondremos en contacto en minutos.",
+  "m074": "TÜRSAB Meeting Point, frente a la columna 5",
+  "m076": "Di en recepción que vienes por 3E",
+  "m077": "Sigue las señales hasta la salida 13. Nada más salir, el cartel 3E está a tu izquierda."
+ },
+ "nl": {
+  "m043": "Op Istanbul Airport (IST)",
+  "m046": "Verlaat de aankomsthal via uitgang 13. Ons team wacht bij bord 3E met uw naam.",
+  "m048": "Op Sabiha Gökçen Airport (SAW)",
+  "m051": "Loop de terminal uit. Ons 3E-team wacht in het TÜRSAB-gebouw tegenover pilaar 5: zeg bij de receptie gewoon dat u voor 3E komt.",
+  "m053": "Ziet u uw chauffeur niet?",
+  "m054": "Bel of WhatsApp ons op elk uur en we brengen u binnen enkele minuten in contact.",
+  "m074": "TÜRSAB Meeting Point, tegenover pilaar 5",
+  "m076": "Zeg bij de receptie dat u voor 3E komt",
+  "m077": "Volg de borden naar uitgang 13. Zodra u naar buiten loopt, staat het 3E-bord direct links van u."
+ },
+ "ro": {
+  "m043": "La Aeroportul Istanbul (IST)",
+  "m046": "Ieșiți din sala de sosiri pe ieșirea 13. Echipa noastră vă așteaptă la panoul 3E cu numele dumneavoastră.",
+  "m048": "La Aeroportul Sabiha Gökçen (SAW)",
+  "m051": "Ieșiți din terminal. Echipa noastră 3E așteaptă în clădirea TÜRSAB vizavi de coloana 5: spuneți doar la recepție că veniți pentru 3E.",
+  "m053": "Nu vă vedeți șoferul?",
+  "m054": "Sunați-ne sau scrieți-ne pe WhatsApp la orice oră și vă punem în legătură în câteva minute.",
+  "m074": "TÜRSAB Meeting Point, vizavi de coloana 5",
+  "m076": "Spuneți la recepție că veniți pentru 3E",
+  "m077": "Urmați indicatoarele spre ieșirea 13. Imediat ce ieșiți, panoul 3E este în stânga dvs."
+ },
+ "ru": {
+  "m043": "В аэропорту Стамбула (IST)",
+  "m046": "Выйдите из зала прилёта через выход 13. Наша команда ждёт у указателя 3E с табличкой с вашим именем.",
+  "m048": "В аэропорту Сабиха Гёкчен (SAW)",
+  "m051": "Выйдите из терминала. Наша команда 3E ждёт внутри здания TÜRSAB напротив колонны 5: просто скажите на ресепшене, что вы к 3E.",
+  "m053": "Не видите водителя?",
+  "m054": "Позвоните или напишите нам в WhatsApp в любое время — мы свяжем вас за несколько минут.",
+  "m074": "TÜRSAB Meeting Point, напротив колонны 5",
+  "m076": "Скажите на ресепшене, что вы к 3E",
+  "m077": "Следуйте указателям к выходу 13. Сразу после выхода табличка 3E стоит слева от вас."
+ },
+ "el": {
+  "m043": "Στο Αεροδρόμιο Κωνσταντινούπολης (IST)",
+  "m046": "Βγείτε από την αίθουσα αφίξεων από την έξοδο 13. Η ομάδα μας περιμένει στην πινακίδα 3E με το όνομά σας.",
+  "m048": "Στο Αεροδρόμιο Sabiha Gökçen (SAW)",
+  "m051": "Βγείτε από τον τερματικό σταθμό. Η ομάδα 3E περιμένει μέσα στο κτίριο TÜRSAB απέναντι από την κολόνα 5: απλώς πείτε στη ρεσεψιόν ότι ήρθατε για την 3E.",
+  "m053": "Δεν βλέπετε τον οδηγό σας;",
+  "m054": "Καλέστε μας ή στείλτε μας στο WhatsApp οποιαδήποτε ώρα και θα σας συνδέσουμε μέσα σε λίγα λεπτά.",
+  "m074": "TÜRSAB Meeting Point, απέναντι από την κολόνα 5",
+  "m076": "Πείτε στη ρεσεψιόν ότι ήρθατε για την 3E",
+  "m077": "Ακολουθήστε τις πινακίδες για την έξοδο 13. Μόλις βγείτε, η πινακίδα 3E βρίσκεται αμέσως στα αριστερά σας."
+ },
+ "sr": {
+  "m043": "Na Istanbulskom aerodromu (IST)",
+  "m046": "Izađite iz dolazne sale kroz izlaz 13. Naš tim čeka kod oznake 3E sa Vašim imenom.",
+  "m048": "Na aerodromu Sabiha Gökçen (SAW)",
+  "m051": "Izađite iz terminala. Naš tim 3E čeka u zgradi TÜRSAB preko puta stuba 5: dovoljno je da na recepciji kažete da ste došli za 3E.",
+  "m053": "Ne vidite vozača?",
+  "m054": "Pozovite nas ili nam pišite na WhatsApp u bilo koje doba i povezaćemo Vas za nekoliko minuta.",
+  "m074": "TÜRSAB Meeting Point, preko puta stuba 5",
+  "m076": "Recite na recepciji da ste došli za 3E",
+  "m077": "Pratite oznake do izlaza 13. Čim izađete, tabla 3E stoji odmah sa vaše leve strane."
+ },
+ "ar": {
+  "m043": "في مطار إسطنبول (IST)",
+  "m046": "اخرج من صالة الوصول عبر المخرج 13. فريقنا ينتظرك عند لافتة 3E ومعه اسمك.",
+  "m048": "في مطار صبيحة كوكجن (SAW)",
+  "m051": "اخرج من مبنى الركاب. ينتظرك فريق 3E داخل مبنى TÜRSAB مقابل العمود رقم 5: يكفي أن تخبر الاستقبال أنك قادم إلى 3E.",
+  "m053": "لا ترى سائقك؟",
+  "m054": "اتصل بنا أو راسلنا عبر WhatsApp في أي ساعة وسنصلك به خلال دقائق.",
+  "m074": "TÜRSAB Meeting Point مقابل العمود رقم 5",
+  "m076": "أخبر الاستقبال أنك قادم إلى 3E",
+  "m077": "اتبع اللافتات إلى المخرج 13. بمجرد خروجك ستجد لافتة 3E على يسارك مباشرة."
+ }
+}

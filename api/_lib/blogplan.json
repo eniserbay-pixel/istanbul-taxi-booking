@@ -1,0 +1,7 @@
+[
+ {"from": "2026-11-10", "to": "2026-11-14", "kind": "edit", "title": "Search Console verisiyle başlık ve açıklama düzeltmeleri", "langs": ["en"], "note": "Gösterimi çok, tıklaması az olan rehberler"},
+ {"from": "2026-11-17", "to": "2026-11-21", "kind": "translate", "title": "Çeviri seti 2: Layover in Istanbul, Where to stay, Congress venues, Find your driver", "langs": ["ru", "ar", "de", "tr"]},
+ {"from": "2026-11-17", "to": "2026-11-21", "kind": "translate", "title": "Çeviri: Sabiha Gökçen arrival guide, Arriving at night, Transfer between IST and SAW", "langs": ["ru", "ar"]},
+ {"from": "2026-11-24", "to": "2026-11-28", "kind": "new", "title": "New Year in Istanbul: airport and city transport", "langs": ["en", "ru", "ar", "de"], "note": "Önce İngilizce, sonra RU, AR ve DE"},
+ {"from": "2026-12-01", "to": "2026-12-05", "kind": "translate", "title": "Çeviri: Finding a taxi in Istanbul, Istanbul Airport to Sultanahmet, Galataport cruise terminal guide", "langs": ["ru", "ar"]}
+]

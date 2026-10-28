@@ -1,0 +1,673 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>B2B Booking · ITB Transfer</title>
+<link rel="icon" href="/img/favicon-32.png">
+<style>
+@font-face{font-family:'Noto Sans';font-style:normal;font-weight:400 800;font-display:swap;src:url(/fonts/noto-sans-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Noto Sans';font-style:normal;font-weight:400 800;font-display:swap;src:url(/fonts/noto-sans-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1E00-1E9F,U+20A0-20AB,U+20AD-20C4}
+:root{--bg:#eaf4f8;--surface:#fff;--ink:#0d1b2a;--muted:#5a6778;--line:#dfe4ea;--navy:#000000;--navy-2:#2a2c30;--on-navy:#eef3f8;--on-navy-muted:#9db0c4;--accent:#e1ad01;--accent-soft:#fff4dc;--accent-text:#8a6a00;--go:#e1ad01;--go-hover:#c99a00;--go-soft:#fbf1cc;--ok:#1f8a5b;--err:#c0392b;--shadow:0 18px 40px -22px rgba(13,33,55,.45);--radius:14px;--font:"Noto Sans","Segoe UI",system-ui,sans-serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 var(--font)}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:var(--navy-2)}
+.top{background:var(--navy);color:var(--on-navy);border-bottom:4px solid var(--accent)}
+.top .in{max-width:1180px;margin:0 auto;padding:12px 16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;color:inherit;text-decoration:none;font-weight:800}
+.brand img{height:34px;width:auto;display:block}
+.badge{background:var(--accent);color:#1a1300;font-weight:800;font-size:12px;border-radius:6px;padding:2px 7px;letter-spacing:.04em}
+.top .sp{flex:1}
+.firm{color:var(--on-navy-muted);font-size:14px}
+.tabs{display:flex;gap:4px}
+.tab{background:none;border:0;color:var(--on-navy-muted);padding:7px 12px;border-radius:9px;cursor:pointer;font-weight:600}
+.tab.on{background:var(--navy-2);color:#fff}
+.lang{display:flex;border:1px solid var(--navy-2);border-radius:9px;overflow:hidden}
+.lang button{background:none;border:0;color:var(--on-navy-muted);padding:5px 9px;cursor:pointer;font-size:13px;font-weight:700}
+.lang button.on{background:var(--navy-2);color:#fff}
+.out{background:none;border:1px solid var(--navy-2);color:var(--on-navy);border-radius:9px;padding:6px 11px;cursor:pointer;font-size:14px}
+main{max-width:1180px;margin:0 auto;padding:22px 16px 60px}
+h1{font-size:26px;line-height:1.2;margin:0 0 4px}
+.sub{color:var(--muted);margin:0 0 20px}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:20px;align-items:start}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px;margin:0 0 16px}
+.card h2{font-size:17px;margin:0 0 14px;display:flex;align-items:center;gap:9px}
+.card h2 .n{width:24px;height:24px;border-radius:50%;background:var(--navy);color:#fff;font-size:13px;display:inline-flex;align-items:center;justify-content:center;flex:none}
+.row{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));margin:0 0 12px}
+label.f{display:block;font-size:13px;font-weight:600;color:var(--muted);margin:0 0 5px}
+.fld{width:100%;border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:#fff;min-height:44px}
+.fld:focus{outline:2px solid var(--accent);outline-offset:-1px;border-color:var(--accent)}
+textarea.fld{min-height:70px;resize:vertical}
+.seg{display:inline-flex;background:var(--bg);border:1px solid var(--line);border-radius:11px;padding:3px;margin:0 0 14px}
+.seg button{border:0;background:none;padding:7px 14px;border-radius:8px;cursor:pointer;font-weight:600;color:var(--muted)}
+.seg button.on{background:var(--navy);color:#fff}
+.kinds{display:flex;gap:8px;margin:0 0 18px;flex-wrap:wrap}
+.kind{display:flex;align-items:center;gap:9px;border:1.5px solid var(--line);background:var(--surface);border-radius:12px;padding:11px 18px;cursor:pointer;font-weight:700;color:var(--muted)}
+.kind svg{flex:none}
+.kind.on{border-color:var(--navy);background:var(--navy);color:#fff}
+.leg-h{font-weight:700;margin:6px 0 10px;font-size:14px;color:var(--navy-2)}
+.cnt{display:flex;align-items:center;border:1px solid var(--line);border-radius:10px;min-height:44px;background:#fff}
+.cnt button{width:42px;height:42px;border:0;background:none;font-size:20px;cursor:pointer;color:var(--navy)}
+.cnt b{flex:1;text-align:center}
+.cars{display:grid;gap:10px}
+.car{display:flex;gap:14px;align-items:center;border:1.5px solid var(--line);border-radius:12px;padding:10px 14px;cursor:pointer;background:#fff;text-align:left;width:100%}
+.car img{width:110px;height:62px;object-fit:contain;flex:none}
+.car .t{flex:1;min-width:0}
+.car .t b{display:block}
+.car .t span{color:var(--muted);font-size:13px}
+.car .p{font-weight:800;font-size:18px;white-space:nowrap}
+.car.on{border-color:var(--go);background:var(--go-soft)}
+.car[disabled]{opacity:.45;cursor:not-allowed}
+.empty{color:var(--muted);padding:12px 0}
+.pax{display:grid;grid-template-columns:28px 1.4fr 1fr 1fr;gap:10px;align-items:center;margin:0 0 10px}
+.pax .i{font-weight:700;color:var(--muted);text-align:center}
+.check{display:flex;gap:10px;align-items:flex-start;cursor:pointer;font-weight:600}
+.check input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--navy)}
+.note{background:var(--accent-soft);color:var(--accent-text);border-radius:10px;padding:10px 12px;font-size:14px;margin:12px 0 0}
+.sum{position:sticky;top:16px}
+.sum dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:6px 12px;font-size:14px}
+.sum dt{color:var(--muted)}
+.sum dd{margin:0;text-align:right}
+.sum .tot{display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid var(--line);margin:14px 0 0;padding:14px 0 0}
+.sum .tot b{font-size:24px}
+.btn{text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:11px;padding:12px 18px;font-weight:700;cursor:pointer;min-height:46px}
+.go{background:var(--go);color:#000;width:100%;margin:14px 0 0;font-size:16px}
+.go:hover{background:var(--go-hover)}
+.go[disabled]{opacity:.6;cursor:wait}
+.err{background:#fdecea;color:var(--err);border-radius:10px;padding:10px 12px;font-size:14px;margin:12px 0 0}
+.ok{background:var(--go-soft);color:var(--ok);border-radius:12px;padding:16px;margin:0 0 16px}
+.login{max-width:400px;margin:40px auto}
+.login .card{padding:26px}
+.tbl{width:100%;border-collapse:collapse;font-size:14px}
+.tbl th{text-align:left;color:var(--muted);font-weight:600;border-bottom:1px solid var(--line);padding:8px 10px;white-space:nowrap}
+.tbl td{border-bottom:1px solid var(--line);padding:10px;vertical-align:top}
+.st{display:inline-block;border-radius:20px;padding:2px 10px;font-size:12.5px;font-weight:700;background:#eef1f5;color:var(--muted);white-space:nowrap}
+.st.talep,.st.degisiklik{background:var(--accent-soft);color:var(--accent-text)}
+.st.onaylandi,.st.yeni,.st.tamamlandi{background:var(--go-soft);color:var(--ok)}
+.st.reddedildi,.st.iptal{background:#fdecea;color:var(--err)}
+.m{color:var(--muted)}
+.scroll{overflow-x:auto}
+.tbtn{width:100%;min-height:44px;border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:#fff;text-align:left;cursor:pointer;font-variant-numeric:tabular-nums;display:flex;align-items:center;justify-content:space-between}
+.tbtn:focus-visible{outline:2px solid var(--accent);outline-offset:-1px}
+.tbtn.empty{color:var(--muted)}
+.tbtn svg{flex:none;color:var(--muted)}
+.twheel{position:absolute;z-index:60;width:220px;height:220px;display:grid;grid-template-columns:1fr 16px 1fr;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:0 14px 40px rgba(13,27,42,.22);padding:0 8px;overflow:hidden}
+.tw-band{position:absolute;left:8px;right:8px;top:88px;height:44px;background:var(--navy-2);border-radius:10px}
+.tw-col{position:relative;height:220px;overflow-y:auto;scroll-snap-type:y mandatory;overscroll-behavior:contain;scrollbar-width:none;outline:none;-webkit-mask-image:linear-gradient(transparent,#000 30%,#000 70%,transparent);mask-image:linear-gradient(transparent,#000 30%,#000 70%,transparent)}
+.tw-col::-webkit-scrollbar{display:none}
+.tw-pad{height:88px}
+.tw-it{height:44px;display:grid;place-items:center;scroll-snap-align:center;font-weight:500;font-size:20px;color:var(--muted);font-variant-numeric:tabular-nums;cursor:pointer;user-select:none}
+.tw-it.on{color:#fff;font-weight:600}
+.tw-sep{position:relative;text-align:center;color:#fff;font-weight:600;font-size:20px}
+.filt{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin:0 0 16px}
+.filt .fld{width:auto;min-width:150px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:6px 12px;cursor:pointer;font-size:13.5px;font-weight:600;color:var(--muted)}
+.chip.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin:0 0 16px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px}
+.kpi span{display:block;color:var(--muted);font-size:13px;font-weight:600}
+.kpi b{display:block;font-size:22px;margin:4px 0 0;font-variant-numeric:tabular-nums}
+.kpi small{color:var(--muted);font-size:12.5px}
+.kpi.pos b{color:var(--ok)}.kpi.neg b{color:var(--err)}
+.tbl td.r,.tbl th.r{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.tbl tr.off td{color:var(--muted)}
+.tbl tfoot td{font-weight:800;border-bottom:0}
+.sale{width:96px;min-height:36px;padding:6px 8px;text-align:right}
+.btn-o{background:#fff;border:1px solid var(--line);color:var(--ink)}
+.btn-n{background:var(--navy);color:#fff}
+.btn-sm{min-height:36px;padding:7px 12px;font-size:13.5px;border-radius:9px}
+.pwbox{background:var(--go-soft);border-radius:12px;padding:14px 16px;margin:0 0 16px}
+.pwbox code{font-size:17px;font-weight:800;background:#fff;border-radius:7px;padding:2px 8px;user-select:all}
+.hint{color:var(--muted);font-size:13px;margin:6px 0 0}
+@media (max-width:900px){.grid{grid-template-columns:1fr}.sum{position:static}}
+@media (max-width:600px){.tabs{order:4;width:100%;overflow-x:auto;scrollbar-width:none}.tab{white-space:nowrap;padding:7px 10px}.kind{flex:1 1 0;justify-content:center;padding:10px 8px;font-size:14px;text-align:center}.pax{grid-template-columns:1fr}.pax .i{text-align:left}.car img{width:80px;height:46px}.top .in{gap:10px}.firm{order:5;width:100%}}
+</style>
+</head>
+<body>
+<header class="top"><div class="in">
+  <a class="brand" href="/b2b"><img src="/img/logo.webp" alt="ITB Transfer"><span class="badge">B2B</span></a>
+  <span class="firm" id="firm"></span>
+  <span class="sp"></span>
+  <nav class="tabs" id="tabs" hidden></nav>
+  <div class="lang"><button type="button" data-lang="en">EN</button><button type="button" data-lang="tr">TR</button></div>
+  <button type="button" class="out" id="out" data-t="out" hidden></button>
+</div></header>
+<main id="main"><p class="m">…</p></main>
+
+<script>
+(function () {
+  "use strict";
+  var T = {
+    en: {
+      new: "New booking", mine: "My bookings", out: "Sign out", login: "Partner sign-in", loginSub: "Sign in with the e-mail address registered for your company.",
+      email: "E-mail", password: "Password", signin: "Sign in", wrong: "E-mail or password is wrong.", many: "Too many attempts. Please try again in 15 minutes.",
+      noLogin: "No access yet? Ask your contact at ITB Transfer for a password.",
+      kTransfer: "Transfer", kHourly: "Car with driver", titleH: "New car with driver booking", titleHSub: "Your agreed package prices are applied automatically. We confirm every booking by e-mail.",
+      pkg: "Package", hrs: "{n} hours", km: "{km} km included", xh: "+{p} per extra hour", pickup: "Pickup address", pickupPh: "Hotel, office or street address", start: "Start time",
+      prog: "Programme for the day (optional)", progPh: "Stops, meetings, end of the day…", noPkg: "No car with driver package has been priced for you yet. Please contact us.",
+      fAddr: "pickup address", opt: "optional", hourlyRow: "Car with driver · {n} hours", extraNote: "Each hour over the package: {p} per hour for this vehicle.",
+      title: "New transfer booking", titleSub: "Your agreed prices are applied automatically. We confirm every booking by e-mail.",
+      trip: "Transfer", oneway: "One way", ret: "Return", from: "From", to: "To", addr: "Hotel / address", date: "Date", time: "Pickup time",
+      flight: "Flight number", flightHint: "e.g. TK1987", outbound: "Outbound transfer", inbound: "Return transfer", pick: "Choose…",
+      paxBags: "Passengers and luggage", pax: "Passengers", bags: "Suitcases", seatB: "Baby seat", seatK: "Booster seat",
+      vehicle: "Vehicle", noCar: "No vehicle has a price for this route. Please contact us.", pickRoute: "Choose the route first.", tooMany: "Too many passengers or suitcases for this vehicle",
+      seats: "{p} passengers · {b} suitcases", travelers: "Passenger details", travSub: "Name, passport number and nationality of every passenger.",
+      name: "Name and surname", doc: "Passport no", nat: "Nationality", phone: "Lead passenger phone (optional)",
+      pay: "Payment", account: "Charged to your account (balance).", cash: "The driver collects cash from the passenger",
+      cashSub: "Amount the driver collects from your guest. It does not change your price.", cashAmt: "Cash on outbound", cashAmtR: "Cash on return", cur: "Currency", cashSum: "Cash from passenger",
+      extra: "Other details", ref: "Your reference (optional)", note: "Note for the driver (optional)",
+      summary: "Summary", route: "Route", car: "Vehicle", total: "Total", send: "Send booking request", sending: "Sending…",
+      done: "Booking request {r} has been sent. We will confirm it by e-mail shortly.", another: "New booking",
+      miss: "Please fill in: ", fRoute: "route", fDate: "date and time", fCar: "vehicle", fTrav: "passenger details", fCash: "cash amount", fRet: "return date",
+      e_no_price: "This vehicle has no price for this route.", e_server: "The booking could not be sent. Please try again or contact us.",
+      fin: "Finance", users: "Users", by: "Booked by", ownerL: "Owner", loginId: "E-mail or user name",
+      sale: "Your selling price to your customer (optional)", saleHint: "Only you see it. Finance uses it for your profit.",
+      finTitle: "Finance", finSub: "Your bookings by transfer date, with their payments. Declined and cancelled bookings are left out of the totals.",
+      dFrom: "From", dTo: "To", pMonth: "This month", pLast: "Last month", pYear: "This year", pAll: "All",
+      kN: "Bookings", kCost: "Cost (to your account)", kSale: "Turnover (your sales)", kProfit: "Profit", kCash: "Cash collected from passengers", kNoSale: "{n} without a selling price",
+      xl: "Download Excel", fType: "Type", fPay: "Payment", fCost: "Cost", fSale: "Sale", fProfit: "Profit", pCari: "On account", pCash: "+ cash {a}", tHourly: "Car with driver", tTransfer: "Transfer", saved: "Saved", totals: "Total",
+      uTitle: "Users", uSub: "Add a user for each employee. They sign in on this page with their own user name and password, and their bookings carry their name.",
+      uName: "Name and surname", uUser: "User name", uFin: "Can see Finance and all of the firm's bookings", uAdd: "Add user", uNew: "New password", uDel: "Remove", uSince: "Password made",
+      uNone: "No users yet.", uRole: "Access", uEx: "e.g. jane.smith", uPw: "Password for {u}:", uPwNote: "Copy it now and give it to the user; it is not shown again. Sign-in: www.istanbultaxibooking.com/b2b",
+      uDelQ: "Remove this user? It can no longer sign in.", uOwn: "Only sees own bookings", uAll: "Finance and all bookings",
+      e_username: "User name: 3 to 40 characters, letters, digits, dot, dash or underscore.", e_taken: "This user name is taken. Please choose another.", e_name: "Please enter the name.",
+      none: "No bookings yet.", bRef: "Booking", bDate: "Transfer", bRoute: "Route", bPax: "Passenger", bPrice: "Price", bStatus: "Status", cashTag: "cash",
+      st: { talep: "Awaiting confirmation", degisiklik: "Change proposed", yeni: "Confirmed", onaylandi: "Confirmed", tamamlandi: "Completed", reddedildi: "Declined", iptal: "Cancelled" },
+      down: "The booking page is not available right now. Please contact us."
+    },
+    tr: {
+      new: "Yeni rezervasyon", mine: "Rezervasyonlarım", out: "Çıkış", login: "Partner girişi", loginSub: "Firmanız için kayıtlı e-posta adresiyle giriş yapın.",
+      email: "E-posta", password: "Şifre", signin: "Giriş yap", wrong: "E-posta veya şifre yanlış.", many: "Çok fazla deneme. 15 dakika sonra tekrar deneyin.",
+      noLogin: "Şifreniz yok mu? ITB Transfer'taki yetkilinizden isteyin.",
+      kTransfer: "Transfer", kHourly: "Şoförlü araç kiralama", titleH: "Yeni şoförlü araç rezervasyonu", titleHSub: "Anlaştığımız paket fiyatları otomatik uygulanır. Her rezervasyonu e-posta ile onaylarız.",
+      pkg: "Paket", hrs: "{n} saat", km: "{km} km dahil", xh: "saat aşımı +{p} / saat", pickup: "Alış adresi", pickupPh: "Otel, ofis veya açık adres", start: "Başlangıç saati",
+      prog: "Günün programı (isteğe bağlı)", progPh: "Duraklar, toplantılar, günün bitişi…", noPkg: "Sizin için henüz şoförlü araç paketi fiyatlandırılmadı. Lütfen bizimle iletişime geçin.",
+      fAddr: "alış adresi", opt: "isteğe bağlı", hourlyRow: "Şoförlü araç · {n} saat", extraNote: "Paketi aşan her saat için bu araçta saat başı {p} eklenir.",
+      title: "Yeni transfer rezervasyonu", titleSub: "Anlaştığımız fiyatlar otomatik uygulanır. Her rezervasyonu e-posta ile onaylarız.",
+      trip: "Transfer", oneway: "Tek yön", ret: "Gidiş dönüş", from: "Nereden", to: "Nereye", addr: "Otel / adres", date: "Tarih", time: "Alış saati",
+      flight: "Uçuş kodu", flightHint: "ör. TK1987", outbound: "Gidiş transferi", inbound: "Dönüş transferi", pick: "Seçin…",
+      paxBags: "Yolcu ve bagaj", pax: "Yolcu", bags: "Valiz", seatB: "Bebek koltuğu", seatK: "Yükseltici koltuk",
+      vehicle: "Araç", noCar: "Bu güzergâh için fiyatlı araç yok. Lütfen bizimle iletişime geçin.", pickRoute: "Önce güzergâhı seçin.", tooMany: "Bu araç için yolcu veya valiz sayısı fazla",
+      seats: "{p} yolcu · {b} valiz", travelers: "Yolcu bilgileri", travSub: "Her yolcunun adı soyadı, pasaport numarası ve uyruğu.",
+      name: "Ad soyad", doc: "Pasaport no", nat: "Uyruk", phone: "Yolcu telefonu (isteğe bağlı)",
+      pay: "Ödeme", account: "Cari hesabınıza (bakiye) yazılır.", cash: "Şoför yolcudan nakit tahsil edecek",
+      cashSub: "Şoförün misafirinizden alacağı tutar. Sizin fiyatınızı değiştirmez.", cashAmt: "Gidişte nakit", cashAmtR: "Dönüşte nakit", cur: "Para birimi", cashSum: "Yolcudan nakit",
+      extra: "Diğer bilgiler", ref: "Sizin referansınız (isteğe bağlı)", note: "Şoföre not (isteğe bağlı)",
+      summary: "Özet", route: "Güzergâh", car: "Araç", total: "Toplam", send: "Rezervasyon talebini gönder", sending: "Gönderiliyor…",
+      done: "{r} numaralı rezervasyon talebiniz gönderildi. Kısa süre içinde e-posta ile onaylayacağız.", another: "Yeni rezervasyon",
+      miss: "Lütfen doldurun: ", fRoute: "güzergâh", fDate: "tarih ve saat", fCar: "araç", fTrav: "yolcu bilgileri", fCash: "nakit tutar", fRet: "dönüş tarihi",
+      e_no_price: "Bu aracın bu güzergâhta fiyatı yok.", e_server: "Rezervasyon gönderilemedi. Tekrar deneyin veya bizimle iletişime geçin.",
+      fin: "Finans", users: "Kullanıcılar", by: "Yapan", ownerL: "Firma sahibi", loginId: "E-posta veya kullanıcı adı",
+      sale: "Müşterinize satış fiyatınız (isteğe bağlı)", saleHint: "Sadece siz görürsünüz. Finans'ta kârınız buradan hesaplanır.",
+      finTitle: "Finans", finSub: "Rezervasyonlarınız transfer tarihine göre, ödemeleriyle birlikte. Reddedilen ve iptal edilen rezervasyonlar toplamlara girmez.",
+      dFrom: "Başlangıç", dTo: "Bitiş", pMonth: "Bu ay", pLast: "Geçen ay", pYear: "Bu yıl", pAll: "Tümü",
+      kN: "Rezervasyon", kCost: "Maliyet (cari hesabınıza)", kSale: "Ciro (satışlarınız)", kProfit: "Kâr", kCash: "Yolcudan tahsil edilen nakit", kNoSale: "{n} rezervasyonda satış fiyatı yok",
+      xl: "Excel indir", fType: "Tür", fPay: "Ödeme", fCost: "Maliyet", fSale: "Satış", fProfit: "Kâr", pCari: "Cari", pCash: "+ nakit {a}", tHourly: "Şoförlü araç", tTransfer: "Transfer", saved: "Kaydedildi", totals: "Toplam",
+      uTitle: "Kullanıcılar", uSub: "Her çalışanınız için bir kullanıcı ekleyin. Bu sayfaya kendi kullanıcı adı ve şifresiyle girer, yaptığı rezervasyonlar onun adıyla görünür.",
+      uName: "Ad soyad", uUser: "Kullanıcı adı", uFin: "Finans'ı ve firmanın tüm rezervasyonlarını görebilsin", uAdd: "Kullanıcı ekle", uNew: "Yeni şifre", uDel: "Sil", uSince: "Şifre tarihi",
+      uNone: "Henüz kullanıcı yok.", uRole: "Yetki", uEx: "ör. ayse.kaya", uPw: "{u} için şifre:", uPwNote: "Şimdi kopyalayıp kullanıcıya iletin, tekrar gösterilmez. Giriş adresi: www.istanbultaxibooking.com/b2b",
+      uDelQ: "Bu kullanıcı silinsin mi? Artık giriş yapamaz.", uOwn: "Sadece kendi rezervasyonları", uAll: "Finans ve tüm rezervasyonlar",
+      e_username: "Kullanıcı adı: 3-40 karakter; harf, rakam, nokta, tire veya alt çizgi.", e_taken: "Bu kullanıcı adı alınmış, başka bir ad seçin.", e_name: "Lütfen adı yazın.",
+      none: "Henüz rezervasyon yok.", bRef: "Rezervasyon", bDate: "Transfer", bRoute: "Güzergâh", bPax: "Yolcu", bPrice: "Fiyat", bStatus: "Durum", cashTag: "nakit",
+      st: { talep: "Onay bekliyor", degisiklik: "Değişiklik önerildi", yeni: "Onaylandı", onaylandi: "Onaylandı", tamamlandi: "Tamamlandı", reddedildi: "Reddedildi", iptal: "İptal" },
+      down: "Rezervasyon sayfası şu an kullanılamıyor. Lütfen bizimle iletişime geçin."
+    }
+  };
+  var CUR = { EUR: "€", USD: "$", TRY: "₺", GBP: "£" };
+  // ISO country codes for the nationality list (names come from the browser in the page's language)
+  var CC = "AF AL DZ AD AO AR AM AU AT AZ BH BD BY BE BJ BO BA BW BR BN BG BF BI KH CM CA CL CN CO CR HR CU CY CZ DK DO EC EG SV EE ET FI FR GA GM GE DE GH GR GT GN HT HN HK HU IS IN ID IR IQ IE IL IT CI JM JP JO KZ KE XK KW KG LA LV LB LY LT LU MO MK MG MY MV ML MT MR MU MX MD MC MN ME MA MZ MM NA NP NL NZ NI NE NG NO OM PK PS PA PY PE PH PL PT QA RO RU RW SA SN RS SG SK SI SO ZA KR ES LK SD SE CH SY TW TJ TZ TH TN TR TM UG UA AE GB US UY UZ VE VN YE ZM ZW".split(" ");
+
+  function blank() { return { sale: "", from: "", to: "", fromAddr: "", toAddr: "", date: "", time: "", flight: "", rdate: "", rtime: "", rflight: "", pax: 1, bags: 1, seatB: 0, seatK: 0, car: "", cash: false, cashCur: "", c1: "", c2: "", phone: "", ref: "", note: "", addr: "", prog: "" }; }
+  // kind: "transfer", or "hourly" for a car with driver for S.h (8 or 10) hours
+  var S = { lang: "en", tab: "new", kind: "transfer", h: 8, ret: false, f: blank(), trav: [{ name: "", doc: "", nat: "" }] };
+  try { var sl = localStorage.getItem("b2b-lang"); if (sl === "tr" || sl === "en") S.lang = sl; else if (/^tr/i.test(navigator.language || "")) S.lang = "tr"; } catch (e) {}
+
+  var $ = function (id) { return document.getElementById(id); };
+  var t = function (k) { return T[S.lang][k] != null ? T[S.lang][k] : T.en[k]; };
+  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+  function money(n, c) { var v = Math.round(Math.abs(n) * 100) / 100; return (n < 0 && v ? "-" : "") + (CUR[c] || "") + v.toLocaleString(S.lang === "tr" ? "tr-TR" : "en-GB", { minimumFractionDigits: v % 1 ? 2 : 0, maximumFractionDigits: 2 }) + (CUR[c] ? "" : " " + c); }
+  function api(a, data) {
+    var opt = data === undefined ? { credentials: "same-origin" } : { method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json", "X-IAP-B2B": "1" }, body: JSON.stringify(data) };
+    return fetch("/api/b2b?a=" + a, opt).then(function (r) {
+      return r.json().catch(function () { return {}; }).then(function (j) { j.status = r.status; if (r.status === 401 && a !== "login") { S.me = null; draw(); } return j; });
+    });
+  }
+  function natName(cc) { try { return new Intl.DisplayNames([S.lang], { type: "region" }).of(cc); } catch (e) { return cc; } }
+
+  // ---------- Prices: the same rules as api/_lib/pricing.js b2bLegPrice (the server works the price out again) ----------
+  function hm(s) { var p = String(s || "").split(":"); return p.length < 2 ? -1 : +p[0] * 60 + +p[1]; }
+  function legPrice(from, to, time, car, isRet, seats) {
+    var o = S.me.offer, row = o.prices[[from, to].sort().join("|")], one = row && row[car] || 0;
+    if (!one) return 0;
+    // no peak surcharge to or from a town out of Istanbul (zone type "city")
+    var city = [from, to].some(function (x) { var z = zone(x); return z && z.type === "city"; });
+    var m = city ? -1 : hm(time), ap = m < 0 ? null : [from, to].filter(function (x) { var r = o.fees.peak[x]; return r && m >= hm(r.from) && m <= hm(r.to) && (!r.cars.length || r.cars.indexOf(car) >= 0); })[0];
+    var r = ap && o.fees.peak[ap], v = !r ? one : r.type === "fix" ? one + r.value : Math.round(one * (1 + r.value / 100));
+    if (isRet) v = Math.round(v * (1 - o.fees.ret / 100));
+    return Math.round((v + o.fees.seat * seats) * 100) / 100;
+  }
+  function zone(id) { return S.me.offer.zones.filter(function (z) { return z.id === id; })[0]; }
+  function isAir(id) { var z = zone(id); return z && z.type === "airport"; }
+  // Car with driver: the package price of the vehicle for the chosen hours, no peak hours or child seats
+  function pkg(car) { var r = (S.me.offer.hourly || { cars: {} }).cars[car] || {}; return { price: r["h" + S.h] || 0, extra: r.extra || 0 }; }
+  function prices(car) {
+    if (S.kind === "hourly") { var k = pkg(car).price; return { a: k, b: 0, ok: k > 0, total: k }; }
+    var f = S.f, seats = (+f.seatB || 0) + (+f.seatK || 0);
+    var a = legPrice(f.from, f.to, f.time, car, false, seats), b = S.ret ? legPrice(f.to, f.from, f.rtime, car, true, seats) : 0;
+    return { a: a, b: b, ok: a > 0 && (!S.ret || b > 0), total: a + b };
+  }
+  function carOf(id) { return S.me.offer.cars.filter(function (c) { return c.id === id; })[0]; }
+
+  // ---------- Screens ----------
+  function draw() {
+    document.documentElement.lang = S.lang;
+    document.querySelectorAll("[data-lang]").forEach(function (b) { b.classList.toggle("on", b.getAttribute("data-lang") === S.lang); });
+    document.querySelectorAll("[data-t]").forEach(function (b) { b.textContent = t(b.getAttribute("data-t")); });
+    $("tabs").hidden = $("out").hidden = !S.me;
+    $("firm").textContent = S.me ? S.me.partner.name + (S.me.user && S.me.user.name ? " · " + S.me.user.name : "") : "";
+    if (S.me) {
+      var tabs = [["new", "new"], ["list", "mine"]].concat(S.me.user.fin ? [["fin", "fin"]] : [], S.me.user.owner ? [["users", "users"]] : []);
+      if (!tabs.some(function (x) { return x[0] === S.tab; })) S.tab = "new";
+      $("tabs").innerHTML = tabs.map(function (x) { return '<button type="button" class="tab' + (x[0] === S.tab ? " on" : "") + '" data-tab="' + x[0] + '">' + esc(t(x[1])) + '</button>'; }).join("");
+    }
+    if (S.down) { $("main").innerHTML = '<div class="login"><div class="card">' + esc(t("down")) + '</div></div>'; return; }
+    if (!S.me) return drawLogin();
+    if (S.tab === "list") return drawList();
+    if (S.tab === "fin") return drawFin();
+    if (S.tab === "users") return drawUsers();
+    drawForm();
+  }
+
+  function drawLogin() {
+    $("main").innerHTML = '<div class="login"><div class="card"><h1>' + esc(t("login")) + '</h1><p class="sub">' + esc(t("loginSub")) + '</p>' +
+      '<form id="lf"><label class="f" for="le">' + esc(t("loginId")) + '</label><input class="fld" id="le" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" required>' +
+      '<label class="f" for="lp" style="margin-top:12px">' + esc(t("password")) + '</label><input class="fld" id="lp" type="password" autocomplete="current-password" required>' +
+      '<div class="err" id="lerr" hidden></div><button class="btn go" type="submit">' + esc(t("signin")) + '</button></form>' +
+      '<p class="m" style="font-size:13px;margin:14px 0 0">' + esc(t("noLogin")) + '</p></div></div>';
+    $("lf").addEventListener("submit", function (e) {
+      e.preventDefault();
+      var btn = this.querySelector("button"); btn.disabled = true;
+      api("login", { email: $("le").value.trim(), password: $("lp").value }).then(function (j) {
+        btn.disabled = false;
+        if (j.ok) return load();
+        $("lerr").textContent = t(j.status === 429 ? "many" : "wrong"); $("lerr").hidden = false;
+      }).catch(function () { btn.disabled = false; });
+    });
+  }
+
+  function opts(sel, skip) {
+    return '<option value="">' + esc(t("pick")) + '</option>' + S.me.offer.zones.filter(function (z) { return z.id !== skip; }).map(function (z) {
+      return '<option value="' + esc(z.id) + '"' + (z.id === sel ? " selected" : "") + '>' + esc(z.name) + '</option>';
+    }).join("");
+  }
+  function inp(k, label, type, extra) {
+    return '<div><label class="f" for="f-' + k + '">' + esc(label) + '</label><input class="fld" id="f-' + k + '" data-f="' + k + '" type="' + (type || "text") + '" value="' + esc(S.f[k]) + '"' + (extra || "") + '></div>';
+  }
+  // Pickup time: the site's wheel picker (hours, then 00 / 15 / 30 / 45), not the browser's time field
+  function tbtn(k, label) {
+    return '<div><label class="f" for="f-' + k + '">' + esc(label) + '</label><button type="button" class="tbtn' + (S.f[k] ? '' : ' empty') + '" id="f-' + k + '" data-time="' + k + '" aria-haspopup="dialog"><span>' + esc(S.f[k] || "--:--") + '</span>' +
+      '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></button></div>';
+  }
+  var TW = { pop: null, k: "", btn: null, HRS: [], MINS: ["00", "15", "30", "45"], ROW: 44 };
+  for (var hh = 0; hh < 24; hh++) TW.HRS.push((hh < 10 ? "0" : "") + hh);
+  function twIdx(c) { return Math.max(0, Math.min(c.children.length - 3, Math.round(c.scrollTop / TW.ROW))); }
+  function twMark(c) { var n = twIdx(c); [].forEach.call(c.querySelectorAll(".tw-it"), function (el, j) { el.classList.toggle("on", j === n); el.setAttribute("aria-selected", j === n); }); }
+  function twCommit() {
+    if (!TW.pop) return;
+    var cs = TW.pop.querySelectorAll(".tw-col"), v = TW.HRS[twIdx(cs[0])] + ":" + TW.MINS[twIdx(cs[1])];
+    if (S.f[TW.k] === v) return;
+    S.f[TW.k] = v;
+    var b = $("f-" + TW.k); if (b) { b.firstChild.textContent = v; b.classList.remove("empty"); }
+    refreshCars(); drawSum();
+  }
+  function twClose(refocus) {
+    if (!TW.pop) return;
+    twCommit(); TW.pop.remove(); TW.pop = null;
+    var b = $("f-" + TW.k); TW.k = "";
+    if (b) { b.setAttribute("aria-expanded", "false"); if (refocus) b.focus(); }
+  }
+  function twPlace() {
+    if (!TW.pop) return;
+    var b = $("f-" + TW.k); if (!b) return;
+    var r = b.getBoundingClientRect(), w = TW.pop.offsetWidth, h = TW.pop.offsetHeight;
+    var left = Math.min(Math.max(8, r.left), document.documentElement.clientWidth - w - 8);
+    var top = r.bottom + 6 + h > window.innerHeight && r.top - 6 - h > 0 ? r.top - 6 - h : r.bottom + 6;
+    TW.pop.style.left = left + window.scrollX + "px"; TW.pop.style.top = top + window.scrollY + "px";
+  }
+  function twOpen(k) {
+    twClose(); TW.k = k;
+    var v = (S.f[k] || "12:00").split(":"), hi = Math.max(0, TW.HRS.indexOf(v[0])), mi = Math.max(0, TW.MINS.indexOf(v[1]));
+    var col = function (list, c) { return '<div class="tw-col" data-k="' + c + '" tabindex="0" role="listbox"><div class="tw-pad"></div>' + list.map(function (x, n) { return '<div class="tw-it" role="option" data-i="' + n + '">' + x + '</div>'; }).join("") + '<div class="tw-pad"></div></div>'; };
+    TW.pop = document.createElement("div"); TW.pop.className = "twheel"; TW.pop.setAttribute("role", "dialog");
+    TW.pop.innerHTML = '<div class="tw-band"></div>' + col(TW.HRS, "h") + '<div class="tw-sep">:</div>' + col(TW.MINS, "m");
+    document.body.appendChild(TW.pop);
+    var cs = TW.pop.querySelectorAll(".tw-col");
+    cs[0].scrollTop = hi * TW.ROW; cs[1].scrollTop = mi * TW.ROW;
+    [].forEach.call(cs, function (c) {
+      var tm; twMark(c);
+      c.addEventListener("scroll", function () { twMark(c); clearTimeout(tm); tm = setTimeout(twCommit, 120); }, { passive: true });
+      c.addEventListener("click", function (e) { var it = e.target.closest(".tw-it"); if (it) c.scrollTo({ top: +it.getAttribute("data-i") * TW.ROW, behavior: "smooth" }); });
+      c.addEventListener("keydown", function (e) { var d = e.key === "ArrowDown" ? 1 : e.key === "ArrowUp" ? -1 : 0; if (d) { e.preventDefault(); c.scrollTop = (twIdx(c) + d) * TW.ROW; } else if (e.key === "Enter") { e.preventDefault(); twClose(true); } });
+    });
+    $("f-" + k).setAttribute("aria-expanded", "true");
+    twPlace(); cs[0].focus({ preventScroll: true });
+    // a new time is committed right away, so the prices on the cards follow the scroll
+    if (!S.f[k]) twCommit();
+  }
+  document.addEventListener("pointerdown", function (e) { if (TW.pop && !TW.pop.contains(e.target) && !e.target.closest("[data-time]")) twClose(); });
+  document.addEventListener("keydown", function (e) { if (TW.pop && (e.key === "Escape" || e.key === "Tab")) twClose(e.key === "Escape"); });
+  window.addEventListener("resize", twPlace);
+  function counter(k, label, min, max) {
+    return '<div><label class="f">' + esc(label) + '</label><div class="cnt"><button type="button" data-dec="' + k + '" data-min="' + min + '" aria-label="-">−</button><b>' + S.f[k] + '</b><button type="button" data-inc="' + k + '" data-max="' + max + '" aria-label="+">+</button></div></div>';
+  }
+  function drawForm() {
+    twClose();
+    var f = S.f, o = S.me.offer, today = new Date().toISOString().slice(0, 10);
+    var H = S.kind === "hourly", route = H || (f.from && f.to);
+    var addrA = f.from && !isAir(f.from), addrB = f.to && !isAir(f.to), fl = isAir(f.from) || isAir(f.to);
+    var cars = !route ? '<p class="empty">' + esc(t("pickRoute")) + '</p>' : (function () {
+      var list = o.cars.filter(function (c) { return prices(c.id).ok; });
+      if (!list.length) return '<p class="empty">' + esc(t(H ? "noPkg" : "noCar")) + '</p>';
+      return '<div class="cars">' + list.map(function (c) {
+        var p = prices(c.id), fits = f.pax <= c.seats && f.bags <= c.bags;
+        return '<button type="button" class="car' + (f.car === c.id ? " on" : "") + '" data-car="' + esc(c.id) + '"' + (fits ? "" : " disabled title=\"" + esc(t("tooMany")) + "\"") + '>' +
+          '<img src="' + esc(c.img || "/img/" + (/^(sedan|minivan|vclass|minibus)$/.test(c.id) ? c.id : "sedan") + ".webp") + '" alt="" loading="lazy">' +
+          '<span class="t"><b>' + esc(c.name) + '</b><span>' + esc(c.models) + '</span><br><span>' + esc(t("seats").replace("{p}", c.seats).replace("{b}", c.bags)) + '</span></span>' +
+          '<span class="p">' + money(p.total, o.currency) + (H && pkg(c.id).extra ? '<br><span class="m" style="font-size:12.5px;font-weight:600">' + esc(t("xh").replace("{p}", money(pkg(c.id).extra, o.currency))) + '</span>' : '') + '</span></button>';
+      }).join("") + '</div>';
+    })();
+    while (S.trav.length < f.pax) S.trav.push({ name: "", doc: "", nat: "" });
+    S.trav.length = f.pax;
+    var curs = ["EUR", "USD", "TRY", "GBP"], cc = f.cashCur || o.currency;
+    var hr = o.hourly || { km8: 0, km10: 0 };
+    var kinds = '<div class="kinds" role="tablist">' +
+      '<button type="button" class="kind' + (H ? "" : " on") + '" data-kind="transfer" role="tab" aria-selected="' + !H + '"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 16l20-6-9 9-2-5-5-2"/></svg>' + esc(t("kTransfer")) + '</button>' +
+      '<button type="button" class="kind' + (H ? " on" : "") + '" data-kind="hourly" role="tab" aria-selected="' + H + '"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>' + esc(t("kHourly")) + '</button></div>';
+    var sec1 = H ? '<section class="card"><h2><span class="n">1</span>' + esc(t("pkg")) + '</h2>' +
+        '<div class="seg">' + [8, 10].map(function (n) { return '<button type="button" data-h="' + n + '" class="' + (S.h === n ? "on" : "") + '">' + esc(t("hrs").replace("{n}", n)) + ' · ' + esc(t("km").replace("{km}", hr["km" + n])) + '</button>'; }).join("") + '</div>' +
+        '<div class="row"><div style="grid-column:1/-1"><label class="f" for="f-addr">' + esc(t("pickup")) + '</label><input class="fld" id="f-addr" data-f="addr" maxlength="300" placeholder="' + esc(t("pickupPh")) + '" value="' + esc(f.addr) + '"></div></div>' +
+        '<div class="row">' + inp("date", t("date"), "date", ' min="' + today + '"') + tbtn("time", t("start")) + inp("flight", t("flight") + " (" + t("opt") + ")", "text", ' maxlength="12" placeholder="' + esc(t("flightHint")) + '" style="text-transform:uppercase"') + '</div>' +
+        '<label class="f" for="f-prog">' + esc(t("prog")) + '</label><textarea class="fld" id="f-prog" data-f="prog" maxlength="1000" placeholder="' + esc(t("progPh")) + '">' + esc(f.prog) + '</textarea>' +
+      '</section>' : '';
+    var html = '<h1>' + esc(t(H ? "titleH" : "title")) + '</h1><p class="sub">' + esc(t(H ? "titleHSub" : "titleSub")) + '</p>' + (S.done ? '<div class="ok">' + esc(t("done").replace("{r}", S.done)) + '</div>' : '') +
+      kinds + '<div class="grid"><div>' + sec1 + (H ? '' :
+      '<section class="card"><h2><span class="n">1</span>' + esc(t("trip")) + '</h2>' +
+        '<div class="seg"><button type="button" data-ret="0" class="' + (S.ret ? "" : "on") + '">' + esc(t("oneway")) + '</button><button type="button" data-ret="1" class="' + (S.ret ? "on" : "") + '">' + esc(t("ret")) + '</button></div>' +
+        (S.ret ? '<div class="leg-h">' + esc(t("outbound")) + '</div>' : '') +
+        '<div class="row"><div><label class="f" for="f-from">' + esc(t("from")) + '</label><select class="fld" id="f-from" data-f="from">' + opts(f.from, "") + '</select></div>' +
+        '<div><label class="f" for="f-to">' + esc(t("to")) + '</label><select class="fld" id="f-to" data-f="to">' + opts(f.to, f.from) + '</select></div></div>' +
+        (addrA || addrB ? '<div class="row">' + (addrA ? inp("fromAddr", t("addr") + " (" + t("from").toLowerCase() + ")") : '') + (addrB ? inp("toAddr", t("addr") + " (" + t("to").toLowerCase() + ")") : '') + '</div>' : '') +
+        '<div class="row">' + inp("date", t("date"), "date", ' min="' + today + '"') + tbtn("time", t("time")) + (fl ? inp("flight", t("flight"), "text", ' maxlength="12" placeholder="' + esc(t("flightHint")) + '" style="text-transform:uppercase"') : '') + '</div>' +
+        (S.ret ? '<div class="leg-h">' + esc(t("inbound")) + (route ? ' <span class="m" style="font-weight:400">· ' + esc(zone(f.to).name) + ' → ' + esc(zone(f.from).name) + '</span>' : '') + '</div>' +
+          '<div class="row">' + inp("rdate", t("date"), "date", ' min="' + (f.date || today) + '"') + tbtn("rtime", t("time")) + (fl ? inp("rflight", t("flight"), "text", ' maxlength="12" placeholder="' + esc(t("flightHint")) + '" style="text-transform:uppercase"') : '') + '</div>' : '') +
+      '</section>') +
+      '<section class="card"><h2><span class="n">2</span>' + esc(t("paxBags")) + '</h2><div class="row">' +
+        counter("pax", t("pax"), 1, 16) + counter("bags", t("bags"), 0, 16) + (H ? '' : counter("seatB", t("seatB"), 0, 4) + counter("seatK", t("seatK"), 0, 4)) + '</div></section>' +
+      '<section class="card"><h2><span class="n">3</span>' + esc(t("vehicle")) + '</h2>' + cars + '</section>' +
+      '<section class="card"><h2><span class="n">4</span>' + esc(t("travelers")) + '</h2><p class="m" style="margin:-6px 0 14px;font-size:14px">' + esc(t("travSub")) + '</p>' +
+        S.trav.map(function (p, i) {
+          return '<div class="pax"><span class="i">' + (i + 1) + '</span>' +
+            '<input class="fld" data-tr="' + i + ':name" placeholder="' + esc(t("name")) + '" aria-label="' + esc(t("name")) + '" value="' + esc(p.name) + '" autocomplete="off">' +
+            '<input class="fld" data-tr="' + i + ':doc" placeholder="' + esc(t("doc")) + '" aria-label="' + esc(t("doc")) + '" value="' + esc(p.doc) + '" style="text-transform:uppercase" autocomplete="off">' +
+            '<input class="fld" data-tr="' + i + ':nat" placeholder="' + esc(t("nat")) + '" aria-label="' + esc(t("nat")) + '" value="' + esc(p.nat) + '" list="natl" autocomplete="off"></div>';
+        }).join("") +
+        '<datalist id="natl">' + CC.map(natName).sort(function (a, b) { return a.localeCompare(b, S.lang); }).map(function (n) { return '<option value="' + esc(n) + '">'; }).join("") + '</datalist>' +
+        '<div class="row" style="margin:12px 0 0">' + inp("phone", t("phone"), "tel") + '</div></section>' +
+      '<section class="card"><h2><span class="n">5</span>' + esc(t("pay")) + '</h2><p style="margin:0 0 12px">' + esc(t("account")) + '</p>' +
+        '<label class="check"><input type="checkbox" id="f-cash"' + (f.cash ? " checked" : "") + '><span>' + esc(t("cash")) + '</span></label>' +
+        (f.cash ? '<p class="m" style="font-size:13.5px;margin:6px 0 12px 30px">' + esc(t("cashSub")) + '</p><div class="row">' + inp("c1", t(H ? "cashSum" : "cashAmt"), "number", ' min="0" step="1" inputmode="decimal"') + (S.ret && !H ? inp("c2", t("cashAmtR"), "number", ' min="0" step="1" inputmode="decimal"') : '') +
+          '<div><label class="f" for="f-cashCur">' + esc(t("cur")) + '</label><select class="fld" id="f-cashCur" data-f="cashCur">' + curs.map(function (c) { return '<option' + (c === cc ? " selected" : "") + '>' + c + '</option>'; }).join("") + '</select></div></div>' : '') +
+      '</section>' +
+      '<section class="card"><h2><span class="n">6</span>' + esc(t("extra")) + '</h2><div class="row">' + inp("ref", t("ref"), "text", ' maxlength="40"') +
+        '<div>' + inp("sale", t("sale") + " (" + o.currency + ")", "number", ' min="0" step="1" inputmode="decimal"').slice(5, -6) + '<p class="hint">' + esc(t("saleHint")) + '</p></div></div>' +
+        (H ? '' : '<label class="f" for="f-note">' + esc(t("note")) + '</label><textarea class="fld" id="f-note" data-f="note" maxlength="1000">' + esc(f.note) + '</textarea>') + '</section>' +
+      '</div><aside class="card sum" id="sum"></aside></div>';
+    $("main").innerHTML = html;
+    drawSum();
+    bindForm();
+  }
+  function drawSum() {
+    var f = S.f, o = S.me.offer, c = carOf(f.car), p = c ? prices(c.id) : null;
+    var rows = [], H = S.kind === "hourly";
+    if (H) { rows.push([t("pkg"), esc(t("hrs").replace("{n}", S.h)) + " · " + esc(t("km").replace("{km}", o.hourly["km" + S.h])) ]); if (f.addr) rows.push([t("pickup"), esc(f.addr)]); }
+    else if (f.from && f.to) rows.push([t("route"), esc(zone(f.from).name) + " → " + esc(zone(f.to).name)]);
+    if (f.date) rows.push([t("date"), esc(f.date) + (f.time ? " " + esc(f.time) : "")]);
+    if (S.ret && f.rdate) rows.push([t("inbound"), esc(f.rdate) + (f.rtime ? " " + esc(f.rtime) : "")]);
+    rows.push([t("pax"), f.pax + " · " + t("bags") + " " + f.bags]);
+    if (c) rows.push([t("car"), esc(c.name)]);
+    if (p && p.ok && !H) { rows.push([t("outbound"), money(p.a, o.currency)]); if (S.ret) rows.push([t("inbound"), money(p.b, o.currency)]); }
+    if (f.cash && (+f.c1 || +f.c2)) rows.push([t("cashSum"), money((+f.c1 || 0) + (S.ret && !H ? +f.c2 || 0 : 0), f.cashCur || o.currency)]);
+    $("sum").innerHTML = '<h2>' + esc(t("summary")) + '</h2><dl>' + rows.map(function (r) { return '<dt>' + esc(r[0]) + '</dt><dd>' + r[1] + '</dd>'; }).join("") + '</dl>' +
+      '<div class="tot"><span>' + esc(t("total")) + '</span><b>' + (p && p.ok ? money(p.total, o.currency) : "–") + '</b></div>' +
+      (H && c && pkg(c.id).extra ? '<p class="m" style="font-size:13px;margin:8px 0 0">' + esc(t("extraNote").replace("{p}", money(pkg(c.id).extra, o.currency))) + '</p>' : '') +
+      '<div class="err" id="ferr" hidden></div><button type="button" class="btn go" id="send">' + esc(t("send")) + '</button>';
+    $("send").addEventListener("click", send);
+  }
+  function bindForm() {
+    var main = $("main");
+    main.querySelectorAll("[data-f]").forEach(function (el) {
+      var k = el.getAttribute("data-f");
+      el.addEventListener(el.tagName === "SELECT" ? "change" : "input", function () {
+        S.f[k] = el.value;
+        if (k === "from" || k === "to") { if (S.f.from === S.f.to) S.f.to = ""; S.done = ""; drawForm(); return; }
+        drawSum();
+      });
+      if (k === "date" || k === "rdate") el.addEventListener("change", function () { if (k === "date" && S.f.rdate && S.f.rdate < S.f.date) S.f.rdate = ""; drawForm(); });
+    });
+    main.querySelectorAll("[data-time]").forEach(function (b) { b.addEventListener("click", function () { var k = b.getAttribute("data-time"); if (TW.k === k) twClose(); else twOpen(k); }); });
+    main.querySelectorAll("[data-kind]").forEach(function (b) { b.addEventListener("click", function () { var k = b.getAttribute("data-kind"); if (k === S.kind) return; S.kind = k; S.f.car = ""; S.done = ""; drawForm(); }); });
+    main.querySelectorAll("[data-h]").forEach(function (b) { b.addEventListener("click", function () { S.h = +b.getAttribute("data-h"); drawForm(); }); });
+    main.querySelectorAll("[data-ret]").forEach(function (b) { b.addEventListener("click", function () { S.ret = b.getAttribute("data-ret") === "1"; drawForm(); }); });
+    main.querySelectorAll("[data-inc],[data-dec]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var k = b.getAttribute("data-inc") || b.getAttribute("data-dec"), up = b.hasAttribute("data-inc");
+        S.f[k] = Math.max(+b.getAttribute("data-min") || 0, Math.min(+b.getAttribute("data-max") || 99, S.f[k] + (up ? 1 : -1)));
+        var c = carOf(S.f.car);
+        if (c && (S.f.pax > c.seats || S.f.bags > c.bags)) S.f.car = "";
+        drawForm();
+      });
+    });
+    main.querySelectorAll("[data-car]").forEach(function (b) { b.addEventListener("click", function () { S.f.car = b.getAttribute("data-car"); drawForm(); }); });
+    main.querySelectorAll("[data-tr]").forEach(function (el) {
+      el.addEventListener("input", function () { var p = el.getAttribute("data-tr").split(":"); S.trav[+p[0]][p[1]] = el.value; });
+    });
+    $("f-cash").addEventListener("change", function () { S.f.cash = this.checked; drawForm(); });
+  }
+  // A pickup time in peak hours changes the prices on the vehicle cards
+  function refreshCars() {
+    document.querySelectorAll("[data-car]").forEach(function (b) { var p = prices(b.getAttribute("data-car")); b.querySelector(".p").textContent = money(p.total, S.me.offer.currency); });
+  }
+  function send() {
+    var f = S.f, miss = [], H = S.kind === "hourly";
+    if (H ? !f.addr.trim() : !f.from || !f.to) miss.push(t(H ? "fAddr" : "fRoute"));
+    if (!f.date || !f.time || (S.ret && (!f.rdate || !f.rtime))) miss.push(t("fDate"));
+    if (S.ret && f.rdate && f.date && f.rdate < f.date) miss.push(t("fRet"));
+    var c = carOf(f.car);
+    if (!c || !prices(c.id).ok || f.pax > c.seats || f.bags > c.bags) miss.push(t("fCar"));
+    if (S.trav.some(function (p) { return !p.name.trim() || !p.doc.trim() || !p.nat.trim(); })) miss.push(t("fTrav"));
+    if (f.cash && !(+f.c1 > 0 || (S.ret && !H && +f.c2 > 0))) miss.push(t("fCash"));
+    if (miss.length) { $("ferr").textContent = t("miss") + miss.join(", "); $("ferr").hidden = false; return; }
+    var leg = function (from, to, date, time, flight, cash) {
+      return { from: from, to: to, fromAddr: from === f.from ? f.fromAddr : f.toAddr, toAddr: to === f.to ? f.toAddr : f.fromAddr, date: date, time: time, flight: flight, seatB: f.seatB, seatK: f.seatK, note: f.note, cash: f.cash ? +cash || 0 : 0 };
+    };
+    var legs = H ? [{ fromAddr: f.addr.trim(), date: f.date, time: f.time, flight: f.flight, note: f.prog, cash: f.cash ? +f.c1 || 0 : 0 }] : [leg(f.from, f.to, f.date, f.time, f.flight, f.c1)];
+    if (S.ret && !H) legs.push(leg(f.to, f.from, f.rdate, f.rtime, f.rflight, f.c2));
+    var btn = $("send"); btn.disabled = true; btn.textContent = t("sending"); $("ferr").hidden = true;
+    api("book", { booking: { kind: S.kind, hours: S.h, lang: S.lang, car: f.car, pax: f.pax, bags: f.bags, legs: legs, travelers: S.trav, phone: f.phone, cash: f.cash, cashCur: f.cashCur || S.me.offer.currency, partnerRef: f.ref, sale: +f.sale || 0 } }).then(function (j) {
+      if (!j.booking) { btn.disabled = false; btn.textContent = t("send"); $("ferr").textContent = T.en["e_" + j.error] ? t("e_" + j.error) : t("e_server"); $("ferr").hidden = false; return; }
+      S.done = j.booking.ref;
+      S.f = blank();
+      S.trav = [{ name: "", doc: "", nat: "" }]; S.ret = false; S.list = null;
+      drawForm(); window.scrollTo(0, 0);
+    }).catch(function () { btn.disabled = false; btn.textContent = t("send"); $("ferr").textContent = t("e_server"); $("ferr").hidden = false; });
+  }
+
+  function drawList() {
+    if (!S.list) {
+      $("main").innerHTML = '<h1>' + esc(t("mine")) + '</h1><p class="m">…</p>';
+      api("list").then(function (j) { S.list = j.bookings || []; if (S.tab === "list") drawList(); });
+      return;
+    }
+    var name = function (code, n) { var z = zone(code); return z ? z.name : n || code; };
+    $("main").innerHTML = '<h1>' + esc(t("mine")) + '</h1><p class="sub"></p>' + (!S.list.length ? '<div class="card"><p class="empty">' + esc(t("none")) + '</p></div>' :
+      '<div class="card scroll"><table class="tbl"><thead><tr><th>' + [t("bRef"), t("bDate"), t("bRoute"), t("bPax")].concat(S.me.user.fin ? [t("by")] : [], [t("bPrice"), t("bStatus")]).map(esc).join("</th><th>") + '</th></tr></thead><tbody>' +
+      S.list.map(function (b) {
+        return '<tr><td><b>' + esc(b.ref || "#" + b.id) + '</b>' + (b.partnerRef ? '<br><span class="m">' + esc(b.partnerRef) + '</span>' : '') + '</td>' +
+          '<td>' + b.legs.map(function (l) { return esc(l.date) + " " + esc(l.time) + (l.flight ? ' <span class="m">' + esc(l.flight) + '</span>' : ''); }).join("<br>") + '</td>' +
+          '<td>' + b.legs.map(function (l) { return b.hourly ? esc(l.fromName) + '<br><span class="m">' + esc(t("hourlyRow").replace("{n}", b.hourly.hours)) + '</span>' + (l.cash ? ' <span class="m">(' + esc(t("cashTag")) + ')</span>' : '') : esc(name(l.from, l.fromName)) + " → " + esc(name(l.to, l.toName)) + (l.cash ? ' <span class="m">(' + esc(t("cashTag")) + ')</span>' : ''); }).join("<br>") + '</td>' +
+          '<td>' + esc(b.passenger) + (b.pax > 1 ? ' <span class="m">+' + (b.pax - 1) + '</span>' : '') + '</td>' +
+          (S.me.user.fin ? '<td>' + esc(b.user || t("ownerL")) + '</td>' : '') +
+          '<td style="white-space:nowrap">' + money(b.total, b.currency) + '</td>' +
+          '<td><span class="st ' + esc(b.status) + '">' + esc(t("st")[b.status] || b.status) + '</span></td></tr>';
+      }).join("") + '</tbody></table></div>');
+  }
+
+  // ---------- Finans: bookings by transfer date with their payments, turnover and profit, Excel ----------
+  var OFF = { reddedildi: 1, iptal: 1 };
+  function ymd(d) { return d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2); }
+  function preset(k) {
+    var n = new Date(), y = n.getFullYear(), m = n.getMonth();
+    if (k === "month") return [ymd(new Date(y, m, 1)), ymd(new Date(y, m + 1, 0))];
+    if (k === "last") return [ymd(new Date(y, m - 1, 1)), ymd(new Date(y, m, 0))];
+    if (k === "year") return [y + "-01-01", y + "-12-31"];
+    return ["", ""];
+  }
+  function drawFin() {
+    if (!S.fr) { var pr = preset("month"); S.fr = { p: "month", from: pr[0], to: pr[1] }; }
+    if (!S.list) {
+      $("main").innerHTML = '<h1>' + esc(t("finTitle")) + '</h1><p class="m">…</p>';
+      api("list").then(function (j) { S.list = j.bookings || []; if (S.tab === "fin") drawFin(); });
+      return;
+    }
+    var F = S.fr, d0 = function (b) { return (b.legs[0] || {}).date || ""; };
+    var rows = S.list.filter(function (b) { var d = d0(b); return (!F.from || d >= F.from) && (!F.to || d <= F.to); })
+      .sort(function (a, b) { return d0(a).localeCompare(d0(b)); });
+    var tot = {}, cash = {}, noSale = 0, cur0 = S.me.offer.currency;
+    rows.forEach(function (b) {
+      if (OFF[b.status]) return;
+      var x = tot[b.currency] || (tot[b.currency] = { n: 0, cost: 0, sale: 0, profit: 0 });
+      x.n++; x.cost += b.total;
+      if (b.sale) { x.sale += b.sale; x.profit += b.sale - b.total; } else noSale++;
+      var c = b.legs.reduce(function (n, l) { return n + (+l.cash || 0); }, 0);
+      if (c) { var cc = b.cashCur || b.currency; cash[cc] = (cash[cc] || 0) + c; }
+    });
+    var curs = Object.keys(tot); if (!curs.length) curs = [cur0];
+    var sum = function (k) { return curs.map(function (c) { return money((tot[c] || {})[k] || 0, c); }).join(" · "); };
+    var profit = curs.reduce(function (n, c) { return n + ((tot[c] || {}).profit || 0); }, 0);
+    var n = curs.reduce(function (a, c) { return a + ((tot[c] || {}).n || 0); }, 0);
+    var cashTxt = Object.keys(cash).map(function (c) { return money(cash[c], c); }).join(" · ") || money(0, cur0);
+    var name = function (code, nm) { var z = zone(code); return z ? z.name : nm || code; };
+    var q = "&from=" + encodeURIComponent(F.from) + "&to=" + encodeURIComponent(F.to) + "&lang=" + S.lang;
+    $("main").innerHTML = '<h1>' + esc(t("finTitle")) + '</h1><p class="sub">' + esc(t("finSub")) + '</p>' +
+      '<div class="filt"><div class="chips">' + [["month", "pMonth"], ["last", "pLast"], ["year", "pYear"], ["all", "pAll"]].map(function (x) { return '<button type="button" class="chip' + (F.p === x[0] ? " on" : "") + '" data-pre="' + x[0] + '">' + esc(t(x[1])) + '</button>'; }).join("") + '</div>' +
+        '<div><label class="f" for="ff">' + esc(t("dFrom")) + '</label><input class="fld" type="date" id="ff" value="' + esc(F.from) + '"></div>' +
+        '<div><label class="f" for="ft">' + esc(t("dTo")) + '</label><input class="fld" type="date" id="ft" value="' + esc(F.to) + '"></div>' +
+        '<span style="flex:1"></span><a class="btn btn-n" id="xl" href="/api/b2b?a=xlsx' + q + '" download><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 21h16"/></svg>' + esc(t("xl")) + '</a></div>' +
+      '<div class="kpis"><div class="kpi"><span>' + esc(t("kN")) + '</span><b>' + n + '</b></div>' +
+        '<div class="kpi"><span>' + esc(t("kSale")) + '</span><b>' + sum("sale") + '</b>' + (noSale ? '<small>' + esc(t("kNoSale").replace("{n}", noSale)) + '</small>' : '') + '</div>' +
+        '<div class="kpi"><span>' + esc(t("kCost")) + '</span><b>' + sum("cost") + '</b></div>' +
+        '<div class="kpi ' + (profit > 0 ? "pos" : profit < 0 ? "neg" : "") + '"><span>' + esc(t("kProfit")) + '</span><b>' + sum("profit") + '</b></div>' +
+        '<div class="kpi"><span>' + esc(t("kCash")) + '</span><b>' + cashTxt + '</b></div></div>' +
+      (!rows.length ? '<div class="card"><p class="empty">' + esc(t("none")) + '</p></div>' :
+      '<div class="card scroll"><table class="tbl"><thead><tr><th>' + esc(t("bRef")) + '</th><th>' + esc(t("bDate")) + '</th><th>' + esc(t("fType")) + ' · ' + esc(t("bRoute")) + '</th><th>' + esc(t("by")) + '</th><th>' + esc(t("bStatus")) + '</th><th>' + esc(t("fPay")) + '</th><th class="r">' + esc(t("fCost")) + '</th><th class="r">' + esc(t("fSale")) + '</th><th class="r">' + esc(t("fProfit")) + '</th></tr></thead><tbody>' +
+      rows.map(function (b) {
+        var c = b.legs.reduce(function (n, l) { return n + (+l.cash || 0); }, 0), pf = b.sale ? b.sale - b.total : null;
+        var route = b.hourly ? esc(t("tHourly")) + ' · ' + esc(t("hrs").replace("{n}", b.hourly.hours)) + '<br><span class="m">' + esc((b.legs[0] || {}).fromName) + '</span>'
+          : esc(t("tTransfer")) + '<br><span class="m">' + b.legs.map(function (l) { return esc(name(l.from, l.fromName)) + " → " + esc(name(l.to, l.toName)); }).join("<br>") + '</span>';
+        return '<tr class="' + (OFF[b.status] ? "off" : "") + '"><td style="white-space:nowrap"><b>' + esc(b.ref || "#" + b.id) + '</b>' + (b.partnerRef ? '<br><span class="m">' + esc(b.partnerRef) + '</span>' : '') + '</td>' +
+          '<td style="white-space:nowrap">' + b.legs.map(function (l) { return esc(l.date) + " " + esc(l.time); }).join("<br>") + '</td><td>' + route + '</td>' +
+          '<td>' + esc(b.user || t("ownerL")) + '</td><td><span class="st ' + esc(b.status) + '">' + esc(t("st")[b.status] || b.status) + '</span></td>' +
+          '<td style="white-space:nowrap">' + esc(t("pCari")) + (c ? '<br><span class="m">' + esc(t("pCash").replace("{a}", money(c, b.cashCur || b.currency))) + '</span>' : '') + '</td>' +
+          '<td class="r">' + money(b.total, b.currency) + '</td>' +
+          '<td class="r"><input class="fld sale" type="number" min="0" step="1" inputmode="decimal" data-sale="' + b.id + '" value="' + (b.sale || "") + '" placeholder="–" aria-label="' + esc(t("fSale")) + '"></td>' +
+          '<td class="r" style="font-weight:700;color:' + (pf == null ? "inherit" : pf >= 0 ? "var(--ok)" : "var(--err)") + '">' + (pf == null ? '<span class="m">–</span>' : money(pf, b.currency)) + '</td></tr>';
+      }).join("") + '</tbody><tfoot><tr><td colspan="6">' + esc(t("totals")) + '</td><td class="r">' + sum("cost") + '</td><td class="r">' + sum("sale") + '</td><td class="r">' + sum("profit") + '</td></tr></tfoot></table></div>');
+    $("main").querySelectorAll("[data-pre]").forEach(function (b) { b.addEventListener("click", function () { var k = b.getAttribute("data-pre"), r = preset(k); S.fr = { p: k, from: r[0], to: r[1] }; drawFin(); }); });
+    ["ff", "ft"].forEach(function (id) { $(id).addEventListener("change", function () { S.fr = { p: "", from: $("ff").value, to: $("ft").value }; drawFin(); }); });
+    $("main").querySelectorAll("[data-sale]").forEach(function (el) {
+      el.addEventListener("change", function () {
+        var id = +el.getAttribute("data-sale");
+        api("sale", { id: id, sale: +el.value || 0 }).then(function (j) {
+          if (!j.booking) return;
+          S.list.forEach(function (b, i) { if (b.id === id) S.list[i] = j.booking; });
+          drawFin();
+        });
+      });
+    });
+  }
+
+  // ---------- Kullanıcılar (the firm's owner): employees with their own user name and password ----------
+  function drawUsers() {
+    if (!S.users) {
+      $("main").innerHTML = '<h1>' + esc(t("uTitle")) + '</h1><p class="m">…</p>';
+      api("users").then(function (j) { S.users = j.users || []; if (S.tab === "users") drawUsers(); });
+      return;
+    }
+    var dt = function (s) { return s ? new Date(s).toLocaleDateString(S.lang === "tr" ? "tr-TR" : "en-GB") : ""; };
+    $("main").innerHTML = '<h1>' + esc(t("uTitle")) + '</h1><p class="sub">' + esc(t("uSub")) + '</p>' +
+      (S.pw ? '<div class="pwbox"><p style="margin:0 0 8px">' + esc(t("uPw").replace("{u}", S.pw.u)) + ' <code>' + esc(S.pw.p) + '</code></p><p class="m" style="margin:0;font-size:13.5px">' + esc(t("uPwNote")) + '</p></div>' : '') +
+      '<section class="card"><h2>' + esc(t("uAdd")) + '</h2><div class="row">' +
+        '<div><label class="f" for="un">' + esc(t("uName")) + '</label><input class="fld" id="un" maxlength="60" autocomplete="off"></div>' +
+        '<div><label class="f" for="uu">' + esc(t("uUser")) + '</label><input class="fld" id="uu" maxlength="40" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="' + esc(t("uEx")) + '"></div></div>' +
+        '<label class="check"><input type="checkbox" id="uf"><span>' + esc(t("uFin")) + '</span></label>' +
+        '<div class="err" id="uerr" hidden></div><button type="button" class="btn btn-n" id="uadd" style="margin:14px 0 0">' + esc(t("uAdd")) + '</button></section>' +
+      '<section class="card scroll">' + (!S.users.length ? '<p class="empty">' + esc(t("uNone")) + '</p>' :
+        '<table class="tbl"><thead><tr><th>' + esc(t("uName")) + '</th><th>' + esc(t("uUser")) + '</th><th>' + esc(t("uRole")) + '</th><th>' + esc(t("uSince")) + '</th><th></th></tr></thead><tbody>' +
+        S.users.map(function (u) {
+          return '<tr><td><b>' + esc(u.name) + '</b></td><td><code>' + esc(u.username) + '</code></td>' +
+            '<td><label class="check" style="font-weight:500"><input type="checkbox" data-ufin="' + esc(u.id) + '"' + (u.fin ? " checked" : "") + '><span>' + esc(t(u.fin ? "uAll" : "uOwn")) + '</span></label></td>' +
+            '<td class="m">' + dt(u.at) + '</td><td style="white-space:nowrap"><button type="button" class="btn btn-o btn-sm" data-upw="' + esc(u.id) + '">' + esc(t("uNew")) + '</button> <button type="button" class="btn btn-o btn-sm" data-udel="' + esc(u.id) + '" style="color:var(--err)">' + esc(t("uDel")) + '</button></td></tr>';
+        }).join("") + '</tbody></table>') + '</section>';
+    var err = function (j) { $("uerr").textContent = T.en["e_" + j.error] ? t("e_" + j.error) : t("e_server"); $("uerr").hidden = false; };
+    $("uadd").addEventListener("click", function () {
+      var btn = this; btn.disabled = true;
+      api("usersave", { user: { name: $("un").value, username: $("uu").value, fin: $("uf").checked } }).then(function (j) {
+        btn.disabled = false;
+        if (!j.user) return err(j);
+        S.users.push(j.user); S.pw = { u: j.user.username, p: j.password }; drawUsers();
+      }).catch(function () { btn.disabled = false; });
+    });
+    $("main").querySelectorAll("[data-ufin]").forEach(function (el) {
+      el.addEventListener("change", function () {
+        var u = S.users.filter(function (x) { return x.id === el.getAttribute("data-ufin"); })[0];
+        api("usersave", { user: { id: u.id, name: u.name, fin: el.checked } }).then(function (j) { if (j.user) { u.fin = j.user.fin; drawUsers(); } });
+      });
+    });
+    $("main").querySelectorAll("[data-upw]").forEach(function (el) {
+      el.addEventListener("click", function () {
+        api("userreset", { id: el.getAttribute("data-upw") }).then(function (j) {
+          if (!j.user) return;
+          S.users.forEach(function (x, i) { if (x.id === j.user.id) S.users[i] = j.user; });
+          S.pw = { u: j.user.username, p: j.password }; drawUsers(); window.scrollTo(0, 0);
+        });
+      });
+    });
+    $("main").querySelectorAll("[data-udel]").forEach(function (el) {
+      el.addEventListener("click", function () {
+        if (!confirm(t("uDelQ"))) return;
+        var id = el.getAttribute("data-udel");
+        api("userdel", { id: id }).then(function (j) { if (j.ok) { S.users = S.users.filter(function (x) { return x.id !== id; }); S.pw = null; drawUsers(); } });
+      });
+    });
+  }
+
+  function load() {
+    return api("me").then(function (j) {
+      if (j.status === 501) S.down = true;
+      S.me = j.signedIn ? j : null;
+      draw();
+    }).catch(function () { S.down = true; draw(); });
+  }
+  document.querySelectorAll("[data-lang]").forEach(function (b) {
+    b.addEventListener("click", function () { S.lang = b.getAttribute("data-lang"); try { localStorage.setItem("b2b-lang", S.lang); } catch (e) {} draw(); });
+  });
+  $("tabs").addEventListener("click", function (e) { var b = e.target.closest("[data-tab]"); if (!b) return; S.tab = b.getAttribute("data-tab"); if (S.tab === "list" || S.tab === "fin") S.list = null; S.done = ""; S.pw = null; draw(); });
+  $("out").addEventListener("click", function () { api("logout", {}).then(function () { S.me = null; S.list = null; S.users = null; S.tab = "new"; draw(); }); });
+  load();
+})();
+</script>
+</body>
+</html>

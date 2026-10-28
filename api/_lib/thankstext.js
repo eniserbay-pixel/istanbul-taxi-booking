@@ -1,0 +1,10 @@
+// Thank-you e-mail sent to the customer when a booking becomes Tamamlandı, with links to review us on
+// Google and Trustpilot. The language goes by the passenger's phone code (+7 Russian, +33 French, +39 Italian,
+// +41 German), English for every other number.
+module.exports = {
+  en: { s: "Thank you for travelling with us", t1: "Thank you for choosing ITB Transfer. We hope you had a comfortable and pleasant transfer.", t2: "Your opinion means a lot to us and helps other travellers. Would you take a minute to rate us?", g: "Rate us on Google", tp: "Rate us on Trustpilot", t3: "We look forward to welcoming you again in Istanbul." },
+  de: { s: "Danke, dass Sie mit uns gereist sind", t1: "Vielen Dank, dass Sie sich für ITB Transfer entschieden haben. Wir hoffen, Ihr Transfer war bequem und angenehm.", t2: "Ihre Meinung ist uns wichtig und hilft anderen Reisenden. Würden Sie uns kurz bewerten?", g: "Auf Google bewerten", tp: "Auf Trustpilot bewerten", t3: "Wir freuen uns, Sie wieder in Istanbul begrüßen zu dürfen." },
+  fr: { s: "Merci d'avoir voyagé avec nous", t1: "Merci d'avoir choisi ITB Transfer. Nous espérons que votre transfert a été confortable et agréable.", t2: "Votre avis compte beaucoup pour nous et aide les autres voyageurs. Pourriez-vous prendre une minute pour nous noter ?", g: "Nous noter sur Google", tp: "Nous noter sur Trustpilot", t3: "Au plaisir de vous accueillir à nouveau à Istanbul." },
+  it: { s: "Grazie per aver viaggiato con noi", t1: "Grazie per aver scelto ITB Transfer. Speriamo che il transfer sia stato comodo e piacevole.", t2: "La sua opinione è importante per noi e aiuta altri viaggiatori. Ci dedicherebbe un minuto per valutarci?", g: "Valutaci su Google", tp: "Valutaci su Trustpilot", t3: "Speriamo di accoglierla di nuovo a Istanbul." },
+  ru: { s: "Спасибо, что путешествовали с нами", t1: "Спасибо, что выбрали ITB Transfer. Надеемся, трансфер был удобным и приятным.", t2: "Ваше мнение очень важно для нас и помогает другим путешественникам. Уделите минуту, чтобы оценить нас?", g: "Оценить нас в Google", tp: "Оценить нас в Trustpilot", t3: "Будем рады снова встретить вас в Стамбуле." },
+};
