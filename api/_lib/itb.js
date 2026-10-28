@@ -9,7 +9,7 @@ const { str } = require("./booking");
 
 const REF = /^IAT-\d{6}-[A-Z0-9]{4}$/;
 const DATE = /^\d{4}-\d{2}-\d{2}$/, TIME = /^\d{2}:\d{2}$/;
-const LANGS = ["en", "ru", "de", "fr", "it", "nl"];
+const LANGS = ["en", "tr", "ru", "de", "fr", "it", "nl", "ar"];
 const int = (v, min, max) => { const n = Math.round(Number(v)); return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : min; };
 
 // The price list the form uses: the panel's saved prices over the built one

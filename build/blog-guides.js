@@ -586,3 +586,6 @@ module.exports = [
     }
   }
 ];
+// Prices and distances the posts use, for the language packs in build/lang that write their own versions
+module.exports.E = E;
+module.exports.K = K;

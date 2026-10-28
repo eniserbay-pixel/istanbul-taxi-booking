@@ -105,11 +105,13 @@
   var B = window.BOOK, T = B.T, P = B.P, L = B.lang;
   var view = $("[data-view]", root);
   var zoneName = function (id) { var z = Quote.zone(P, id); return z ? z.name[L] : ""; };
+  // From → to, pointing the reading direction (← on the Arabic pages)
+  var ARROW = document.documentElement.dir === "rtl" ? " ← " : " → ";
   var isAirport = function (id) { var z = Quote.zone(P, id); return z && z.type === "airport"; };
   // 2026-10-28 → "28 Oct 2026" / "28 окт. 2026 г."
   var day = function (d) {
     var t = new Date(d + "T12:00:00Z");
-    return isNaN(t) ? d : t.toLocaleDateString({ en: "en-GB", ru: "ru-RU", de: "de-DE", fr: "fr-FR", it: "it-IT", nl: "nl-NL" }[L] || "en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
+    return isNaN(t) ? d : t.toLocaleDateString({ en: "en-GB", tr: "tr-TR", ru: "ru-RU", de: "de-DE", fr: "fr-FR", it: "it-IT", nl: "nl-NL", ar: "ar-EG-u-nu-latn" }[L] || "en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
   };
   var s = {
     from: params.get("from") || "", to: params.get("to") || "", date: params.get("date") || "", time: params.get("time") || "",
@@ -132,7 +134,7 @@
     $$("[data-step-i]", root).forEach(function (li, i) { li.className = i === s.step ? "on" : i < s.step ? "done" : ""; });
   }
   function summary() {
-    return '<div class="summary"><span><b>' + esc(zoneName(s.from)) + " → " + esc(zoneName(s.to)) + "</b></span><span>" + esc(day(s.date)) + " " + esc(s.time) +
+    return '<div class="summary"><span><b>' + esc(zoneName(s.from)) + ARROW + esc(zoneName(s.to)) + "</b></span><span>" + esc(day(s.date)) + " " + esc(s.time) +
       "</span><span>👤 " + s.pax + "</span>" + (s.ret ? "<span>↩ " + esc(day(s.ret.date)) + " " + esc(s.ret.time) + "</span>" : "") + "</div>";
   }
   function wa(text) { return "https://wa.me/" + window.SITE.wa + "?text=" + encodeURIComponent(text); }
@@ -140,7 +142,7 @@
   function stepCar() {
     if (!s.from || !s.to || s.from === s.to || !s.date || !s.time) { view.innerHTML = '<p class="sub">' + esc(T.noRoute) + "</p>"; return; }
     if (!Quote.base(P, s.from, s.to, "sedan")) {
-      view.innerHTML = summary() + '<p>' + esc(T.noPrice) + '</p><a class="btn btn-y" href="' + wa(zoneName(s.from) + " → " + zoneName(s.to) + " " + s.date + " " + s.time) + '">' + esc(T.whatsapp) + "</a>";
+      view.innerHTML = summary() + '<p>' + esc(T.noPrice) + '</p><a class="btn btn-y" href="' + wa(zoneName(s.from) + ARROW + zoneName(s.to) + " " + s.date + " " + s.time) + '">' + esc(T.whatsapp) + "</a>";
       return;
     }
     var peak = Quote.peakPct(P, s.from, s.time);
@@ -213,9 +215,9 @@
   function stepReview() {
     var r = q(), car = B.cars.filter(function (c) { return c.id === s.car; })[0];
     var rows = [
-      [zoneName(s.from) + " → " + zoneName(s.to), day(s.date) + " " + s.time + (s.flight ? " · " + s.flight : "") + (s.pickup ? " · " + s.pickup : "")],
+      [zoneName(s.from) + ARROW + zoneName(s.to), day(s.date) + " " + s.time + (s.flight ? " · " + s.flight : "") + (s.pickup ? " · " + s.pickup : "")],
       s.dropoff ? [T.dropoff, s.dropoff] : null,
-      s.ret ? ["↩ " + zoneName(s.to) + " → " + zoneName(s.from), day(s.ret.date) + " " + s.ret.time + (s.retFlight ? " · " + s.retFlight : "") + (s.retPickup ? " · " + s.retPickup : "")] : null,
+      s.ret ? ["↩ " + zoneName(s.to) + ARROW + zoneName(s.from), day(s.ret.date) + " " + s.ret.time + (s.retFlight ? " · " + s.retFlight : "") + (s.retPickup ? " · " + s.retPickup : "")] : null,
       [car.name[L], "👤 " + s.pax + " · 🧳 " + s.bags],
       s.childSeats ? [T.seatsLine, s.childSeats + " × €" + P.rules.childSeat + (s.ret ? " × 2" : "")] : null,
       [T.name, s.name + " · " + s.phone + " · " + s.email],
@@ -261,7 +263,7 @@
       })
       .catch(function () {
         btn.disabled = false;
-        msg.innerHTML = '<p class="alert">' + esc(T.error) + ' <a href="' + wa(s.ref + " " + zoneName(s.from) + " → " + zoneName(s.to) + " " + s.date + " " + s.time) + '">' + esc(T.whatsapp) + "</a></p>";
+        msg.innerHTML = '<p class="alert">' + esc(T.error) + ' <a href="' + wa(s.ref + " " + zoneName(s.from) + ARROW + zoneName(s.to) + " " + s.date + " " + s.time) + '">' + esc(T.whatsapp) + "</a></p>";
       });
   }
 
