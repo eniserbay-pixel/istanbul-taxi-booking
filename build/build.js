@@ -18,6 +18,7 @@ const DI = require("./districts");
 const PL = require("./places");
 const SV = require("./services");
 const AB = require("./about");
+const HW = require("./howto");
 // German, French, Italian and Dutch: page texts, blog posts and legal texts in one file per language
 ["de", "fr", "it", "nl"].forEach(l => {
   const X = require("./lang/" + l);
@@ -94,7 +95,7 @@ ${ld.map(x => `<script type="application/ld+json">${JSON.stringify(x)}</script>`
   const p = t.paths;
   const header = `<header class="top"><div class="wrap top-in">
 <a class="logo" href="${p.home}"><img src="/img/logo.webp" alt="${esc(site.brand)} – Istanbul Taxi Booking" width="92" height="52"></a>
-<nav class="nav"><a href="${p.prices}">${t.nav.prices}</a><a href="${p.home}#fleet">${t.nav.fleet}</a><a href="${p.home}#how">${t.nav.how}</a><a href="${p.home}#faq">${t.nav.faq}</a><a href="${p.blog}">${t.nav.blog}</a>
+<nav class="nav"><a href="${p.prices}">${t.nav.prices}</a><a href="${p.home}#fleet">${t.nav.fleet}</a><a href="${HW[o.lang].path}">${t.nav.how}</a><a href="${p.home}#faq">${t.nav.faq}</a><a href="${p.blog}">${t.nav.blog}</a>
 ${langSwitch(o.lang, alts)}</nav>
 <a class="btn btn-y btn-sm" href="${p.book}">${t.nav.book}</a></div></header>`;
   const popular = [["IST", "sultanahmet"], ["IST", "taksim"], ["IST", "kadikoy"], ["SAW", "taksim"], ["SAW", "kadikoy"], ["SAW", "sultanahmet"]];
@@ -198,8 +199,8 @@ const postPath = (lang, post) => I[lang].paths.blog + "/" + post[lang].slug;
 function blogCards(lang, skip, max) {
   return `<div class="posts">${POSTS.filter(x => x.id !== skip).slice(0, max || POSTS.length).map(x => `<a class="post-c" href="${postPath(lang, x)}"><h3>${esc(x[lang].title)}</h3><p>${esc(fill(x[lang].lead, { brand: site.brand }))}</p><span class="more">${I[lang].blog.read} →</span></a>`).join("")}</div>`;
 }
-// The booking box as it sits inside a blog post
-const blogWidget = lang => `<aside class="blog-widget"><h2>${I[lang].blog.widgetH}</h2>${searchForm(lang)}${assure(lang)}</aside>`;
+// The booking box in a blog post: it leaves the narrow text column so the search fields fit in one row on desktop
+const blogWidget = lang => `</div><div class="wrap"><aside class="blog-widget"><h2>${I[lang].blog.widgetH}</h2>${searchForm(lang)}${assure(lang)}</aside></div><div class="wrap narrow prose">`;
 
 function blogIndex(lang) {
   const t = I[lang], b = t.blog;
@@ -211,9 +212,11 @@ function blogIndex(lang) {
 function blogPost(lang, post) {
   const t = I[lang], x = post[lang], v = { brand: site.brand };
   const p = postPath(lang, post);
+  // a widget at the very end leaves an empty text column behind
+  const article = `<article class="sec"><div class="wrap narrow prose">${fill(x.body, v).replace(/\{widget\}/g, blogWidget(lang))}</div></article>`.replace(/<div class="wrap narrow prose"><\/div>/g, "");
   const body = `<section class="hero hero-s"><div class="wrap"><div class="hero-t"><nav class="crumbs"><a href="${t.paths.home}">${esc(site.brand)}</a> › <a href="${t.paths.blog}">${t.nav.blog}</a></nav>
 <h1>${esc(x.title)}</h1><p class="lead">${esc(fill(x.lead, v))}</p><p class="small" style="color:var(--ice-ink)">${t.blog.updated}: ${post.date}</p></div></div></section>
-<article class="sec"><div class="wrap narrow prose">${fill(x.body, v).replace(/\{widget\}/g, blogWidget(lang))}</div></article>
+${article}
 <section class="sec ice"><div class="wrap"><h2>${t.blog.more}</h2>${blogCards(lang, post.id, 4)}</div></section>`;
   const ld = { "@context": "https://schema.org", "@type": "BlogPosting", headline: x.title, description: x.desc, datePublished: post.date, dateModified: post.date, inLanguage: lang, mainEntityOfPage: URL_ + p, author: { "@type": "Organization", name: site.brand }, publisher: { "@id": URL_ + "/#service" }, image: URL_ + "/img/og.png" };
   page({ lang, path: p, alts: ALL(l => postPath(l, post)), title: x.title, desc: x.desc, body, ld: [ld, crumbs([[site.brand, t.paths.home], [t.nav.blog, t.paths.blog], [x.title, p]])] });
@@ -254,7 +257,7 @@ ${popular.map(([a, z]) => `<tr><td><a href="${routePath(lang, a, z)}">${esc(Q.zo
 </tbody></table></div><p><a class="more" href="${t.paths.prices}">${t.nav.prices} →</a></p></div></section>
 <section class="sec dark"><div class="wrap"><h2>${h.vsH}</h2><div class="tbl-wrap"><table class="tbl vs"><thead><tr>${h.vsCols.map(c => `<th>${esc(fill(c, { brand: site.brand }))}</th>`).join("")}</tr></thead>
 <tbody>${h.vs.map(r => `<tr><th scope="row">${r[0]}</th><td>${r[1]}</td><td class="ok">${r[2]}</td></tr>`).join("")}</tbody></table></div></div></section>
-<section class="sec" id="how"><div class="wrap"><h2>${h.howH}</h2><ol class="how">${h.how.map(([a, b]) => `<li><h3>${a}</h3><p>${b}</p></li>`).join("")}</ol></div></section>
+<section class="sec" id="how"><div class="wrap"><h2>${h.howH}</h2><ol class="how">${h.how.map(([a, b]) => `<li><h3>${a}</h3><p>${b}</p></li>`).join("")}</ol><p><a class="more" href="${HW[lang].path}">${esc(HW[lang].more)} →</a></p></div></section>
 <section class="sec ice"><div class="wrap"><h2>${h.meetH}</h2>${meetCards(lang)}</div></section>
 <section class="sec ice"><div class="wrap"><h2>${t.blog.latest}</h2>${blogCards(lang, null, 4)}<p><a class="more" href="${t.paths.blog}">${t.blog.more} →</a></p></div></section>
 <section class="sec" id="faq"><div class="wrap narrow"><h2>${h.faqH}</h2>${faqBlock(faq)}</div></section>
@@ -423,6 +426,31 @@ function aboutPage(lang) {
   page({ lang, path: x.path, alts: ALL(l => AB[l].path), title: F(x.title), desc: F(x.desc), body, ld: [ld, crumbs([[site.brand, t.paths.home], [F(x.h1), x.path]])] });
 }
 
+// Width and height of a JPEG, read from its frame header, so the screenshots get their real size in the HTML
+function jpegSize(file) {
+  const b = fs.readFileSync(file);
+  for (let i = 2; i < b.length;) {
+    const m = b[i + 1], len = b.readUInt16BE(i + 2);
+    if (m >= 0xc0 && m <= 0xcf && m !== 0xc4 && m !== 0xc8 && m !== 0xcc) return [b.readUInt16BE(i + 7), b.readUInt16BE(i + 5)];
+    i += 2 + len;
+  }
+}
+
+// How it works: the booking form screen by screen (screenshots of the real form), what happens after, FAQ
+function howPage(lang) {
+  const t = I[lang], x = HW[lang];
+  const shot = n => { const src = `/img/how/${lang}-${n}.jpg`, [w, h] = jpegSize(path.join(OUT, src)); return `<img src="${src}" alt="${esc(x.steps[n - 1][0])}" width="${w / 2}" height="${h / 2}" loading="${n > 1 ? "lazy" : "eager"}">`; };
+  const body = `<section class="hero hero-s"><div class="wrap"><div class="hero-t"><nav class="crumbs"><a href="${t.paths.home}">${esc(site.brand)}</a> › ${esc(x.nav)}</nav>
+<h1>${esc(x.h1)}</h1><p class="lead answer">${esc(x.lead)}</p></div></div></section>
+<section class="sec"><div class="wrap"><ol class="howto">${x.steps.map(([h, p], i) => `<li><div class="howto-t"><span class="howto-n">${esc(x.step)} ${i + 1}</span><h2>${esc(h)}</h2><p>${esc(p)}</p>${i === 0 ? `<p><a class="btn btn-y" href="${t.paths.book}">${t.nav.book}</a></p>` : ""}</div><figure class="shot">${shot(i + 1)}</figure></li>`).join("")}</ol></div></section>
+<section class="sec ice"><div class="wrap"><h2>${esc(x.afterH)}</h2><ol class="how how-4">${x.after.map(([h, p]) => `<li><h3>${esc(h)}</h3><p>${esc(p)}</p></li>`).join("")}</ol></div></section>
+<section class="sec"><div class="wrap narrow"><h2>${t.home.faqH}</h2>${faqBlock(x.faq.map(([q, a]) => [q, esc(a)]))}</div></section>
+<section class="cta"><div class="wrap"><h2>${esc(x.ctaH)}</h2><p>${esc(x.ctaP)}</p><a class="btn btn-k" href="${t.paths.book}">${t.nav.book}</a></div></section>`;
+  const ld = { "@context": "https://schema.org", "@type": "HowTo", name: x.h1, description: x.desc, inLanguage: lang, totalTime: "PT2M", estimatedCost: { "@type": "MonetaryAmount", currency: "EUR", value: 0 },
+    step: x.steps.map(([h, p], i) => ({ "@type": "HowToStep", position: i + 1, name: h, text: p, image: `${URL_}/img/how/${lang}-${i + 1}.jpg`, url: `${URL_}${x.path}` })) };
+  page({ lang, path: x.path, alts: ALL(l => HW[l].path), title: x.title, desc: x.desc, body, ld: [ld, faqLd(x.faq), crumbs([[site.brand, t.paths.home], [x.nav, x.path]])] });
+}
+
 // English guide pages for the big searches (build/guides.js): a quotable answer, a price table, sections, FAQ
 function guide(g) {
   const lang = "en", t = I.en, sedan = (a, z) => Q.base(P, a, z, "sedan");
@@ -571,7 +599,7 @@ function admin() {
   fs.readdirSync(path.join(__dirname, "static", "fonts")).forEach(f => put("static/fonts/" + f, "fonts/" + f));
 }
 
-LANGS.forEach(l => { home(l); AIRPORTS.forEach(a => hub(l, a.id)); portHub(l); aboutPage(l); CO.ORDER.forEach(k => companyPage(l, k)); ROUTES.forEach(([a, z]) => route(l, a, z)); PL.L.forEach(x => place(l, x)); SV.S.forEach(x => service(l, x)); prices(l); book(l); legalPages(l); blogIndex(l); POSTS.forEach(x => blogPost(l, x)); });
+LANGS.forEach(l => { home(l); AIRPORTS.forEach(a => hub(l, a.id)); portHub(l); aboutPage(l); howPage(l); CO.ORDER.forEach(k => companyPage(l, k)); ROUTES.forEach(([a, z]) => route(l, a, z)); PL.L.forEach(x => place(l, x)); SV.S.forEach(x => service(l, x)); prices(l); book(l); legalPages(l); blogIndex(l); POSTS.forEach(x => blogPost(l, x)); });
 GUIDES.forEach(guide);
 notFound();
 admin();
