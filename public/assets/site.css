@@ -181,6 +181,8 @@ p { margin: 0 0 1em; }
 .how { list-style: none; padding: 0; margin: 24px 0 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; counter-reset: s; }
 .how li { counter-increment: s; background: var(--ice); border-radius: var(--r); padding: 22px; }
 .how li::before { content: counter(s); display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: var(--black); color: var(--mustard); font-weight: 900; margin-bottom: 12px; }
+.how-4 { grid-template-columns: repeat(4, 1fr); }
+@media (max-width: 960px) { .how-4 { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 760px) { .how { grid-template-columns: 1fr; } }
 
 .meet { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 20px; }
@@ -284,18 +286,24 @@ p { margin: 0 0 1em; }
 .blog-widget h2 { color: var(--white); margin: 0; font-size: 22px; }
 .blog-widget .search-h { display: none; }
 .blog-widget .search { box-shadow: none; }
-/* The text column is narrower than the desktop row, so the box stays stacked in posts; promises in 2 columns */
-.blog-widget .assure { grid-template-columns: 1fr 1fr; }
+/* In posts the box sits in the full-width container, so the search uses the same one-row layout as the home page;
+   its heading is hidden, so every row moves up one */
 @media (min-width: 1000px) {
-  .blog-widget .search.wide { grid-template-columns: 1fr auto 1fr; }
-  .blog-widget .search.wide .row2, .blog-widget .search.wide .ret { display: grid; }
-  .blog-widget .search.wide .row2 { grid-column: 1 / -1; grid-template-columns: 1fr auto 1fr; }
-  .blog-widget .search.wide .row3 { display: grid; grid-column: 1 / -1; }
-  .blog-widget .search.wide .ret { grid-column: 1 / -1; grid-template-columns: 1fr 1fr; }
-  .blog-widget .search.wide .check, .blog-widget .search.wide button[type=submit] { grid-row: auto; grid-column: 1 / -1; }
-  .blog-widget .search.wide button[type=submit] { width: 100%; }
-  .blog-widget .search.wide .ret label:first-child, .blog-widget .search.wide .ret label:last-child { grid-row: auto; grid-column: auto; }
+  .blog-widget .search.wide button[type=submit] { grid-row: 1; }
+  .blog-widget .search.wide .check, .blog-widget .search.wide .ret label:first-child, .blog-widget .search.wide .ret label:last-child { grid-row: 2; }
 }
+
+/* How it works page: each step's text beside a screenshot of the form, sides alternating; stacked on phones */
+.howto { list-style: none; padding: 0; margin: 0; display: grid; gap: 56px; }
+.howto li { display: grid; grid-template-columns: 1fr minmax(0, 340px); gap: 48px; align-items: center; max-width: 920px; margin: 0 auto; width: 100%; }
+.howto li:nth-child(even) { grid-template-columns: minmax(0, 340px) 1fr; }
+.howto li:nth-child(even) .howto-t { order: 2; }
+.howto-n { display: inline-block; background: var(--black); color: var(--mustard); font-weight: 900; border-radius: 999px; padding: 4px 14px; font-size: 14px; margin-bottom: 10px; }
+.howto h2 { margin: 0 0 10px; }
+.howto p { color: var(--muted); font-size: 17px; }
+.shot { margin: 0; background: var(--ice); border-radius: 22px; padding: 14px; box-shadow: 0 12px 32px rgba(0,0,0,.12); }
+.shot img { display: block; width: 100%; height: auto; border-radius: 12px; }
+@media (max-width: 760px) { .howto { gap: 40px; } .howto li, .howto li:nth-child(even) { grid-template-columns: 1fr; gap: 18px; } .howto li:nth-child(even) .howto-t { order: 0; } .shot { max-width: 340px; margin: 0 auto; width: 100%; } }
 
 /* Time wheel (site.js) over the 15-minute time selects */
 .tsel-hid { position: absolute !important; width: 1px !important; height: 1px !important; opacity: 0; pointer-events: none; overflow: hidden; }
