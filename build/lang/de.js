@@ -20,7 +20,7 @@ const ui = {
   blog: { title: "Istanbul Transfer Blog · Taxi-Tipps für Reisende", desc: "Praktische Tipps für Istanbul: warum Taxis schwer zu finden sind, Taxi oder Transfer am Flughafen und wie Sie Ihre Fahrt in einer Minute buchen.", h1: "Istanbul Transfer Blog", lead: "Praktische Tipps für Ihre Ankunft in Istanbul und die stressfreie Fahrt zum Hotel.", read: "Weiterlesen", latest: "Aus unserem Blog", more: "Weitere Artikel", updated: "Aktualisiert", widgetH: "Jetzt Transfer buchen" },
   form: {
     title: "Ihr Festpreis", from: "Von", to: "Nach", date: "Datum", time: "Abholzeit", pax: "Fahrgäste",
-    ret: "Rückfahrt hinzufügen (10 % Rabatt)", rdate: "Datum Rückfahrt", rtime: "Abholzeit Rückfahrt", submit: "Preise anzeigen",
+    ret: "Rückfahrt hinzufügen (10 % Rabatt)", rdate: "Datum Rückfahrt", rtime: "Abholzeit Rückfahrt", rdiff: "Andere Route zurück", rfrom: "Rückfahrt von", rto: "Rückfahrt nach", submit: "Preise anzeigen",
     airports: "Flughäfen", districts: "Istanbul", port: "Kreuzfahrthafen", choose: "Bitte wählen…", swap: "Tauschen"
   },
   home: {
@@ -83,7 +83,7 @@ const ui = {
     name: "Vor- und Nachname", email: "E-Mail", phone: "Handynummer (mit Ländervorwahl)", flight: "Flugnummer",
     flightHelp: "Damit wir Ihren Flug verfolgen können", pickup: "Hotel oder Abholadresse", dropoff: "Hotel oder Zieladresse",
     bags: "Koffer", seats: "Kindersitze (€{seat} pro Sitz)", note: "Hinweis für den Fahrer (optional)",
-    retFlight: "Rückflugnummer (optional)", retPickup: "Abholadresse für die Rückfahrt",
+    retFlight: "Rückflugnummer (optional)", retPickup: "Abholadresse für die Rückfahrt", retDropoff: "Zieladresse für die Rückfahrt",
     next: "Weiter", back: "Zurück", send: "Anfrage senden",
     terms: "Ich akzeptiere die <a href=\"/de/agb\" target=\"_blank\">AGB</a> und die <a href=\"/de/datenschutz\" target=\"_blank\">Datenschutzhinweise</a>.",
     review: "Buchung prüfen", total: "Gesamt", pay: "Zahlung: bar an den Fahrer am Ende der Fahrt (EUR, USD oder TRY).",

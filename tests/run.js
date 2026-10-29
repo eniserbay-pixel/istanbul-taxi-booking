@@ -167,6 +167,48 @@ const ok = (cond, msg) => { if (!cond) { failed++; console.log("FAIL " + msg); }
     const apc = await adm.locator(".apc").first().textContent();
     ok(/Hasan Sürücü/.test(apc) && /Taşıyıcı/.test(apc) && /Minivan/.test(apc), "application in the panel: " + apc.slice(0, 80));
     ok(!admErr.length, "panel page errors: " + admErr.join("; "));
+    // a return on its own route ("different return route"): IST → Sultanahmet, back Taksim → Galataport, sedan:
+    // 46 € out, Taksim–Galataport 40 € with 10 % off = 36 € back
+    const dr = await browser.newPage({ viewport: { width: 1366, height: 900 } });
+    dr.on("pageerror", e => errors.push(e.message));
+    await dr.goto(BASE + "/tr");
+    const df = dr.locator("form[data-search]").first();
+    await df.locator("select[name=from]").selectOption("IST");
+    await df.locator("select[name=to]").selectOption("sultanahmet");
+    await df.locator("input[name=date]").fill("2099-02-01");
+    ok(await df.locator("[data-rdiff-box]").isHidden(), "different return route shows only with a return");
+    await df.locator("[data-ret]").check();
+    await df.locator("input[name=rdate]").fill("2099-02-04");
+    await df.locator("[data-rdiff]").check();
+    ok(await df.locator("select[name=rfrom]").inputValue() === "sultanahmet" && await df.locator("select[name=rto]").inputValue() === "IST", "return route starts as the way back");
+    await df.locator("select[name=rfrom]").selectOption("taksim");
+    await df.locator("select[name=rto]").selectOption("galataport");
+    if (process.env.SHOTS) await dr.screenshot({ path: "shots/return-route-form.png" });
+    await df.locator("button[type=submit]").click();
+    await dr.waitForSelector('[data-car="sedan"]');
+    ok(/€82/.test(await dr.locator(".pick").textContent()), "sedan with its own return route costs €82");
+    await dr.click('[data-car="sedan"]');
+    await dr.fill("input[name=name]", "Route Traveller");
+    await dr.fill("input[name=phone]", "+44 7700 900124");
+    await dr.fill("input[name=email]", "route@example.com");
+    await dr.fill("input[name=flight]", "TK2");
+    await dr.fill("input[name=dropoff]", "Hotel Sultanahmet");
+    await dr.click("[data-next]");
+    ok(await dr.locator('[data-err="retDropoff"]').textContent() !== "", "own return route needs a return pickup and drop-off");
+    await dr.fill("input[name=retPickup]", "Hotel Taksim");
+    await dr.fill("input[name=retDropoff]", "Galataport Terminal");
+    await dr.click("[data-next]");
+    await dr.waitForSelector("[data-send]");
+    const rv = await dr.locator(".review").textContent();
+    ok(/Taksim/.test(rv) && /Galataport Terminal/.test(rv) && /€82/.test(rv), "review shows the return route and €82: " + rv.slice(0, 200));
+    if (process.env.SHOTS) await dr.screenshot({ path: "shots/return-route-review.png", fullPage: true });
+    await dr.check("[data-terms]");
+    await dr.click("[data-send]");
+    await dr.waitForSelector(".done");
+    await dr.close();
+    const rm = (await (await fetch(BASE + "/__mails")).json()).filter(m => /route@example.com/.test(m.to) || /Route Traveller/.test(m.html));
+    ok(rm.length && rm.every(m => /Taksim/.test(m.html) && /Galataport Terminal/.test(m.html) && /82/.test(m.html)), "mails carry the return route and €82");
+
     // the partners' page and the page a customer answers a change on
     for (const u of ["/b2b", "/booking-change?t=x"]) ok((await fetch(BASE + u)).status === 200, u + " opens");
 

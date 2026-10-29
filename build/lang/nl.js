@@ -20,7 +20,7 @@ const ui = {
   blog: { title: "Istanbul transferblog · Taxitips voor reizigers", desc: "Praktische tips voor Istanbul: waarom taxi's moeilijk te vinden zijn, taxi of transfer op de luchthaven en hoe je je rit in een minuut boekt.", h1: "Istanbul transferblog", lead: "Praktische tips om zonder stress van de luchthaven in Istanbul naar je hotel te komen.", read: "Lees verder", latest: "Uit onze blog", more: "Meer artikelen", updated: "Bijgewerkt", widgetH: "Boek nu je transfer" },
   form: {
     title: "Jouw vaste prijs", from: "Van", to: "Naar", date: "Datum", time: "Ophaaltijd", pax: "Passagiers",
-    ret: "Terugrit toevoegen (10% korting)", rdate: "Datum terugrit", rtime: "Ophaaltijd terugrit", submit: "Bekijk prijzen",
+    ret: "Terugrit toevoegen (10% korting)", rdate: "Datum terugrit", rtime: "Ophaaltijd terugrit", rdiff: "Andere route terug", rfrom: "Terugrit van", rto: "Terugrit naar", submit: "Bekijk prijzen",
     airports: "Luchthavens", districts: "Istanbul", port: "Cruisehaven", choose: "Kies…", swap: "Omdraaien"
   },
   home: {
@@ -83,7 +83,7 @@ const ui = {
     name: "Voor- en achternaam", email: "E-mail", phone: "Mobiel nummer (met landcode)", flight: "Vluchtnummer",
     flightHelp: "Zodat we je vlucht kunnen volgen", pickup: "Hotel of ophaaladres", dropoff: "Hotel of afzetadres",
     bags: "Koffers", seats: "Kinderzitjes (€{seat} per stuk)", note: "Bericht voor de chauffeur (optioneel)",
-    retFlight: "Vluchtnummer terugreis (optioneel)", retPickup: "Ophaaladres voor de terugrit",
+    retFlight: "Vluchtnummer terugreis (optioneel)", retPickup: "Ophaaladres voor de terugrit", retDropoff: "Afzetadres voor de terugrit",
     next: "Verder", back: "Terug", send: "Aanvraag versturen",
     terms: "Ik ga akkoord met de <a href=\"/nl/voorwaarden\" target=\"_blank\">voorwaarden</a> en de <a href=\"/nl/privacy\" target=\"_blank\">privacyverklaring</a>.",
     review: "Controleer je boeking", total: "Totaal", pay: "Betaling: contant aan de chauffeur aan het einde van de rit (EUR, USD of TRY).",

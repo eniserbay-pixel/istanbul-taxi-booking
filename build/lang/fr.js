@@ -20,7 +20,7 @@ const ui = {
   blog: { title: "Blog transfert Istanbul · Conseils taxi aux voyageurs", desc: "Conseils pratiques pour Istanbul : pourquoi les taxis sont difficiles à trouver, taxi ou transfert à l'aéroport et comment réserver votre trajet en une minute.", h1: "Blog transfert Istanbul", lead: "Des conseils pratiques pour arriver à Istanbul et rejoindre votre hôtel sans stress.", read: "Lire l'article", latest: "Sur notre blog", more: "Autres articles", updated: "Mis à jour", widgetH: "Réservez votre transfert" },
   form: {
     title: "Votre prix fixe", from: "Départ", to: "Arrivée", date: "Date", time: "Heure de prise en charge", pax: "Passagers",
-    ret: "Ajouter le retour (−10 %)", rdate: "Date du retour", rtime: "Heure du retour", submit: "Voir les prix",
+    ret: "Ajouter le retour (−10 %)", rdate: "Date du retour", rtime: "Heure du retour", rdiff: "Itinéraire retour différent", rfrom: "Retour depuis", rto: "Retour vers", submit: "Voir les prix",
     airports: "Aéroports", districts: "Istanbul", port: "Port de croisière", choose: "Choisir…", swap: "Inverser"
   },
   home: {
@@ -83,7 +83,7 @@ const ui = {
     name: "Nom et prénom", email: "E-mail", phone: "Téléphone mobile (avec l'indicatif)", flight: "Numéro de vol",
     flightHelp: "Pour que nous puissions suivre votre vol", pickup: "Hôtel ou adresse de prise en charge", dropoff: "Hôtel ou adresse de destination",
     bags: "Valises", seats: "Sièges enfant ({seat} € chacun)", note: "Message pour le chauffeur (facultatif)",
-    retFlight: "Numéro du vol retour (facultatif)", retPickup: "Adresse de prise en charge au retour",
+    retFlight: "Numéro du vol retour (facultatif)", retPickup: "Adresse de prise en charge au retour", retDropoff: "Adresse de dépose au retour",
     next: "Continuer", back: "Retour", send: "Envoyer la demande",
     terms: "J'accepte les <a href=\"/fr/conditions\" target=\"_blank\">conditions</a> et la <a href=\"/fr/confidentialite\" target=\"_blank\">politique de confidentialité</a>.",
     review: "Vérifiez votre réservation", total: "Total", pay: "Paiement : en espèces au chauffeur à la fin du trajet (EUR, USD ou TRY).",

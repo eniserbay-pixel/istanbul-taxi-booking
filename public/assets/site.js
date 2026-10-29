@@ -14,22 +14,29 @@
 
   // ---- Search box ----
   $$("[data-search]").forEach(function (f) {
-    var ret = $("[data-ret]", f), box = $(".ret", f);
+    var ret = $("[data-ret]", f), box = $(".ret", f), diff = $("[data-rdiff]", f), route = $(".rroute", f);
     ["date", "rdate"].forEach(function (n) { f.elements[n].min = today(); });
     // Prefill from the address on the booking page; elsewhere tomorrow at 12:00
-    ["from", "to", "date", "time", "pax", "rdate", "rtime"].forEach(function (n) {
+    ["from", "to", "date", "time", "pax", "rdate", "rtime", "rfrom", "rto"].forEach(function (n) {
       var v = params.get(n);
       if (v && f.elements[n] && (n !== "from" && n !== "to" || !f.elements[n].value || window.BOOK)) f.elements[n].value = v;
     });
     if (!f.elements.date.value) f.elements.date.value = today(1);
     if (!f.elements.time.value) f.elements.time.value = "12:00";
     if (params.get("ret") === "1") ret.checked = true;
+    if (params.get("rdiff") === "1") diff.checked = true;
     function sync() {
-      box.hidden = !ret.checked;
+      box.hidden = diff.parentNode.hidden = !ret.checked;
       f.elements.rdate.required = f.elements.rtime.required = ret.checked;
       if (ret.checked && !f.elements.rdate.value) f.elements.rdate.value = f.elements.date.value;
+      // Different return route: its own pickup and drop-off, starting as the way back
+      var own = ret.checked && diff.checked;
+      route.hidden = !own;
+      f.elements.rfrom.required = f.elements.rto.required = own;
+      if (own && !f.elements.rfrom.value && !f.elements.rto.value) { f.elements.rfrom.value = f.elements.to.value; f.elements.rto.value = f.elements.from.value; }
     }
     ret.addEventListener("change", sync);
+    diff.addEventListener("change", sync);
     sync();
     $("[data-swap]", f).addEventListener("click", function () {
       var a = f.elements.from.value;
@@ -38,7 +45,10 @@
     });
     f.addEventListener("submit", function (e) {
       if (f.elements.from.value && f.elements.from.value === f.elements.to.value) { e.preventDefault(); f.elements.to.focus(); return; }
+      var own = ret.checked && diff.checked;
+      if (own && f.elements.rfrom.value && f.elements.rfrom.value === f.elements.rto.value) { e.preventDefault(); f.elements.rto.focus(); return; }
       if (!ret.checked) { f.elements.rdate.disabled = f.elements.rtime.disabled = true; }
+      if (!own) { f.elements.rdiff.disabled = f.elements.rfrom.disabled = f.elements.rto.disabled = true; }
     });
   });
 
@@ -118,8 +128,15 @@
     pax: Math.max(1, Math.min(16, +params.get("pax") || 2)),
     ret: params.get("ret") === "1" && params.get("rdate") ? { date: params.get("rdate"), time: params.get("rtime") || "" } : null,
     car: "", bags: 0, childSeats: 0, name: "", email: "", phone: "", flight: "", pickup: "", dropoff: "", note: "",
-    retFlight: "", retPickup: "", step: 0
+    retFlight: "", retPickup: "", retDropoff: "", step: 0
   };
+  // The return's route: its own one when "different return route" was ticked, otherwise the way back
+  if (s.ret) {
+    var own = params.get("rdiff") === "1" && params.get("rfrom") && params.get("rto") && params.get("rfrom") !== params.get("rto");
+    s.ret.from = own ? params.get("rfrom") : s.to;
+    s.ret.to = own ? params.get("rto") : s.from;
+    s.ret.own = !!own && (s.ret.from !== s.to || s.ret.to !== s.from);
+  }
   // Prices saved in the panel since the site was built; the car list is drawn again when they arrive
   fetch("/api/pricing").then(function (r) { return r.ok ? r.json() : null; }).then(function (cfg) {
     P = Quote.live(P, cfg);
@@ -135,14 +152,15 @@
   }
   function summary() {
     return '<div class="summary"><span><b>' + esc(zoneName(s.from)) + ARROW + esc(zoneName(s.to)) + "</b></span><span>" + esc(day(s.date)) + " " + esc(s.time) +
-      "</span><span>👤 " + s.pax + "</span>" + (s.ret ? "<span>↩ " + esc(day(s.ret.date)) + " " + esc(s.ret.time) + "</span>" : "") + "</div>";
+      "</span><span>👤 " + s.pax + "</span>" + (s.ret ? "<span>↩ " + (s.ret.own ? "<b>" + esc(zoneName(s.ret.from)) + ARROW + esc(zoneName(s.ret.to)) + "</b> " : "") + esc(day(s.ret.date)) + " " + esc(s.ret.time) + "</span>" : "") + "</div>";
   }
   function wa(text) { return "https://wa.me/" + window.SITE.wa + "?text=" + encodeURIComponent(text); }
 
   function stepCar() {
     if (!s.from || !s.to || s.from === s.to || !s.date || !s.time) { view.innerHTML = '<p class="sub">' + esc(T.noRoute) + "</p>"; return; }
-    if (!Quote.base(P, s.from, s.to, "sedan")) {
-      view.innerHTML = summary() + '<p>' + esc(T.noPrice) + '</p><a class="btn btn-y" href="' + wa(zoneName(s.from) + ARROW + zoneName(s.to) + " " + s.date + " " + s.time) + '">' + esc(T.whatsapp) + "</a>";
+    if (!Quote.base(P, s.from, s.to, "sedan") || s.ret && !Quote.base(P, s.ret.from, s.ret.to, "sedan")) {
+      view.innerHTML = summary() + '<p>' + esc(T.noPrice) + '</p><a class="btn btn-y" href="' + wa(zoneName(s.from) + ARROW + zoneName(s.to) + " " + s.date + " " + s.time +
+        (s.ret ? " / ↩ " + zoneName(s.ret.from) + ARROW + zoneName(s.ret.to) + " " + s.ret.date + " " + s.ret.time : "")) + '">' + esc(T.whatsapp) + "</a>";
       return;
     }
     var peak = Quote.peakPct(P, s.from, s.time);
@@ -180,8 +198,10 @@
       (isAirport(s.to) ? "" : field("dropoff", T.dropoff, "text", { req: 1 })) +
       field("bags", T.bags, "select", { options: range(car.bags) }) +
       field("childSeats", fill(T.seats, { seat: P.rules.childSeat }), "select", { options: range(4) }) +
-      (s.ret ? '<fieldset><legend>↩ ' + esc(day(s.ret.date)) + " " + esc(s.ret.time) + "</legend>" +
-        (isAirport(s.to) ? field("retFlight", T.retFlight, "text") : field("retPickup", T.retPickup, "text", { req: 1, full: 1 })) + "</fieldset>" : "") +
+      (s.ret ? '<fieldset><legend>↩ ' + (s.ret.own ? esc(zoneName(s.ret.from)) + ARROW + esc(zoneName(s.ret.to)) + " · " : "") + esc(day(s.ret.date)) + " " + esc(s.ret.time) + "</legend>" +
+        (isAirport(s.ret.from) ? field("retFlight", T.retFlight, "text") : field("retPickup", T.retPickup, "text", { req: 1, full: 1 })) +
+        // On its own route the return needs its own drop-off; on the way back it ends at the outbound pickup
+        (s.ret.own && !isAirport(s.ret.to) ? field("retDropoff", T.retDropoff, "text", { req: 1, full: 1 }) : "") + "</fieldset>" : "") +
       field("note", T.note, "textarea", { full: 1 }) +
       '<input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">' +
       '</form><div class="actions"><button class="btn btn-o" type="button" data-back>' + esc(T.back) + '</button><button class="btn btn-y" type="button" data-next>' + esc(T.next) + "</button></div>";
@@ -192,7 +212,7 @@
   function read() {
     var f = $("form", view);
     if (!f) return;
-    ["name", "phone", "email", "flight", "pickup", "dropoff", "note", "retFlight", "retPickup", "website"].forEach(function (k) { if (f.elements[k]) s[k] = f.elements[k].value.trim(); });
+    ["name", "phone", "email", "flight", "pickup", "dropoff", "note", "retFlight", "retPickup", "retDropoff", "website"].forEach(function (k) { if (f.elements[k]) s[k] = f.elements[k].value.trim(); });
     ["bags", "childSeats"].forEach(function (k) { if (f.elements[k]) s[k] = +f.elements[k].value; });
   }
   function check() {
@@ -217,7 +237,8 @@
     var rows = [
       [zoneName(s.from) + ARROW + zoneName(s.to), day(s.date) + " " + s.time + (s.flight ? " · " + s.flight : "") + (s.pickup ? " · " + s.pickup : "")],
       s.dropoff ? [T.dropoff, s.dropoff] : null,
-      s.ret ? ["↩ " + zoneName(s.to) + ARROW + zoneName(s.from), day(s.ret.date) + " " + s.ret.time + (s.retFlight ? " · " + s.retFlight : "") + (s.retPickup ? " · " + s.retPickup : "")] : null,
+      s.ret ? ["↩ " + zoneName(s.ret.from) + ARROW + zoneName(s.ret.to), day(s.ret.date) + " " + s.ret.time + (s.retFlight ? " · " + s.retFlight : "") + (s.retPickup ? " · " + s.retPickup : "")] : null,
+      s.ret && s.ret.own && s.retDropoff ? [T.retDropoff, s.retDropoff] : null,
       [car.name[L], "👤 " + s.pax + " · 🧳 " + s.bags],
       s.childSeats ? [T.seatsLine, s.childSeats + " × €" + P.rules.childSeat + (s.ret ? " × 2" : "")] : null,
       [T.name, s.name + " · " + s.phone + " · " + s.email],
@@ -248,7 +269,8 @@
     var payload = {
       ref: s.ref, lang: L, from: s.from, to: s.to, car: s.car, date: s.date, time: s.time, flight: s.flight, pickup: s.pickup, dropoff: s.dropoff,
       pax: s.pax, bags: s.bags, childSeats: s.childSeats, name: s.name, phone: s.phone, email: s.email, note: s.note, website: s.website,
-      ret: s.ret ? { date: s.ret.date, time: s.ret.time, flight: s.retFlight, pickup: s.retPickup } : null, origin: origin
+      ret: s.ret ? { date: s.ret.date, time: s.ret.time, flight: s.retFlight, pickup: s.retPickup,
+        from: s.ret.from, to: s.ret.to, dropoff: s.ret.own ? s.retDropoff : "" } : null, origin: origin
     };
     fetch("/api/booking", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) })
       .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })

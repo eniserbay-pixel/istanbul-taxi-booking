@@ -146,7 +146,8 @@ function langSwitch(lang, alts) {
     : `<a class="lang" href="${alts[l]}" hreflang="${l}" lang="${l}">${FLAGS[l]}${LANG_NAME[l]}</a>`).join("")}</div></details>`;
 }
 
-// The search box: from, to, date, time, passengers, optional return. Sends to the booking page.
+// The search box: from, to, date, time, passengers, optional return (on the same route back, or on its own route
+// when "different return route" is ticked). Sends to the booking page.
 function searchForm(lang, pre, side) {
   const t = I[lang].form;
   pre = pre || {};
@@ -161,8 +162,10 @@ function searchForm(lang, pre, side) {
 <label>${t.to}<select name="to" required>${opts(pre.to)}</select></label></div>
 <div class="row3"><label>${t.date}<input type="date" name="date" required></label><label>${t.time}<select name="time" class="tsel" required>${TIMES}</select></label>
 <label>${t.pax}<select name="pax">${Array.from({ length: 16 }, (_, i) => `<option${i === 1 ? " selected" : ""}>${i + 1}</option>`).join("")}</select></label></div>
-<label class="check"><input type="checkbox" name="ret" value="1" data-ret> ${t.ret}</label>
+<div class="checks"><label class="check"><input type="checkbox" name="ret" value="1" data-ret> ${t.ret}</label>
+<label class="check" data-rdiff-box hidden><input type="checkbox" name="rdiff" value="1" data-rdiff> ${t.rdiff}</label></div>
 <div class="row2 ret" hidden><label>${t.rdate}<input type="date" name="rdate"></label><label>${t.rtime}<select name="rtime" class="tsel">${TIMES}</select></label></div>
+<div class="row2 rroute" hidden><label>${t.rfrom}<select name="rfrom">${opts()}</select></label><label>${t.rto}<select name="rto">${opts()}</select></label></div>
 <button class="btn btn-y btn-block" type="submit">${t.submit}</button></form>`;
 }
 
