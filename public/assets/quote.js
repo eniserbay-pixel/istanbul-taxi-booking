@@ -55,13 +55,18 @@
     out.rules = rules;
     return out;
   }
-  // b: {from, to, car, time, ret: {time} | null, childSeats}
-  // → {out, back, seats, total} in P.currency, or null when the route has no price
+  // b: {from, to, car, time, ret: {time, from?, to?} | null, childSeats}. The return goes from `to` back to `from`
+  // unless it has its own route (ret.from, ret.to: "different return route" on the form); it gets the return discount either way.
+  // → {out, back, seats, total} in P.currency, or null when the route (or the return's route) has no price
   function quote(P, b) {
     var out = leg(P, b.from, b.to, b.car, b.time);
     if (!out) return null;
     var back = 0;
-    if (b.ret) back = Math.round(leg(P, b.to, b.from, b.car, b.ret.time) * (1 - P.rules.returnDiscountPct / 100));
+    if (b.ret) {
+      var r = leg(P, b.ret.from || b.to, b.ret.to || b.from, b.car, b.ret.time);
+      if (!r) return null;
+      back = Math.round(r * (1 - P.rules.returnDiscountPct / 100));
+    }
     var seats = (b.childSeats || 0) * P.rules.childSeat * (b.ret ? 2 : 1);
     return { out: out, back: back, seats: seats, total: out + back + seats };
   }

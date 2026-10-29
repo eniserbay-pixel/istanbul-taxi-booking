@@ -1,6 +1,7 @@
 // The ITB site's booking form (public/assets/site.js) sends one transfer with an optional return in its own
 // shape: {ref, lang, from, to, car, date, time, flight, pickup, dropoff, pax, bags, childSeats,
-// ret: {date, time, flight, pickup} | null, name, phone, email, note}. This turns it into a panel booking
+// ret: {date, time, flight, pickup, from?, to?, dropoff?} | null, name, phone, email, note}. The return runs from `to`
+// back to `from` unless it has its own route (ret.from, ret.to and its drop-off address: "different return route"). This turns it into a panel booking
 // (_lib/booking.js: customer, legs, total), priced on the server with the same rules the form showed.
 const P0 = require("../../data/pricing.json");
 const Q = require("../../public/assets/quote.js");
@@ -27,7 +28,8 @@ async function fromSite(x) {
     date: str(x.date, 10), time: str(x.time, 5), flight: str(x.flight, 12).toUpperCase(),
     pickup: str(x.pickup, 200), dropoff: str(x.dropoff, 200),
     pax: int(x.pax, 1, 16), bags: int(x.bags, 0, 30), childSeats: int(x.childSeats, 0, 4),
-    ret: r ? { date: str(r.date, 10), time: str(r.time, 5), flight: str(r.flight, 12).toUpperCase(), pickup: str(r.pickup, 200) } : null,
+    ret: r ? { date: str(r.date, 10), time: str(r.time, 5), flight: str(r.flight, 12).toUpperCase(), pickup: str(r.pickup, 200),
+      from: str(r.from, 24), to: str(r.to, 24), dropoff: str(r.dropoff, 200) } : null,
     name: str(x.name, 80), phone: str(x.phone, 30), email: str(x.email, 120).toLowerCase(), note: str(x.note, 600)
   };
   if (!REF.test(s.ref)) return { error: "bad_ref" };
@@ -36,6 +38,13 @@ async function fromSite(x) {
   if (!zf || !zt || s.from === s.to || !car) return { error: "incomplete" };
   if (!DATE.test(s.date) || !TIME.test(s.time)) return { error: "incomplete" };
   if (s.ret && (!DATE.test(s.ret.date) || !TIME.test(s.ret.time) || s.ret.date + s.ret.time <= s.date + s.time)) return { error: "incomplete" };
+  if (s.ret) {
+    s.ret.from = s.ret.from || s.to;
+    s.ret.to = s.ret.to || s.from;
+    if (s.ret.from === s.to && s.ret.to === s.from) s.ret.dropoff = "";
+  }
+  const rf = s.ret && Q.zone(P, s.ret.from), rt = s.ret && Q.zone(P, s.ret.to);
+  if (s.ret && (!rf || !rt || s.ret.from === s.ret.to)) return { error: "incomplete" };
   if (s.name.length < 2 || !/^\+?[0-9 ()-]{7,20}$/.test(s.phone) || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(s.email)) return { error: "incomplete" };
   if (!Q.fits(car, s.pax, s.bags)) return { error: "incomplete" };
   const q = Q.quote(P, s);
@@ -49,10 +58,12 @@ async function fromSite(x) {
     flight: s.flight, pax: s.pax, bags: s.bags, seatB: s.childSeats,
     note: s.note, price: q.out + seat
   }];
+  // On the way back the addresses default to the outbound ones; on its own route only its own ones count
+  const back = s.ret && s.ret.from === s.to && s.ret.to === s.from;
   if (s.ret) legs.push({
     date: s.ret.date, time: s.ret.time,
-    from: s.to, fromName: zt.name.tr, fromAddr: s.ret.pickup || s.dropoff,
-    to: s.from, toName: zf.name.tr, toAddr: s.pickup,
+    from: s.ret.from, fromName: rf.name.tr, fromAddr: s.ret.pickup || (back ? s.dropoff : ""),
+    to: s.ret.to, toName: rt.name.tr, toAddr: back ? s.pickup : s.ret.dropoff,
     flight: s.ret.flight, pax: s.pax, bags: s.bags, seatB: s.childSeats,
     note: "", price: q.back + seat
   });

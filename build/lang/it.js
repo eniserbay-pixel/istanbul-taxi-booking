@@ -20,7 +20,7 @@ const ui = {
   blog: { title: "Blog transfer Istanbul · Consigli taxi per viaggiatori", desc: "Guide pratiche per muoversi a Istanbul: perché è difficile trovare un taxi, taxi o transfer in aeroporto e come prenotare la corsa in un minuto.", h1: "Blog transfer Istanbul", lead: "Guide pratiche per arrivare a Istanbul e raggiungere l'hotel senza stress.", read: "Leggi la guida", latest: "Dal nostro blog", more: "Altre guide", updated: "Aggiornato", widgetH: "Prenota ora il tuo transfer" },
   form: {
     title: "Il tuo prezzo fisso", from: "Da", to: "A", date: "Data", time: "Ora di ritiro", pax: "Passeggeri",
-    ret: "Aggiungi il ritorno (−10%)", rdate: "Data del ritorno", rtime: "Ora di ritiro al ritorno", submit: "Vedi i prezzi",
+    ret: "Aggiungi il ritorno (−10%)", rdate: "Data del ritorno", rtime: "Ora di ritiro al ritorno", rdiff: "Percorso di ritorno diverso", rfrom: "Ritorno da", rto: "Ritorno a", submit: "Vedi i prezzi",
     airports: "Aeroporti", districts: "Istanbul", port: "Porto crociere", choose: "Scegli…", swap: "Inverti"
   },
   home: {
@@ -83,7 +83,7 @@ const ui = {
     name: "Nome e cognome", email: "E-mail", phone: "Cellulare (con prefisso internazionale)", flight: "Numero di volo",
     flightHelp: "Per poter seguire il tuo volo", pickup: "Hotel o indirizzo di ritiro", dropoff: "Hotel o indirizzo di arrivo",
     bags: "Valigie", seats: "Seggiolini per bambini (€{seat} ciascuno)", note: "Nota per l'autista (facoltativa)",
-    retFlight: "Numero del volo di ritorno (facoltativo)", retPickup: "Indirizzo di ritiro per il ritorno",
+    retFlight: "Numero del volo di ritorno (facoltativo)", retPickup: "Indirizzo di ritiro per il ritorno", retDropoff: "Indirizzo di arrivo per il ritorno",
     next: "Continua", back: "Indietro", send: "Invia la richiesta",
     terms: "Accetto le <a href=\"/it/condizioni\" target=\"_blank\">condizioni</a> e l'<a href=\"/it/privacy\" target=\"_blank\">informativa sulla privacy</a>.",
     review: "Controlla la prenotazione", total: "Totale", pay: "Pagamento: in contanti all'autista a fine corsa (EUR, USD o TRY).",

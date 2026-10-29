@@ -29,7 +29,7 @@ const ui = {
   blog: { title: "İstanbul Transfer Blogu · Yolcular İçin Taksi İpuçları", desc: "İstanbul'da ulaşım için pratik rehberler: taksi neden zor bulunur, havalimanında taksi mi transfer mi, transferinizi bir dakikada nasıl ayırtırsınız.", h1: "İstanbul transfer blogu", lead: "İstanbul'a varışınız ve otelinize stressiz ulaşmanız için pratik rehberler.", read: "Devamını oku", latest: "Blogdan", more: "Diğer yazılar", updated: "Güncelleme", widgetH: "Transferinizi şimdi ayırtın" },
   form: {
     title: "Sabit fiyatınızı görün", from: "Nereden", to: "Nereye", date: "Tarih", time: "Alış saati", pax: "Yolcu",
-    ret: "Dönüş ekle (%10 indirim)", rdate: "Dönüş tarihi", rtime: "Dönüş alış saati", submit: "Fiyatları gör",
+    ret: "Dönüş ekle (%10 indirim)", rdate: "Dönüş tarihi", rtime: "Dönüş alış saati", rdiff: "Dönüş rotası farklı", rfrom: "Dönüş nereden", rto: "Dönüş nereye", submit: "Fiyatları gör",
     airports: "Havalimanları", districts: "İstanbul", port: "Kruvaziyer limanı", choose: "Seçin…", swap: "Değiştir"
   },
   home: {
@@ -92,7 +92,7 @@ const ui = {
     name: "Ad soyad", email: "E-posta", phone: "Cep telefonu (ülke koduyla)", flight: "Uçuş numarası",
     flightHelp: "Uçuşunuzu takip edebilmemiz için", pickup: "Otel veya alış adresi", dropoff: "Otel veya varış adresi",
     bags: "Bavul", seats: "Çocuk koltuğu (adet €{seat})", note: "Şoföre not (isteğe bağlı)",
-    retFlight: "Dönüş uçuş numarası (isteğe bağlı)", retPickup: "Dönüş alış adresi",
+    retFlight: "Dönüş uçuş numarası (isteğe bağlı)", retPickup: "Dönüş alış adresi", retDropoff: "Dönüş bırakış adresi",
     next: "Devam", back: "Geri", send: "Rezervasyon talebini gönder",
     terms: "<a href=\"/tr/kosullar\" target=\"_blank\">Koşulları</a> ve <a href=\"/tr/gizlilik\" target=\"_blank\">gizlilik bildirimini</a> kabul ediyorum.",
     review: "Rezervasyonunuzu kontrol edin", total: "Toplam", pay: "Ödeme: yolculuk sonunda şoföre nakit (EUR, USD veya TL).",

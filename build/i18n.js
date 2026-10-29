@@ -15,7 +15,7 @@ module.exports = {
     blog: { title: "Istanbul Transfer Blog · Taxi Tips for Travellers", desc: "Practical guides for getting around Istanbul: why taxis are hard to find, taxi or transfer at the airport, and how to book your ride in a minute.", h1: "Istanbul transfer blog", lead: "Practical guides for arriving in Istanbul and getting to your hotel without stress.", read: "Read the guide", latest: "From our blog", more: "More guides", updated: "Updated", widgetH: "Book your transfer now" },
     form: {
       title: "Get your fixed price", from: "From", to: "To", date: "Date", time: "Pickup time", pax: "Passengers",
-      ret: "Add a return transfer (10% off)", rdate: "Return date", rtime: "Return pickup time", submit: "See prices",
+      ret: "Add a return transfer (10% off)", rdate: "Return date", rtime: "Return pickup time", rdiff: "Different return route", rfrom: "Return from", rto: "Return to", submit: "See prices",
       airports: "Airports", districts: "Istanbul", port: "Cruise port", choose: "Choose…", swap: "Swap"
     },
     home: {
@@ -78,7 +78,7 @@ module.exports = {
       name: "Full name", email: "E-mail", phone: "Mobile phone (with country code)", flight: "Flight number",
       flightHelp: "So we can track your flight", pickup: "Hotel or pickup address", dropoff: "Hotel or drop-off address",
       bags: "Suitcases", seats: "Child seats (€{seat} each)", note: "Note for the driver (optional)",
-      retFlight: "Return flight number (optional)", retPickup: "Return pickup address",
+      retFlight: "Return flight number (optional)", retPickup: "Return pickup address", retDropoff: "Return drop-off address",
       next: "Continue", back: "Back", send: "Send booking request",
       terms: "I accept the <a href=\"/terms\" target=\"_blank\">terms</a> and the <a href=\"/privacy\" target=\"_blank\">privacy notice</a>.",
       review: "Check your booking", total: "Total", pay: "Payment: cash to the driver at the end of the ride (EUR, USD or TRY).",
