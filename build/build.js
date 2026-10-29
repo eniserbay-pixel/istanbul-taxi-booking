@@ -19,6 +19,7 @@ const PL = require("./places");
 const SV = require("./services");
 const AB = require("./about");
 const HW = require("./howto");
+const HB = require("./hubs");
 // German, French, Italian and Dutch: page texts, blog posts and legal texts in one file per language
 ["de", "fr", "it", "nl"].forEach(l => {
   const X = require("./lang/" + l);
@@ -363,16 +364,44 @@ function service(lang, sv) {
   page({ lang, path: x.path, alts: ALL(l => sv[l].path), title: x.title, desc: x.desc, body, ld: [ld, faqLd(faq), crumbs([[site.brand, t.paths.home], [x.h1, x.path]])] });
 }
 
+// The hub pages' text below the price table (build/hubs.js): intro, the ways into the city compared, what the
+// price includes, busy hours and an FAQ. Returns the HTML and the FAQ for the structured data.
+function hubExtra(lang, hub) {
+  const T = HB.T[lang], H = HB[hub], x = H[lang], peak = P.rules.peak && P.rules.peak[hub];
+  const name = hub === "galataport" ? Q.zone(P, hub).name[lang] : Q.zone(P, hub).short[lang];
+  const v = { from: name, wait: P.rules.freeWaitMin, seat: P.rules.childSeat, ret: P.rules.returnDiscountPct, meet: hub === "galataport" ? PORT[lang].meet : site.meet[hub][lang] };
+  if (peak) Object.assign(v, { pct: peak.pct, peakFrom: peak.from, peakTo: peak.to });
+  P.zones.forEach(z => {
+    const d = dist(hub, z.id), pr = Q.base(P, hub, z.id, "sedan") || Q.base(P, z.id, hub, "sedan");
+    if (d) { v["km_" + z.id] = d[0]; v["min_" + z.id] = d[1]; }
+    if (pr) v["p_" + z.id] = pr;
+  });
+  const F = s => fill(s, v), dest = H.dest, min = v["min_" + dest];
+  const rows = [[T.transfer, fill(T.min, { n: min }), fill(T.fixed, { p: v["p_" + dest] }), T.yes], [T.taxi, fill(hub === "galataport" ? T.min : T.queue, { n: min }), T.meter, T.yes]]
+    .concat(H.ways.map(([n, time, price]) => [T[n] || fill(n, T), fill(T.min, { n: time }), T[price], T.no]));
+  const faq = x.faq.map(([q, a]) => [F(q), esc(F(a))]).concat(T.faqShared.map(([q, a]) => [q, esc(a)]));
+  const guide = POSTS.find(p => p.id === (hub === "IST" ? "ist-arrival" : hub === "SAW" ? "saw-arrival" : "galataport"));
+  const incl = (hub === "galataport" ? [T.incl[0], T.inclPort].concat(T.incl.slice(2)) : T.incl).map(F);
+  const html = `<section class="sec"><div class="wrap narrow prose"><h2>${esc(F(T.aboutH))}</h2>${x.about.map(p => `<p>${esc(F(p))}</p>`).join("")}</div></section>
+<section class="sec ice"><div class="wrap"><h2>${esc(fill(T.waysH, { from: name, dest: Q.zone(P, dest).short[lang] }))}</h2><div class="tbl-wrap"><table class="tbl"><thead><tr>${T.cols.map(c => `<th>${esc(c)}</th>`).join("")}</tr></thead><tbody>
+${rows.map(r => `<tr>${r.map((c, i) => i ? `<td>${esc(c)}</td>` : `<td><strong>${esc(c)}</strong></td>`).join("")}</tr>`).join("")}</tbody></table></div></div></section>
+<section class="sec"><div class="wrap narrow prose"><h2>${esc(T.inclH)}</h2><ul>${incl.map(i => `<li>${esc(i)}</li>`).join("")}</ul>${peak ? `<p>${esc(F(T.peak))}</p>` : ""}
+<p><a class="more" href="${postPath(lang, guide)}">${esc(T.guide)} →</a><br><a class="more" href="${HW[lang].path}">${esc(T.how)} →</a></p></div></section>
+<section class="sec ice"><div class="wrap narrow"><h2>${I[lang].home.faqH}</h2>${faqBlock(faq)}</div></section>`;
+  return { html, faq };
+}
+
 function hub(lang, a) {
   const t = I[lang], hb = t.hub, A = Q.zone(P, a);
   const list = ROUTES.filter(([x]) => x === a).concat(a === "SAW" ? [["SAW", "IST"]] : []);
-  const v = { from: A.short[lang], fromLong: A.name[lang], brand: site.brand, price: Math.min(...list.map(([x, y]) => Q.base(P, x, y, "sedan"))) };
+  const v = { from: A.short[lang], fromLong: A.name[lang], brand: site.brand, price: Math.min(...list.map(([x, y]) => Q.base(P, x, y, "sedan"))) }, ex = hubExtra(lang, a);
   const body = `<section class="hero hero-s"><div class="wrap hero-in"><div class="hero-t"><h1>${esc(fill(hb.h1, v))}</h1><p class="lead">${esc(fill(hb.lead, v))}</p></div>${searchForm(lang, { from: a })}${assure(lang)}</div></section>
-<section class="sec"><div class="wrap"><div class="tbl-wrap"><table class="tbl"><thead><tr><th>${t.prices.to}</th>${P.cars.map(c => `<th>${esc(c.name[lang])}</th>`).join("")}<th>km</th></tr></thead><tbody>
-${list.map(([x, y]) => { const d = dist(x, y), href = y === "IST" || y === "SAW" ? t.paths.airportPair : routePath(lang, x, y); return `<tr><td><a href="${href}">${esc(Q.zone(P, y).name[lang])}</a></td>${P.cars.map(c => `<td>€${Q.base(P, x, y, c.id)}</td>`).join("")}<td>${d ? d[0] : ""}</td></tr>`; }).join("")}
+<section class="sec"><div class="wrap"><div class="tbl-wrap"><table class="tbl"><thead><tr><th>${t.prices.to}</th>${P.cars.map(c => `<th>${esc(c.name[lang])}</th>`).join("")}<th>km</th><th>${HB.T[lang].minH}</th></tr></thead><tbody>
+${list.map(([x, y]) => { const d = dist(x, y), href = y === "IST" || y === "SAW" ? t.paths.airportPair : routePath(lang, x, y); return `<tr><td><a href="${href}">${esc(Q.zone(P, y).name[lang])}</a></td>${P.cars.map(c => `<td>€${Q.base(P, x, y, c.id)}</td>`).join("")}<td>${d ? d[0] : ""}</td><td>${d ? d[1] : ""}</td></tr>`; }).join("")}
 </tbody></table></div><p class="sub small">${t.home.routesLead}</p></div></section>
-<section class="sec ice"><div class="wrap"><h2>${t.route.meetH}</h2>${meetCards(lang, a)}</div></section>`;
-  page({ lang, path: t.paths[a], alts: ALL(l => I[l].paths[a]), title: fill(hb.title, v), desc: fill(hb.desc, v), body, ld: [crumbs([[site.brand, t.paths.home], [A.short[lang], t.paths[a]]])] });
+<section class="sec ice"><div class="wrap"><h2>${t.route.meetH}</h2>${meetCards(lang, a)}</div></section>
+${ex.html}`;
+  page({ lang, path: t.paths[a], alts: ALL(l => I[l].paths[a]), title: fill(hb.title, v), desc: fill(hb.desc, v), body, ld: [faqLd(ex.faq), crumbs([[site.brand, t.paths.home], [A.short[lang], t.paths[a]]])] });
 }
 
 const portMeet = lang => `<div class="meet"><div class="meet-c"><h3>${esc(Q.zone(P, "galataport").name[lang])}</h3><p>${esc(PORT[lang].meet)}</p></div></div>`;
@@ -380,13 +409,14 @@ const portMeet = lang => `<div class="meet"><div class="meet-c"><h3>${esc(Q.zone
 // Galataport's price page: the airports and the districts it has route pages for
 function portHub(lang) {
   const t = I[lang], X = PORT[lang], A = Q.zone(P, "galataport"), list = portList();
-  const v = { from: A.short[lang], fromLong: A.name[lang], brand: site.brand, price: Math.min(...list.map(([[x, y]]) => Q.base(P, x, y, "sedan"))) };
+  const v = { from: A.short[lang], fromLong: A.name[lang], brand: site.brand, price: Math.min(...list.map(([[x, y]]) => Q.base(P, x, y, "sedan"))) }, ex = hubExtra(lang, "galataport");
   const body = `<section class="hero hero-s"><div class="wrap hero-in"><div class="hero-t"><nav class="crumbs"><a href="${t.paths.home}">${esc(site.brand)}</a></nav><h1>${esc(X.hub.h1)}</h1><p class="lead">${esc(fill(X.hub.lead, v))}</p></div>${searchForm(lang, { from: "galataport" })}${assure(lang)}</div></section>
-<section class="sec"><div class="wrap"><div class="tbl-wrap"><table class="tbl"><thead><tr><th>${t.prices.to}</th>${P.cars.map(c => `<th>${esc(c.name[lang])}</th>`).join("")}<th>km</th></tr></thead><tbody>
-${list.map(([[x, y], to]) => { const d = dist(x, y); return `<tr><td><a href="${routePath(lang, x, y)}">${esc(Q.zone(P, to).name[lang])}</a></td>${P.cars.map(c => `<td>€${Q.base(P, x, y, c.id)}</td>`).join("")}<td>${d ? d[0] : ""}</td></tr>`; }).join("")}
+<section class="sec"><div class="wrap"><div class="tbl-wrap"><table class="tbl"><thead><tr><th>${t.prices.to}</th>${P.cars.map(c => `<th>${esc(c.name[lang])}</th>`).join("")}<th>km</th><th>${HB.T[lang].minH}</th></tr></thead><tbody>
+${list.map(([[x, y], to]) => { const d = dist(x, y); return `<tr><td><a href="${routePath(lang, x, y)}">${esc(Q.zone(P, to).name[lang])}</a></td>${P.cars.map(c => `<td>€${Q.base(P, x, y, c.id)}</td>`).join("")}<td>${d ? d[0] : ""}</td><td>${d ? d[1] : ""}</td></tr>`; }).join("")}
 </tbody></table></div><p class="sub small">${t.home.routesLead}</p></div></section>
-<section class="sec ice"><div class="wrap"><h2>${X.meetH}</h2>${portMeet(lang)}</div></section>`;
-  page({ lang, path: X.path, alts: ALL(l => PORT[l].path), title: fill(X.hub.title, v), desc: fill(X.hub.desc, v), body, ld: [crumbs([[site.brand, t.paths.home], [A.short[lang], X.path]])] });
+<section class="sec ice"><div class="wrap"><h2>${X.meetH}</h2>${portMeet(lang)}</div></section>
+${ex.html}`;
+  page({ lang, path: X.path, alts: ALL(l => PORT[l].path), title: fill(X.hub.title, v), desc: fill(X.hub.desc, v), body, ld: [faqLd(ex.faq), crumbs([[site.brand, t.paths.home], [A.short[lang], X.path]])] });
 }
 
 // Company pages: what we offer the group, and its application form (sent to api/apply.js, panel: Başvurular)
