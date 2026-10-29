@@ -2055,7 +2055,8 @@ dialog.bl-dlg::backdrop { background: rgba(15, 27, 45, .45); }
       }).catch(function (e) { toast(e.message); btn.disabled = false; });
       api("pricing", { pricing: S.pdraft }).then(function (j) {
         S.pricing = j.pricing; S.pdraft = null; syncNames();
-        toast("Kaydedildi, sitede yaklaşık 30 saniye içinde görünür");
+        // the booking form has it in about 30 seconds; the static pages after the rebuild (api/admin.js)
+        toast(j.rebuild ? "Kaydedildi. Rezervasyon formunda ~30 sn, sayfalardaki fiyat metinlerinde ~2 dk içinde görünür" : "Kaydedildi, rezervasyon formunda ~30 sn içinde görünür. Sayfalardaki fiyat metinleri sonraki yayında güncellenir");
         redraw();
       }).catch(function (e) { toast(e.message); btn.disabled = false; });
     });

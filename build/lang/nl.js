@@ -29,7 +29,7 @@ const ui = {
     h1: "Luchthaventaxi en privétransfer in Istanbul voor een <em>vaste prijs</em>",
     lead: "{brand} is een transferbedrijf in Istanbul. We brengen je met een privéauto van luchthaven Istanbul (IST) of Sabiha Gökçen (SAW) naar je hotel, vanaf €{min} per auto. Je chauffeur wacht met een naambordje en je betaalt contant aan het einde van de rit.",
     fleetH: "Kies je auto", fleetLead: "De prijs is per auto, niet per persoon. Tol, parkeren en wachttijd zijn inbegrepen.",
-    routesH: "Populaire transferroutes in Istanbul", routesLead: "Vaste prijzen per auto, enkele reis. Ophalen op IST van 15:00 tot 19:00 en op SAW van 14:45 tot 21:00 kost 30% meer.",
+    routesH: "Populaire transferroutes in Istanbul", routesLead: "Vaste prijzen per auto, enkele reis.", routesPeak: "Ophalen op IST van {istFrom} tot {istTo} en op SAW van {sawFrom} tot {sawTo} kost {pct}% meer.",
     vsH: "Taxi met meter of onze luchthaventaxi?",
     vs: [["Prijs", "Hangt af van het verkeer en de route van de chauffeur", "Vast bij het boeken"], ["In de aankomsthal", "Rij bij de taxistandplaats", "Chauffeur wacht met je naambordje"], ["Vertraagde vlucht", "-", "We volgen je vlucht, 60 min gratis wachten"], ["Bagage en groepen", "Kleine gele taxi", "Sedan, minivan, V-Klasse of minibus tot 16 personen"], ["Betaling", "Meter, vaak alleen contant", "Contant aan de chauffeur in EUR, USD of TRY"]],
     vsCols: ["", "Gewone taxi", "{brand}"],
