@@ -54,12 +54,15 @@ function brief(b) {
 const OFF = ["reddedildi", "iptal"];
 // The Finans sheet: one row per booking, then the totals per currency
 const XL = {
-  tr: { sheet: "Finans", head: ["Rezervasyon", "Referans", "Rezervasyonu yapan", "Oluşturma", "Tarih", "Saat", "Tür", "Güzergâh", "Yolcu", "Kişi", "Araç", "Durum", "Ödeme", "Yolcudan nakit", "Nakit birimi", "Maliyet", "Satış", "Kâr", "Para birimi"],
+  tr: { sheet: "Finans", file: "finans", head: ["Rezervasyon", "Referans", "Rezervasyonu yapan", "Oluşturma", "Tarih", "Saat", "Tür", "Güzergâh", "Yolcu", "Kişi", "Araç", "Durum", "Ödeme", "Yolcudan nakit", "Nakit birimi", "Maliyet", "Satış", "Kâr", "Para birimi"],
     transfer: "Transfer", hourly: "Şoförlü araç", owner: "Firma sahibi", cari: "Cari", nakit: "Cari + nakit", total: "Toplam", hrs: " saat",
     st: { talep: "Onay bekliyor", degisiklik: "Değişiklik önerildi", yeni: "Onaylandı", onaylandi: "Onaylandı", tamamlandi: "Tamamlandı", reddedildi: "Reddedildi", iptal: "İptal" } },
-  en: { sheet: "Finance", head: ["Booking", "Reference", "Booked by", "Created", "Date", "Time", "Type", "Route", "Passenger", "Pax", "Vehicle", "Status", "Payment", "Cash from passenger", "Cash currency", "Cost", "Sale", "Profit", "Currency"],
+  en: { sheet: "Finance", file: "finance", head: ["Booking", "Reference", "Booked by", "Created", "Date", "Time", "Type", "Route", "Passenger", "Pax", "Vehicle", "Status", "Payment", "Cash from passenger", "Cash currency", "Cost", "Sale", "Profit", "Currency"],
     transfer: "Transfer", hourly: "Car with driver", owner: "Owner", cari: "On account", nakit: "On account + cash", total: "Total", hrs: " hours",
-    st: { talep: "Awaiting confirmation", degisiklik: "Change proposed", yeni: "Confirmed", onaylandi: "Confirmed", tamamlandi: "Completed", reddedildi: "Declined", iptal: "Cancelled" } }
+    st: { talep: "Awaiting confirmation", degisiklik: "Change proposed", yeni: "Confirmed", onaylandi: "Confirmed", tamamlandi: "Completed", reddedildi: "Declined", iptal: "Cancelled" } },
+  sq: { sheet: "Financa", file: "financa", head: ["Rezervimi", "Referenca", "Rezervuar nga", "Krijuar më", "Data", "Ora", "Lloji", "Itinerari", "Pasagjeri", "Pasagjerë", "Automjeti", "Statusi", "Pagesa", "Para në dorë nga pasagjeri", "Monedha e parave në dorë", "Kosto", "Shitja", "Fitimi", "Monedha"],
+    transfer: "Transfertë", hourly: "Makinë me shofer", owner: "Pronari", cari: "Në llogari", nakit: "Në llogari + para në dorë", total: "Gjithsej", hrs: " orë",
+    st: { talep: "Në pritje të konfirmimit", degisiklik: "U propozua një ndryshim", yeni: "Konfirmuar", onaylandi: "Konfirmuar", tamamlandi: "Përfunduar", reddedildi: "Refuzuar", iptal: "Anuluar" } }
 };
 function sheet(list, lang) {
   const L = XL[lang] || XL.en, rows = [L.head], tot = {};
@@ -138,13 +141,13 @@ module.exports = async (req, res) => {
       if (!all) return send(res, 403, { error: "forbidden" });
       const q = new URL(req.url, "http://x").searchParams, D = /^\d{4}-\d{2}-\d{2}$/;
       const from = D.test(q.get("from") || "") ? q.get("from") : "", to = D.test(q.get("to") || "") ? q.get("to") : "";
-      const lang = q.get("lang") === "tr" ? "tr" : "en";
+      const lang = Object.prototype.hasOwnProperty.call(XL, q.get("lang")) ? q.get("lang") : "en";
       const list = (await store.listBookings()).filter(b => { const d = (b.legs[0] || {}).date || ""; return mine(b) && (!from || d >= from) && (!to || d <= to); })
         .sort((x, y) => ((x.legs[0] || {}).date || "").localeCompare((y.legs[0] || {}).date || ""));
       const file = sheet(list, lang);
       res.statusCode = 200;
       res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-      res.setHeader("Content-Disposition", 'attachment; filename="' + (lang === "tr" ? "finans" : "finance") + (from ? "-" + from : "") + (to ? "-" + to : "") + '.xlsx"');
+      res.setHeader("Content-Disposition", 'attachment; filename="' + XL[lang].file + (from ? "-" + from : "") + (to ? "-" + to : "") + '.xlsx"');
       res.setHeader("Cache-Control", "no-store");
       return res.end(file);
     }

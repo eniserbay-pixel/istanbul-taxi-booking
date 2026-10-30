@@ -132,7 +132,7 @@ textarea.fld{min-height:70px;resize:vertical}
   <span class="firm" id="firm"></span>
   <span class="sp"></span>
   <nav class="tabs" id="tabs" hidden></nav>
-  <div class="lang"><button type="button" data-lang="en">EN</button><button type="button" data-lang="tr">TR</button></div>
+  <div class="lang"><button type="button" data-lang="en">EN</button><button type="button" data-lang="tr">TR</button><button type="button" data-lang="sq">SHQ</button></div>
   <button type="button" class="out" id="out" data-t="out" hidden></button>
 </div></header>
 <main id="main"><p class="m">…</p></main>
@@ -214,21 +214,59 @@ textarea.fld{min-height:70px;resize:vertical}
       none: "Henüz rezervasyon yok.", bRef: "Rezervasyon", bDate: "Transfer", bRoute: "Güzergâh", bPax: "Yolcu", bPrice: "Fiyat", bStatus: "Durum", cashTag: "nakit",
       st: { talep: "Onay bekliyor", degisiklik: "Değişiklik önerildi", yeni: "Onaylandı", onaylandi: "Onaylandı", tamamlandi: "Tamamlandı", reddedildi: "Reddedildi", iptal: "İptal" },
       down: "Rezervasyon sayfası şu an kullanılamıyor. Lütfen bizimle iletişime geçin."
+    },
+    sq: {
+      new: "Rezervim i ri", mine: "Rezervimet e mia", out: "Dil", login: "Hyrja për partnerët", loginSub: "Hyni me adresën e email-it të regjistruar për kompaninë tuaj.", email: "Email",
+      password: "Fjalëkalimi", signin: "Hyr", wrong: "Email-i ose fjalëkalimi është i gabuar.", many: "Shumë përpjekje. Ju lutemi provoni përsëri pas 15 minutash.",
+      noLogin: "Nuk keni ende qasje? Kërkojini fjalëkalimin personit tuaj të kontaktit në ITB Transfer.", kTransfer: "Transfertë", kHourly: "Makinë me shofer",
+      titleH: "Rezervim i ri për makinë me shofer", titleHSub: "Çmimet e paketave për të cilat jemi marrë vesh zbatohen automatikisht. Çdo rezervim e konfirmojmë me email.", pkg: "Paketa",
+      hrs: "{n} orë", km: "{km} km të përfshira", xh: "+{p} për çdo orë shtesë", pickup: "Adresa e marrjes", pickupPh: "Hotel, zyrë ose adresë rruge", start: "Ora e fillimit",
+      prog: "Programi i ditës (opsional)", progPh: "Ndalesat, takimet, mbarimi i ditës…", noPkg: "Ende nuk ka çmim për ju për asnjë paketë me makinë me shofer. Ju lutemi na kontaktoni.",
+      fAddr: "adresën e marrjes", opt: "opsionale", hourlyRow: "Makinë me shofer · {n} orë", extraNote: "Për çdo orë mbi paketën: {p} në orë për këtë automjet.", title: "Rezervim i ri transferte",
+      titleSub: "Çmimet për të cilat jemi marrë vesh zbatohen automatikisht. Çdo rezervim e konfirmojmë me email.", trip: "Transferta", oneway: "Një drejtim", ret: "Vajtje-ardhje", from: "Nga",
+      to: "Për në", addr: "Hoteli / adresa", date: "Data", time: "Ora e marrjes", flight: "Numri i fluturimit", flightHint: "p.sh. TK1987", outbound: "Transferta e vajtjes",
+      inbound: "Transferta e kthimit", pick: "Zgjidhni…", paxBags: "Pasagjerët dhe bagazhet", pax: "Pasagjerë", bags: "Valixhe", seatB: "Karrige për foshnja", seatK: "Ndenjëse ngritëse për fëmijë",
+      vehicle: "Automjeti", noCar: "Asnjë automjet nuk ka çmim për këtë itinerar. Ju lutemi na kontaktoni.", pickRoute: "Zgjidhni fillimisht itinerarin.",
+      tooMany: "Shumë pasagjerë ose valixhe për këtë automjet", seats: "{p} pasagjerë · {b} valixhe", travelers: "Të dhënat e pasagjerëve",
+      travSub: "Emri, numri i pasaportës dhe shtetësia e çdo pasagjeri.", name: "Emri dhe mbiemri", doc: "Nr. i pasaportës", nat: "Shtetësia", phone: "Telefoni i pasagjerit kryesor (opsional)",
+      pay: "Pagesa", account: "Shënohet në llogarinë tuaj (bilanci).", cash: "Shoferi merr para në dorë nga pasagjeri",
+      cashSub: "Shuma që shoferi merr nga mysafiri juaj. Nuk e ndryshon çmimin tuaj.", cashAmt: "Para në dorë në vajtje", cashAmtR: "Para në dorë në kthim", cur: "Monedha",
+      cashSum: "Para në dorë nga pasagjeri", extra: "Të dhëna të tjera", ref: "Referenca juaj (opsionale)", note: "Shënim për shoferin (opsional)", summary: "Përmbledhje", route: "Itinerari",
+      car: "Automjeti", total: "Gjithsej", send: "Dërgo kërkesën për rezervim", sending: "Po dërgohet…", done: "Kërkesa për rezervim {r} u dërgua. Do ta konfirmojmë me email së shpejti.",
+      another: "Rezervim i ri", miss: "Ju lutemi plotësoni: ", fRoute: "itinerarin", fDate: "datën dhe orën", fCar: "automjetin", fTrav: "të dhënat e pasagjerëve", fCash: "shumën në para në dorë",
+      fRet: "datën e kthimit", e_no_price: "Ky automjet nuk ka çmim për këtë itinerar.", e_server: "Rezervimi nuk u dërgua dot. Ju lutemi provoni përsëri ose na kontaktoni.", fin: "Financa",
+      users: "Përdoruesit", by: "Rezervuar nga", ownerL: "Pronari", loginId: "Email ose emri i përdoruesit", sale: "Çmimi juaj i shitjes për klientin tuaj (opsional)",
+      saleHint: "E shihni vetëm ju. Financa e përdor për të llogaritur fitimin tuaj.", finTitle: "Financa",
+      finSub: "Rezervimet tuaja sipas datës së transfertës, me pagesat e tyre. Rezervimet e refuzuara dhe të anuluara nuk llogariten në totale.", dFrom: "Nga data", dTo: "Deri më", pMonth: "Ky muaj",
+      pLast: "Muaji i kaluar", pYear: "Ky vit", pAll: "Të gjitha", kN: "Rezervime", kCost: "Kosto (në llogarinë tuaj)", kSale: "Qarkullimi (shitjet tuaja)", kProfit: "Fitimi",
+      kCash: "Para në dorë të marra nga pasagjerët", kNoSale: "{n} pa çmim shitjeje", xl: "Shkarko Excel", fType: "Lloji", fPay: "Pagesa", fCost: "Kosto", fSale: "Shitja", fProfit: "Fitimi",
+      pCari: "Në llogari", pCash: "+ para në dorë {a}", tHourly: "Makinë me shofer", tTransfer: "Transfertë", saved: "U ruajt", totals: "Gjithsej", uTitle: "Përdoruesit",
+      uSub: "Shtoni një përdorues për çdo punonjës. Punonjësit hyjnë në këtë faqe me emrin e përdoruesit dhe fjalëkalimin e tyre, dhe rezervimet e tyre shfaqen me emrin e tyre.",
+      uName: "Emri dhe mbiemri", uUser: "Emri i përdoruesit", uFin: "Mund të shohë Financat dhe të gjitha rezervimet e kompanisë", uAdd: "Shto përdorues", uNew: "Fjalëkalim i ri", uDel: "Hiq",
+      uSince: "Fjalëkalimi u krijua", uNone: "Ende nuk ka përdorues.", uRole: "Qasja", uEx: "p.sh. ana.hoxha", uPw: "Fjalëkalimi për {u}:",
+      uPwNote: "Kopjojeni tani dhe jepjani përdoruesit; nuk shfaqet më. Hyrja: www.istanbultaxibooking.com/b2b", uDelQ: "Ta hiqni këtë përdorues? Nuk do të mund të hyjë më.",
+      uOwn: "Sheh vetëm rezervimet e veta", uAll: "Financat dhe të gjitha rezervimet", e_username: "Emri i përdoruesit: 3 deri në 40 karaktere, shkronja, shifra, pikë, vizë ose nënvizë.",
+      e_taken: "Ky emër përdoruesi është i zënë. Ju lutemi zgjidhni një tjetër.", e_name: "Ju lutemi shkruani emrin.", none: "Ende nuk ka rezervime.", bRef: "Rezervimi", bDate: "Transferta",
+      bRoute: "Itinerari", bPax: "Pasagjeri", bPrice: "Çmimi", bStatus: "Statusi", cashTag: "para në dorë",
+      st: { talep: "Në pritje të konfirmimit", degisiklik: "U propozua një ndryshim", yeni: "Konfirmuar", onaylandi: "Konfirmuar", tamamlandi: "Përfunduar", reddedildi: "Refuzuar", iptal: "Anuluar" },
+      down: "Faqja e rezervimeve nuk është e disponueshme tani. Ju lutemi na kontaktoni."
     }
   };
   var CUR = { EUR: "€", USD: "$", TRY: "₺", GBP: "£" };
+  // numbers and dates in the page's language; SHQ is Albanian (shqip)
+  var LOC = { en: "en-GB", tr: "tr-TR", sq: "sq-AL" };
   // ISO country codes for the nationality list (names come from the browser in the page's language)
   var CC = "AF AL DZ AD AO AR AM AU AT AZ BH BD BY BE BJ BO BA BW BR BN BG BF BI KH CM CA CL CN CO CR HR CU CY CZ DK DO EC EG SV EE ET FI FR GA GM GE DE GH GR GT GN HT HN HK HU IS IN ID IR IQ IE IL IT CI JM JP JO KZ KE XK KW KG LA LV LB LY LT LU MO MK MG MY MV ML MT MR MU MX MD MC MN ME MA MZ MM NA NP NL NZ NI NE NG NO OM PK PS PA PY PE PH PL PT QA RO RU RW SA SN RS SG SK SI SO ZA KR ES LK SD SE CH SY TW TJ TZ TH TN TR TM UG UA AE GB US UY UZ VE VN YE ZM ZW".split(" ");
 
   function blank() { return { sale: "", from: "", to: "", fromAddr: "", toAddr: "", date: "", time: "", flight: "", rdate: "", rtime: "", rflight: "", pax: 1, bags: 1, seatB: 0, seatK: 0, car: "", cash: false, cashCur: "", c1: "", c2: "", phone: "", ref: "", note: "", addr: "", prog: "" }; }
   // kind: "transfer", or "hourly" for a car with driver for S.h (8 or 10) hours
   var S = { lang: "en", tab: "new", kind: "transfer", h: 8, ret: false, f: blank(), trav: [{ name: "", doc: "", nat: "" }] };
-  try { var sl = localStorage.getItem("b2b-lang"); if (sl === "tr" || sl === "en") S.lang = sl; else if (/^tr/i.test(navigator.language || "")) S.lang = "tr"; } catch (e) {}
+  try { var sl = localStorage.getItem("b2b-lang"); if (Object.prototype.hasOwnProperty.call(T, sl)) S.lang = sl; else if (/^(tr|sq)/i.test(navigator.language || "")) S.lang = navigator.language.slice(0, 2).toLowerCase(); } catch (e) {}
 
   var $ = function (id) { return document.getElementById(id); };
   var t = function (k) { return T[S.lang][k] != null ? T[S.lang][k] : T.en[k]; };
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
-  function money(n, c) { var v = Math.round(Math.abs(n) * 100) / 100; return (n < 0 && v ? "-" : "") + (CUR[c] || "") + v.toLocaleString(S.lang === "tr" ? "tr-TR" : "en-GB", { minimumFractionDigits: v % 1 ? 2 : 0, maximumFractionDigits: 2 }) + (CUR[c] ? "" : " " + c); }
+  function money(n, c) { var v = Math.round(Math.abs(n) * 100) / 100; return (n < 0 && v ? "-" : "") + (CUR[c] || "") + v.toLocaleString(LOC[S.lang] || "en-GB", { minimumFractionDigits: v % 1 ? 2 : 0, maximumFractionDigits: 2 }) + (CUR[c] ? "" : " " + c); }
   function api(a, data) {
     var opt = data === undefined ? { credentials: "same-origin" } : { method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json", "X-IAP-B2B": "1" }, body: JSON.stringify(data) };
     return fetch("/api/b2b?a=" + a, opt).then(function (r) {
@@ -606,7 +644,7 @@ textarea.fld{min-height:70px;resize:vertical}
       api("users").then(function (j) { S.users = j.users || []; if (S.tab === "users") drawUsers(); });
       return;
     }
-    var dt = function (s) { return s ? new Date(s).toLocaleDateString(S.lang === "tr" ? "tr-TR" : "en-GB") : ""; };
+    var dt = function (s) { return s ? new Date(s).toLocaleDateString(LOC[S.lang] || "en-GB") : ""; };
     $("main").innerHTML = '<h1>' + esc(t("uTitle")) + '</h1><p class="sub">' + esc(t("uSub")) + '</p>' +
       (S.pw ? '<div class="pwbox"><p style="margin:0 0 8px">' + esc(t("uPw").replace("{u}", S.pw.u)) + ' <code>' + esc(S.pw.p) + '</code></p><p class="m" style="margin:0;font-size:13.5px">' + esc(t("uPwNote")) + '</p></div>' : '') +
       '<section class="card"><h2>' + esc(t("uAdd")) + '</h2><div class="row">' +
