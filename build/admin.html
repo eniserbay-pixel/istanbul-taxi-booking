@@ -1599,6 +1599,9 @@ dialog.bl-dlg::backdrop { background: rgba(15, 27, 45, .45); }
     var full = AIRPORT_FULL[code] || AIRPORT_FULL[AIRPORT_NAMES[name]];
     return full || addr || place(code, name);
   }
+  // The job for the driver in the office's WhatsApp format (the owner's sample, 30 Oct 2026), the same in every panel:
+  // the booking's own number on top, the lead passenger, then the rest of the UETDS list numbered from 2, and the
+  // operations contacts at the bottom.
   function driverMsg(b, l) {
     var pname = b.passenger && b.passenger.name || b.customer.name, pphone = b.passenger && b.passenger.phone || b.customer.phone;
     var price = l.price || (b.legs.length === 1 ? b.total : 0);
@@ -1606,19 +1609,26 @@ dialog.bl-dlg::backdrop { background: rgba(15, 27, 45, .45); }
     // a supplier (agency, independent driver) only hears about money it has to collect: cash, with the amount
     var supplier = l.assign && (l.assign.type === "acente" || l.assign.type === "bireysel");
     var trav = (b.travelers || []).filter(function (t) { return t.name || t.doc; });
+    // "ARIF KHAN" on the UETDS list is the booking's "Arif Khan" (Turkish lower case makes the I a dotless ı)
+    var key = function (v) { return String(v || "").toLocaleLowerCase("tr").replace(/ı/g, "i").replace(/\s+/g, " ").trim(); };
+    var lead = -1;
+    trav.forEach(function (t, i) { if (lead < 0 && key(t.name) === key(pname)) lead = i; });
+    var others = trav.filter(function (t, i) { return i !== lead; });
     var blocks = [
-      ["🆔 Transfer #" + b.id + (b.ref ? " (" + b.ref + ")" : "")],
+      ["🆔 " + (b.ref || "#" + b.id)],
       ["📅 Tarih: " + longDate(l.date), "🕐 Saat: " + (l.time || "-"), l.flight ? "✈️ Uçuş: " + l.flight : ""],
       ["📍 Güzergah", "🅰️ " + msgPlace(l.from, l.fromName, l.fromAddr),
         b.hourly ? "⏱️ Şoförlü araç: " + hourlyText(b) + " (saat aşımı " + extraText(b) + ")" : "🅱️ " + msgPlace(l.to, l.toName, l.toAddr)],
       ["👤 " + pname, pphone ? "📱 Tel: " + pphone : ""],
       ["👥 Yolcu: " + Math.max(+l.pax || 1, trav.length) + " kişi", "🧳 Valiz: " + (+l.bags || 0)],
-      trav.length > 1 ? ["📋 Yolcu listesi"].concat(trav.map(function (t, i) { return (i + 1) + ". " + (t.name || t.doc); })) : [],
+      others.map(function (t, i) { return (i + 2) + ". " + (t.name || t.doc); }),
       [l.note || ""],
       ["🚐 Araç: " + carName(b), seats ? "👶 Çocuk koltuğu: " + seats : ""],
       [b.cashCur || b.payment === "cari" ? (l.cash ? "💰 Yolcudan alınacak: " + money(l.cash, b.cashCur || b.currency) + " nakit" : "")
-        : !price ? "" : !supplier ? "💰 Ödeme tipi: " + money(price, b.currency) + " " + (PAY_MSG[b.payment] || b.payment)
-        : b.payment === "nakit" ? "💰 Yolcudan alınacak: " + money(price, b.currency) + " nakit" : ""]
+        : !price ? "" : b.payment === "nakit" ? "💰 Yolcudan alınacak: " + money(price, b.currency) + " nakit"
+        : !supplier ? "💰 Ödeme tipi: " + money(price, b.currency) + " " + (PAY_MSG[b.payment] || b.payment) : ""],
+      ["*Sorun olursa operasyon iletişim : 05425883008 veya 05413342102*"],
+      ["*Enis ERBAY*"]
     ];
     return blocks.map(function (x) { return x.filter(Boolean).join("\n"); }).filter(Boolean).join("\n\n");
   }
