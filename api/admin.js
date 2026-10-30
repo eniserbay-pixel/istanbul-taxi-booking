@@ -4,7 +4,7 @@
 //   GET  list                every booking, newest first (the panel filters in the browser)
 //   GET  names               place and vehicle names in the site's languages (_lib/names.json), for the WhatsApp confirmation
 //   GET  voucher&id=[&lang=] the booking's voucher PDF (the one the approval e-mail attaches), as a download
-//   POST create {booking}    manual booking
+//   POST create {booking}    manual booking (also sent to the Transfer3E panel, _lib/hub.js)
 //   POST update {id, booking}
 //   POST status {ids, status}      (no e-mail, except the thank-you below)
 //   POST status {ids: [id], status, notify: true, reason}   the booking drawer's status buttons: Onaylandı sends the
@@ -67,6 +67,7 @@
 //   (create also takes {lead}: the lead the manual booking was made from, removed from the list)
 const store = require("./_lib/store");
 const flow = require("./_lib/flow");
+const hub = require("./_lib/hub");
 const mail = require("./_lib/mail");
 const telegram = require("./_lib/telegram");
 const pricing = require("./_lib/pricing");
@@ -162,7 +163,11 @@ module.exports = async (req, res) => {
       b.history = [{ at: now(), text: lead ? "Yarım kalan site rezervasyonundan eklendi" : "Panelden eklendi" }];
       const saved = await store.createBooking(b);
       if (lead) await store.finishLead(lead);
-      return send(res, 200, { booking: saved });
+      // the office handles it in the Transfer3E panel too, like the site's own bookings (_lib/hub.js); one it could
+      // not get is sent again with the next booking or Telegram tick
+      if (!hub.configured()) return send(res, 200, { booking: saved });
+      await hub.push(saved);
+      return send(res, 200, { booking: await store.saveBooking(saved) });
     }
 
     if (a === "update" && req.method === "POST") {
