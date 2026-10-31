@@ -2,7 +2,8 @@
 // "best" Istanbul taxi or airport transfer. Each page opens with a short, quotable answer, then a price table
 // built from data/pricing.json, a few sections and FAQs. English only; drawn by guide() in build.js.
 // table: "cheap" (cheapest routes, price per person), "popular" (popular routes, every car), "vip" (V-Class prices)
-// {brand} {min} {istMin} {sawMin} {van} {vip} {bus} {seat} {wait} {peak} {ret} {tursab} {istSult} as filled in build.js.
+// {brand} {min} {istMin} {sawMin} {van} {vip} {bus} {seat} {wait} {peak} {ret} {tursab} {istSult}
+// {istFrom} {istTo} {sawFrom} {sawTo} as filled in build.js.
 module.exports = [
   {
     id: "cheap",
@@ -17,7 +18,7 @@ module.exports = [
     tableNote: "Per person: the car's price split between a full car.",
     sections: [
       ["Why a fixed price is often cheaper than the meter", "<p>A metered taxi from the airport looks cheap until traffic, a longer route or a night surcharge add up. Our price is per car and set before you fly: the same whether the drive takes 45 minutes or two hours. There are no tolls, parking fees or luggage charges on top.</p>"],
-      ["How to pay the least", "<ul><li><strong>Fill the car.</strong> A minivan for up to 7 costs from €{van}, so a group of six pays a few euro each.</li><li><strong>Book the return too.</strong> Return transfers are {ret}% off.</li><li><strong>Avoid the evening peak.</strong> Pickups at IST 15:00–19:00 and SAW 14:45–21:00 cost {peak}% more.</li><li><strong>Pick the right airport.</strong> For the Asian side (Kadıköy, Üsküdar, Ataşehir) Sabiha Gökçen is closer and cheaper.</li></ul>"],
+      ["How to pay the least", "<ul><li><strong>Fill the car.</strong> A minivan for up to 7 costs from €{van}, so a group of six pays a few euro each.</li><li><strong>Book the return too.</strong> Return transfers are {ret}% off.</li><li><strong>Avoid the evening peak.</strong> Pickups at IST {istFrom}–{istTo} and SAW {sawFrom}–{sawTo} cost {peak}% more.</li><li><strong>Pick the right airport.</strong> For the Asian side (Kadıköy, Üsküdar, Ataşehir) Sabiha Gökçen is closer and cheaper.</li></ul>"],
       ["Cheaper than a taxi: public transport", "<p>If budget matters most and you travel light, the M11 metro and Havaist buses run from Istanbul Airport, and the M4 metro and Havabus from Sabiha Gökçen. They cost a few euro per person but mean changes, stairs and carrying luggage. With two or more people, or late at night, a fixed-price private taxi is usually the better deal.</p>"]
     ],
     faq: [

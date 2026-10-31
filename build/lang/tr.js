@@ -38,7 +38,7 @@ const ui = {
     h1: "İstanbul havalimanı taksi ve özel transfer, <em>sabit fiyatla</em>",
     lead: "{brand} bir İstanbul transfer firmasıdır. Sizi İstanbul Havalimanı (IST) veya Sabiha Gökçen'den (SAW) otelinize özel araçla, araç başı €{min}'dan başlayan fiyatlarla götürürüz. Şoförünüz isminizin yazılı olduğu tabelayla bekler, ödemeyi yolculuk sonunda nakit yaparsınız.",
     fleetH: "Aracınızı seçin", fleetLead: "Fiyat kişi başı değil, araç başıdır. Köprü-otoyol, otopark ve bekleme süresi dahildir.",
-    routesH: "İstanbul'da popüler transfer güzergahları", routesLead: "Araç başı sabit fiyatlar, tek yön. IST'de 15:00–19:00, SAW'da 14:45–21:00 arası alışlar %30 daha pahalıdır.",
+    routesH: "İstanbul'da popüler transfer güzergahları", routesLead: "Araç başı sabit fiyatlar, tek yön.", routesPeak: "IST'de {istFrom}–{istTo}, SAW'da {sawFrom}–{sawTo} arası alışlar %{pct} daha pahalıdır.",
     vsH: "Taksimetreli taksi mi, bizim havalimanı transferimiz mi?",
     vs: [["Fiyat", "Trafiğe ve şoförün seçtiği yola göre değişir", "Rezervasyonda sabitlenir"], ["Geliş salonunda", "Taksi kuyruğu", "Şoför isim tabelanızla bekler"], ["Uçuş rötarı", "-", "Uçuşunuzu takip ederiz, 60 dk ücretsiz bekleme"], ["Bagaj ve gruplar", "Küçük sarı taksi", "16 kişiye kadar sedan, minivan, V-Class veya minibüs"], ["Ödeme", "Taksimetre, çoğu zaman sadece nakit", "Şoföre nakit, EUR, USD veya TL"]],
     vsCols: ["", "Sarı taksi", "{brand}"],
@@ -238,7 +238,7 @@ const blog = {
 <li><strong>Havabüs:</strong> Taksim ve Kadıköy'e otobüsler.</li>
 <li><strong>Taksi durağı:</strong> taksimetreli; yoğun saatte şoförler Boğaz'ı geçmek istemeyebilir.</li>
 </ul>
-<p>Akşamları köprülere giden trafik yoğun olduğu için 14:45-21:00 arası alışlar biraz daha pahalıdır. Tüm fiyatlar <a href="${ui.paths.SAW}">Sabiha Gökçen taksi sayfamızda</a>.</p>
+<p>Akşamları köprülere giden trafik yoğun olduğu için ${E.sawFrom}-${E.sawTo} arası alışlar biraz daha pahalıdır. Tüm fiyatlar <a href="${ui.paths.SAW}">Sabiha Gökçen taksi sayfamızda</a>.</p>
 {widget}`
   },
   "taxi-scams": {

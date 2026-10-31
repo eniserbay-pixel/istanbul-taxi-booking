@@ -4,7 +4,7 @@ ITB Transfer firmasının sitesi: İstanbul Havalimanı (IST) ve Sabiha Gökçen
 
 - **Rezervasyon akışı:** müşteri formu gönderir → kayıt "Talep" olarak düşer, müşteriye "talebinizi aldık", ofise "yeni talep" e-postası gider → `/admin` panelinde **Onayla** → müşteriye onay e-postası gider. Ödeme yolculuk sonunda şoföre nakit.
 - **Araçlar:** Sedan (3), Minivan (7), Mercedes V-Class (6), Minibüs (16).
-- **Fiyatlar:** `data/pricing.json` (euro, bölge × bölge × araç). Yoğun saat farkı, dönüş indirimi ve çocuk koltuğu da orada. Sunucu fiyatı aynı dosyadan yeniden hesaplar.
+- **Fiyatlar:** `data/pricing.json` (euro, bölge × bölge × araç). Yoğun saat farkı, dönüş indirimi ve çocuk koltuğu da orada. Sunucu fiyatı aynı dosyadan yeniden hesaplar. Panelde (Fiyatlandırma) kaydedilen fiyatlar ve ücretler rezervasyon formunda ~30 saniyede görünür; derleme de onları Redis'ten okuyup `data/pricing.json` üzerine koyar (`build/live-prices.js`), böylece rota sayfaları, fiyat tabloları, rehberler, blog yazıları ve `llms.txt` panelle aynı fiyatı ve yoğun saatleri gösterir. Panel kaydı bunu otomatik yeniden derlesin diye Vercel'de **Settings → Git → Deploy Hooks** ile `main` için bir hook oluşturup adresini `DEPLOY_HOOK_URL` ortam değişkenine yaz.
 - **Marka ve iletişim bilgileri:** `data/site.json` (marka adı, alan adı, telefon, WhatsApp, e-posta, TÜRSAB no, şirket unvanı, buluşma noktası metni). Yayından önce doldurulmalı.
 
 ## Yapı

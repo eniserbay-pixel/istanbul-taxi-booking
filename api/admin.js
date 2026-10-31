@@ -414,8 +414,13 @@ module.exports = async (req, res) => {
 
     if (a === "pricing" && req.method === "POST") {
       const input = await body(req, 400000) || {};
-      try { return send(res, 200, { pricing: await pricing.save(input.pricing) }); }
+      let saved;
+      try { saved = await pricing.save(input.pricing); }
       catch (e) { if (/redis/.test(e.message)) throw e; return send(res, 400, { error: e.message }); }
+      // The static pages (route pages, price tables, guides, llms.txt) are built with the panel's prices
+      // (build/live-prices.js): DEPLOY_HOOK_URL, a Vercel deploy hook of the production branch, builds them again
+      const rebuild = process.env.DEPLOY_HOOK_URL ? await fetch(process.env.DEPLOY_HOOK_URL, { method: "POST" }).then(r => r.ok, () => false) : false;
+      return send(res, 200, { pricing: saved, rebuild });
     }
 
     if (a === "b2bpricing" && req.method === "GET") {

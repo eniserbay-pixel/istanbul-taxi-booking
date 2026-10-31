@@ -29,7 +29,7 @@ const ui = {
     h1: "Flughafentaxi und Privattransfer in Istanbul zum <em>Festpreis</em>",
     lead: "{brand} ist ein Transferunternehmen in Istanbul. Wir bringen Sie im privaten Auto vom Flughafen Istanbul (IST) oder Sabiha Gökçen (SAW) zu Ihrem Hotel, ab €{min} pro Auto. Ihr Fahrer wartet mit einem Namensschild und Sie zahlen am Ende der Fahrt bar.",
     fleetH: "Wählen Sie Ihr Fahrzeug", fleetLead: "Der Preis gilt pro Auto, nicht pro Person. Maut, Parken und Wartezeit sind inklusive.",
-    routesH: "Beliebte Transferstrecken in Istanbul", routesLead: "Festpreise pro Auto, einfache Fahrt. Abholungen am IST von 15:00 bis 19:00 und am SAW von 14:45 bis 21:00 kosten 30 % mehr.",
+    routesH: "Beliebte Transferstrecken in Istanbul", routesLead: "Festpreise pro Auto, einfache Fahrt.", routesPeak: "Abholungen am IST von {istFrom} bis {istTo} und am SAW von {sawFrom} bis {sawTo} kosten {pct} % mehr.",
     vsH: "Taxi mit Taxameter oder unser Flughafentaxi?",
     vs: [["Preis", "Hängt vom Verkehr und von der Route des Fahrers ab", "Bei der Buchung festgelegt"], ["In der Ankunftshalle", "Schlange am Taxistand", "Fahrer wartet mit Ihrem Namensschild"], ["Flugverspätung", "-", "Wir verfolgen Ihren Flug, 60 Min. Wartezeit gratis"], ["Gepäck und Gruppen", "Kleines gelbes Taxi", "Limousine, Minivan, V-Klasse oder Kleinbus bis 16 Personen"], ["Bezahlung", "Taxameter, oft nur bar", "Bar an den Fahrer in EUR, USD oder TRY"]],
     vsCols: ["", "Normales Taxi", "{brand}"],

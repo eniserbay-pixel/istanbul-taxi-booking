@@ -24,7 +24,7 @@ module.exports = {
       h1: "Istanbul airport taxi and private transfer at a <em>fixed price</em>",
       lead: "{brand} is an Istanbul transfer company. We drive you from Istanbul Airport (IST) or Sabiha Gökçen (SAW) to your hotel in a private car, from €{min} per car. Your driver waits with your name sign and you pay in cash at the end of the ride.",
       fleetH: "Choose your car", fleetLead: "The price is per car, not per person. Tolls, parking and waiting time are included.",
-      routesH: "Popular transfer routes in Istanbul", routesLead: "Fixed prices per car, one way. Pickups at IST 15:00–19:00 and SAW 14:45–21:00 cost 30% more.",
+      routesH: "Popular transfer routes in Istanbul", routesLead: "Fixed prices per car, one way.", routesPeak: "Pickups at IST {istFrom}–{istTo} and SAW {sawFrom}–{sawTo} cost {pct}% more.",
       vsH: "Metered taxi or our airport taxi?",
       vs: [["Price", "Changes with traffic and the route the driver takes", "Fixed when you book"], ["At arrivals", "Queue at the taxi rank", "Driver waits with your name sign"], ["Flight delay", "-", "We track your flight, 60 min free waiting"], ["Luggage and groups", "Small yellow cab", "Sedan, minivan, V-Class or minibus up to 16"], ["Payment", "Meter, often cash only", "Cash to the driver in EUR, USD or TRY"]],
       vsCols: ["", "Street taxi", "{brand}"],

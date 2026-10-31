@@ -23,8 +23,11 @@ const L = Object.fromEntries(LANGS.map(l => {
 const E = {
   ist: Math.min(...["taksim", "sisli"].map(z => pr("IST", z))), saw: Math.min(...["atasehir", "uskudar"].map(z => pr("SAW", z))),
   sult: pr("IST", "sultanahmet"), taksim: pr("IST", "taksim"), karakoy: pr("IST", "karakoy"), besiktas: pr("IST", "besiktas"), sisli: pr("IST", "sisli"),
-  kadikoy: pr("SAW", "kadikoy"), uskudar: pr("SAW", "uskudar"), sawTaksim: pr("SAW", "taksim"), wait: P.rules.freeWaitMin
+  kadikoy: pr("SAW", "kadikoy"), uskudar: pr("SAW", "uskudar"), sawTaksim: pr("SAW", "taksim"), wait: P.rules.freeWaitMin,
+  // Sabiha Gökçen's busy hours (pricing rules, the panel's when it has saved); 15h00 style for French
+  sawFrom: (P.rules.peak.SAW || {}).from || "14:45", sawTo: (P.rules.peak.SAW || {}).to || "21:00"
 };
+E.frSawFrom = E.sawFrom.replace(":", "h"); E.frSawTo = E.sawTo.replace(":", "h");
 const K = { istTaksim: km("IST", "taksim"), istSult: km("IST", "sultanahmet"), sawTaksim: km("SAW", "taksim"), sawKadikoy: km("SAW", "kadikoy") };
 const MEET = { IST: site.meet.IST, SAW: site.meet.SAW };
 
@@ -187,7 +190,7 @@ module.exports = [
 <li><strong>Havabus:</strong> buses to Taksim and Kadıköy.</li>
 <li><strong>Taxi rank:</strong> metered, and drivers may be reluctant to cross the Bosphorus at rush hour.</li>
 </ul>
-<p>Evening traffic towards the bridges is heavy, which is why pickups between 14:45 and 21:00 cost a little more. All prices are on our <a href="${L.en.saw}">Sabiha Gökçen taxi page</a>.</p>
+<p>Evening traffic towards the bridges is heavy, which is why pickups between ${E.sawFrom} and ${E.sawTo} cost a little more. All prices are on our <a href="${L.en.saw}">Sabiha Gökçen taxi page</a>.</p>
 {widget}`
     },
     ru: {
@@ -209,7 +212,7 @@ module.exports = [
 <li><strong>Havabus:</strong> автобусы до Таксима и Кадыкёя.</li>
 <li><strong>Стоянка такси:</strong> по счётчику, и в час пик водители неохотно едут через Босфор.</li>
 </ul>
-<p>Вечером дороги к мостам загружены, поэтому подача с 14:45 до 21:00 немного дороже. Все цены — на странице <a href="${L.ru.saw}">такси из Сабихи Гёкчен</a>.</p>
+<p>Вечером дороги к мостам загружены, поэтому подача с ${E.sawFrom} до ${E.sawTo} немного дороже. Все цены — на странице <a href="${L.ru.saw}">такси из Сабихи Гёкчен</a>.</p>
 {widget}`
     },
     de: {
@@ -231,7 +234,7 @@ module.exports = [
 <li><strong>Havabus:</strong> Busse nach Taksim und Kadıköy.</li>
 <li><strong>Taxistand:</strong> mit Taxameter, und zur Stoßzeit fahren Fahrer ungern über den Bosporus.</li>
 </ul>
-<p>Abends ist der Verkehr zu den Brücken dicht; deshalb kosten Abholungen zwischen 14:45 und 21:00 etwas mehr. Alle Preise auf unserer Seite <a href="${L.de.saw}">Taxi Sabiha Gökçen</a>.</p>
+<p>Abends ist der Verkehr zu den Brücken dicht; deshalb kosten Abholungen zwischen ${E.sawFrom} und ${E.sawTo} etwas mehr. Alle Preise auf unserer Seite <a href="${L.de.saw}">Taxi Sabiha Gökçen</a>.</p>
 {widget}`
     },
     fr: {
@@ -253,7 +256,7 @@ module.exports = [
 <li><strong>Havabus :</strong> bus vers Taksim et Kadıköy.</li>
 <li><strong>Station de taxis :</strong> au compteur, et aux heures de pointe les chauffeurs rechignent à traverser le Bosphore.</li>
 </ul>
-<p>Le soir, la circulation vers les ponts est dense : les prises en charge entre 14h45 et 21h coûtent donc un peu plus. Tous les prix sur notre page <a href="${L.fr.saw}">taxi Sabiha Gökçen</a>.</p>
+<p>Le soir, la circulation vers les ponts est dense : les prises en charge entre ${E.frSawFrom} et ${E.frSawTo} coûtent donc un peu plus. Tous les prix sur notre page <a href="${L.fr.saw}">taxi Sabiha Gökçen</a>.</p>
 {widget}`
     },
     it: {
@@ -275,7 +278,7 @@ module.exports = [
 <li><strong>Havabus:</strong> bus per Taksim e Kadıköy.</li>
 <li><strong>Taxi in fila:</strong> a tassametro, e nell'ora di punta gli autisti attraversano malvolentieri il Bosforo.</li>
 </ul>
-<p>La sera il traffico verso i ponti è intenso: per questo i ritiri tra le 14:45 e le 21:00 costano un po' di più. Tutti i prezzi nella pagina <a href="${L.it.saw}">taxi Sabiha Gökçen</a>.</p>
+<p>La sera il traffico verso i ponti è intenso: per questo i ritiri tra le ${E.sawFrom} e le ${E.sawTo} costano un po' di più. Tutti i prezzi nella pagina <a href="${L.it.saw}">taxi Sabiha Gökçen</a>.</p>
 {widget}`
     },
     nl: {
@@ -297,7 +300,7 @@ module.exports = [
 <li><strong>Havabus:</strong> bussen naar Taksim en Kadıköy.</li>
 <li><strong>Taxistandplaats:</strong> met meter, en in de spits steken chauffeurs de Bosporus niet graag over.</li>
 </ul>
-<p>'s Avonds is het verkeer naar de bruggen druk; daarom kosten ophaaltijden tussen 14:45 en 21:00 iets meer. Alle prijzen op onze pagina <a href="${L.nl.saw}">taxi Sabiha Gökçen</a>.</p>
+<p>'s Avonds is het verkeer naar de bruggen druk; daarom kosten ophaaltijden tussen ${E.sawFrom} en ${E.sawTo} iets meer. Alle prijzen op onze pagina <a href="${L.nl.saw}">taxi Sabiha Gökçen</a>.</p>
 {widget}`
     }
   },

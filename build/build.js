@@ -1,11 +1,14 @@
 // Builds the static site into public/: home, booking page, route pages (airport × district), price list,
 // legal pages, sitemap.xml, robots.txt, llms.txt and 404.html, in English (/) and in Turkish, Russian, German,
 // French, Italian, Dutch and Arabic (right to left) under /tr, /ru, /de, /fr, /it, /nl and /ar.
-// Prices come from data/pricing.json, so a price change there updates every page on the next build.
+// Prices come from data/pricing.json with the panel's saved prices and fees over it (build/live-prices.js), so a
+// price saved in the panel updates every page on the next build (a panel save starts one, see api/admin.js).
 // Run: node build/build.js
 const fs = require("fs");
 const path = require("path");
 const P = require("../data/pricing.json");
+// before the page modules below read the prices
+if (require("./live-prices").apply(P)) console.log("Prices: the panel's");
 const site = require("../data/site.json");
 const Q = require("../public/assets/quote.js");
 const I = require("./i18n");
@@ -59,6 +62,17 @@ const pages = [];
 
 const esc = s => String(s == null ? "" : s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const fill = (t, v) => String(t).replace(/\{(\w+)\}/g, (m, k) => v[k] != null ? v[k] : m);
+// Busy hours (pricing rules, the panel's when it has saved): an airport's surcharge in % or null. The texts say
+// "{pct}% more", so a fixed EUR surcharge is not written into them; the booking form still adds it.
+const peakOf = a => { const r = P.rules.peak && P.rules.peak[a]; return r && r.pct > 0 && !r.fix ? r : null; };
+// The texts' placeholders for both airports: {istFrom} {istTo} {sawFrom} {sawTo} {pct}, times in the language's
+// clock style (15h00 in French). null when the two airports differ in %, or one has no % surcharge.
+function peakVars(l) {
+  const I_ = peakOf("IST"), S = peakOf("SAW"), hm = t => l === "fr" ? t.replace(":", "h") : t;
+  return I_ && S && I_.pct === S.pct ? { istFrom: hm(I_.from), istTo: hm(I_.to), sawFrom: hm(S.from), sawTo: hm(S.to), pct: I_.pct } : null;
+}
+// The price tables' note: one-way prices, then the busy hours when both airports share them
+LANGS.forEach(l => { const h = I[l].home, v = peakVars(l); if (v) h.routesLead += " " + fill(h.routesPeak, v); });
 const minPrice = Math.min(...AIRPORTS.flatMap(a => PLACES.map(z => Q.base(P, a.id, z.id, "sedan")).filter(Boolean)));
 // Highest one-way price of any route and car, for the price range in the structured data
 const maxPrice = () => Math.max(...ROUTES.flatMap(([a, z]) => P.cars.map(c => Q.base(P, a, z, c.id)).filter(Boolean)));
@@ -370,7 +384,7 @@ function service(lang, sv) {
 // The hub pages' text below the price table (build/hubs.js): intro, the ways into the city compared, what the
 // price includes, busy hours and an FAQ. Returns the HTML and the FAQ for the structured data.
 function hubExtra(lang, hub) {
-  const T = HB.T[lang], H = HB[hub], x = H[lang], peak = P.rules.peak && P.rules.peak[hub];
+  const T = HB.T[lang], H = HB[hub], x = H[lang], peak = peakOf(hub);
   const name = hub === "galataport" ? Q.zone(P, hub).name[lang] : Q.zone(P, hub).short[lang];
   const v = { from: name, wait: P.rules.freeWaitMin, seat: P.rules.childSeat, ret: P.rules.returnDiscountPct, meet: hub === "galataport" ? PORT[lang].meet : site.meet[hub][lang] };
   if (peak) Object.assign(v, { pct: peak.pct, peakFrom: peak.from, peakTo: peak.to });
@@ -490,9 +504,12 @@ function guide(g) {
   const lowest = (car, a) => Math.min(...ROUTES.filter(([x]) => !a || x === a).map(([x, y]) => Q.base(P, x, y, car)).filter(Boolean));
   const v = {
     brand: site.brand, min: minPrice, istMin: lowest("sedan", "IST"), sawMin: lowest("sedan", "SAW"), van: lowest("minivan"), vip: lowest("vclass"), bus: lowest("minibus"),
-    istSult: sedan("IST", "sultanahmet"), seat: P.rules.childSeat, wait: P.rules.freeWaitMin, peak: P.rules.peak.IST.pct, ret: P.rules.returnDiscountPct, tursab: site.tursab
+    istSult: sedan("IST", "sultanahmet"), seat: P.rules.childSeat, wait: P.rules.freeWaitMin, ret: P.rules.returnDiscountPct, tursab: site.tursab
   };
-  const F = x => fill(x, v);
+  const pk = peakVars(lang);
+  if (pk) Object.assign(v, pk, { peak: pk.pct });
+  // without shared busy hours the tip about them is left out
+  const F = x => fill(pk ? x : String(x).replace(/<li><strong>[^<]*<\/strong>[^<]*\{istFrom\}[^<]*<\/li>/g, ""), v);
   const name = (a, z) => `${esc(Q.zone(P, a).short[lang])} → ${esc(Q.zone(P, z).short[lang])}`;
   const popular = ROUTES.filter(([a, z]) => a !== "galataport" && ["sultanahmet", "taksim", "besiktas", "kadikoy", "sisli", "SAW"].includes(z));
   const row = (a, z, cells) => `<tr><td><a href="${routePath(lang, a, z)}">${name(a, z)}</a></td>${cells.map(c => `<td>${c}</td>`).join("")}</tr>`;
@@ -598,7 +615,7 @@ Sitemap: ${URL_}/sitemap.xml
 ## Key facts
 - Prices are per car, not per person, and fixed at booking. Tolls and parking are included.
 - Cars: ${P.cars.map(c => `${c.name.en} (up to ${c.seats} passengers, ${c.bags} suitcases)`).join("; ")}.
-- Pickups at IST 15:00–19:00 and SAW 14:45–21:00 cost ${P.rules.peak.IST.pct}% more. Return transfers are ${P.rules.returnDiscountPct}% off. Child seats €${P.rules.childSeat} each.
+- ${["IST", "SAW"].filter(peakOf).map(a => `Pickups at ${a} ${peakOf(a).from}–${peakOf(a).to} cost ${peakOf(a).pct}% more. `).join("")}Return transfers are ${P.rules.returnDiscountPct}% off. Child seats €${P.rules.childSeat} each.
 - The driver waits with a name sign; flights are tracked and the first ${P.rules.freeWaitMin} minutes after landing are free.
 - Booking flow: the customer sends a request, gets a "request received" e-mail, then a confirmation e-mail once the office confirms.
 - Free cancellation up to 24 hours before pickup.
