@@ -514,6 +514,7 @@ tr.dayrow td { display: block; }
 .bl-trall { margin-top: 8px; }
 .bl-lc { display: flex; flex-wrap: wrap; gap: 3px; max-width: 220px; }
 .bl-lc .pill { font-size: 10.5px; padding: 1px 6px; }
+.bl-lc a.pill { text-decoration: none; }
 .bl-lng { height: 40px; display: flex; align-items: center; gap: 5px; font-weight: 600; }
 .bl-trp { font-size: 13px; margin: 8px 0 0; }
 .bl-chk { list-style: none; margin: 0; padding: 0; display: grid; gap: 5px; font-size: 13px; }
@@ -767,6 +768,7 @@ dialog.bl-dlg::backdrop { background: rgba(15, 27, 45, .45); }
     { id: "doviz", t: "Döviz Kurları", i: "fx" },
     { h: "Büyüme ve İçerik", c: "#e1ad01" },
     { id: "analitik", t: "Site Analitiği", i: "chart" },
+    { id: "blog", t: "Blog", i: "doc" },
     { h: "Ayarlar", c: "#e1ad01" },
     { id: "fiyatlandirma", t: "Fiyatlandırma", i: "tag" },
     { id: "arac-tipleri", t: "Araç Tipleri", i: "layers" },
@@ -985,7 +987,7 @@ dialog.bl-dlg::backdrop { background: rgba(15, 27, 45, .45); }
     if (S.view === "basvurular") return viewApps();
     if (S.view === "fiyatlandirma") return viewPricing();
     if (S.view === "arac-tipleri") return viewCarTypes();
-    if (S.view === "blog") return viewBlog(parts);
+    if (S.view === "blog") return viewSiteBlog();
     if (S.view === "partnerler") return viewPartners();
     if (S.view === "b2b-fiyat") return viewB2bPricing(parts[1]);
     if (S.view === "raporlar") return viewReports();
@@ -2522,6 +2524,38 @@ dialog.bl-dlg::backdrop { background: rgba(15, 27, 45, .45); }
     };
     img.onerror = function () { URL.revokeObjectURL(url); toast("Görsel açılamadı"); };
     img.src = url;
+  }
+
+  // ---------- Blog: the site's posts (build/blog.js) and the content calendar (data/blog-plan.json), read from
+  // admin/blog.json, which every build writes. A post dated in the future stays off the site until that morning.
+  var SB_KIND = { "new": "Yeni yazı", translate: "Çeviri", edit: "Güncelleme" };
+  var SB_LANG = { en: "İngilizce", tr: "Türkçe", ru: "Rusça", de: "Almanca", fr: "Fransızca", it: "İtalyanca", nl: "Felemenkçe", ar: "Arapça" };
+  function viewSiteBlog() {
+    $("main").innerHTML = '<h1>Blog</h1><p class="sub">Yükleniyor…</p>';
+    fetch("/admin/blog.json", { cache: "no-store" }).then(function (r) { if (!r.ok) throw new Error("Blog listesi okunamadı (" + r.status + ")"); return r.json(); })
+      .then(drawSiteBlog)
+      .catch(function (e) { $("main").innerHTML = '<h1>Blog</h1><div class="err">' + esc(e.message) + '</div>'; });
+  }
+  function drawSiteBlog(B) {
+    var langPills = function (ls) { return '<div class="bl-lc">' + ls.map(function (l) { return '<span class="pill p-draft" title="' + esc(SB_LANG[l] || l) + '">' + l.toUpperCase() + '</span>'; }).join("") + '</div>'; };
+    var linkPills = function (ls) { return '<div class="bl-lc">' + ls.map(function (x) { return '<a class="pill p-pub" target="_blank" rel="noopener" title="' + esc(SB_LANG[x.l] || x.l) + '" href="' + esc(x.url) + '">' + x.l.toUpperCase() + '</a>'; }).join("") + '</div>'; };
+    // calendar: written posts waiting for their day, then the plan's posts not written yet, by date
+    var cal = B.posts.filter(function (p) { return !p.live; }).map(function (p) { return { date: p.date, title: p.title, kind: "new", langs: p.langs.map(function (x) { return x.l; }), st: "sched" }; })
+      .concat(B.plan.filter(function (x) { return x.date >= B.today; }).map(function (x) { return { date: x.date, title: x.title, sub: x.en, kind: x.kind, langs: x.langs, note: x.note, st: "draft" }; }))
+      .sort(function (a, b) { return a.date < b.date ? -1 : a.date > b.date ? 1 : 0; });
+    var calRows = cal.map(function (x) {
+      return '<tr><td class="nowrap"><b>' + dmy(x.date) + '</b></td><td><div class="ttl">' + esc(x.title) + '</div>' + (x.sub ? '<div class="m">' + esc(x.sub) + '</div>' : '') + (x.note ? '<div class="m">' + esc(x.note) + '</div>' : '') + '</td>' +
+        '<td>' + SB_KIND[x.kind] + '</td><td>' + langPills(x.langs) + '</td><td><span class="pill p-' + x.st + '">' + (x.st === "sched" ? "Yazıldı, zamanlandı" : "Planlandı") + '</span></td></tr>';
+    }).join("");
+    var live = B.posts.filter(function (p) { return p.live; }).sort(function (a, b) { return a.date < b.date ? 1 : -1; });
+    var liveRows = live.map(function (p) {
+      return '<tr><td><div class="ttl">' + esc(p.title) + '</div></td><td class="nowrap">' + dmy(p.date) + '</td><td>' + linkPills(p.langs) + '</td></tr>';
+    }).join("");
+    $("main").innerHTML = '<div class="head"><div><h1>Blog</h1><p class="sub">Yayın takvimi ve sitedeki yazılar. Yazılar 8 dilde hazırlanıp siteye eklenir; ileri tarihli bir yazı, o gün sabah 09:00\'da kendiliğinden yayına girer.</p></div></div>' +
+      '<div class="card tbl-wrap" style="margin-bottom:16px"><div class="pad" style="padding-bottom:4px"><h2 class="h2">Yayın takvimi</h2><p class="m" style="margin:4px 0 0">Planlanan yazılar, yayın tarihleri ve hangi dillerde çıkacakları.</p></div>' +
+      (cal.length ? '<table class="bl-tbl"><thead><tr><th>Yayın tarihi</th><th>Yazı</th><th>Tür</th><th>Diller</th><th>Durum</th></tr></thead><tbody>' + calRows + '</tbody></table>' : '<p class="pad m">Takvimde planlanmış yazı yok.</p>') + '</div>' +
+      '<div class="card tbl-wrap"><div class="pad" style="padding-bottom:4px"><h2 class="h2">Yayındaki yazılar (' + live.length + ')</h2><p class="m" style="margin:4px 0 0">Dil kısaltmasına tıklayınca yazı o dilde sitede açılır.</p></div>' +
+      '<table class="bl-tbl"><thead><tr><th>Başlık</th><th>Yayın tarihi</th><th>Diller</th></tr></thead><tbody>' + liveRows + '</tbody></table></div>';
   }
 
   // ---------- Blog Yazıları: posts written here are drawn by api/blog.js and go live without a rebuild ----------

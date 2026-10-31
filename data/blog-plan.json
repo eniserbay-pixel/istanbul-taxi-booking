@@ -1,0 +1,8 @@
+[
+  { "date": "2026-11-10", "kind": "new", "title": "İstanbul'da Uber, taksi mi özel transfer mi?", "en": "Uber, taxi or private transfer in Istanbul?", "langs": ["en", "tr", "ru", "de", "fr", "it", "nl", "ar"], "note": "Rakiplerde var, bizde yok" },
+  { "date": "2026-11-17", "kind": "new", "title": "İstanbul Havalimanı'ndan Sultanahmet'e tüm ulaşım yolları", "en": "Istanbul Airport to Sultanahmet: every way compared", "langs": ["en", "tr", "ru", "de", "fr", "it", "nl", "ar"] },
+  { "date": "2026-11-24", "kind": "new", "title": "İstanbul Havalimanı'na gece varış rehberi", "en": "Arriving at Istanbul Airport at night", "langs": ["en", "tr", "ru", "de", "fr", "it", "nl", "ar"] },
+  { "date": "2026-12-01", "kind": "new", "title": "İstanbul'da yılbaşı: havalimanı ve şehir içi ulaşım", "en": "New Year in Istanbul: airport and city transport", "langs": ["en", "tr", "ru", "de", "ar"], "note": "Sezonluk, Aralık başında yayında olmalı" },
+  { "date": "2026-12-08", "kind": "edit", "title": "Galataport kruvaziyer rehberini genişletme", "en": "Galataport cruise port guide (update)", "langs": ["en", "tr", "ru", "de", "fr", "it", "nl", "ar"] },
+  { "date": "2026-12-15", "kind": "new", "title": "İstanbul'da aktarma: havalimanından çıkmaya değer mi?", "en": "Layover in Istanbul: is it worth leaving the airport?", "langs": ["en", "tr", "ru", "de", "fr", "it", "nl", "ar"] }
+]

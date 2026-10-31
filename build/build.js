@@ -13,7 +13,11 @@ const site = require("../data/site.json");
 const Q = require("../public/assets/quote.js");
 const I = require("./i18n");
 const legal = require("./legal");
-const POSTS = require("./blog");
+// Blog posts dated after today (Istanbul time) are scheduled: left out of the site until their day, when the
+// morning cron in api/admin.js starts a new build. The panel's Blog page lists them (admin/blog.json, see blogFeed).
+const ALL_POSTS = require("./blog");
+const TODAY = new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Istanbul" }).format(new Date());
+const POSTS = ALL_POSTS.filter(p => p.date <= TODAY);
 const PORT = require("./port");
 const CO = require("./company");
 const GUIDES = require("./guides");
@@ -28,14 +32,14 @@ const HB = require("./hubs");
   const X = require("./lang/" + l);
   I[l] = X.ui;
   legal[l] = X.legal;
-  POSTS.forEach(p => { p[l] = p[l] || X.blog[p.id]; });
+  ALL_POSTS.forEach(p => { p[l] = p[l] || X.blog[p.id]; });
 });
 // Turkish and Arabic: the same, plus their texts for every other page group and the zone and car names
 ["tr", "ar"].forEach(l => {
   const X = require("./lang/" + l);
   I[l] = { ...X.ui, dir: X.dir };
   legal[l] = X.legal;
-  POSTS.forEach(p => { p[l] = X.blog[p.id]; });
+  ALL_POSTS.forEach(p => { p[l] = X.blog[p.id]; });
   PORT[l] = X.port;
   CO.T[l] = X.company;
   DI.T[l] = X.districts.T;
@@ -639,11 +643,22 @@ ${GUIDES.map(g => `- ${g.nav}: ${URL_}${g.path}`).join("\n")}
 `);
 }
 
+// The panel's Blog page: every post with its date, whether it is live or scheduled and its address in each language,
+// and the content calendar (data/blog-plan.json) of posts not written yet
+function blogFeed() {
+  return {
+    today: TODAY,
+    posts: ALL_POSTS.map(p => ({ id: p.id, date: p.date, live: p.date <= TODAY, title: (p.tr || p.en).title, langs: LANGS.filter(l => p[l]).map(l => ({ l, url: postPath(l, p) })) })),
+    plan: JSON.parse(fs.readFileSync(path.join(__dirname, "..", "data", "blog-plan.json"), "utf8"))
+  };
+}
+
 // The office panel, the partners' booking page and the page where a customer answers a change the office sent.
 // They talk to api/ (admin.js, b2b.js, respond.js) and are copied as they are, with their fonts.
 function admin() {
   const put = (src, dest) => { fs.mkdirSync(path.dirname(path.join(OUT, dest)), { recursive: true }); fs.copyFileSync(path.join(__dirname, src), path.join(OUT, dest)); };
   put("admin.html", "admin/index.html");
+  fs.writeFileSync(path.join(OUT, "admin", "blog.json"), JSON.stringify(blogFeed()));
   put("pages/b2b.html", "b2b/index.html");
   put("pages/booking-change.html", "booking-change.html");
   fs.readdirSync(path.join(__dirname, "static", "fonts")).forEach(f => put("static/fonts/" + f, "fonts/" + f));
