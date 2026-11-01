@@ -100,6 +100,7 @@ module.exports = async (req, res) => {
   }
   // Vercel cron (vercel.json), every morning: the site's sitemap URLs that IndexNow (Bing, which ChatGPT search uses,
   // Yandex and others) has not been told about yet, so new pages are crawled within days. Sent URLs are kept in inx:sent.
+  // It also starts a build (DEPLOY_HOOK_URL) when a scheduled blog post's day has come.
   if (a === "indexnow" && req.method === "GET") {
     const sec = process.env.CRON_SECRET;
     if (sec ? req.headers.authorization !== "Bearer " + sec : !/vercel-cron/.test(String(req.headers["user-agent"] || ""))) return send(res, 403, { error: "forbidden" });
@@ -111,7 +112,11 @@ module.exports = async (req, res) => {
       const urls = all.filter(u => !sent.has(u)).slice(0, 10000);
       const ok = await blog.ping(urls);
       if (ok && store.configured()) await store.cmd("SET", "inx:sent", JSON.stringify(all.filter(u => sent.has(u) || urls.includes(u))));
-      return send(res, 200, { ok, sent: ok ? urls.length : 0, total: all.length });
+      // a blog post scheduled for today (build/blog.js date, listed in admin/blog.json) goes live with a new build
+      const feed = await fetch(base + "/admin/blog.json", { signal: AbortSignal.timeout(8000) }).then(r => r.json(), () => ({ posts: [] }));
+      const due = (feed.posts || []).some(p => !p.live && p.date <= blog.today());
+      const rebuilt = due && process.env.DEPLOY_HOOK_URL ? await fetch(process.env.DEPLOY_HOOK_URL, { method: "POST" }).then(r => r.ok, () => false) : false;
+      return send(res, 200, { ok, sent: ok ? urls.length : 0, total: all.length, due, rebuilt });
     } catch (e) { console.error("indexnow", e); return send(res, 500, { error: "failed" }); }
   }
   // Every few minutes from .github/workflows/telegram-tick.yml: half-finished site bookings. Open to anyone, but each item is sent only once, and calls are limited.
