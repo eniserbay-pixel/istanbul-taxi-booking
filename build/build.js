@@ -603,6 +603,8 @@ Sitemap: ${URL_}/sitemap.xml
 `);
   // IndexNow: the key file Bing, Yandex and the other engines check (api/admin.js ?a=indexnow sends the new URLs)
   // Yandex Webmaster's verification file (the home page also carries its meta tag)
+  // Bing Webmaster Tools checks this file to verify the site
+  if (site.bingSiteAuth) fs.writeFileSync(path.join(OUT, "BingSiteAuth.xml"), `<?xml version="1.0"?>\n<users>\n\t<user>${site.bingSiteAuth}</user>\n</users>\n`);
   if (site.yandexVerification) fs.writeFileSync(path.join(OUT, "yandex_" + site.yandexVerification + ".html"), `<html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
