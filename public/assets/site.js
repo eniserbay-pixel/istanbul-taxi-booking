@@ -80,6 +80,22 @@
     } catch (e) { /* storage off */ }
   })();
 
+  // ---- City tour page: the route planner sends the picked places and details to WhatsApp (build/tour.js) ----
+  $$("[data-tour]").forEach(function (f) {
+    f.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var L = JSON.parse(f.getAttribute("data-text")), lines = [L.intro], el = f.elements;
+      var stops = $$("input[name=stop]:checked", f).map(function (c) { return c.value; });
+      if (stops.length) lines.push(L.stops + ": " + stops.join(", "));
+      [["other", L.other], ["dur", L.dur], ["car", L.car], ["date", L.date], ["pax", L.pax], ["pick", L.pick]].forEach(function (k) {
+        var v = el[k[0]].value.trim();
+        if (v) lines.push(k[1] + ": " + v);
+      });
+      if (window.gtag) window.gtag("event", "tour_plan_sent", { stops: stops.length });
+      window.location.href = "https://wa.me/" + f.getAttribute("data-wa") + "?text=" + encodeURIComponent(lines.join("\n"));
+    });
+  });
+
   // ---- Company pages: application forms (api/apply.js, panel: Başvurular) ----
   $$("[data-apply]").forEach(function (f) {
     var msg = $("[data-msg]", f);

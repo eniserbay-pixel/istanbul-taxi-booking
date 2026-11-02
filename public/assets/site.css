@@ -205,6 +205,30 @@ p { margin: 0 0 1em; }
 .chips a { text-decoration: none; background: var(--white); border: 1.5px solid var(--ice-2); border-radius: 999px; padding: 8px 14px; }
 .chips a:hover { border-color: var(--mustard); }
 
+/* City tour page (build/tour.js): sample days, the route planner's place chips, included / not included */
+.tp-plans { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-top: 20px; }
+.tp-plan { background: var(--ice); border-radius: var(--r); padding: 20px; display: flex; flex-direction: column; }
+.tp-plan h3 { margin: 4px 0 8px; }
+.tp-plan p { color: var(--muted); }
+.tp-plan .more { margin-top: auto; }
+.tp-dur { font-size: 13px; font-weight: 800; color: var(--mustard-ink) !important; text-transform: uppercase; letter-spacing: .03em; margin: 0; }
+@media (max-width: 960px) { .tp-plans { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 560px) { .tp-plans { grid-template-columns: 1fr; } }
+.tp-form { margin-top: 20px; }
+.tp-form fieldset.tp-g { display: block; background: var(--white); }
+.tp-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.tp-chip { display: inline-flex !important; align-items: center; gap: 6px; font-weight: 600 !important; font-size: 15px !important; background: var(--white); border: 1.5px solid var(--ice-2); border-radius: 999px; padding: 7px 14px 7px 10px; cursor: pointer; }
+.tp-chip input { width: 18px !important; height: 18px !important; min-height: 0; padding: 0; accent-color: var(--black); }
+.tp-chip:has(input:checked) { background: var(--mustard); border-color: var(--mustard); }
+.tp-incl { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+.tp-yes, .tp-no { list-style: none; padding: 0; }
+.tp-yes li, .tp-no li { position: relative; padding-left: 28px; margin-bottom: 8px; }
+.tp-yes li::before { content: "✓"; position: absolute; left: 0; font-weight: 900; color: #1f7a3a; }
+.tp-no li::before { content: "–"; position: absolute; left: 4px; font-weight: 900; color: var(--muted); }
+[dir=rtl] .tp-yes li, [dir=rtl] .tp-no li { padding-left: 0; padding-right: 28px; }
+[dir=rtl] .tp-yes li::before, [dir=rtl] .tp-no li::before { left: auto; right: 0; }
+@media (max-width: 760px) { .tp-incl { grid-template-columns: 1fr; gap: 0; } }
+
 .cta { background: var(--mustard); color: var(--black); text-align: center; padding: 56px 0; }
 .cta p { font-size: 18px; }
 

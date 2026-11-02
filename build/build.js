@@ -24,6 +24,7 @@ const GUIDES = require("./guides");
 const DI = require("./districts");
 const PL = require("./places");
 const SV = require("./services");
+const TOUR = require("./tour");
 const AB = require("./about");
 const HW = require("./howto");
 const HB = require("./hubs");
@@ -373,16 +374,38 @@ function service(lang, sv) {
   const wa = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(fill(T.waText, { service: x.nav }))}`;
   const cta = `<p class="cta-row"><a class="btn btn-y" href="${wa}" rel="noopener">${esc(T.ask)}</a> <span class="small">${esc(T.call)} <a href="tel:${site.phone.replace(/\s/g, "")}"><bdi dir="ltr">${esc(site.phone)}</bdi></a></span></p>`;
   const corp = sv.id === "wedding" ? ` <a href="${CO.path(lang, "corporate")}">${esc(CO.T[lang].pages.corporate.nav)}</a>` : "";
-  const faq = x.faq.map(([q, a], i) => [q, a + (i === x.faq.length - 1 ? corp : "")]);
+  const tour = sv.id === "tour" ? tourParts(lang) : null;
+  const faq = (tour ? tour.faq : []).concat(x.faq.map(([q, a], i) => [q, a + (i === x.faq.length - 1 ? corp : "")]));
   const body = `<section class="hero hero-s"><div class="wrap"><div class="hero-t"><nav class="crumbs"><a href="${t.paths.home}">${esc(site.brand)}</a> › ${esc(T.head)}</nav>
 <h1>${esc(x.h1)}</h1><p class="lead answer">${esc(x.lead)}</p>${cta}</div></div></section>
-<section class="sec ice"><div class="wrap narrow prose"><h2>${esc(T.whatH)}</h2><ul>${x.points.map(p => `<li>${esc(p)}</li>`).join("")}</ul></div></section>
-<section class="sec" id="how"><div class="wrap"><h2>${esc(T.howH)}</h2><ol class="how">${x.how.map(([a, b]) => `<li><h3>${esc(a)}</h3><p>${esc(b)}</p></li>`).join("")}</ol>${cta}</div></section>
+${tour ? tour.free : ""}<section class="sec ice"><div class="wrap narrow prose"><h2>${esc(T.whatH)}</h2><ul>${x.points.map(p => `<li>${esc(p)}</li>`).join("")}</ul></div></section>
+${tour ? tour.rest : ""}<section class="sec" id="how"><div class="wrap"><h2>${esc(T.howH)}</h2><ol class="how">${x.how.map(([a, b]) => `<li><h3>${esc(a)}</h3><p>${esc(b)}</p></li>`).join("")}</ol>${cta}</div></section>
 <section class="sec ice"><div class="wrap"><h2>${esc(T.cars)}</h2>${fleet(lang, null, null, true)}</div></section>
 <section class="sec"><div class="wrap narrow"><h2>${t.home.faqH}</h2>${faqBlock(faq)}</div></section>
 <section class="sec ice"><div class="wrap"><h2>${esc(T.head)}</h2><div class="chips">${SV.S.filter(y => y.id !== sv.id).map(y => `<a href="${y[lang].path}">${esc(y[lang].nav)}</a>`).join("")}<a href="${t.paths.IST}">${esc(Q.zone(P, "IST").short[lang])}</a><a href="${t.paths.SAW}">${esc(Q.zone(P, "SAW").short[lang])}</a></div></div></section>`;
   const ld = { "@context": "https://schema.org", "@type": "Service", serviceType: sv.en.nav, name: x.h1, description: x.desc, provider: { "@id": URL_ + "/#service" }, areaServed: { "@type": "City", name: "Istanbul" } };
   page({ lang, path: x.path, alts: ALL(l => sv[l].path), title: x.title, desc: x.desc, body, ld: [ld, faqLd(faq), crumbs([[site.brand, t.paths.home], [x.h1, x.path]])] });
+}
+
+// The city tour page's extra sections (build/tour.js): the route is the guest's own, sample days, a planner that
+// sends the picked places to WhatsApp (site.js, [data-tour]), what the price covers, and FAQ entries put first.
+function tourParts(lang) {
+  const X = TOUR[lang], wa = text => `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(text)}`;
+  const free = `<section class="sec"><div class="wrap narrow prose"><h2>${esc(X.freeH)}</h2>${X.free.map(p => `<p>${esc(p)}</p>`).join("")}<p><a class="more" href="#plan">${esc(X.planH)} →</a></p></div></section>\n`;
+  const plans = `<section class="sec"><div class="wrap"><h2>${esc(X.plansH)}</h2><p class="sub">${esc(X.plansLead)}</p><div class="tp-plans">${X.plans.map(([n, d, p]) => `<article class="tp-plan"><p class="tp-dur">${esc(d)}</p><h3>${esc(n)}</h3><p>${esc(p)}</p><a class="more" href="${wa(`${X.wa.intro}\n${X.wa.stops}: ${n}\n${X.wa.dur}: ${d}`)}" rel="noopener">${esc(SV.T[lang].ask)} →</a></article>`).join("")}</div></div></section>`;
+  const opt = v => `<option>${esc(v)}</option>`;
+  const planner = `<section class="sec ice" id="plan"><div class="wrap"><h2>${esc(X.planH)}</h2><p class="sub">${esc(X.planLead)}</p>
+<form class="form tp-form" data-tour data-wa="${site.whatsapp}" data-text="${esc(JSON.stringify(X.wa))}">
+${X.groups.map(([g, list]) => `<fieldset class="tp-g"><legend>${esc(g)}</legend><span class="tp-chips">${list.map(v => `<label class="tp-chip"><input type="checkbox" name="stop" value="${esc(v)}"> <span>${esc(v)}</span></label>`).join("")}</span></fieldset>`).join("\n")}
+<label class="full">${esc(X.otherL)}<input name="other" type="text" placeholder="${esc(X.otherPh)}"></label>
+<label>${esc(X.durL)}<select name="dur"><option value="">–</option>${X.durs.map(opt).join("")}</select></label>
+<label>${esc(X.carL)}<select name="car"><option value="">–</option>${P.cars.map(c => opt(`${c.name[lang]} (${c.seats})`)).join("")}</select></label>
+<label>${esc(X.dateL)}<input name="date" type="date"></label>
+<label>${esc(X.paxL)}<input name="pax" type="number" min="1" max="99"></label>
+<label class="full">${esc(X.pickL)}<input name="pick" type="text" placeholder="${esc(X.pickPh)}"></label>
+<div class="full"><button class="btn btn-y" type="submit">${esc(X.send)}</button><p class="help">${esc(X.note)}</p></div></form></div></section>`;
+  const incl = `<section class="sec"><div class="wrap tp-incl"><div class="prose"><h2>${esc(X.inclH)}</h2><ul class="tp-yes">${X.incl.map(i => `<li>${esc(i)}</li>`).join("")}</ul></div><div class="prose"><h2>${esc(X.exclH)}</h2><ul class="tp-no">${X.excl.map(i => `<li>${esc(i)}</li>`).join("")}</ul></div></div></section>\n`;
+  return { free, rest: plans + "\n" + planner + "\n" + incl, faq: X.faq };
 }
 
 // The hub pages' text below the price table (build/hubs.js): intro, the ways into the city compared, what the
