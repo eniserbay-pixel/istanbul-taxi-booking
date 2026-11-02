@@ -1,4 +1,4 @@
-// German: page texts (same keys as the English block in i18n.js), blog posts and legal texts.
+// German: page texts (same keys as the English block in i18n.js), blog posts.
 const SRC = require("../blog-src");
 const B = {
   shortage: "warum-ist-es-schwer-in-istanbul-ein-taxi-zu-finden",
@@ -159,25 +159,4 @@ const blog = {
   }
 };
 
-const legal = {
-  terms: {
-    title: "Allgemeine Geschäftsbedingungen",
-    desc: "Bedingungen für Buchung, Festpreis, Barzahlung, Wartezeit und kostenlose Stornierung von Flughafentransfers in Istanbul, die auf dieser Website gebucht werden.",
-    html: `<p>Diese Bedingungen gelten für Transfers, die auf dieser Website gebucht werden. Betreiber ist {company} ({address}), TÜRSAB-Lizenz {tursab}.</p>
-<h2>Buchung</h2><p>Das Absenden des Buchungsformulars ist eine Anfrage. Verbindlich wird die Buchung erst, wenn wir Ihnen eine Bestätigung per E-Mail schicken. Können wir Ihre Anfrage nicht annehmen, teilen wir Ihnen das per E-Mail mit.</p>
-<h2>Preis und Zahlung</h2><p>Der bei der Buchung angezeigte Preis ist ein Festpreis pro Auto und enthält Maut, Parken und die unten genannte Wartezeit. Sie zahlen am Ende der Fahrt bar beim Fahrer, in Euro, US-Dollar oder türkischer Lira zum Tageskurs.</p>
-<h2>Wartezeit</h2><p>An den Flughäfen sind die ersten 60 Minuten nach der Landung kostenlos. An anderen Adressen wartet der Fahrer 15 Minuten nach der gebuchten Zeit.</p>
-<h2>Änderung und Stornierung</h2><p>Sie können bis 24 Stunden vor der Abholung kostenlos ändern oder stornieren, per Antwort auf die Bestätigungs-E-Mail oder über WhatsApp. Erscheinen Sie ohne Absage nicht, können wir den Fahrpreis verlangen.</p>
-<h2>Fahrgäste und Gepäck</h2><p>Die Zahl der Fahrgäste und Koffer muss zum gebuchten Fahrzeug passen. Kinder brauchen einen Kindersitz, den Sie bei der Buchung hinzufügen können.</p>
-<h2>Kontakt</h2><p>{email} · {phone}</p>`
-  },
-  privacy: {
-    title: "Datenschutzhinweise",
-    desc: "Wie wir Name, Telefonnummer, E-Mail und Flugdaten verwenden, die Sie bei der Buchung eines Flughafentaxis in Istanbul angeben, und wie Sie uns dazu erreichen.",
-    html: `<p>{company} verarbeitet die personenbezogenen Daten, die Sie bei der Buchung angeben (Name, E-Mail, Telefon, Flugnummer, Adressen, Hinweise), nur um Ihren Transfer zu organisieren und durchzuführen, Sie dazu zu kontaktieren und gesetzliche Pflichten zu erfüllen, etwa die nach türkischem Recht vorgeschriebenen Fahrgastlisten.</p>
-<p>Ihre Daten werden nur an den Fahrer oder Partner weitergegeben, der die Fahrt durchführt, und an Dienstleister, die wir für den Betrieb dieser Website nutzen (Hosting, Datenbank, E-Mail). Sie werden so lange gespeichert, wie das Gesetz es verlangt.</p>
-<p>Sie können Auskunft, Berichtigung oder Löschung Ihrer Daten verlangen, indem Sie an {email} schreiben.</p>`
-  }
-};
-
-module.exports = { ui, blog, legal };
+module.exports = { ui, blog };

@@ -1,4 +1,4 @@
-// Turkish: page texts (same keys as the English block in i18n.js), blog posts, legal texts, and the Turkish
+// Turkish: page texts (same keys as the English block in i18n.js), blog posts, and the Turkish
 // texts of the other page groups (Galataport, company, districts, places, services, zone and car names),
 // which build.js puts into their modules.
 const SRC = require("../blog-src");
@@ -289,27 +289,6 @@ const blog = {
   }
 };
 
-const legal = {
-  terms: {
-    title: "Kullanım ve Rezervasyon Koşulları",
-    desc: "Bu siteden ayırtılan İstanbul havalimanı transferleri için rezervasyon, sabit fiyat, nakit ödeme, bekleme süresi ve ücretsiz iptal koşulları.",
-    html: `<p>Bu koşullar bu siteden ayırtılan transferler için geçerlidir. Hizmeti {company} ({address}) sunar, TÜRSAB belge no {tursab}.</p>
-<h2>Rezervasyon</h2><p>Rezervasyon formunu göndermek bir taleptir. Rezervasyon ancak size e-postayla onay gönderdiğimizde kesinleşir. Talebinizi kabul edemezsek bunu e-postayla bildiririz.</p>
-<h2>Fiyat ve ödeme</h2><p>Rezervasyonda gösterilen fiyat araç başı sabit fiyattır; köprü-otoyol, otopark ve aşağıdaki bekleme süresi dahildir. Ödemeyi yolculuk sonunda şoföre nakit olarak, euro, ABD doları veya günün kuruyla Türk lirası ile yaparsınız.</p>
-<h2>Bekleme süresi</h2><p>Havalimanlarında inişten sonraki ilk 60 dakika ücretsizdir. Diğer adreslerde şoför ayırtılan saatten sonra 15 dakika bekler.</p>
-<h2>Değişiklik ve iptal</h2><p>Alıştan 24 saat öncesine kadar onay e-postasını yanıtlayarak veya WhatsApp üzerinden ücretsiz değişiklik ya da iptal yapabilirsiniz. Haber vermeden gelmemeniz halinde yolculuk ücretini talep edebiliriz.</p>
-<h2>Yolcular ve bagaj</h2><p>Yolcu ve bavul sayısı ayırtılan araca uygun olmalıdır. Çocuklar için rezervasyonda ekleyebileceğiniz çocuk koltuğu gerekir.</p>
-<h2>İletişim</h2><p>{email} · {phone}</p>`
-  },
-  privacy: {
-    title: "Gizlilik ve Kişisel Verilerin Korunması",
-    desc: "İstanbul havalimanı taksi rezervasyonunda verdiğiniz ad, telefon, e-posta ve uçuş bilgilerini nasıl kullandığımız ve bize nasıl ulaşabileceğiniz.",
-    html: `<p>{company}, rezervasyon sırasında verdiğiniz kişisel verileri (ad, e-posta, telefon, uçuş numarası, adresler, notlar) yalnızca transferinizi düzenlemek ve gerçekleştirmek, bu konuda sizinle iletişim kurmak ve Türk mevzuatının gerektirdiği yolcu listeleri gibi yasal yükümlülükleri yerine getirmek için 6698 sayılı KVKK'ya uygun olarak işler.</p>
-<p>Verileriniz yalnızca yolculuğu yapan şoför veya iş ortağıyla ve bu sitenin işletilmesi için kullandığımız hizmet sağlayıcılarla (barındırma, veritabanı, e-posta) paylaşılır. Kanunun öngördüğü süre boyunca saklanır.</p>
-<p>Verilerinize erişim, düzeltme veya silme talebi için {email} adresine yazabilirsiniz.</p>`
-  }
-};
-
 // The other page groups, put into their modules by build.js
 const port = {
   desc: "Galataport kruvaziyer limanından {to} özel taksi: araç başı €{price}'dan sabit fiyat, {km} km, yaklaşık {min} dk. Şoför terminal çıkışında, ödeme nakit.",
@@ -441,4 +420,4 @@ const cars = {
 };
 const siteText = { address: "İstanbul, Türkiye" };
 
-module.exports = { ui, blog, legal, port, company, districts, places, services, zones, cars, site: siteText };
+module.exports = { ui, blog, port, company, districts, places, services, zones, cars, site: siteText };

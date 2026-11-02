@@ -24,21 +24,22 @@ const GUIDES = require("./guides");
 const DI = require("./districts");
 const PL = require("./places");
 const SV = require("./services");
+const TOUR = require("./tour");
 const AB = require("./about");
 const HW = require("./howto");
+const FL = require("./fleet");
+const FQ = require("./faq");
 const HB = require("./hubs");
 // German, French, Italian and Dutch: page texts, blog posts and legal texts in one file per language
 ["de", "fr", "it", "nl"].forEach(l => {
   const X = require("./lang/" + l);
   I[l] = X.ui;
-  legal[l] = X.legal;
   ALL_POSTS.forEach(p => { p[l] = p[l] || X.blog[p.id]; });
 });
 // Turkish and Arabic: the same, plus their texts for every other page group and the zone and car names
 ["tr", "ar"].forEach(l => {
   const X = require("./lang/" + l);
   I[l] = { ...X.ui, dir: X.dir };
-  legal[l] = X.legal;
   ALL_POSTS.forEach(p => { p[l] = X.blog[p.id]; });
   PORT[l] = X.port;
   CO.T[l] = X.company;
@@ -114,7 +115,7 @@ ${ld.map(x => `<script type="application/ld+json">${JSON.stringify(x)}</script>`
   const p = t.paths;
   const header = `<header class="top"><div class="wrap top-in">
 <a class="logo" href="${p.home}"><img src="/img/logo.webp" alt="${esc(site.brand)} – Istanbul Taxi Booking" width="92" height="52"></a>
-<nav class="nav"><a href="${p.prices}">${t.nav.prices}</a><a href="${p.home}#fleet">${t.nav.fleet}</a><a href="${HW[o.lang].path}">${t.nav.how}</a><a href="${p.home}#faq">${t.nav.faq}</a><a href="${p.blog}">${t.nav.blog}</a>
+<nav class="nav"><a href="${p.prices}">${t.nav.prices}</a><a href="${FL[o.lang].path}">${t.nav.fleet}</a><a href="${HW[o.lang].path}">${t.nav.how}</a><a href="${FQ[o.lang].path}">${t.nav.faq}</a><a href="${p.blog}">${t.nav.blog}</a>
 ${langSwitch(o.lang, alts)}</nav>
 <a class="btn btn-y btn-sm" href="${p.book}">${t.nav.book}</a></div></header>`;
   const popular = [["IST", "sultanahmet"], ["IST", "taksim"], ["IST", "kadikoy"], ["SAW", "taksim"], ["SAW", "kadikoy"], ["SAW", "sultanahmet"]];
@@ -264,25 +265,31 @@ const hubPath = (lang, a) => isPort(a) ? PORT[lang].path : I[lang].paths[a];
 // Everything the Galataport page lists, as [route, destination]: the airports first, then the districts
 const portList = () => AIRPORTS.map(a => [[a.id, "galataport"], a.id]).concat(PORT_TO.map(z => [["galataport", z], z]));
 
+// One-way prices of every car on the most asked-for routes (home page, fleet page)
+function popularTable(lang) {
+  const t = I[lang], popular = ROUTES.filter(([a, z]) => ["sultanahmet", "taksim", "besiktas", "kadikoy", "sisli", "SAW"].includes(z));
+  return `<div class="tbl-wrap"><table class="tbl"><thead><tr><th>${t.ui.route}</th>${P.cars.map(c => `<th>${esc(c.name[lang])}</th>`).join("")}</tr></thead><tbody>
+${popular.map(([a, z]) => `<tr><td><a href="${routePath(lang, a, z)}">${esc(Q.zone(P, a).short[lang])} → ${esc(Q.zone(P, z).short[lang])}</a></td>${P.cars.map(c => `<td>€${Q.base(P, a, z, c.id)}</td>`).join("")}</tr>`).join("")}
+</tbody></table></div>`;
+}
+
 function home(lang) {
   const t = I[lang], h = t.home;
-  const faq = t.faq.map(([q, a]) => [fill(q, { brand: site.brand }), fill(a, { brand: site.brand })]);
-  const popular = ROUTES.filter(([a, z]) => ["sultanahmet", "taksim", "besiktas", "kadikoy", "sisli", "SAW"].includes(z));
+  // a short FAQ here, every question on the FAQ page (build/faq.js)
+  const faq = t.faq.slice(0, 5).map(([q, a]) => [fill(q, { brand: site.brand }), fill(a, { brand: site.brand })]);
   const body = `<section class="hero hero-home"><div class="wrap hero-in"><div class="hero-t">
 <h1>${h.h1}</h1><p class="lead">${fill(h.lead, { min: minPrice, brand: site.brand })}</p></div>
 
 ${searchForm(lang)}${assure(lang)}</div></section>
-<section class="sec ice" id="fleet"><div class="wrap"><h2>${h.fleetH}</h2><p class="sub">${h.fleetLead}</p>${fleet(lang)}</div></section>
+<section class="sec ice" id="fleet"><div class="wrap"><h2>${h.fleetH}</h2><p class="sub">${h.fleetLead}</p>${fleet(lang)}<p><a class="more" href="${FL[lang].path}">${esc(FL[lang].more)} →</a></p></div></section>
 <section class="sec"><div class="wrap"><h2>${h.routesH}</h2><p class="sub">${h.routesLead}</p>
-<div class="tbl-wrap"><table class="tbl"><thead><tr><th>${t.ui.route}</th>${P.cars.map(c => `<th>${esc(c.name[lang])}</th>`).join("")}</tr></thead><tbody>
-${popular.map(([a, z]) => `<tr><td><a href="${routePath(lang, a, z)}">${esc(Q.zone(P, a).short[lang])} → ${esc(Q.zone(P, z).short[lang])}</a></td>${P.cars.map(c => `<td>€${Q.base(P, a, z, c.id)}</td>`).join("")}</tr>`).join("")}
-</tbody></table></div><p><a class="more" href="${t.paths.prices}">${t.nav.prices} →</a></p></div></section>
+${popularTable(lang)}<p><a class="more" href="${t.paths.prices}">${t.nav.prices} →</a></p></div></section>
 <section class="sec dark"><div class="wrap"><h2>${h.vsH}</h2><div class="tbl-wrap"><table class="tbl vs"><thead><tr>${h.vsCols.map(c => `<th>${esc(fill(c, { brand: site.brand }))}</th>`).join("")}</tr></thead>
 <tbody>${h.vs.map(r => `<tr><th scope="row">${r[0]}</th><td>${r[1]}</td><td class="ok">${r[2]}</td></tr>`).join("")}</tbody></table></div></div></section>
 <section class="sec" id="how"><div class="wrap"><h2>${h.howH}</h2><ol class="how">${h.how.map(([a, b]) => `<li><h3>${a}</h3><p>${b}</p></li>`).join("")}</ol><p><a class="more" href="${HW[lang].path}">${esc(HW[lang].more)} →</a></p></div></section>
 <section class="sec ice"><div class="wrap"><h2>${h.meetH}</h2>${meetCards(lang)}</div></section>
 <section class="sec ice"><div class="wrap"><h2>${t.blog.latest}</h2>${blogCards(lang, null, 4)}<p><a class="more" href="${t.paths.blog}">${t.blog.more} →</a></p></div></section>
-<section class="sec" id="faq"><div class="wrap narrow"><h2>${h.faqH}</h2>${faqBlock(faq)}</div></section>
+<section class="sec" id="faq"><div class="wrap narrow"><h2>${h.faqH}</h2>${faqBlock(faq)}<p><a class="more" href="${FQ[lang].path}">${esc(FQ[lang].more)} →</a></p></div></section>
 <section class="cta"><div class="wrap"><h2>${h.ctaH}</h2><p>${h.ctaP}</p><a class="btn btn-k" href="${t.paths.book}">${t.nav.book}</a></div></section>`;
   page({ lang, path: t.paths.home, alts: ALL(l => I[l].paths.home), title: fill(h.title, { min: minPrice, brand: site.brand }), desc: fill(h.desc, { min: minPrice, brand: site.brand }), body, ld: [faqLd(faq)] });
 }
@@ -367,22 +374,59 @@ ${AIRPORTS.map(a => `<tr><td><a href="${routePath(lang, a.id, z)}">${esc(a.name[
   page({ lang, path: p, alts: ALL(l => PL.T[l].path(pl.id)), title: F(T.title), desc: F(T.desc), body, ld: [offer, faqLd(faq), crumbs([[site.brand, t.paths.home], [t.nav.prices, t.paths.prices], [F(T.h1), p]])] });
 }
 
+// The VIP cars with driver (build/chauffeur-cars.js): real photos of each car (outside large, inside below), what it
+// offers and a WhatsApp button that asks for that car. Shown on every service page.
+const CC = require("./chauffeur-cars");
+function vipCars(lang) {
+  const T = CC.T[lang];
+  const img = (n, alt, i, half) => `<img src="/img/vip/${n}-640.webp" srcset="/img/vip/${n}-640.webp 640w, /img/vip/${n}-1200.webp 1200w" sizes="${half ? "(max-width: 860px) 46vw, 280px" : "(max-width: 860px) 92vw, 560px"}" alt="${esc(alt)}" width="640" height="480" loading="lazy" decoding="async">`;
+  return `<section class="sec" id="vip"><div class="wrap"><h2>${esc(T.h)}</h2><p class="sub">${esc(T.lead)}</p><div class="vip-list">${CC.cars.map(c => {
+    const x = T.cars[c.id], wa = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(fill(T.waText, { car: x.name }))}`;
+    return `<article class="vip-car" id="vip-${c.id}"><div class="vip-ph" style="--n:${c.photos.length - 1}">${c.photos.map((n, i) => img(n, x.alt[i], i, i && c.photos.length > 2)).join("")}</div>
+<div class="vip-t"><h3>${esc(x.name)}</h3><p class="models">${esc(x.tag)}</p><p class="cap"><span>👤 ${c.seats} ${esc(T.pax)}</span><span>🧳 ${c.bags} ${esc(T.bags)}</span></p>
+<p>${esc(x.desc)}</p><ul class="vip-f">${x.feats.map(f => `<li>${esc(f)}</li>`).join("")}</ul><a class="btn btn-y" href="${wa}" rel="noopener">${esc(T.ask)}</a></div></article>`;
+  }).join("")}</div></div></section>`;
+}
+
 // Service page (build/services.js): chauffeur by the hour, city tour, wedding and event cars. Priced on request on WhatsApp.
 function service(lang, sv) {
   const t = I[lang], T = SV.T[lang], x = sv[lang];
   const wa = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(fill(T.waText, { service: x.nav }))}`;
   const cta = `<p class="cta-row"><a class="btn btn-y" href="${wa}" rel="noopener">${esc(T.ask)}</a> <span class="small">${esc(T.call)} <a href="tel:${site.phone.replace(/\s/g, "")}"><bdi dir="ltr">${esc(site.phone)}</bdi></a></span></p>`;
   const corp = sv.id === "wedding" ? ` <a href="${CO.path(lang, "corporate")}">${esc(CO.T[lang].pages.corporate.nav)}</a>` : "";
-  const faq = x.faq.map(([q, a], i) => [q, a + (i === x.faq.length - 1 ? corp : "")]);
+  const tour = sv.id === "tour" ? tourParts(lang) : null;
+  const faq = (tour ? tour.faq : []).concat(x.faq.map(([q, a], i) => [q, a + (i === x.faq.length - 1 ? corp : "")]));
   const body = `<section class="hero hero-s"><div class="wrap"><div class="hero-t"><nav class="crumbs"><a href="${t.paths.home}">${esc(site.brand)}</a> › ${esc(T.head)}</nav>
 <h1>${esc(x.h1)}</h1><p class="lead answer">${esc(x.lead)}</p>${cta}</div></div></section>
-<section class="sec ice"><div class="wrap narrow prose"><h2>${esc(T.whatH)}</h2><ul>${x.points.map(p => `<li>${esc(p)}</li>`).join("")}</ul></div></section>
-<section class="sec" id="how"><div class="wrap"><h2>${esc(T.howH)}</h2><ol class="how">${x.how.map(([a, b]) => `<li><h3>${esc(a)}</h3><p>${esc(b)}</p></li>`).join("")}</ol>${cta}</div></section>
-<section class="sec ice"><div class="wrap"><h2>${esc(T.cars)}</h2>${fleet(lang, null, null, true)}</div></section>
-<section class="sec"><div class="wrap narrow"><h2>${t.home.faqH}</h2>${faqBlock(faq)}</div></section>
-<section class="sec ice"><div class="wrap"><h2>${esc(T.head)}</h2><div class="chips">${SV.S.filter(y => y.id !== sv.id).map(y => `<a href="${y[lang].path}">${esc(y[lang].nav)}</a>`).join("")}<a href="${t.paths.IST}">${esc(Q.zone(P, "IST").short[lang])}</a><a href="${t.paths.SAW}">${esc(Q.zone(P, "SAW").short[lang])}</a></div></div></section>`;
+${tour ? tour.free : ""}<section class="sec ice"><div class="wrap narrow prose"><h2>${esc(T.whatH)}</h2><ul>${x.points.map(p => `<li>${esc(p)}</li>`).join("")}</ul></div></section>
+${vipCars(lang)}
+${tour ? tour.rest : ""}<section class="sec ice" id="how"><div class="wrap"><h2>${esc(T.howH)}</h2><ol class="how">${x.how.map(([a, b]) => `<li><h3>${esc(a)}</h3><p>${esc(b)}</p></li>`).join("")}</ol>${cta}</div></section>
+<section class="sec"><div class="wrap"><h2>${esc(T.cars)}</h2>${fleet(lang, null, null, true)}</div></section>
+<section class="sec ice"><div class="wrap narrow"><h2>${t.home.faqH}</h2>${faqBlock(faq)}</div></section>
+<section class="sec"><div class="wrap"><h2>${esc(T.head)}</h2><div class="chips">${SV.S.filter(y => y.id !== sv.id).map(y => `<a href="${y[lang].path}">${esc(y[lang].nav)}</a>`).join("")}<a href="${t.paths.IST}">${esc(Q.zone(P, "IST").short[lang])}</a><a href="${t.paths.SAW}">${esc(Q.zone(P, "SAW").short[lang])}</a></div></div></section>`;
   const ld = { "@context": "https://schema.org", "@type": "Service", serviceType: sv.en.nav, name: x.h1, description: x.desc, provider: { "@id": URL_ + "/#service" }, areaServed: { "@type": "City", name: "Istanbul" } };
   page({ lang, path: x.path, alts: ALL(l => sv[l].path), title: x.title, desc: x.desc, body, ld: [ld, faqLd(faq), crumbs([[site.brand, t.paths.home], [x.h1, x.path]])] });
+}
+
+// The city tour page's extra sections (build/tour.js): the route is the guest's own, sample days, a planner that
+// sends the picked places to WhatsApp (site.js, [data-tour]), what the price covers, and FAQ entries put first.
+function tourParts(lang) {
+  const X = TOUR[lang], wa = text => `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(text)}`;
+  const free = `<section class="sec"><div class="wrap narrow prose"><h2>${esc(X.freeH)}</h2>${X.free.map(p => `<p>${esc(p)}</p>`).join("")}<p><a class="more" href="#plan">${esc(X.planH)} →</a></p></div></section>\n`;
+  const plans = `<section class="sec"><div class="wrap"><h2>${esc(X.plansH)}</h2><p class="sub">${esc(X.plansLead)}</p><div class="tp-plans">${X.plans.map(([n, d, p]) => `<article class="tp-plan"><p class="tp-dur">${esc(d)}</p><h3>${esc(n)}</h3><p>${esc(p)}</p><a class="more" href="${wa(`${X.wa.intro}\n${X.wa.stops}: ${n}\n${X.wa.dur}: ${d}`)}" rel="noopener">${esc(SV.T[lang].ask)} →</a></article>`).join("")}</div></div></section>`;
+  const opt = v => `<option>${esc(v)}</option>`;
+  const planner = `<section class="sec ice" id="plan"><div class="wrap"><h2>${esc(X.planH)}</h2><p class="sub">${esc(X.planLead)}</p>
+<form class="form tp-form" data-tour data-wa="${site.whatsapp}" data-text="${esc(JSON.stringify(X.wa))}">
+${X.groups.map(([g, list]) => `<fieldset class="tp-g"><legend>${esc(g)}</legend><span class="tp-chips">${list.map(v => `<label class="tp-chip"><input type="checkbox" name="stop" value="${esc(v)}"> <span>${esc(v)}</span></label>`).join("")}</span></fieldset>`).join("\n")}
+<label class="full">${esc(X.otherL)}<input name="other" type="text" placeholder="${esc(X.otherPh)}"></label>
+<label>${esc(X.durL)}<select name="dur"><option value="">–</option>${X.durs.map(opt).join("")}</select></label>
+<label>${esc(X.carL)}<select name="car"><option value="">–</option>${P.cars.map(c => opt(`${c.name[lang]} (${c.seats})`)).join("")}</select></label>
+<label>${esc(X.dateL)}<input name="date" type="date"></label>
+<label>${esc(X.paxL)}<input name="pax" type="number" min="1" max="99"></label>
+<label class="full">${esc(X.pickL)}<input name="pick" type="text" placeholder="${esc(X.pickPh)}"></label>
+<div class="full"><button class="btn btn-y" type="submit">${esc(X.send)}</button><p class="help">${esc(X.note)}</p></div></form></div></section>`;
+  const incl = `<section class="sec"><div class="wrap tp-incl"><div class="prose"><h2>${esc(X.inclH)}</h2><ul class="tp-yes">${X.incl.map(i => `<li>${esc(i)}</li>`).join("")}</ul></div><div class="prose"><h2>${esc(X.exclH)}</h2><ul class="tp-no">${X.excl.map(i => `<li>${esc(i)}</li>`).join("")}</ul></div></div></section>\n`;
+  return { free, rest: plans + "\n" + planner + "\n" + incl, faq: X.faq };
 }
 
 // The hub pages' text below the price table (build/hubs.js): intro, the ways into the city compared, what the
@@ -502,6 +546,74 @@ function howPage(lang) {
   page({ lang, path: x.path, alts: ALL(l => HW[l].path), title: x.title, desc: x.desc, body, ld: [ld, faqLd(x.faq), crumbs([[site.brand, t.paths.home], [x.nav, x.path]])] });
 }
 
+// Fleet page (build/fleet.js): each car in detail with its lowest price and a button that books it, a
+// comparison table, prices on popular routes, what every ride includes and an FAQ
+function fleetPage(lang) {
+  const t = I[lang], x = FL[lang];
+  const v = { seat: P.rules.childSeat, wait: P.rules.freeWaitMin, ret: P.rules.returnDiscountPct };
+  const F = s => fill(s, v);
+  // the same "from" price as the home page cars
+  const low = id => Math.min(...AIRPORTS.flatMap(a => PLACES.map(z => Q.base(P, a.id, z.id, id)).filter(Boolean)));
+  const book = id => `${t.paths.book}?car=${id}`;
+  const cars = P.cars.map((c, i) => { const d = x.cars[c.id]; return `<article class="fl-car${c.popular ? " pop" : ""}" id="${c.id}">
+<figure class="fl-img"><img src="${c.img}" alt="${esc(c.name[lang])} – ${esc(c.models[lang])}" width="760" height="380" loading="${i ? "lazy" : "eager"}">${c.popular ? `<span class="fl-badge">★ ${esc(x.popular)}</span>` : ""}</figure>
+<div class="fl-t"><h2>${esc(c.name[lang])}</h2><p class="models">${esc(c.models[lang])}</p>
+<p class="cap"><span>👤 ${c.seats} ${esc(x.pax)}</span><span>🧳 ${c.bags} ${esc(x.bags)}</span></p>
+<p class="fl-ideal"><strong>${esc(x.ideal)}:</strong> ${esc(d.ideal)}</p><p>${esc(d.desc)}</p>
+<ul class="ticks">${d.feats.map(f => `<li>${esc(F(f))}</li>`).join("")}</ul>
+<div class="fl-buy"><p class="from">${esc(x.from)} <strong>€${low(c.id)}</strong> <span>${esc(x.per)}</span></p><a class="btn btn-y" href="${book(c.id)}">${esc(x.book)}</a></div></div></article>`; }).join("");
+  const body = `<section class="hero hero-s"><div class="wrap"><div class="hero-t"><nav class="crumbs"><a href="${t.paths.home}">${esc(site.brand)}</a> › ${esc(x.nav)}</nav>
+<h1>${esc(x.h1)}</h1><p class="lead answer">${esc(x.lead)}</p>
+<nav class="chips fl-jump">${P.cars.map(c => `<a href="#${c.id}">${esc(c.name[lang])} · 👤 ${c.seats}</a>`).join("")}</nav></div></div></section>
+<section class="sec"><div class="wrap fl-list">${cars}</div></section>
+<section class="sec ice"><div class="wrap"><h2>${esc(x.cmpH)}</h2><div class="tbl-wrap"><table class="tbl"><thead><tr>${x.cols.map(c => `<th>${esc(c)}</th>`).join("")}</tr></thead><tbody>
+${P.cars.map(c => `<tr><th scope="row"><a href="#${c.id}">${esc(c.name[lang])}</a></th><td>${c.seats}</td><td>${c.bags}</td><td>${esc(x.cars[c.id].ideal)}</td><td>€${low(c.id)}</td></tr>`).join("")}
+</tbody></table></div></div></section>
+<section class="sec"><div class="wrap"><h2>${esc(x.pricesH)}</h2><p class="sub">${esc(x.pricesLead)}</p>${popularTable(lang)}<p><a class="more" href="${t.paths.prices}">${t.nav.prices} →</a></p></div></section>
+<section class="sec ice"><div class="wrap"><h2>${esc(x.inclH)}</h2><ol class="how how-4">${x.incl.map(([h, p]) => `<li><h3>${esc(h)}</h3><p>${esc(F(p))}</p></li>`).join("")}</ol></div></section>
+<section class="sec"><div class="wrap narrow"><h2>${t.home.faqH}</h2>${faqBlock(x.faq.map(([q, a]) => [q, esc(F(a))]))}</div></section>
+<section class="cta"><div class="wrap"><h2>${esc(x.ctaH)}</h2><p>${esc(x.ctaP)}</p><a class="btn btn-k" href="${t.paths.book}">${t.nav.book}</a></div></section>`;
+  const ld = { "@context": "https://schema.org", "@type": "ItemList", name: x.h1, description: x.desc, url: URL_ + x.path, inLanguage: lang,
+    itemListElement: P.cars.map((c, i) => ({ "@type": "ListItem", position: i + 1, item: { "@type": "Product", name: `${c.name[lang]} (${c.models[lang]})`, description: x.cars[c.id].desc, image: URL_ + c.img, url: `${URL_}${x.path}#${c.id}`,
+      additionalProperty: [{ "@type": "PropertyValue", name: "seatingCapacity", value: c.seats }, { "@type": "PropertyValue", name: "suitcases", value: c.bags }],
+      offers: { "@type": "AggregateOffer", priceCurrency: P.currency, lowPrice: low(c.id), highPrice: Math.max(...ROUTES.map(([a, z]) => Q.base(P, a, z, c.id)).filter(Boolean)) } } })) };
+  const faq = x.faq.map(([q, a]) => [q, F(a)]);
+  page({ lang, path: x.path, alts: ALL(l => FL[l].path), title: x.title, desc: x.desc, body, ld: [ld, faqLd(faq), crumbs([[site.brand, t.paths.home], [x.nav, x.path]])] });
+}
+
+// FAQ page (build/faq.js): every question by topic, a search box that filters them (site.js), a "read more" link
+// per topic, a contact box and FAQPage structured data. A question whose placeholder has no value is left out.
+function faqPage(lang) {
+  const t = I[lang], x = FQ[lang], pk = peakVars(lang) || {};
+  const v = { brand: site.brand, phone: site.phone, tursab: site.tursab, min: minPrice, wait: P.rules.freeWaitMin, seat: P.rules.childSeat,
+    ret: P.rules.returnDiscountPct, ...pk, meetIST: (site.meet.IST || {})[lang], meetSAW: (site.meet.SAW || {})[lang] };
+  const F = s => fill(s, v);
+  const zn = id => Q.zone(P, id).name[lang];
+  // the pages each topic links to, as [label, path]
+  const rel = {
+    booking: [[HW[lang].nav, HW[lang].path]],
+    prices: [[t.nav.prices, t.paths.prices]],
+    airport: AIRPORTS.map(a => [zn(a.id), t.paths[a.id]]),
+    cars: [[FL[lang].nav, FL[lang].path]],
+    changes: [[t.ui.terms, t.paths.terms]],
+    ride: [[AB[lang].nav, AB[lang].path]],
+    services: [[zn("galataport"), PORT[lang].path]].concat(SV.S.map(s => [s[lang].nav, s[lang].path]), [[CO.T[lang].pages.corporate.nav, CO.path(lang, "corporate")]])
+  };
+  const cats = FQ.CATS.map((id, i) => ({ id, h: x.cats[i][0], items: x.cats[i][1].map(([q, a]) => [F(q), F(a)]).filter(([q, a]) => !/\{\w+\}/.test(q + a)) }));
+  const all = cats.flatMap(c => c.items);
+  const body = `<section class="hero hero-s"><div class="wrap"><div class="hero-t"><nav class="crumbs"><a href="${t.paths.home}">${esc(site.brand)}</a> › ${esc(x.nav)}</nav>
+<h1>${esc(x.h1)}</h1><p class="lead answer">${esc(F(x.lead))}</p>
+<input class="fq-search" type="search" data-faq-q placeholder="${esc(x.search)}" aria-label="${esc(x.search)}">
+<nav class="chips fq-jump">${cats.map(c => `<a href="#${c.id}">${esc(c.h)} · ${c.items.length}</a>`).join("")}</nav></div></div></section>
+<section class="sec"><div class="wrap narrow" data-faq>${cats.map(c => `<div class="fq-cat" id="${c.id}"><h2>${esc(c.h)}</h2>${faqBlock(c.items.map(([q, a]) => [q, esc(a)]))}
+<p class="fq-rel">${esc(x.related)}: ${rel[c.id].map(([l, p]) => `<a href="${p}">${esc(l)}</a>`).join(" · ")}</p></div>`).join("\n")}
+<p class="fq-none" data-faq-none hidden>${esc(x.noHits)}</p></div></section>
+<section class="sec ice"><div class="wrap narrow fq-contact"><h2>${esc(x.contactH)}</h2><p>${esc(x.contactP)}</p>
+<p class="fq-btns"><a class="btn btn-y" href="https://wa.me/${site.whatsapp}" rel="noopener">WhatsApp</a><a class="btn btn-o" href="tel:${site.phone.replace(/\s/g, "")}"><bdi dir="ltr">${esc(site.phone)}</bdi></a><a class="btn btn-o" href="mailto:${site.email}">${esc(site.email)}</a></p></div></section>
+<section class="cta"><div class="wrap"><h2>${esc(x.ctaH)}</h2><p>${esc(x.ctaP)}</p><a class="btn btn-k" href="${t.paths.book}">${t.nav.book}</a></div></section>`;
+  page({ lang, path: x.path, alts: ALL(l => FQ[l].path), title: F(x.title), desc: F(x.desc), body, ld: [faqLd(all), crumbs([[site.brand, t.paths.home], [x.nav, x.path]])] });
+}
+
 // English guide pages for the big searches (build/guides.js): a quotable answer, a price table, sections, FAQ
 function guide(g) {
   const lang = "en", t = I.en, sedan = (a, z) => Q.base(P, a, z, "sedan");
@@ -570,10 +682,22 @@ function book(lang) {
 }
 
 function legalPages(lang) {
-  const t = I[lang];
+  const t = I[lang], L = legal[lang], R = L.ui.rows, info = site.legal || {};
+  const address = info.address || site.address[lang];
+  // Company details: only the fields filled in data/site.json → legal are shown
+  const rows = [[R.company, site.company], [R.address, address], [R.mersis, info.mersis], [R.tax, [info.taxOffice, info.taxNo].filter(Boolean).join(" · ")],
+    [R.tradeReg, info.tradeReg], [R.kep, info.kep], [R.tursab, site.tursab], [R.verbis, info.verbis], [R.euRep, info.euRep],
+    [R.email, `<a href="mailto:${esc(site.email)}">${esc(site.email)}</a>`], [R.phone, `<a href="https://wa.me/${esc(site.whatsapp)}"><bdi>${esc(site.phone)}</bdi></a>`]];
+  const details = `<ul>${rows.filter(r => r[1]).map(([k, v]) => `<li><strong>${k}:</strong> <bdi>${/^<a /.test(v) ? v : esc(v)}</bdi></li>`).join("")}</ul>`;
+  const link = k => `<a href="${t.paths[k]}">${legal[lang][k].title}</a>`;
+  const vars = { ...site, address: `<bdi>${esc(address)}</bdi>`, company: `<bdi>${esc(site.company)}</bdi>`, url: site.url.replace(/^https?:\/\//, ""), seat: P.rules.childSeat, wait: P.rules.freeWaitMin,
+    returnPct: P.rules.returnDiscountPct, details, termsLink: link("terms"), privacyLink: link("privacy") };
   ["terms", "privacy"].forEach(k => {
-    const L = legal[lang][k];
-    page({ lang, path: t.paths[k], alts: ALL(l => I[l].paths[k]), title: L.title + " · " + site.brand, desc: L.desc, body: `<section class="sec"><div class="wrap narrow prose"><h1>${L.title}</h1>${fill(L.html, { ...site, address: site.address[lang] })}</div></section>` });
+    const D = L[k];
+    const toc = `<nav class="legal-toc" aria-label="${L.ui.toc}"><p><strong>${L.ui.toc}</strong></p><ol>${D.sections.map((s, i) => `<li><a href="#s${i + 1}">${s[0]}</a></li>`).join("")}</ol></nav>`;
+    const secs = D.sections.map((s, i) => `<h2 id="s${i + 1}">${i + 1}. ${s[0]}</h2>${s[1]}`).join("\n");
+    page({ lang, path: t.paths[k], alts: ALL(l => I[l].paths[k]), title: D.title + " · " + site.brand, desc: D.desc,
+      body: `<section class="sec"><div class="wrap narrow prose"><h1>${D.title}</h1><p><em>${L.ui.updated}: ${L.updated}</em></p>${fill(D.intro + toc + secs, vars)}</div></section>` });
   });
 }
 
@@ -641,6 +765,7 @@ ${GUIDES.map(g => `- ${g.nav}: ${URL_}${g.path}`).join("\n")}
 ## Pages
 - Book: ${URL_}/book
 - All prices: ${URL_}/prices
+- Frequently asked questions (booking, payment, airport pickup, cars and luggage, cancellation): ${URL_}${FQ.en.path}
 - Other languages: ${LANGS.filter(l => l !== "en").map(l => `${LANG_NAME[l]} ${URL_}${I[l].paths.home}`).join(", ")}
 `);
 }
@@ -666,7 +791,7 @@ function admin() {
   fs.readdirSync(path.join(__dirname, "static", "fonts")).forEach(f => put("static/fonts/" + f, "fonts/" + f));
 }
 
-LANGS.forEach(l => { home(l); AIRPORTS.forEach(a => hub(l, a.id)); portHub(l); aboutPage(l); howPage(l); CO.ORDER.forEach(k => companyPage(l, k)); ROUTES.forEach(([a, z]) => route(l, a, z)); PL.L.forEach(x => place(l, x)); SV.S.forEach(x => service(l, x)); prices(l); book(l); legalPages(l); blogIndex(l); POSTS.forEach(x => blogPost(l, x)); });
+LANGS.forEach(l => { home(l); AIRPORTS.forEach(a => hub(l, a.id)); portHub(l); aboutPage(l); howPage(l); fleetPage(l); faqPage(l); CO.ORDER.forEach(k => companyPage(l, k)); ROUTES.forEach(([a, z]) => route(l, a, z)); PL.L.forEach(x => place(l, x)); SV.S.forEach(x => service(l, x)); prices(l); book(l); legalPages(l); blogIndex(l); POSTS.forEach(x => blogPost(l, x)); });
 GUIDES.forEach(guide);
 notFound();
 admin();
