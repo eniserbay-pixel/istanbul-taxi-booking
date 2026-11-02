@@ -27,6 +27,7 @@ const SV = require("./services");
 const AB = require("./about");
 const HW = require("./howto");
 const FL = require("./fleet");
+const FQ = require("./faq");
 const HB = require("./hubs");
 // German, French, Italian and Dutch: page texts, blog posts and legal texts in one file per language
 ["de", "fr", "it", "nl"].forEach(l => {
@@ -115,7 +116,7 @@ ${ld.map(x => `<script type="application/ld+json">${JSON.stringify(x)}</script>`
   const p = t.paths;
   const header = `<header class="top"><div class="wrap top-in">
 <a class="logo" href="${p.home}"><img src="/img/logo.webp" alt="${esc(site.brand)} – Istanbul Taxi Booking" width="92" height="52"></a>
-<nav class="nav"><a href="${p.prices}">${t.nav.prices}</a><a href="${FL[o.lang].path}">${t.nav.fleet}</a><a href="${HW[o.lang].path}">${t.nav.how}</a><a href="${p.home}#faq">${t.nav.faq}</a><a href="${p.blog}">${t.nav.blog}</a>
+<nav class="nav"><a href="${p.prices}">${t.nav.prices}</a><a href="${FL[o.lang].path}">${t.nav.fleet}</a><a href="${HW[o.lang].path}">${t.nav.how}</a><a href="${FQ[o.lang].path}">${t.nav.faq}</a><a href="${p.blog}">${t.nav.blog}</a>
 ${langSwitch(o.lang, alts)}</nav>
 <a class="btn btn-y btn-sm" href="${p.book}">${t.nav.book}</a></div></header>`;
   const popular = [["IST", "sultanahmet"], ["IST", "taksim"], ["IST", "kadikoy"], ["SAW", "taksim"], ["SAW", "kadikoy"], ["SAW", "sultanahmet"]];
@@ -275,7 +276,8 @@ ${popular.map(([a, z]) => `<tr><td><a href="${routePath(lang, a, z)}">${esc(Q.zo
 
 function home(lang) {
   const t = I[lang], h = t.home;
-  const faq = t.faq.map(([q, a]) => [fill(q, { brand: site.brand }), fill(a, { brand: site.brand })]);
+  // a short FAQ here, every question on the FAQ page (build/faq.js)
+  const faq = t.faq.slice(0, 5).map(([q, a]) => [fill(q, { brand: site.brand }), fill(a, { brand: site.brand })]);
   const body = `<section class="hero hero-home"><div class="wrap hero-in"><div class="hero-t">
 <h1>${h.h1}</h1><p class="lead">${fill(h.lead, { min: minPrice, brand: site.brand })}</p></div>
 
@@ -288,7 +290,7 @@ ${popularTable(lang)}<p><a class="more" href="${t.paths.prices}">${t.nav.prices}
 <section class="sec" id="how"><div class="wrap"><h2>${h.howH}</h2><ol class="how">${h.how.map(([a, b]) => `<li><h3>${a}</h3><p>${b}</p></li>`).join("")}</ol><p><a class="more" href="${HW[lang].path}">${esc(HW[lang].more)} →</a></p></div></section>
 <section class="sec ice"><div class="wrap"><h2>${h.meetH}</h2>${meetCards(lang)}</div></section>
 <section class="sec ice"><div class="wrap"><h2>${t.blog.latest}</h2>${blogCards(lang, null, 4)}<p><a class="more" href="${t.paths.blog}">${t.blog.more} →</a></p></div></section>
-<section class="sec" id="faq"><div class="wrap narrow"><h2>${h.faqH}</h2>${faqBlock(faq)}</div></section>
+<section class="sec" id="faq"><div class="wrap narrow"><h2>${h.faqH}</h2>${faqBlock(faq)}<p><a class="more" href="${FQ[lang].path}">${esc(FQ[lang].more)} →</a></p></div></section>
 <section class="cta"><div class="wrap"><h2>${h.ctaH}</h2><p>${h.ctaP}</p><a class="btn btn-k" href="${t.paths.book}">${t.nav.book}</a></div></section>`;
   page({ lang, path: t.paths.home, alts: ALL(l => I[l].paths.home), title: fill(h.title, { min: minPrice, brand: site.brand }), desc: fill(h.desc, { min: minPrice, brand: site.brand }), body, ld: [faqLd(faq)] });
 }
@@ -543,6 +545,39 @@ ${P.cars.map(c => `<tr><th scope="row"><a href="#${c.id}">${esc(c.name[lang])}</
   page({ lang, path: x.path, alts: ALL(l => FL[l].path), title: x.title, desc: x.desc, body, ld: [ld, faqLd(faq), crumbs([[site.brand, t.paths.home], [x.nav, x.path]])] });
 }
 
+// FAQ page (build/faq.js): every question by topic, a search box that filters them (site.js), a "read more" link
+// per topic, a contact box and FAQPage structured data. A question whose placeholder has no value is left out.
+function faqPage(lang) {
+  const t = I[lang], x = FQ[lang], pk = peakVars(lang) || {};
+  const v = { brand: site.brand, phone: site.phone, tursab: site.tursab, min: minPrice, wait: P.rules.freeWaitMin, seat: P.rules.childSeat,
+    ret: P.rules.returnDiscountPct, ...pk, meetIST: (site.meet.IST || {})[lang], meetSAW: (site.meet.SAW || {})[lang] };
+  const F = s => fill(s, v);
+  const zn = id => Q.zone(P, id).name[lang];
+  // the pages each topic links to, as [label, path]
+  const rel = {
+    booking: [[HW[lang].nav, HW[lang].path]],
+    prices: [[t.nav.prices, t.paths.prices]],
+    airport: AIRPORTS.map(a => [zn(a.id), t.paths[a.id]]),
+    cars: [[FL[lang].nav, FL[lang].path]],
+    changes: [[t.ui.terms, t.paths.terms]],
+    ride: [[AB[lang].nav, AB[lang].path]],
+    services: [[zn("galataport"), PORT[lang].path]].concat(SV.S.map(s => [s[lang].nav, s[lang].path]), [[CO.T[lang].pages.corporate.nav, CO.path(lang, "corporate")]])
+  };
+  const cats = FQ.CATS.map((id, i) => ({ id, h: x.cats[i][0], items: x.cats[i][1].map(([q, a]) => [F(q), F(a)]).filter(([q, a]) => !/\{\w+\}/.test(q + a)) }));
+  const all = cats.flatMap(c => c.items);
+  const body = `<section class="hero hero-s"><div class="wrap"><div class="hero-t"><nav class="crumbs"><a href="${t.paths.home}">${esc(site.brand)}</a> › ${esc(x.nav)}</nav>
+<h1>${esc(x.h1)}</h1><p class="lead answer">${esc(F(x.lead))}</p>
+<input class="fq-search" type="search" data-faq-q placeholder="${esc(x.search)}" aria-label="${esc(x.search)}">
+<nav class="chips fq-jump">${cats.map(c => `<a href="#${c.id}">${esc(c.h)} · ${c.items.length}</a>`).join("")}</nav></div></div></section>
+<section class="sec"><div class="wrap narrow" data-faq>${cats.map(c => `<div class="fq-cat" id="${c.id}"><h2>${esc(c.h)}</h2>${faqBlock(c.items.map(([q, a]) => [q, esc(a)]))}
+<p class="fq-rel">${esc(x.related)}: ${rel[c.id].map(([l, p]) => `<a href="${p}">${esc(l)}</a>`).join(" · ")}</p></div>`).join("\n")}
+<p class="fq-none" data-faq-none hidden>${esc(x.noHits)}</p></div></section>
+<section class="sec ice"><div class="wrap narrow fq-contact"><h2>${esc(x.contactH)}</h2><p>${esc(x.contactP)}</p>
+<p class="fq-btns"><a class="btn btn-y" href="https://wa.me/${site.whatsapp}" rel="noopener">WhatsApp</a><a class="btn btn-o" href="tel:${site.phone.replace(/\s/g, "")}"><bdi dir="ltr">${esc(site.phone)}</bdi></a><a class="btn btn-o" href="mailto:${site.email}">${esc(site.email)}</a></p></div></section>
+<section class="cta"><div class="wrap"><h2>${esc(x.ctaH)}</h2><p>${esc(x.ctaP)}</p><a class="btn btn-k" href="${t.paths.book}">${t.nav.book}</a></div></section>`;
+  page({ lang, path: x.path, alts: ALL(l => FQ[l].path), title: F(x.title), desc: F(x.desc), body, ld: [faqLd(all), crumbs([[site.brand, t.paths.home], [x.nav, x.path]])] });
+}
+
 // English guide pages for the big searches (build/guides.js): a quotable answer, a price table, sections, FAQ
 function guide(g) {
   const lang = "en", t = I.en, sedan = (a, z) => Q.base(P, a, z, "sedan");
@@ -682,6 +717,7 @@ ${GUIDES.map(g => `- ${g.nav}: ${URL_}${g.path}`).join("\n")}
 ## Pages
 - Book: ${URL_}/book
 - All prices: ${URL_}/prices
+- Frequently asked questions (booking, payment, airport pickup, cars and luggage, cancellation): ${URL_}${FQ.en.path}
 - Other languages: ${LANGS.filter(l => l !== "en").map(l => `${LANG_NAME[l]} ${URL_}${I[l].paths.home}`).join(", ")}
 `);
 }
@@ -707,7 +743,7 @@ function admin() {
   fs.readdirSync(path.join(__dirname, "static", "fonts")).forEach(f => put("static/fonts/" + f, "fonts/" + f));
 }
 
-LANGS.forEach(l => { home(l); AIRPORTS.forEach(a => hub(l, a.id)); portHub(l); aboutPage(l); howPage(l); fleetPage(l); CO.ORDER.forEach(k => companyPage(l, k)); ROUTES.forEach(([a, z]) => route(l, a, z)); PL.L.forEach(x => place(l, x)); SV.S.forEach(x => service(l, x)); prices(l); book(l); legalPages(l); blogIndex(l); POSTS.forEach(x => blogPost(l, x)); });
+LANGS.forEach(l => { home(l); AIRPORTS.forEach(a => hub(l, a.id)); portHub(l); aboutPage(l); howPage(l); fleetPage(l); faqPage(l); CO.ORDER.forEach(k => companyPage(l, k)); ROUTES.forEach(([a, z]) => route(l, a, z)); PL.L.forEach(x => place(l, x)); SV.S.forEach(x => service(l, x)); prices(l); book(l); legalPages(l); blogIndex(l); POSTS.forEach(x => blogPost(l, x)); });
 GUIDES.forEach(guide);
 notFound();
 admin();
