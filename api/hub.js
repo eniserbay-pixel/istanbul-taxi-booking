@@ -16,13 +16,19 @@ const WHAT = { confirmed: "Onay (voucher)", rejected: "Red", cancelled: "İptal"
 const now = () => new Date().toISOString();
 function log(b, text) { b.history = (b.history || []).concat([{ at: now(), text }]).slice(-50); }
 
-// What the panel decides about a booking, written over the booking here; the office's own fields here (driver,
-// supplier fee, U-ETDS ...) stay, since the panel keeps its own
+// What the panel decides about a booking, written over the booking here. The driver (assign) and Tamamlandı (done, from
+// which a cash fare counts as collected) of each transfer come from the panel when it sends them, so this site's
+// panel shows the office's work; the supplier fee and U-ETDS stay as they are here.
 function merge(b, x) {
-  const legs = (Array.isArray(x.legs) ? x.legs : []).map((l, i) => Object.assign({}, b.legs[i] || {}, l, {
-    assign: (b.legs[i] || {}).assign || null, cost: (b.legs[i] || {}).cost || 0, costTry: (b.legs[i] || {}).costTry || 0,
-    uetds: (b.legs[i] || {}).uetds || null, done: (b.legs[i] || {}).done || ""
-  }));
+  const has = (o, k) => Object.prototype.hasOwnProperty.call(o, k);
+  const legs = (Array.isArray(x.legs) ? x.legs : []).map((l, i) => {
+    const was = b.legs[i] || {};
+    return Object.assign({}, was, l, {
+      assign: has(l, "assign") ? l.assign || null : was.assign || null,
+      cost: was.cost || 0, costTry: was.costTry || 0, uetds: was.uetds || null,
+      done: has(l, "done") ? l.done || "" : was.done || ""
+    });
+  });
   const keep = { car: b.car, currency: b.currency, partner: b.partner, partnerRef: b.partnerRef, cashCur: b.cashCur, adminNote: b.adminNote, hourly: b.hourly, ga: b.ga };
   const c = clean(Object.assign({}, b, x, keep, { legs }));
   Object.assign(b, c);
