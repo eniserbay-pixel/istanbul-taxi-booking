@@ -389,3 +389,13 @@ p { margin: 0 0 1em; }
 [dir=rtl] .fl-badge { left: auto; right: 12px; }
 [dir=rtl] .ticks li { padding-left: 0; padding-right: 26px; }
 [dir=rtl] .ticks li::before { left: auto; right: 0; }
+
+/* FAQ page: a search box over the questions, one block per topic */
+.fq-search { width: 100%; max-width: 600px; margin-top: 18px; font: inherit; font-size: 17px; padding: 14px 18px; border: 0; border-radius: 14px; background: var(--white); color: var(--ink); box-shadow: 0 0 0 2px var(--ice-2); }
+.fq-search:focus { outline: none; box-shadow: 0 0 0 3px var(--mustard); }
+.hero .fq-jump a { color: var(--ink); }
+.fq-cat { scroll-margin-top: 90px; margin-bottom: 44px; }
+.fq-cat h2 { margin-bottom: 4px; }
+.fq-rel { margin: 14px 0 0; font-size: 15px; color: var(--muted); }
+.fq-none { font-weight: 700; }
+.fq-btns { display: flex; flex-wrap: wrap; gap: 10px; }

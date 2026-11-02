@@ -112,6 +112,27 @@
     });
   });
 
+  // ---- FAQ page: the search box hides the questions (and topics) that do not contain every typed word ----
+  var fq = $("[data-faq-q]"), fqBox = $("[data-faq]");
+  if (fq && fqBox) {
+    var norm = function (s) { return s.toLocaleLowerCase(document.documentElement.lang || undefined); };
+    fq.addEventListener("input", function () {
+      var words = norm(fq.value).split(/\s+/).filter(Boolean), any = false;
+      $$(".fq-cat", fqBox).forEach(function (c) {
+        var shown = 0;
+        $$("details", c).forEach(function (d) {
+          var hit = words.every(function (w) { return norm(d.textContent).indexOf(w) >= 0; });
+          d.hidden = !hit;
+          d.open = hit && words.length > 0;
+          if (hit) shown++;
+        });
+        c.hidden = !shown;
+        if (shown) any = true;
+      });
+      $("[data-faq-none]", fqBox).hidden = any;
+    });
+  }
+
   // ---- Booking ----
   var root = $("[data-book]");
   if (!root || !window.BOOK) return;
