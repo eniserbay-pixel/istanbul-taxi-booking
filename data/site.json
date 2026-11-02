@@ -40,5 +40,15 @@
  "googleVerification": "Jbhn98TmIqoEGzJ8Lhg2_soZsJMVi6BHLvexSDcNTrI",
  "yandexVerification": "45eb2bcb4f418a6e",
  "bingSiteAuth": "5C9816A36AD66EC3E6A0CD7CD4213E40",
- "indexnowKey": "8f3c2a71d94e4b6fa05e1c7b2d9e6a43"
+ "indexnowKey": "8f3c2a71d94e4b6fa05e1c7b2d9e6a43",
+ "legal": {
+  "address": "",
+  "mersis": "",
+  "taxOffice": "",
+  "taxNo": "",
+  "tradeReg": "",
+  "kep": "",
+  "verbis": "",
+  "euRep": ""
+ }
 }
