@@ -484,7 +484,7 @@
     "it": "Mercedes Vito, Ford Tourneo o simile",
     "nl": "Mercedes Vito, Ford Tourneo of vergelijkbaar"
    },
-   "seats": 7,
+   "seats": 6,
    "bags": 7,
    "img": "/img/minivan.webp",
    "popular": true,
@@ -549,17 +549,17 @@
     "it": "Mercedes Sprinter o simile",
     "nl": "Mercedes Sprinter of vergelijkbaar"
    },
-   "seats": 16,
+   "seats": 13,
    "bags": 16,
    "img": "/img/minibus.webp",
    "note": {
-    "en": "Groups up to 16",
-    "tr": "16 kişiye kadar gruplar",
-    "ru": "Группы до 16 человек",
-    "de": "Gruppen bis 16 Personen",
-    "fr": "Groupes jusqu'à 16 personnes",
-    "it": "Gruppi fino a 16 persone",
-    "nl": "Groepen tot 16 personen"
+    "en": "Groups up to 13",
+    "tr": "13 kişiye kadar gruplar",
+    "ru": "Группы до 13 человек",
+    "de": "Gruppen bis 13 Personen",
+    "fr": "Groupes jusqu'à 13 personnes",
+    "it": "Gruppi fino a 13 persone",
+    "nl": "Groepen tot 13 personen"
    }
   }
  ],

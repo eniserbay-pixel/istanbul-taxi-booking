@@ -21,9 +21,9 @@ module.exports = {
 <li>Lütfen onayı kontrol edin. Tarih, saat, adres, uçuş numarası veya yolcu sayısı yanlışsa hemen bize yazın: yolculuk onaydaki bilgilere göre yapılır.</li></ul>`],
       ["Araçlar", `<p>Belirli bir model veya plaka değil, bir araç sınıfı ayırtırsınız:</p>
 <ul><li><strong>Sedan</strong>: en fazla 3 yolcu ve 3 bavul (Skoda Octavia, Toyota Corolla veya benzeri).</li>
-<li><strong>Minivan</strong>: en fazla 7 yolcu ve 7 bavul (Mercedes Vito, Ford Tourneo veya benzeri).</li>
+<li><strong>Minivan</strong>: en fazla 6 yolcu ve 7 bavul (Mercedes Vito, Ford Tourneo veya benzeri).</li>
 <li><strong>Mercedes V-Class</strong>: en fazla 6 yolcu ve 6 bavul.</li>
-<li><strong>Minibüs</strong>: en fazla 16 yolcu ve 16 bavul (Mercedes Sprinter veya benzeri).</li></ul>
+<li><strong>Minibüs</strong>: en fazla 13 yolcu ve 16 bavul (Mercedes Sprinter veya benzeri).</li></ul>
 <p>Sitedeki fotoğraflar örnektir. Ek ücret almadan aynı veya daha üst sınıf bir araç gönderebiliriz. Tüm araçlar ticari yolcu taşımacılığı için ruhsatlı, mevzuatın gerektirdiği şekilde sigortalı ve sigarasızdır.</p>`],
       ["Fiyatlar", `<ul><li>Fiyatlar kişi başı değil <strong>araç başı sabittir</strong> ve talebi göndermeden önce euro olarak gösterilir. Onayınızdaki fiyat ödeyeceğiniz fiyattır.</li>
 <li>Fiyata yakıt, otoyol, köprü ve tünel geçişleri, havalimanı otoparkı, aşağıdaki ücretsiz bekleme süresi ve isim tabelasıyla karşılama dahildir.</li>

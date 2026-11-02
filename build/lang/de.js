@@ -31,7 +31,7 @@ const ui = {
     fleetH: "Wählen Sie Ihr Fahrzeug", fleetLead: "Der Preis gilt pro Auto, nicht pro Person. Maut, Parken und Wartezeit sind inklusive.",
     routesH: "Beliebte Transferstrecken in Istanbul", routesLead: "Festpreise pro Auto, einfache Fahrt.", routesPeak: "Abholungen am IST von {istFrom} bis {istTo} und am SAW von {sawFrom} bis {sawTo} kosten {pct} % mehr.",
     vsH: "Taxi mit Taxameter oder unser Flughafentaxi?",
-    vs: [["Preis", "Hängt vom Verkehr und von der Route des Fahrers ab", "Bei der Buchung festgelegt"], ["In der Ankunftshalle", "Schlange am Taxistand", "Fahrer wartet mit Ihrem Namensschild"], ["Flugverspätung", "-", "Wir verfolgen Ihren Flug, 60 Min. Wartezeit gratis"], ["Gepäck und Gruppen", "Kleines gelbes Taxi", "Limousine, Minivan, V-Klasse oder Kleinbus bis 16 Personen"], ["Bezahlung", "Taxameter, oft nur bar", "Bar an den Fahrer in EUR, USD oder TRY"]],
+    vs: [["Preis", "Hängt vom Verkehr und von der Route des Fahrers ab", "Bei der Buchung festgelegt"], ["In der Ankunftshalle", "Schlange am Taxistand", "Fahrer wartet mit Ihrem Namensschild"], ["Flugverspätung", "-", "Wir verfolgen Ihren Flug, 60 Min. Wartezeit gratis"], ["Gepäck und Gruppen", "Kleines gelbes Taxi", "Limousine, Minivan, V-Klasse oder Kleinbus bis 13 Personen"], ["Bezahlung", "Taxameter, oft nur bar", "Bar an den Fahrer in EUR, USD oder TRY"]],
     vsCols: ["", "Normales Taxi", "{brand}"],
     howH: "So funktioniert's",
     how: [["Anfrage", "Wählen Sie Strecke, Fahrzeug und Uhrzeit. Das dauert eine Minute, eine Vorauszahlung ist nicht nötig."], ["Bestätigung", "Wir prüfen die Verfügbarkeit und schicken Ihnen eine Bestätigung per E-Mail, meist innerhalb einer Stunde."], ["Fahrt", "Ihr Fahrer empfängt Sie mit einem Namensschild. Den Festpreis zahlen Sie am Ende bar."]],
@@ -47,7 +47,7 @@ const ui = {
     ["Wie bezahle ich?", "Bar beim Fahrer am Ende der Fahrt, in Euro, US-Dollar oder türkischer Lira. Es gibt keine Online-Zahlung und keine Anzahlung."],
     ["Wann ist meine Buchung bestätigt?", "Direkt nach dem Absenden schicken wir Ihnen eine E-Mail, dass Ihre Anfrage eingegangen ist. Sobald ein Fahrzeug zugeteilt ist, meist innerhalb einer Stunde, erhalten Sie die Bestätigung per E-Mail."],
     ["Was passiert, wenn mein Flug Verspätung hat?", "Wir verfolgen Ihren Flug und passen die Abholzeit an. Die ersten 60 Minuten nach der Landung sind kostenlos."],
-    ["Gilt der Preis pro Person?", "Nein, der Preis gilt pro Auto. Eine Limousine fasst bis zu 3 Fahrgäste, ein Minivan bis zu 7, eine V-Klasse bis zu 6 und ein Kleinbus bis zu 16."],
+    ["Gilt der Preis pro Person?", "Nein, der Preis gilt pro Auto. Eine Limousine fasst bis zu 3 Fahrgäste, ein Minivan bis zu 6, eine V-Klasse bis zu 6 und ein Kleinbus bis zu 13."],
     ["Kann ich stornieren?", "Ja, kostenlos bis 24 Stunden vor der Abholung. Antworten Sie einfach auf die Bestätigungs-E-Mail oder schreiben Sie uns auf WhatsApp."]
   ],
   route: {
@@ -59,7 +59,7 @@ const ui = {
     pricesH: "Preise {from} – {to}", car: "Fahrzeug", seats: "Fahrgäste", bags: "Koffer", price: "Preis pro Auto",
     areaH: "Gebiete zu diesem Preis", meetH: "Wo Ihr Fahrer wartet",
     faq: [
-      ["Was kostet ein Taxi {from} – {to}?", "Bei uns fest €{price} pro Auto in der Limousine, €{van} im Minivan für bis zu 7, €{vclass} in der Mercedes V-Klasse und €{bus} im Kleinbus für bis zu 16 Personen."],
+      ["Was kostet ein Taxi {from} – {to}?", "Bei uns fest €{price} pro Auto in der Limousine, €{van} im Minivan für bis zu 6, €{vclass} in der Mercedes V-Klasse und €{bus} im Kleinbus für bis zu 13 Personen."],
       ["Wie lange dauert die Fahrt?", "Etwa {min} Minuten für {km} km außerhalb der Stoßzeiten. An Werktagen abends kann es länger dauern, der Preis bleibt gleich."],
       ["Zahle ich mehr, wenn mein Flug Verspätung hat?", "Nein. Wir verfolgen Ihren Flug, die ersten 60 Minuten nach der Landung sind kostenlos."]
     ],
@@ -132,7 +132,7 @@ const blog = {
 <h2>Warten: Schlange oder Namensschild</h2>
 <p>Am Taxistand stehen Sie in der Schlange, manchmal lange, wenn mehrere Flüge gleichzeitig landen. Beim Transfer verfolgt Ihr Fahrer Ihren Flug und wartet mit Ihrem Namensschild in der Ankunftshalle. Bei {brand} sind die ersten 60 Minuten nach der Landung kostenlos, eine lange Passkontrolle oder ein verspäteter Koffer kosten also nichts extra.</p>
 <h2>Gepäck und Gruppen</h2>
-<p>Ein gelbes Taxi nimmt bis zu vier Fahrgäste und wenig Gepäck mit. Beim Transfer wählen Sie das passende Fahrzeug: eine Limousine für bis zu 3, einen Minivan für bis zu 7, eine Mercedes V-Klasse für bis zu 6 oder einen Kleinbus für bis zu 16 Personen. Ein Preis pro Auto, nicht pro Person.</p>
+<p>Ein gelbes Taxi nimmt bis zu vier Fahrgäste und wenig Gepäck mit. Beim Transfer wählen Sie das passende Fahrzeug: eine Limousine für bis zu 3, einen Minivan für bis zu 6, eine Mercedes V-Klasse für bis zu 6 oder einen Kleinbus für bis zu 13 Personen. Ein Preis pro Auto, nicht pro Person.</p>
 <h2>Sprache und Sicherheit</h2>
 <p>Sie müssen Ihre Hoteladresse nicht auf Türkisch erklären: Sie steht schon in Ihrer Buchung. Sie fahren mit einem professionellen Fahrer, der den Weg kennt, und zahlen am Ende den vereinbarten Preis.</p>
 <h2>Wann ein Taxi trotzdem passt</h2>

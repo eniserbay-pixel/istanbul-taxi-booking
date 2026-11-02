@@ -12,7 +12,7 @@ module.exports = {
       lead: "A private taxi to {place} costs a fixed <strong>€{ist} per car</strong> from Istanbul Airport and <strong>€{saw}</strong> from Sabiha Gökçen in a sedan for up to 3 passengers. {place} is in our {zone} price zone; tolls and parking are included and you pay the driver in cash.",
       pricesH: "Prices to {place}", from: "From", aboutH: "About {place}", sights: "Nearby", tip: "Driver's tip", zone: "Same price as",
       faq: [
-        ["How much is a taxi from Istanbul Airport to {place}?", "A fixed €{ist} per car in a sedan, €{van} in a minivan for up to 7 and €{vclass} in a Mercedes V-Class. The drive is about {istKm} km, roughly {istMin} minutes outside rush hour."],
+        ["How much is a taxi from Istanbul Airport to {place}?", "A fixed €{ist} per car in a sedan, €{van} in a minivan for up to 6 and €{vclass} in a Mercedes V-Class. The drive is about {istKm} km, roughly {istMin} minutes outside rush hour."],
         ["And from Sabiha Gökçen?", "€{saw} per car in a sedan, about {sawKm} km and {sawMin} minutes outside rush hour."],
         ["Will the driver take me to my hotel's door?", "Yes. Give us the hotel name or address when you book and the driver takes you to the door, or to the nearest point a car can reach."]
       ],
@@ -26,7 +26,7 @@ module.exports = {
       lead: "Такси в {place} стоит фиксированные <strong>€{ist} за машину</strong> из аэропорта Стамбула и <strong>€{saw}</strong> из Сабихи Гёкчен на седане до 3 пассажиров. {place} входит в нашу ценовую зону {zone}; платные дороги и парковка включены, оплата водителю наличными.",
       pricesH: "Цены до {place}", from: "Откуда", aboutH: "О районе {place}", sights: "Рядом", tip: "Совет водителя", zone: "Та же цена, что",
       faq: [
-        ["Сколько стоит такси из аэропорта Стамбула в {place}?", "Фиксированные €{ist} за седан, €{van} за минивэн до 7 человек и €{vclass} за Mercedes V-Class. Около {istKm} км, примерно {istMin} минут вне часа пик."],
+        ["Сколько стоит такси из аэропорта Стамбула в {place}?", "Фиксированные €{ist} за седан, €{van} за минивэн до 6 человек и €{vclass} за Mercedes V-Class. Около {istKm} км, примерно {istMin} минут вне часа пик."],
         ["А из Сабихи Гёкчен?", "€{saw} за седан, около {sawKm} км и {sawMin} минут вне часа пик."],
         ["Водитель довезёт до дверей отеля?", "Да. Укажите при заказе название или адрес отеля, и водитель довезёт вас до двери или до ближайшего места, куда может подъехать машина."]
       ],
@@ -40,7 +40,7 @@ module.exports = {
       lead: "Ein Privattaxi nach {place} kostet fest <strong>€{ist} pro Auto</strong> ab Flughafen Istanbul und <strong>€{saw}</strong> ab Sabiha Gökçen im Sedan für bis zu 3 Personen. {place} liegt in unserer Preiszone {zone}; Maut und Parken sind inklusive, Sie zahlen bar beim Fahrer.",
       pricesH: "Preise nach {place}", from: "Ab", aboutH: "Über {place}", sights: "In der Nähe", tip: "Tipp vom Fahrer", zone: "Gleicher Preis wie",
       faq: [
-        ["Was kostet ein Taxi vom Flughafen Istanbul nach {place}?", "Fest €{ist} pro Auto im Sedan, €{van} im Minivan für bis zu 7 und €{vclass} im Mercedes V-Class. Die Fahrt ist etwa {istKm} km lang, rund {istMin} Minuten außerhalb der Stoßzeit."],
+        ["Was kostet ein Taxi vom Flughafen Istanbul nach {place}?", "Fest €{ist} pro Auto im Sedan, €{van} im Minivan für bis zu 6 und €{vclass} im Mercedes V-Class. Die Fahrt ist etwa {istKm} km lang, rund {istMin} Minuten außerhalb der Stoßzeit."],
         ["Und ab Sabiha Gökçen?", "€{saw} pro Auto im Sedan, etwa {sawKm} km und {sawMin} Minuten außerhalb der Stoßzeit."],
         ["Bringt mich der Fahrer bis vor das Hotel?", "Ja. Nennen Sie bei der Buchung Hotelname oder Adresse; der Fahrer bringt Sie bis vor die Tür oder bis zum nächsten mit dem Auto erreichbaren Punkt."]
       ],
@@ -54,7 +54,7 @@ module.exports = {
       lead: "Un taxi privé vers {place} coûte un prix fixe de <strong>€{ist} par voiture</strong> depuis l'aéroport d'Istanbul et de <strong>€{saw}</strong> depuis Sabiha Gökçen en berline jusqu'à 3 passagers. {place} fait partie de notre zone tarifaire {zone} ; péages et parking inclus, paiement en espèces au chauffeur.",
       pricesH: "Prix vers {place}", from: "Depuis", aboutH: "À propos de {place}", sights: "À proximité", tip: "Le conseil du chauffeur", zone: "Même prix que",
       faq: [
-        ["Combien coûte un taxi de l'aéroport d'Istanbul à {place} ?", "Un prix fixe de €{ist} par voiture en berline, €{van} en monospace jusqu'à 7 et €{vclass} en Mercedes Classe V. Environ {istKm} km, soit {istMin} minutes hors heures de pointe."],
+        ["Combien coûte un taxi de l'aéroport d'Istanbul à {place} ?", "Un prix fixe de €{ist} par voiture en berline, €{van} en monospace jusqu'à 6 et €{vclass} en Mercedes Classe V. Environ {istKm} km, soit {istMin} minutes hors heures de pointe."],
         ["Et depuis Sabiha Gökçen ?", "€{saw} par voiture en berline, environ {sawKm} km et {sawMin} minutes hors heures de pointe."],
         ["Le chauffeur me dépose-t-il devant l'hôtel ?", "Oui. Indiquez le nom ou l'adresse de l'hôtel à la réservation : le chauffeur vous dépose devant la porte ou au point le plus proche accessible en voiture."]
       ],
@@ -68,7 +68,7 @@ module.exports = {
       lead: "Un taxi privato per {place} costa un prezzo fisso di <strong>€{ist} per auto</strong> dall'Aeroporto di Istanbul e di <strong>€{saw}</strong> da Sabiha Gökçen in berlina fino a 3 passeggeri. {place} rientra nella nostra zona di prezzo {zone}; pedaggi e parcheggio inclusi, paghi l'autista in contanti.",
       pricesH: "Prezzi per {place}", from: "Da", aboutH: "Informazioni su {place}", sights: "Nei dintorni", tip: "Il consiglio dell'autista", zone: "Stesso prezzo di",
       faq: [
-        ["Quanto costa un taxi dall'Aeroporto di Istanbul a {place}?", "Un prezzo fisso di €{ist} per auto in berlina, €{van} in minivan fino a 7 e €{vclass} in Mercedes Classe V. Circa {istKm} km, più o meno {istMin} minuti fuori dall'ora di punta."],
+        ["Quanto costa un taxi dall'Aeroporto di Istanbul a {place}?", "Un prezzo fisso di €{ist} per auto in berlina, €{van} in minivan fino a 6 e €{vclass} in Mercedes Classe V. Circa {istKm} km, più o meno {istMin} minuti fuori dall'ora di punta."],
         ["E da Sabiha Gökçen?", "€{saw} per auto in berlina, circa {sawKm} km e {sawMin} minuti fuori dall'ora di punta."],
         ["L'autista mi porta fino all'hotel?", "Sì. Indica nome o indirizzo dell'hotel quando prenoti: l'autista ti porta alla porta o al punto più vicino raggiungibile in auto."]
       ],
@@ -82,7 +82,7 @@ module.exports = {
       lead: "Een privétaxi naar {place} kost vast <strong>€{ist} per auto</strong> vanaf Istanbul Airport en <strong>€{saw}</strong> vanaf Sabiha Gökçen in een sedan voor maximaal 3 personen. {place} valt in onze prijszone {zone}; tol en parkeren zijn inbegrepen en je betaalt de chauffeur contant.",
       pricesH: "Prijzen naar {place}", from: "Vanaf", aboutH: "Over {place}", sights: "In de buurt", tip: "Tip van de chauffeur", zone: "Zelfde prijs als",
       faq: [
-        ["Wat kost een taxi van Istanbul Airport naar {place}?", "Vast €{ist} per auto in een sedan, €{van} in een minivan voor maximaal 7 en €{vclass} in een Mercedes V-Klasse. Ongeveer {istKm} km, zo'n {istMin} minuten buiten de spits."],
+        ["Wat kost een taxi van Istanbul Airport naar {place}?", "Vast €{ist} per auto in een sedan, €{van} in een minivan voor maximaal 6 en €{vclass} in een Mercedes V-Klasse. Ongeveer {istKm} km, zo'n {istMin} minuten buiten de spits."],
         ["En vanaf Sabiha Gökçen?", "€{saw} per auto in een sedan, ongeveer {sawKm} km en {sawMin} minuten buiten de spits."],
         ["Brengt de chauffeur me tot aan het hotel?", "Ja. Geef bij het boeken de naam of het adres van je hotel op; de chauffeur brengt je tot de deur of tot het dichtstbijzijnde punt dat met de auto bereikbaar is."]
       ],

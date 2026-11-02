@@ -31,7 +31,7 @@ const ui = {
     fleetH: "Scegli il tuo veicolo", fleetLead: "Il prezzo è per auto, non per persona. Pedaggi, parcheggio e attesa sono inclusi.",
     routesH: "Percorsi di transfer più richiesti a Istanbul", routesLead: "Prezzi fissi per auto, solo andata.", routesPeak: "I ritiri all'IST dalle {istFrom} alle {istTo} e al SAW dalle {sawFrom} alle {sawTo} costano il {pct}% in più.",
     vsH: "Taxi con tassametro o il nostro taxi aeroporto?",
-    vs: [["Prezzo", "Dipende dal traffico e dal percorso dell'autista", "Fissato al momento della prenotazione"], ["All'arrivo", "Coda al posteggio taxi", "L'autista ti aspetta con il cartello"], ["Ritardo del volo", "-", "Seguiamo il volo, 60 min di attesa gratuita"], ["Bagagli e gruppi", "Piccolo taxi giallo", "Berlina, minivan, Classe V o minibus fino a 16"], ["Pagamento", "Tassametro, spesso solo contanti", "In contanti all'autista in EUR, USD o TRY"]],
+    vs: [["Prezzo", "Dipende dal traffico e dal percorso dell'autista", "Fissato al momento della prenotazione"], ["All'arrivo", "Coda al posteggio taxi", "L'autista ti aspetta con il cartello"], ["Ritardo del volo", "-", "Seguiamo il volo, 60 min di attesa gratuita"], ["Bagagli e gruppi", "Piccolo taxi giallo", "Berlina, minivan, Classe V o minibus fino a 13"], ["Pagamento", "Tassametro, spesso solo contanti", "In contanti all'autista in EUR, USD o TRY"]],
     vsCols: ["", "Taxi normale", "{brand}"],
     howH: "Come funziona",
     how: [["Richiesta", "Scegli percorso, veicolo e orario. Ci vuole un minuto e non serve pagare in anticipo."], ["Conferma", "Verifichiamo la disponibilità e ti inviamo una conferma via e-mail, di solito entro un'ora."], ["Viaggio", "L'autista ti accoglie con un cartello con il tuo nome. Paghi il prezzo fisso in contanti alla fine."]],
@@ -47,7 +47,7 @@ const ui = {
     ["Come si paga?", "In contanti all'autista a fine corsa, in euro, dollari USA o lire turche. Nessun pagamento online e nessun acconto."],
     ["Quando è confermata la mia prenotazione?", "Subito dopo l'invio del modulo ti scriviamo che abbiamo ricevuto la richiesta. Quando assegniamo l'auto, di solito entro un'ora, ricevi l'e-mail di conferma."],
     ["E se il mio volo è in ritardo?", "Seguiamo il tuo volo e adattiamo l'orario di ritiro. I primi 60 minuti dopo l'atterraggio sono gratuiti."],
-    ["Il prezzo è a persona?", "No, il prezzo è per auto. Una berlina porta fino a 3 passeggeri, un minivan fino a 7, una Classe V fino a 6 e un minibus fino a 16."],
+    ["Il prezzo è a persona?", "No, il prezzo è per auto. Una berlina porta fino a 3 passeggeri, un minivan fino a 6, una Classe V fino a 6 e un minibus fino a 13."],
     ["Posso cancellare?", "Sì, gratis fino a 24 ore prima del ritiro. Rispondi all'e-mail di conferma o scrivici su WhatsApp."]
   ],
   route: {
@@ -59,7 +59,7 @@ const ui = {
     pricesH: "Prezzi {from} – {to}", car: "Veicolo", seats: "Passeggeri", bags: "Valigie", price: "Prezzo per auto",
     areaH: "Zone incluse in questo prezzo", meetH: "Dove ti aspetta l'autista",
     faq: [
-      ["Quanto costa un taxi {from} – {to}?", "Con noi il prezzo è fisso: €{price} per auto in berlina, €{van} in minivan fino a 7, €{vclass} in Mercedes Classe V ed €{bus} in minibus fino a 16 persone."],
+      ["Quanto costa un taxi {from} – {to}?", "Con noi il prezzo è fisso: €{price} per auto in berlina, €{van} in minivan fino a 6, €{vclass} in Mercedes Classe V ed €{bus} in minibus fino a 13 persone."],
       ["Quanto dura il viaggio?", "Circa {min} minuti per {km} km fuori dalle ore di punta. Le sere dei giorni feriali può volerci di più; il prezzo non cambia."],
       ["Pago di più se il volo è in ritardo?", "No. Seguiamo il tuo volo e i primi 60 minuti dopo l'atterraggio sono gratuiti."]
     ],
@@ -132,7 +132,7 @@ const blog = {
 <h2>Attesa: coda o cartello con il nome</h2>
 <p>Al posteggio taxi si fa la coda, a volte a lungo quando atterrano più voli insieme. Con un transfer l'autista segue il tuo volo e ti aspetta nella sala arrivi con un cartello con il tuo nome. Con {brand} i primi 60 minuti dopo l'atterraggio sono gratuiti, quindi una lunga coda al controllo passaporti o un bagaglio in ritardo non costano nulla in più.</p>
 <h2>Bagagli e gruppi</h2>
-<p>Un taxi giallo porta fino a quattro passeggeri e pochi bagagli. Con un transfer scegli l'auto giusta: una berlina fino a 3, un minivan fino a 7, una Mercedes Classe V fino a 6 o un minibus fino a 16 persone. Un prezzo per auto, non a persona.</p>
+<p>Un taxi giallo porta fino a quattro passeggeri e pochi bagagli. Con un transfer scegli l'auto giusta: una berlina fino a 3, un minivan fino a 6, una Mercedes Classe V fino a 6 o un minibus fino a 13 persone. Un prezzo per auto, non a persona.</p>
 <h2>Lingua e sicurezza</h2>
 <p>Non devi spiegare l'indirizzo dell'hotel in turco: è già nella prenotazione. Viaggi con un autista professionista che conosce la strada e paghi il prezzo concordato alla fine.</p>
 <h2>Quando il taxi va comunque bene</h2>

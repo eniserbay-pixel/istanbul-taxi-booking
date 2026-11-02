@@ -20,9 +20,9 @@ module.exports = {
 <li>Controlla la conferma e scrivici subito se data, ora, indirizzo, numero di volo o numero di passeggeri sono errati: la corsa segue la conferma.</li></ul>`],
       ["Veicoli", `<p>Prenoti una categoria di veicolo, non un modello o una targa specifici:</p>
 <ul><li><strong>Berlina</strong>: fino a 3 passeggeri e 3 valigie (Skoda Octavia, Toyota Corolla o simile).</li>
-<li><strong>Minivan</strong>: fino a 7 passeggeri e 7 valigie (Mercedes Vito, Ford Tourneo o simile).</li>
+<li><strong>Minivan</strong>: fino a 6 passeggeri e 7 valigie (Mercedes Vito, Ford Tourneo o simile).</li>
 <li><strong>Mercedes Classe V</strong>: fino a 6 passeggeri e 6 valigie.</li>
-<li><strong>Minibus</strong>: fino a 16 passeggeri e 16 valigie (Mercedes Sprinter o simile).</li></ul>
+<li><strong>Minibus</strong>: fino a 13 passeggeri e 16 valigie (Mercedes Sprinter o simile).</li></ul>
 <p>Le foto sul sito sono esempi. Possiamo inviare senza sovrapprezzo un veicolo della stessa categoria o superiore. Tutti i veicoli sono autorizzati al trasporto commerciale di passeggeri, assicurati come richiede la legge turca e per non fumatori.</p>`],
       ["Prezzi", `<ul><li>I prezzi sono <strong>fissi per veicolo</strong>, non a persona, e sono mostrati in euro prima dell'invio della richiesta. Il prezzo nella conferma è quello che paghi.</li>
 <li>Il prezzo include carburante, pedaggi di autostrade, ponti e tunnel, parcheggio in aeroporto, il tempo di attesa gratuito indicato sotto e l'accoglienza con cartello nominativo.</li>
