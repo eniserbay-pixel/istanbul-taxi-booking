@@ -27,7 +27,7 @@ module.exports = {
 <p>Galataport sits on the European shore of the Bosphorus in Karaköy and Tophane, between the Galata Bridge and Beşiktaş. It opened in 2021 and its cruise terminal is built underground, beneath a public waterfront promenade with shops, cafés and museums. When you leave the ship you go through the terminal and come out at street level, a short walk from the Tophane tram stop.</p>
 <p>Because the port is in the middle of the city, Taksim and Sultanahmet are close. The airports are not: both are around 45 to 50 km away.</p>
 <h2>Galataport to Istanbul Airport (IST)</h2>
-<p>Istanbul Airport is about <strong>${KM.ist[0]} km</strong> from Galataport, roughly <strong>${KM.ist[1]} minutes</strong> by car outside rush hour. With suitcases straight off a cruise, a pre-booked car is the easiest option: a private transfer costs a fixed <strong>€${E.ist} per car</strong> in a sedan for up to 3 passengers, or €${E.van} in a minivan for up to 7. <a href="${L.en.ist}">See all prices</a>.</p>
+<p>Istanbul Airport is about <strong>${KM.ist[0]} km</strong> from Galataport, roughly <strong>${KM.ist[1]} minutes</strong> by car outside rush hour. With suitcases straight off a cruise, a pre-booked car is the easiest option: a private transfer costs a fixed <strong>€${E.ist} per car</strong> in a sedan for up to 3 passengers, or €${E.van} in a minivan for up to 6. <a href="${L.en.ist}">See all prices</a>.</p>
 <h2>Galataport to Sabiha Gökçen Airport (SAW)</h2>
 <p>Sabiha Gökçen is on the Asian side, about <strong>${KM.saw[0]} km</strong> and around <strong>${KM.saw[1]} minutes</strong> away, crossing the Bosphorus by bridge. A transfer costs a fixed <strong>€${E.saw} per car</strong>. Plan extra time on weekday afternoons, when bridge traffic is heavy. <a href="${L.en.saw}">See all prices</a>.</p>
 {widget}
@@ -39,7 +39,7 @@ module.exports = {
 <ul>
 <li><strong>Tell us your ship and disembarkation time</strong> when you book, so the driver is there when you come out.</li>
 <li><strong>Allow time for the airport.</strong> Most passengers leave the ship in the morning; for a flight the same day, give yourself at least three hours between leaving the terminal and departure.</li>
-<li><strong>Pick a car that fits your luggage.</strong> Cruise passengers often travel with more bags than usual: a minivan takes up to 7 passengers and 7 suitcases.</li>
+<li><strong>Pick a car that fits your luggage.</strong> Cruise passengers often travel with more bags than usual: a minivan takes up to 6 passengers and 7 suitcases.</li>
 <li><strong>The price is per car and fixed.</strong> Tolls are included and you pay the driver in cash in euro, US dollar or Turkish lira.</li>
 </ul>
 <p>All routes and prices from the port are on our <a href="${L.en.hub}">Galataport taxi page</a>.</p>
@@ -54,7 +54,7 @@ module.exports = {
 <p>Галатапорт расположен на европейском берегу Босфора, в районах Каракёй и Топхане, между Галатским мостом и Бешикташем. Он открылся в 2021 году, а его круизный терминал находится под землёй, под открытой набережной с магазинами, кафе и музеями. Сойдя с лайнера, вы проходите через терминал и выходите на улицу в нескольких минутах от трамвайной остановки Tophane.</p>
 <p>Порт в центре города, поэтому Таксим и Султанахмет рядом. Аэропорты — нет: до обоих около 45–50 км.</p>
 <h2>Из Галатапорта в аэропорт Стамбула (IST)</h2>
-<p>До аэропорта Стамбула около <strong>${KM.ist[0]} км</strong>, примерно <strong>${KM.ist[1]} минут</strong> на машине вне часа пик. С чемоданами после круиза удобнее всего заранее заказанная машина: трансфер стоит фиксированные <strong>€${E.ist} за машину</strong> (седан до 3 пассажиров) или €${E.van} за минивэн до 7 человек. <a href="${L.ru.ist}">Все цены</a>.</p>
+<p>До аэропорта Стамбула около <strong>${KM.ist[0]} км</strong>, примерно <strong>${KM.ist[1]} минут</strong> на машине вне часа пик. С чемоданами после круиза удобнее всего заранее заказанная машина: трансфер стоит фиксированные <strong>€${E.ist} за машину</strong> (седан до 3 пассажиров) или €${E.van} за минивэн до 6 человек. <a href="${L.ru.ist}">Все цены</a>.</p>
 <h2>Из Галатапорта в аэропорт Сабиха Гёкчен (SAW)</h2>
 <p>Сабиха Гёкчен находится на азиатской стороне, примерно в <strong>${KM.saw[0]} км</strong>, около <strong>${KM.saw[1]} минут</strong> пути через мост над Босфором. Трансфер стоит фиксированные <strong>€${E.saw} за машину</strong>. В будни после обеда закладывайте больше времени: на мостах пробки. <a href="${L.ru.saw}">Все цены</a>.</p>
 {widget}
@@ -66,7 +66,7 @@ module.exports = {
 <ul>
 <li><strong>Укажите лайнер и время высадки</strong> при заказе, чтобы водитель ждал вас на выходе.</li>
 <li><strong>Оставьте время до рейса.</strong> Обычно пассажиры сходят с лайнера утром; если вылет в тот же день, закладывайте минимум три часа между выходом из терминала и вылетом.</li>
-<li><strong>Выберите машину под багаж.</strong> После круиза чемоданов обычно больше: минивэн вмещает до 7 пассажиров и 7 чемоданов.</li>
+<li><strong>Выберите машину под багаж.</strong> После круиза чемоданов обычно больше: минивэн вмещает до 6 пассажиров и 7 чемоданов.</li>
 <li><strong>Цена за машину и фиксированная.</strong> Платные дороги включены, оплата водителю наличными в евро, долларах или лирах.</li>
 </ul>
 <p>Все маршруты и цены из порта — на странице <a href="${L.ru.hub}">такси из Галатапорта</a>.</p>
@@ -81,7 +81,7 @@ module.exports = {
 <p>Galataport liegt am europäischen Ufer des Bosporus in Karaköy und Tophane, zwischen der Galatabrücke und Beşiktaş. Der Hafen wurde 2021 eröffnet, sein Kreuzfahrtterminal liegt unterirdisch unter einer öffentlichen Uferpromenade mit Geschäften, Cafés und Museen. Nach dem Verlassen des Schiffs gehen Sie durch das Terminal und kommen auf Straßenniveau heraus, wenige Minuten von der Straßenbahnhaltestelle Tophane.</p>
 <p>Weil der Hafen mitten in der Stadt liegt, sind Taksim und Sultanahmet nah. Die Flughäfen nicht: Beide sind rund 45 bis 50 km entfernt.</p>
 <h2>Galataport – Flughafen Istanbul (IST)</h2>
-<p>Der Flughafen Istanbul ist etwa <strong>${KM.ist[0]} km</strong> entfernt, außerhalb der Stoßzeiten rund <strong>${KM.ist[1]} Minuten</strong> Fahrt. Mit Koffern direkt von der Kreuzfahrt ist ein vorab gebuchtes Auto am einfachsten: Der Transfer kostet fest <strong>€${E.ist} pro Auto</strong> in der Limousine für bis zu 3 Personen oder €${E.van} im Minivan für bis zu 7. <a href="${L.de.ist}">Alle Preise</a>.</p>
+<p>Der Flughafen Istanbul ist etwa <strong>${KM.ist[0]} km</strong> entfernt, außerhalb der Stoßzeiten rund <strong>${KM.ist[1]} Minuten</strong> Fahrt. Mit Koffern direkt von der Kreuzfahrt ist ein vorab gebuchtes Auto am einfachsten: Der Transfer kostet fest <strong>€${E.ist} pro Auto</strong> in der Limousine für bis zu 3 Personen oder €${E.van} im Minivan für bis zu 6. <a href="${L.de.ist}">Alle Preise</a>.</p>
 <h2>Galataport – Flughafen Sabiha Gökçen (SAW)</h2>
 <p>Sabiha Gökçen liegt auf der asiatischen Seite, etwa <strong>${KM.saw[0]} km</strong> und rund <strong>${KM.saw[1]} Minuten</strong> entfernt, über eine Bosporusbrücke. Der Transfer kostet fest <strong>€${E.saw} pro Auto</strong>. Werktags am Nachmittag mehr Zeit einplanen, dann sind die Brücken voll. <a href="${L.de.saw}">Alle Preise</a>.</p>
 {widget}
@@ -93,7 +93,7 @@ module.exports = {
 <ul>
 <li><strong>Nennen Sie uns Schiff und Ausschiffungszeit</strong> bei der Buchung, damit der Fahrer bereitsteht, wenn Sie herauskommen.</li>
 <li><strong>Zeit bis zum Flug einplanen.</strong> Meist verlassen die Gäste das Schiff am Vormittag; bei einem Flug am selben Tag mindestens drei Stunden zwischen Terminal und Abflug einplanen.</li>
-<li><strong>Ein Auto passend zum Gepäck wählen.</strong> Nach einer Kreuzfahrt sind es oft mehr Koffer: Ein Minivan fasst bis zu 7 Personen und 7 Koffer.</li>
+<li><strong>Ein Auto passend zum Gepäck wählen.</strong> Nach einer Kreuzfahrt sind es oft mehr Koffer: Ein Minivan fasst bis zu 6 Personen und 7 Koffer.</li>
 <li><strong>Der Preis gilt pro Auto und ist fest.</strong> Maut ist inklusive, bezahlt wird bar beim Fahrer in Euro, US-Dollar oder Lira.</li>
 </ul>
 <p>Alle Strecken und Preise ab dem Hafen finden Sie auf unserer Seite <a href="${L.de.hub}">Galataport Taxi</a>.</p>
@@ -108,7 +108,7 @@ module.exports = {
 <p>Galataport se trouve sur la rive européenne du Bosphore, à Karaköy et Tophane, entre le pont de Galata et Beşiktaş. Il a ouvert en 2021 et son terminal de croisière est souterrain, sous une promenade en bord de mer ouverte au public avec boutiques, cafés et musées. En quittant le navire, vous traversez le terminal et ressortez au niveau de la rue, à quelques minutes de l'arrêt de tram Tophane.</p>
 <p>Le port étant en plein centre, Taksim et Sultanahmet sont proches. Les aéroports, eux, sont à environ 45 à 50 km.</p>
 <h2>Galataport – aéroport d'Istanbul (IST)</h2>
-<p>L'aéroport d'Istanbul est à environ <strong>${KM.ist[0]} km</strong>, soit près de <strong>${KM.ist[1]} minutes</strong> en voiture hors heures de pointe. Avec les valises d'une croisière, une voiture réservée à l'avance est le plus simple : le transfert coûte un prix fixe de <strong>€${E.ist} par voiture</strong> en berline jusqu'à 3 passagers, ou €${E.van} en monospace jusqu'à 7. <a href="${L.fr.ist}">Tous les prix</a>.</p>
+<p>L'aéroport d'Istanbul est à environ <strong>${KM.ist[0]} km</strong>, soit près de <strong>${KM.ist[1]} minutes</strong> en voiture hors heures de pointe. Avec les valises d'une croisière, une voiture réservée à l'avance est le plus simple : le transfert coûte un prix fixe de <strong>€${E.ist} par voiture</strong> en berline jusqu'à 3 passagers, ou €${E.van} en monospace jusqu'à 6. <a href="${L.fr.ist}">Tous les prix</a>.</p>
 <h2>Galataport – aéroport Sabiha Gökçen (SAW)</h2>
 <p>Sabiha Gökçen est sur la rive asiatique, à environ <strong>${KM.saw[0]} km</strong> et près de <strong>${KM.saw[1]} minutes</strong>, en traversant le Bosphore par un pont. Le transfert coûte un prix fixe de <strong>€${E.saw} par voiture</strong>. Prévoyez plus de temps en semaine l'après-midi, quand les ponts sont chargés. <a href="${L.fr.saw}">Tous les prix</a>.</p>
 {widget}
@@ -120,7 +120,7 @@ module.exports = {
 <ul>
 <li><strong>Indiquez-nous votre navire et l'heure de débarquement</strong> à la réservation, pour que le chauffeur soit là à votre sortie.</li>
 <li><strong>Gardez de la marge pour l'avion.</strong> Le débarquement a souvent lieu le matin ; pour un vol le jour même, comptez au moins trois heures entre la sortie du terminal et le décollage.</li>
-<li><strong>Choisissez une voiture adaptée aux bagages.</strong> Après une croisière, on a souvent plus de valises : un monospace prend jusqu'à 7 passagers et 7 valises.</li>
+<li><strong>Choisissez une voiture adaptée aux bagages.</strong> Après une croisière, on a souvent plus de valises : un monospace prend jusqu'à 6 passagers et 7 valises.</li>
 <li><strong>Le prix est fixe et par voiture.</strong> Les péages sont inclus et vous payez le chauffeur en espèces, en euros, dollars ou livres turques.</li>
 </ul>
 <p>Tous les trajets et prix depuis le port sont sur notre page <a href="${L.fr.hub}">taxi Galataport</a>.</p>
@@ -135,7 +135,7 @@ module.exports = {
 <p>Galataport si trova sulla sponda europea del Bosforo, a Karaköy e Tophane, tra il ponte di Galata e Beşiktaş. È stato inaugurato nel 2021 e il suo terminal crociere è sotterraneo, sotto una passeggiata pubblica sul mare con negozi, caffè e musei. Scesi dalla nave si attraversa il terminal e si esce in strada, a pochi minuti dalla fermata del tram Tophane.</p>
 <p>Essendo in pieno centro, Taksim e Sultanahmet sono vicini. Gli aeroporti no: entrambi sono a circa 45-50 km.</p>
 <h2>Galataport – aeroporto di Istanbul (IST)</h2>
-<p>L'aeroporto di Istanbul dista circa <strong>${KM.ist[0]} km</strong>, circa <strong>${KM.ist[1]} minuti</strong> in auto fuori dall'ora di punta. Con le valigie di una crociera, un'auto prenotata è la soluzione più semplice: il transfer costa un prezzo fisso di <strong>€${E.ist} per auto</strong> in berlina fino a 3 passeggeri, o €${E.van} in minivan fino a 7. <a href="${L.it.ist}">Tutti i prezzi</a>.</p>
+<p>L'aeroporto di Istanbul dista circa <strong>${KM.ist[0]} km</strong>, circa <strong>${KM.ist[1]} minuti</strong> in auto fuori dall'ora di punta. Con le valigie di una crociera, un'auto prenotata è la soluzione più semplice: il transfer costa un prezzo fisso di <strong>€${E.ist} per auto</strong> in berlina fino a 3 passeggeri, o €${E.van} in minivan fino a 6. <a href="${L.it.ist}">Tutti i prezzi</a>.</p>
 <h2>Galataport – aeroporto Sabiha Gökçen (SAW)</h2>
 <p>Sabiha Gökçen è sulla sponda asiatica, a circa <strong>${KM.saw[0]} km</strong> e circa <strong>${KM.saw[1]} minuti</strong>, attraversando il Bosforo su un ponte. Il transfer costa un prezzo fisso di <strong>€${E.saw} per auto</strong>. Nei pomeriggi feriali calcolate più tempo, perché i ponti sono trafficati. <a href="${L.it.saw}">Tutti i prezzi</a>.</p>
 {widget}
@@ -147,7 +147,7 @@ module.exports = {
 <ul>
 <li><strong>Indicateci nave e orario di sbarco</strong> quando prenotate, così l'autista è lì quando uscite.</li>
 <li><strong>Lasciate margine per il volo.</strong> Di solito si sbarca in mattinata; per un volo nello stesso giorno calcolate almeno tre ore tra l'uscita dal terminal e la partenza.</li>
-<li><strong>Scegliete un'auto adatta ai bagagli.</strong> Dopo una crociera le valigie sono spesso di più: un minivan porta fino a 7 passeggeri e 7 valigie.</li>
+<li><strong>Scegliete un'auto adatta ai bagagli.</strong> Dopo una crociera le valigie sono spesso di più: un minivan porta fino a 6 passeggeri e 7 valigie.</li>
 <li><strong>Il prezzo è fisso e per auto.</strong> I pedaggi sono inclusi e si paga l'autista in contanti, in euro, dollari o lire turche.</li>
 </ul>
 <p>Tutte le tratte e i prezzi dal porto sono sulla nostra pagina <a href="${L.it.hub}">taxi Galataport</a>.</p>
@@ -162,7 +162,7 @@ module.exports = {
 <p>Galataport ligt aan de Europese oever van de Bosporus in Karaköy en Tophane, tussen de Galatabrug en Beşiktaş. De haven opende in 2021 en de cruiseterminal ligt ondergronds, onder een openbare boulevard met winkels, cafés en musea. Na het verlaten van het schip loopt u door de terminal en komt u op straatniveau uit, op een paar minuten van tramhalte Tophane.</p>
 <p>Omdat de haven midden in de stad ligt, zijn Taksim en Sultanahmet dichtbij. De luchthavens niet: die liggen allebei op zo'n 45 tot 50 km.</p>
 <h2>Galataport – Luchthaven Istanbul (IST)</h2>
-<p>Luchthaven Istanbul ligt op ongeveer <strong>${KM.ist[0]} km</strong>, buiten de spits zo'n <strong>${KM.ist[1]} minuten</strong> rijden. Met koffers direct van de cruise is een vooraf geboekte auto het makkelijkst: de transfer kost vast <strong>€${E.ist} per auto</strong> in een sedan voor maximaal 3 personen, of €${E.van} in een minivan voor maximaal 7. <a href="${L.nl.ist}">Alle prijzen</a>.</p>
+<p>Luchthaven Istanbul ligt op ongeveer <strong>${KM.ist[0]} km</strong>, buiten de spits zo'n <strong>${KM.ist[1]} minuten</strong> rijden. Met koffers direct van de cruise is een vooraf geboekte auto het makkelijkst: de transfer kost vast <strong>€${E.ist} per auto</strong> in een sedan voor maximaal 3 personen, of €${E.van} in een minivan voor maximaal 6. <a href="${L.nl.ist}">Alle prijzen</a>.</p>
 <h2>Galataport – Luchthaven Sabiha Gökçen (SAW)</h2>
 <p>Sabiha Gökçen ligt aan de Aziatische kant, op ongeveer <strong>${KM.saw[0]} km</strong> en zo'n <strong>${KM.saw[1]} minuten</strong>, over een Bosporusbrug. De transfer kost vast <strong>€${E.saw} per auto</strong>. Reken op doordeweekse middagen op extra tijd, want dan staan de bruggen vol. <a href="${L.nl.saw}">Alle prijzen</a>.</p>
 {widget}
@@ -174,7 +174,7 @@ module.exports = {
 <ul>
 <li><strong>Geef bij de boeking uw schip en ontschepingstijd door</strong>, zodat de chauffeur klaarstaat als u naar buiten komt.</li>
 <li><strong>Houd tijd over voor uw vlucht.</strong> Meestal gaan passagiers 's ochtends van boord; plan bij een vlucht op dezelfde dag minstens drie uur tussen het verlaten van de terminal en vertrek.</li>
-<li><strong>Kies een auto die bij uw bagage past.</strong> Na een cruise heeft u vaak meer koffers: een minivan neemt tot 7 personen en 7 koffers mee.</li>
+<li><strong>Kies een auto die bij uw bagage past.</strong> Na een cruise heeft u vaak meer koffers: een minivan neemt tot 6 personen en 7 koffers mee.</li>
 <li><strong>De prijs is vast en per auto.</strong> Tol is inbegrepen en u betaalt de chauffeur contant in euro, dollar of lira.</li>
 </ul>
 <p>Alle routes en prijzen vanaf de haven staan op onze pagina <a href="${L.nl.hub}">Galataport taxi</a>.</p>

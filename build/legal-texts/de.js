@@ -20,9 +20,9 @@ module.exports = {
 <li>Bitte prüfen Sie die Bestätigung. Melden Sie sich sofort, wenn Datum, Uhrzeit, Adresse, Flugnummer oder Personenzahl falsch sind: Wir fahren nach der Bestätigung.</li></ul>`],
       ["Fahrzeuge", `<p>Sie buchen eine Fahrzeugklasse, kein bestimmtes Modell und kein Kennzeichen:</p>
 <ul><li><strong>Limousine</strong>: bis 3 Fahrgäste und 3 Koffer (Skoda Octavia, Toyota Corolla oder ähnlich).</li>
-<li><strong>Minivan</strong>: bis 7 Fahrgäste und 7 Koffer (Mercedes Vito, Ford Tourneo oder ähnlich).</li>
+<li><strong>Minivan</strong>: bis 6 Fahrgäste und 7 Koffer (Mercedes Vito, Ford Tourneo oder ähnlich).</li>
 <li><strong>Mercedes V-Klasse</strong>: bis 6 Fahrgäste und 6 Koffer.</li>
-<li><strong>Kleinbus</strong>: bis 16 Fahrgäste und 16 Koffer (Mercedes Sprinter oder ähnlich).</li></ul>
+<li><strong>Kleinbus</strong>: bis 13 Fahrgäste und 16 Koffer (Mercedes Sprinter oder ähnlich).</li></ul>
 <p>Die Bilder auf der Website sind Beispiele. Wir können ohne Aufpreis ein Fahrzeug derselben oder einer höheren Klasse schicken. Alle Fahrzeuge sind für die gewerbliche Personenbeförderung zugelassen, nach türkischem Recht versichert und Nichtraucherfahrzeuge.</p>`],
       ["Preise", `<ul><li>Die Preise sind <strong>Festpreise pro Fahrzeug</strong>, nicht pro Person, und werden vor dem Absenden in Euro angezeigt. Der Preis in Ihrer Bestätigung ist der Preis, den Sie zahlen.</li>
 <li>Im Preis enthalten sind Kraftstoff, Autobahn-, Brücken- und Tunnelmaut, Flughafenparken, die kostenlose Wartezeit (siehe unten) und der Empfang mit Namensschild.</li>

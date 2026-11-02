@@ -40,7 +40,7 @@ const ui = {
     fleetH: "Aracınızı seçin", fleetLead: "Fiyat kişi başı değil, araç başıdır. Köprü-otoyol, otopark ve bekleme süresi dahildir.",
     routesH: "İstanbul'da popüler transfer güzergahları", routesLead: "Araç başı sabit fiyatlar, tek yön.", routesPeak: "IST'de {istFrom}–{istTo}, SAW'da {sawFrom}–{sawTo} arası alışlar %{pct} daha pahalıdır.",
     vsH: "Taksimetreli taksi mi, bizim havalimanı transferimiz mi?",
-    vs: [["Fiyat", "Trafiğe ve şoförün seçtiği yola göre değişir", "Rezervasyonda sabitlenir"], ["Geliş salonunda", "Taksi kuyruğu", "Şoför isim tabelanızla bekler"], ["Uçuş rötarı", "-", "Uçuşunuzu takip ederiz, 60 dk ücretsiz bekleme"], ["Bagaj ve gruplar", "Küçük sarı taksi", "16 kişiye kadar sedan, minivan, V-Class veya minibüs"], ["Ödeme", "Taksimetre, çoğu zaman sadece nakit", "Şoföre nakit, EUR, USD veya TL"]],
+    vs: [["Fiyat", "Trafiğe ve şoförün seçtiği yola göre değişir", "Rezervasyonda sabitlenir"], ["Geliş salonunda", "Taksi kuyruğu", "Şoför isim tabelanızla bekler"], ["Uçuş rötarı", "-", "Uçuşunuzu takip ederiz, 60 dk ücretsiz bekleme"], ["Bagaj ve gruplar", "Küçük sarı taksi", "13 kişiye kadar sedan, minivan, V-Class veya minibüs"], ["Ödeme", "Taksimetre, çoğu zaman sadece nakit", "Şoföre nakit, EUR, USD veya TL"]],
     vsCols: ["", "Sarı taksi", "{brand}"],
     howH: "Nasıl çalışır",
     how: [["Talep", "Güzergah, araç ve saati seçin. Bir dakika sürer, ön ödeme gerekmez."], ["Onay", "Müsaitliği kontrol eder, genellikle bir saat içinde onay e-postası göndeririz."], ["Yolculuk", "Şoförünüz sizi isim tabelasıyla karşılar. Sabit fiyatı yolculuk sonunda nakit ödersiniz."]],
@@ -56,7 +56,7 @@ const ui = {
     ["Nasıl ödeme yaparım?", "Yolculuk sonunda şoföre nakit olarak, euro, ABD doları veya Türk lirası ile ödersiniz. Online ödeme ve kapora yoktur."],
     ["Rezervasyonum ne zaman onaylanır?", "Formu gönderdiğiniz anda talebinizi aldığımızı e-postayla bildiririz. Araç atandığında, genellikle bir saat içinde, onay e-postası göndeririz."],
     ["Uçuşum gecikirse ne olur?", "Uçuşunuzu takip eder, alış saatini ayarlarız. İnişten sonraki ilk 60 dakika ücretsizdir."],
-    ["Fiyat kişi başı mı?", "Hayır, araç başıdır. Sedan en fazla 3, minivan 7, V-Class 6 ve minibüs 16 yolcu alır."],
+    ["Fiyat kişi başı mı?", "Hayır, araç başıdır. Sedan en fazla 3, minivan 6, V-Class 6 ve minibüs 13 yolcu alır."],
     ["İptal edebilir miyim?", "Evet, alıştan 24 saat öncesine kadar ücretsiz. Onay e-postasını yanıtlamanız veya WhatsApp'tan yazmanız yeterli."]
   ],
   route: {
@@ -68,7 +68,7 @@ const ui = {
     pricesH: "{from} – {to} fiyatları", car: "Araç", seats: "Yolcu", bags: "Bavul", price: "Araç başı fiyat",
     areaH: "Bu fiyata dahil bölgeler", meetH: "Şoförünüz nerede bekler",
     faq: [
-      ["{from} – {to} taksi ne kadar?", "Bizimle sedan araç başı sabit €{price}, 7 kişilik minivan €{van}, Mercedes V-Class €{vclass} ve 16 kişilik minibüs €{bus}."],
+      ["{from} – {to} taksi ne kadar?", "Bizimle sedan araç başı sabit €{price}, 6 kişilik minivan €{van}, Mercedes V-Class €{vclass} ve 13 kişilik minibüs €{bus}."],
       ["Yolculuk ne kadar sürer?", "{km} km, yoğun saatler dışında yaklaşık {min} dakika. Hafta içi akşamları daha uzun sürebilir; fiyat değişmez."],
       ["Uçuşum gecikirse fazla öder miyim?", "Hayır. Uçuşunuzu takip ederiz, inişten sonraki ilk 60 dakika ücretsizdir."]
     ],
@@ -145,7 +145,7 @@ const blog = {
 <h2>Bekleme: kuyruk mu, isim tabelası mı</h2>
 <p>Taksi durağında, özellikle aynı anda birkaç uçak indiğinde, uzun süre kuyrukta beklersiniz. Transferde şoförünüz uçuşunuzu takip eder ve geliş salonunda isim tabelanızla bekler. {brand} ile inişten sonraki ilk 60 dakika ücretsizdir; uzun pasaport kuyruğu ya da geciken bavul ek ücrete yol açmaz.</p>
 <h2>Bagaj ve gruplar</h2>
-<p>Sarı taksi en fazla dört yolcu ve az bagaj alır. Transferde grubunuza uygun aracı seçersiniz: 3 kişiye kadar sedan, 7 kişiye kadar minivan, 6 kişiye kadar Mercedes V-Class veya 16 kişiye kadar minibüs. Fiyat kişi başı değil, araç başıdır.</p>
+<p>Sarı taksi en fazla dört yolcu ve az bagaj alır. Transferde grubunuza uygun aracı seçersiniz: 3 kişiye kadar sedan, 6 kişiye kadar minivan, 6 kişiye kadar Mercedes V-Class veya 13 kişiye kadar minibüs. Fiyat kişi başı değil, araç başıdır.</p>
 <h2>Dil ve güvenlik</h2>
 <p>Otel adresinizi Türkçe tarif etmeniz gerekmez; adres zaten rezervasyonunuzdadır. Yolu bilen profesyonel bir şoförle gider, sonunda anlaşılan fiyatı ödersiniz.</p>
 <h2>Taksi ne zaman yeterli</h2>
@@ -179,7 +179,7 @@ const blog = {
 <p>Galataport, Avrupa Yakası'nda Karaköy ile Tophane arasında, Galata Köprüsü ile Beşiktaş'ın arasında yer alır. 2021'de açıldı; kruvaziyer terminali, mağaza, kafe ve müzelerin olduğu halka açık bir sahil yolunun altında, yer altındadır. Gemiden inince terminalden geçip sokak seviyesine çıkarsınız; Tophane tramvay durağı birkaç dakika yürüme mesafesindedir.</p>
 <p>Liman şehrin merkezinde olduğu için Taksim ve Sultanahmet yakındır. Havalimanları ise yakın değil: ikisi de yaklaşık 45-50 km uzaklıkta.</p>
 <h2>Galataport – İstanbul Havalimanı (IST)</h2>
-<p>İstanbul Havalimanı Galataport'a yaklaşık <strong>${GK.ist[0]} km</strong>, yoğun saat dışında arabayla yaklaşık <strong>${GK.ist[1]} dakika</strong>. Kruvaziyerden bavullarla inerken en kolayı önceden ayırtılan bir araçtır: 3 kişiye kadar sedan ile araç başı sabit <strong>€${gp("IST", "galataport")}</strong>, 7 kişilik minivan ile €${Q.base(P, "IST", "galataport", "minivan")}. <a href="${GP.ist}">Tüm fiyatlar</a>.</p>
+<p>İstanbul Havalimanı Galataport'a yaklaşık <strong>${GK.ist[0]} km</strong>, yoğun saat dışında arabayla yaklaşık <strong>${GK.ist[1]} dakika</strong>. Kruvaziyerden bavullarla inerken en kolayı önceden ayırtılan bir araçtır: 3 kişiye kadar sedan ile araç başı sabit <strong>€${gp("IST", "galataport")}</strong>, 6 kişilik minivan ile €${Q.base(P, "IST", "galataport", "minivan")}. <a href="${GP.ist}">Tüm fiyatlar</a>.</p>
 <h2>Galataport – Sabiha Gökçen (SAW)</h2>
 <p>Sabiha Gökçen Anadolu Yakası'nda, Boğaz köprüsü üzerinden yaklaşık <strong>${GK.saw[0]} km</strong> ve <strong>${GK.saw[1]} dakika</strong>. Transfer araç başı sabit <strong>€${gp("SAW", "galataport")}</strong>. Hafta içi öğleden sonraları köprü trafiği yoğun olduğundan ek süre ayırın. <a href="${GP.saw}">Tüm fiyatlar</a>.</p>
 {widget}
@@ -191,7 +191,7 @@ const blog = {
 <ul>
 <li><strong>Rezervasyonda geminizin adını ve iniş saatini belirtin</strong>, şoförünüz siz çıktığınızda orada olsun.</li>
 <li><strong>Havalimanı için zaman bırakın.</strong> Yolcuların çoğu sabah iner; aynı gün uçuşunuz varsa terminalden çıkış ile kalkış arasında en az üç saat bırakın.</li>
-<li><strong>Bagajınıza uygun aracı seçin.</strong> Kruvaziyer yolcuları genellikle daha fazla bavulla seyahat eder: minivan 7 yolcu ve 7 bavul alır.</li>
+<li><strong>Bagajınıza uygun aracı seçin.</strong> Kruvaziyer yolcuları genellikle daha fazla bavulla seyahat eder: minivan 6 yolcu ve 7 bavul alır.</li>
 <li><strong>Fiyat araç başı ve sabittir.</strong> Köprü-otoyol dahildir, şoföre euro, dolar veya TL ile nakit ödersiniz.</li>
 </ul>
 <p>Limandan tüm güzergah ve fiyatlar <a href="${GP.hub}">Galataport taksi sayfamızda</a>.</p>
@@ -359,7 +359,7 @@ const places = {
     lead: "{place} için özel taksi, 3 yolcuya kadar sedan ile İstanbul Havalimanı'ndan araç başı sabit <strong>€{ist}</strong>, Sabiha Gökçen'den <strong>€{saw}</strong> tutar. {place}, {zone} fiyat bölgemizde; köprü-otoyol ve otopark dahildir, şoföre nakit ödersiniz.",
     pricesH: "{place} fiyatları", from: "Nereden", aboutH: "{place} hakkında", sights: "Yakında", tip: "Şoförün tavsiyesi", zone: "Aynı fiyat",
     faq: [
-      ["İstanbul Havalimanı'ndan {place} taksi ne kadar?", "Sedan araç başı sabit €{ist}, 7 kişilik minivan €{van} ve Mercedes V-Class €{vclass}. Yol yaklaşık {istKm} km, yoğun saat dışında yaklaşık {istMin} dakika."],
+      ["İstanbul Havalimanı'ndan {place} taksi ne kadar?", "Sedan araç başı sabit €{ist}, 6 kişilik minivan €{van} ve Mercedes V-Class €{vclass}. Yol yaklaşık {istKm} km, yoğun saat dışında yaklaşık {istMin} dakika."],
       ["Sabiha Gökçen'den ne kadar?", "Sedan araç başı €{saw}, yaklaşık {sawKm} km ve yoğun saat dışında {sawMin} dakika."],
       ["Şoför beni otelin kapısına kadar götürür mü?", "Evet. Rezervasyonda otel adını veya adresini yazın; şoför sizi kapıya ya da aracın girebildiği en yakın noktaya götürür."]
     ],
@@ -385,7 +385,7 @@ const services = {
       desc: "İstanbul'da saatlik veya günlük şoförlü araç: toplantılar, alışveriş, birden fazla durak. Önceden anlaşılan fiyatla sedan, minivan, V-Class veya minibüs.",
       h1: "İstanbul'da saatlik şoförlü araç",
       lead: "Birkaç saatliğine ya da tam gün profesyonel şoförlü bir araç kiralayın. Şoför duraklar arasında bekler; taksi aramadan toplantıdan toplantıya, alışverişe ya da ziyarete gidersiniz. Fiyat önceden anlaşılır ve nakit ödenir.",
-      points: ["Birkaç saatten tam güne, ihtiyacınız kadar size özel araç ve şoför", "Şoför her durakta bekler; taksimetre ve yeni taksi yok", "16 kişiye kadar sedan, minivan, Mercedes V-Class veya minibüs", "Havalimanı transferiyle başlayıp bitebilir", "Saatlik veya günlük fiyat önceden anlaşılır, köprü-otoyol ve otopark dahil"],
+      points: ["Birkaç saatten tam güne, ihtiyacınız kadar size özel araç ve şoför", "Şoför her durakta bekler; taksimetre ve yeni taksi yok", "13 kişiye kadar sedan, minivan, Mercedes V-Class veya minibüs", "Havalimanı transferiyle başlayıp bitebilir", "Saatlik veya günlük fiyat önceden anlaşılır, köprü-otoyol ve otopark dahil"],
       how: [["Planınızı anlatın", "Tarih, başlangıç saati, yaklaşık kaç saat ve nerelere gitmek istediğiniz."], ["Fiyatınızı alın", "Seçtiğiniz araç için WhatsApp'tan sabit fiyatla dönüş yaparız."], ["Yola çıkın", "Şoförünüz sizi alır ve gün boyu sizinle olur. Sonunda nakit ödersiniz."]],
       faq: [["İstanbul'da şoförlü araç saatlik ne kadar?", "Araca ve saat sayısına göre değişir. Planınızı WhatsApp'tan gönderin, köprü-otoyol ve otopark dahil sabit fiyatla dönelim."], ["Minimum süre var mı?", "Saatlik kiralama genellikle birkaç saatten başlar; tam gün saat başına daha uygundur. Planınıza göre sorun."], ["Gün içinde durakları değiştirebilir miyim?", "Evet, İstanbul içinde ve ayırttığınız saatler içinde. Şoförünüze söylemeniz yeterli."]]
     },
@@ -395,19 +395,19 @@ const services = {
       desc: "İstanbul'u özel araç ve şoförle gezin: Tarihi Yarımada, Boğaz kıyısı, Çamlıca Tepesi ve iki kıta tek günde. Durakları siz seçin, fiyat önceden anlaşılır.",
       h1: "Özel şoförlü İstanbul turu",
       lead: "Kendi aracınız ve şoförünüzle İstanbul'un daha fazlasını bir günde görün. Tarihi Yarımada'dan Boğaz köylerine ve Anadolu Yakası'na durakları siz seçin; şoför sizi götürür ve gezerken bekler. Fiyat önceden anlaşılır ve nakit ödenir.",
-      points: ["Popüler bir gün: Sultanahmet, Dolmabahçe, Ortaköy, Boğaziçi Köprüsü'nden Çamlıca Tepesi'ne ve Anadolu sahilinden dönüş", "Her durakta ne kadar kalacağınıza siz karar verirsiniz", "Aileler, yaşlı yolcular ve 16 kişiye kadar gruplar için rahat", "Şoför aracı kullanır ve bekler; belgeli rehber için bize sorun", "Otelden alış ve otele bırakış dahil"],
+      points: ["Popüler bir gün: Sultanahmet, Dolmabahçe, Ortaköy, Boğaziçi Köprüsü'nden Çamlıca Tepesi'ne ve Anadolu sahilinden dönüş", "Her durakta ne kadar kalacağınıza siz karar verirsiniz", "Aileler, yaşlı yolcular ve 13 kişiye kadar gruplar için rahat", "Şoför aracı kullanır ve bekler; belgeli rehber için bize sorun", "Otelden alış ve otele bırakış dahil"],
       how: [["Durakları seçin", "Ne görmek istediğinizi, tarihi ve kişi sayısını bize yazın."], ["Fiyatınızı alın", "Bir güzergah önerir, WhatsApp'tan sabit fiyatla dönüş yaparız."], ["Günün tadını çıkarın", "Şoförünüz sizi otelden alır. Sonunda nakit ödersiniz."]],
       faq: [["Şoför rehber mi?", "Hayır, şoför aracı kullanır ve sizi bekler. Türkiye'de belgeli rehberlik ayrı bir hizmettir; isterseniz bize sorun."], ["Şehir turu ne kadar sürer?", "Misafirlerin çoğu 6-8 saat ayırtır; bu, ziyaretlerle birlikte Boğaz'ın iki yakası için yeterlidir."], ["Giriş biletleri dahil mi?", "Hayır, fiyat araç, şoför, yakıt, köprü-otoyol ve otoparkı kapsar. Müze ve saray biletleri yerinde ödenir."]]
     },
     wedding: {
       path: "/tr/gelin-arabasi-ve-etkinlik-transferi", nav: "Düğün ve etkinlik araçları",
       title: "İstanbul'da Gelin Arabası ve Etkinlik Transferi",
-      desc: "İstanbul'da düğün, etkinlik ve misafir transferi için şoförlü araçlar: Mercedes V-Class, minivan ve 16 kişilik minibüs, otelden mekana ve geri.",
+      desc: "İstanbul'da düğün, etkinlik ve misafir transferi için şoförlü araçlar: Mercedes V-Class, minivan ve 13 kişilik minibüs, otelden mekana ve geri.",
       h1: "İstanbul'da gelin arabası ve etkinlik transferi",
       lead: "Gelin arabasından tüm misafirlerin servisine kadar: İstanbul'da düğün, kongre ve özel etkinliklerde hizmet veriyoruz. Mercedes V-Class, minivan ve minibüsler oteller, mekanlar ve havalimanları arasında tek plan ve önceden anlaşılan tek fiyatla çalışır.",
-      points: ["Gelin-damat veya VIP misafirler için Mercedes V-Class", "Araç başı 16 misafire kadar minivan ve minibüs, aynı gün birden fazla araç", "Uçakla gelen misafirler için isim tabelalı havalimanı karşılama", "Tüm program için tek muhatap", "Önceden anlaşılan tek fiyat; şirketlere fatura"],
+      points: ["Gelin-damat veya VIP misafirler için Mercedes V-Class", "Araç başı 13 misafire kadar minivan ve minibüs, aynı gün birden fazla araç", "Uçakla gelen misafirler için isim tabelalı havalimanı karşılama", "Tüm program için tek muhatap", "Önceden anlaşılan tek fiyat; şirketlere fatura"],
       how: [["Programınızı gönderin", "Tarih, mekanlar, misafir sayısı ve saatler."], ["Plan ve fiyatı alın", "Araçları planlar, WhatsApp'tan tek fiyatla dönüş yaparız."], ["Sizin gününüz", "Şoförler erken gelir ve programa uyar. Ödeme anlaşıldığı gibi."]],
-      faq: [["Gelin arabası süslenebilir mi?", "İstediğinizi anlatın; basit süslemeler genellikle şoförle ayarlanabilir."], ["Kaç misafir taşıyabilirsiniz?", "Bir minibüs 16 kişi alır ve aynı anda birden fazla araç gönderebiliriz. Sayıları ve saatleri bize yazın."], ["Kongre ve kurumsal etkinliklere de hizmet veriyor musunuz?", "Evet. Düzenli şirket transferleri için kurumsal hesaplarımıza da bakın."]]
+      faq: [["Gelin arabası süslenebilir mi?", "İstediğinizi anlatın; basit süslemeler genellikle şoförle ayarlanabilir."], ["Kaç misafir taşıyabilirsiniz?", "Bir minibüs 13 kişi alır ve aynı anda birden fazla araç gönderebiliriz. Sayıları ve saatleri bize yazın."], ["Kongre ve kurumsal etkinliklere de hizmet veriyor musunuz?", "Evet. Düzenli şirket transferleri için kurumsal hesaplarımıza da bakın."]]
     }
   }
 };

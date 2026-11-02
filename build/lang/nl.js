@@ -31,7 +31,7 @@ const ui = {
     fleetH: "Kies je auto", fleetLead: "De prijs is per auto, niet per persoon. Tol, parkeren en wachttijd zijn inbegrepen.",
     routesH: "Populaire transferroutes in Istanbul", routesLead: "Vaste prijzen per auto, enkele reis.", routesPeak: "Ophalen op IST van {istFrom} tot {istTo} en op SAW van {sawFrom} tot {sawTo} kost {pct}% meer.",
     vsH: "Taxi met meter of onze luchthaventaxi?",
-    vs: [["Prijs", "Hangt af van het verkeer en de route van de chauffeur", "Vast bij het boeken"], ["In de aankomsthal", "Rij bij de taxistandplaats", "Chauffeur wacht met je naambordje"], ["Vertraagde vlucht", "-", "We volgen je vlucht, 60 min gratis wachten"], ["Bagage en groepen", "Kleine gele taxi", "Sedan, minivan, V-Klasse of minibus tot 16 personen"], ["Betaling", "Meter, vaak alleen contant", "Contant aan de chauffeur in EUR, USD of TRY"]],
+    vs: [["Prijs", "Hangt af van het verkeer en de route van de chauffeur", "Vast bij het boeken"], ["In de aankomsthal", "Rij bij de taxistandplaats", "Chauffeur wacht met je naambordje"], ["Vertraagde vlucht", "-", "We volgen je vlucht, 60 min gratis wachten"], ["Bagage en groepen", "Kleine gele taxi", "Sedan, minivan, V-Klasse of minibus tot 13 personen"], ["Betaling", "Meter, vaak alleen contant", "Contant aan de chauffeur in EUR, USD of TRY"]],
     vsCols: ["", "Gewone taxi", "{brand}"],
     howH: "Hoe het werkt",
     how: [["Aanvraag", "Kies je route, auto en tijd. Dat duurt een minuut en je hoeft niets vooruit te betalen."], ["Bevestiging", "We controleren de beschikbaarheid en sturen je een bevestiging per e-mail, meestal binnen een uur."], ["Rit", "Je chauffeur wacht op je met een naambordje. Je betaalt de vaste prijs contant aan het einde."]],
@@ -47,7 +47,7 @@ const ui = {
     ["Hoe betaal ik?", "Contant aan de chauffeur aan het einde van de rit, in euro, Amerikaanse dollar of Turkse lira. Er is geen online betaling en geen aanbetaling."],
     ["Wanneer is mijn boeking bevestigd?", "Direct na het versturen mailen we je dat we je aanvraag hebben ontvangen. Zodra we een auto hebben ingepland, meestal binnen een uur, ontvang je de bevestiging per e-mail."],
     ["Wat als mijn vlucht vertraging heeft?", "We volgen je vlucht en passen de ophaaltijd aan. De eerste 60 minuten na de landing zijn gratis."],
-    ["Is de prijs per persoon?", "Nee, de prijs is per auto. Een sedan is voor maximaal 3 passagiers, een minivan voor 7, een V-Klasse voor 6 en een minibus voor 16."],
+    ["Is de prijs per persoon?", "Nee, de prijs is per auto. Een sedan is voor maximaal 3 passagiers, een minivan voor 6, een V-Klasse voor 6 en een minibus voor 13."],
     ["Kan ik annuleren?", "Ja, gratis tot 24 uur voor het ophalen. Reageer gewoon op de bevestigingsmail of stuur ons een bericht via WhatsApp."]
   ],
   route: {
@@ -59,7 +59,7 @@ const ui = {
     pricesH: "Prijzen {from} – {to}", car: "Auto", seats: "Passagiers", bags: "Koffers", price: "Prijs per auto",
     areaH: "Wijken voor deze prijs", meetH: "Waar je chauffeur wacht",
     faq: [
-      ["Wat kost een taxi {from} – {to}?", "Bij ons een vaste €{price} per auto in een sedan, €{van} in een minivan tot 7, €{vclass} in een Mercedes V-Klasse en €{bus} in een minibus tot 16 personen."],
+      ["Wat kost een taxi {from} – {to}?", "Bij ons een vaste €{price} per auto in een sedan, €{van} in een minivan tot 6, €{vclass} in een Mercedes V-Klasse en €{bus} in een minibus tot 13 personen."],
       ["Hoe lang duurt de rit?", "Ongeveer {min} minuten voor {km} km buiten de spits. Op doordeweekse avonden kan het langer duren; de prijs blijft hetzelfde."],
       ["Betaal ik meer als mijn vlucht vertraagd is?", "Nee. We volgen je vlucht en de eerste 60 minuten na de landing zijn gratis."]
     ],
@@ -132,7 +132,7 @@ const blog = {
 <h2>Wachten: rij of naambordje</h2>
 <p>Bij de taxistandplaats sta je in de rij, soms lang als er meerdere vluchten tegelijk landen. Bij een transfer volgt je chauffeur je vlucht en wacht hij met je naambordje in de aankomsthal. Bij {brand} zijn de eerste 60 minuten na de landing gratis, dus een lange rij bij de paspoortcontrole of een late koffer kost niets extra.</p>
 <h2>Bagage en groepen</h2>
-<p>Een gele taxi neemt maximaal vier passagiers en weinig bagage mee. Bij een transfer kies je de auto die past: een sedan voor maximaal 3, een minivan voor 7, een Mercedes V-Klasse voor 6 of een minibus voor 16 personen. Eén prijs per auto, niet per persoon.</p>
+<p>Een gele taxi neemt maximaal vier passagiers en weinig bagage mee. Bij een transfer kies je de auto die past: een sedan voor maximaal 3, een minivan voor 6, een Mercedes V-Klasse voor 6 of een minibus voor 13 personen. Eén prijs per auto, niet per persoon.</p>
 <h2>Taal en veiligheid</h2>
 <p>Je hoeft je hoteladres niet in het Turks uit te leggen: het staat al in je boeking. Je rijdt met een professionele chauffeur die de weg kent, en je betaalt aan het einde de afgesproken prijs.</p>
 <h2>Wanneer een taxi wel prima is</h2>

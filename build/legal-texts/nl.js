@@ -20,9 +20,9 @@ module.exports = {
 <li>Controleer de bevestiging en laat het ons meteen weten als datum, tijd, adres, vluchtnummer of aantal passagiers niet klopt: we rijden volgens de bevestiging.</li></ul>`],
       ["Voertuigen", `<p>Je boekt een voertuigklasse, geen bepaald model of kenteken:</p>
 <ul><li><strong>Sedan</strong>: tot 3 passagiers en 3 koffers (Skoda Octavia, Toyota Corolla of vergelijkbaar).</li>
-<li><strong>Minivan</strong>: tot 7 passagiers en 7 koffers (Mercedes Vito, Ford Tourneo of vergelijkbaar).</li>
+<li><strong>Minivan</strong>: tot 6 passagiers en 7 koffers (Mercedes Vito, Ford Tourneo of vergelijkbaar).</li>
 <li><strong>Mercedes V-Klasse</strong>: tot 6 passagiers en 6 koffers.</li>
-<li><strong>Minibus</strong>: tot 16 passagiers en 16 koffers (Mercedes Sprinter of vergelijkbaar).</li></ul>
+<li><strong>Minibus</strong>: tot 13 passagiers en 16 koffers (Mercedes Sprinter of vergelijkbaar).</li></ul>
 <p>De foto's op de site zijn voorbeelden. We kunnen zonder meerprijs een voertuig van dezelfde of een hogere klasse sturen. Alle voertuigen hebben een vergunning voor commercieel personenvervoer, zijn verzekerd zoals de Turkse wet voorschrijft en zijn rookvrij.</p>`],
       ["Prijzen", `<ul><li>Prijzen zijn <strong>vast per voertuig</strong>, niet per persoon, en worden in euro getoond voordat je de aanvraag verstuurt. De prijs in je bevestiging is de prijs die je betaalt.</li>
 <li>De prijs omvat brandstof, tol voor snelwegen, bruggen en tunnels, parkeren op de luchthaven, de gratis wachttijd hieronder en ontvangst met naambordje.</li>

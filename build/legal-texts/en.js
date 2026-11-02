@@ -22,9 +22,9 @@ module.exports = {
 <li>Please check the confirmation. Write to us at once if a date, time, address, flight number or passenger number is wrong: we drive according to the confirmation.</li></ul>`],
       ["Vehicles", `<p>You book a vehicle class, not a specific model or number plate:</p>
 <ul><li><strong>Sedan</strong>: up to 3 passengers and 3 suitcases (Skoda Octavia, Toyota Corolla or similar).</li>
-<li><strong>Minivan</strong>: up to 7 passengers and 7 suitcases (Mercedes Vito, Ford Tourneo or similar).</li>
+<li><strong>Minivan</strong>: up to 6 passengers and 7 suitcases (Mercedes Vito, Ford Tourneo or similar).</li>
 <li><strong>Mercedes V-Class</strong>: up to 6 passengers and 6 suitcases.</li>
-<li><strong>Minibus</strong>: up to 16 passengers and 16 suitcases (Mercedes Sprinter or similar).</li></ul>
+<li><strong>Minibus</strong>: up to 13 passengers and 16 suitcases (Mercedes Sprinter or similar).</li></ul>
 <p>Pictures on the site show examples. We may send a vehicle of the same or a higher class at no extra cost. All vehicles are licensed for commercial passenger transport, insured as Turkish law requires and non-smoking.</p>`],
       ["Prices", `<ul><li>Prices are <strong>fixed per vehicle</strong>, not per person, and are shown in euro before you send the request. The price in your confirmation is the price you pay.</li>
 <li>The price includes fuel, motorway, bridge and tunnel tolls, airport parking, the free waiting time below and meet and greet with a name sign.</li>

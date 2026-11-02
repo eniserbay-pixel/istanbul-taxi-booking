@@ -71,7 +71,7 @@ module.exports = [
 <h2>Waiting: queue or name sign</h2>
 <p>At the taxi rank you wait in line, sometimes for a long time after several flights land together. With a transfer your driver tracks your flight and waits in the arrivals hall with your name sign. With {brand} the first 60 minutes after landing are free, so a long passport queue or a late bag costs nothing extra.</p>
 <h2>Luggage and groups</h2>
-<p>A yellow taxi takes up to four passengers and limited luggage. With a transfer you choose the car that fits: a sedan for up to 3, a minivan for up to 7, a Mercedes V-Class for up to 6 or a minibus for up to 16. One price per car, not per person.</p>
+<p>A yellow taxi takes up to four passengers and limited luggage. With a transfer you choose the car that fits: a sedan for up to 3, a minivan for up to 6, a Mercedes V-Class for up to 6 or a minibus for up to 13. One price per car, not per person.</p>
 <h2>Language and safety</h2>
 <p>You do not need to explain your hotel address in Turkish: it is already in your booking. You travel with a professional driver who knows where you are going, and you pay the agreed price at the end.</p>
 <h2>When a taxi still makes sense</h2>
@@ -89,7 +89,7 @@ module.exports = [
 <h2>Ожидание: очередь или табличка с именем</h2>
 <p>На стоянке такси приходится стоять в очереди, иногда долго, если одновременно приземлилось несколько рейсов. При трансфере водитель следит за рейсом и ждёт в зале прилёта с табличкой с вашим именем. В {brand} первые 60 минут после посадки бесплатны, так что длинная очередь на паспортном контроле или задержка багажа ничего не стоят.</p>
 <h2>Багаж и группы</h2>
-<p>Жёлтое такси берёт до четырёх пассажиров и ограниченный багаж. При трансфере вы выбираете подходящую машину: седан до 3 человек, минивэн до 7, Mercedes V-Class до 6 или микроавтобус до 16. Цена за машину, а не за человека.</p>
+<p>Жёлтое такси берёт до четырёх пассажиров и ограниченный багаж. При трансфере вы выбираете подходящую машину: седан до 3 человек, минивэн до 6, Mercedes V-Class до 6 или микроавтобус до 13. Цена за машину, а не за человека.</p>
 <h2>Язык и безопасность</h2>
 <p>Не нужно объяснять водителю адрес отеля по-турецки: он уже есть в заказе. Вы едете с профессиональным водителем, который знает, куда ехать, и платите оговорённую цену в конце.</p>
 <h2>Когда подойдёт обычное такси</h2>

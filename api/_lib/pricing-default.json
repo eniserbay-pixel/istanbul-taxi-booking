@@ -67,7 +67,7 @@
   {
    "id": "minivan",
    "models": "Mercedes Vito, Ford Tourneo or similar",
-   "seats": 7,
+   "seats": 6,
    "bags": 7,
    "popular": true
   },
@@ -80,7 +80,7 @@
   {
    "id": "minibus",
    "models": "Mercedes Sprinter or similar",
-   "seats": 16,
+   "seats": 13,
    "bags": 16
   }
  ],

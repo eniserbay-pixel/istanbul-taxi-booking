@@ -20,9 +20,9 @@ module.exports = {
 <li>Vérifiez la confirmation et écrivez-nous tout de suite si la date, l'heure, l'adresse, le numéro de vol ou le nombre de passagers est erroné : nous effectuons le trajet selon la confirmation.</li></ul>`],
       ["Véhicules", `<p>Vous réservez une catégorie de véhicule, pas un modèle ni une immatriculation précise :</p>
 <ul><li><strong>Berline</strong> : jusqu'à 3 passagers et 3 valises (Skoda Octavia, Toyota Corolla ou similaire).</li>
-<li><strong>Monospace</strong> : jusqu'à 7 passagers et 7 valises (Mercedes Vito, Ford Tourneo ou similaire).</li>
+<li><strong>Monospace</strong> : jusqu'à 6 passagers et 7 valises (Mercedes Vito, Ford Tourneo ou similaire).</li>
 <li><strong>Mercedes Classe V</strong> : jusqu'à 6 passagers et 6 valises.</li>
-<li><strong>Minibus</strong> : jusqu'à 16 passagers et 16 valises (Mercedes Sprinter ou similaire).</li></ul>
+<li><strong>Minibus</strong> : jusqu'à 13 passagers et 16 valises (Mercedes Sprinter ou similaire).</li></ul>
 <p>Les photos du site sont des exemples. Nous pouvons envoyer sans supplément un véhicule de catégorie égale ou supérieure. Tous les véhicules sont autorisés au transport commercial de passagers, assurés selon la loi turque et non-fumeurs.</p>`],
       ["Prix", `<ul><li>Les prix sont <strong>fixes par véhicule</strong>, et non par personne, et affichés en euros avant l'envoi de la demande. Le prix de votre confirmation est le prix que vous payez.</li>
 <li>Le prix comprend le carburant, les péages d'autoroute, de ponts et de tunnels, le parking de l'aéroport, le temps d'attente gratuit ci-dessous et l'accueil avec pancarte nominative.</li>

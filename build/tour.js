@@ -41,7 +41,7 @@ module.exports = {
       ["Can I change the plan on the day?", "Yes. Tell the driver; extra stops are fine within the hours you booked. If the day runs longer, extra hours are charged at the rate we agreed."],
       ["Can we visit the Princes' Islands?", "Cars are not allowed on the islands. The driver takes you to the ferry at Kabataş or Bostancı and picks you up when you come back, or carries on with other stops in between."],
       ["Can the tour start at the airport or the cruise port?", "Yes. We can pick you up at Istanbul Airport, Sabiha Gökçen or Galataport, show you the city with your luggage in the car, and drop you at your hotel."],
-      ["Is the price per person?", "No, it is per car, for up to 3 people in a sedan, 6 in a V-Class, 7 in a minivan and 16 in a minibus."]
+      ["Is the price per person?", "No, it is per car, for up to 3 people in a sedan, 6 in a V-Class, 6 in a minivan and 13 in a minibus."]
     ]
   },
   tr: {
@@ -80,7 +80,7 @@ module.exports = {
       ["Planı gün içinde değiştirebilir miyim?", "Evet. Şoföre söylemeniz yeterli; ayırttığınız süre içinde ek duraklar sorun değil. Gün uzarsa ek saatler anlaştığımız ücretle hesaplanır."],
       ["Adalar'a gidebilir miyiz?", "Adalar'a araç çıkamaz. Şoför sizi Kabataş veya Bostancı iskelesine bırakır, dönüşte alır ya da arada başka duraklara devam eder."],
       ["Tur havalimanından veya kruvaziyer limanından başlayabilir mi?", "Evet. Sizi İstanbul Havalimanı, Sabiha Gökçen veya Galataport'tan alır, bavullarınız araçtayken şehri gezdirir ve otelinize bırakırız."],
-      ["Fiyat kişi başı mı?", "Hayır, araç başıdır: sedanda 3, V-Class'ta 6, minivanda 7, minibüste 16 kişiye kadar."]
+      ["Fiyat kişi başı mı?", "Hayır, araç başıdır: sedanda 3, V-Class'ta 6, minivanda 6, minibüste 13 kişiye kadar."]
     ]
   },
   ru: {
@@ -119,7 +119,7 @@ module.exports = {
       ["Можно изменить план в течение дня?", "Да. Скажите водителю; дополнительные остановки в пределах заказанных часов не проблема. Если день затянется, дополнительные часы оплачиваются по согласованной ставке."],
       ["Можно съездить на Принцевы острова?", "На острова машины не пускают. Водитель отвезёт вас к парому в Кабаташе или Бостанджи и встретит на обратном пути, а в промежутке может отвезти по другим делам."],
       ["Можно начать поездку в аэропорту или круизном порту?", "Да. Мы встретим вас в аэропорту Стамбула, Сабихе Гёкчен или Галатапорте, покажем город с багажом в машине и довезём до отеля."],
-      ["Цена за человека?", "Нет, за машину: до 3 человек в седане, 6 в V-Class, 7 в минивэне и 16 в микроавтобусе."]
+      ["Цена за человека?", "Нет, за машину: до 3 человек в седане, 6 в V-Class, 6 в минивэне и 13 в микроавтобусе."]
     ]
   },
   de: {
@@ -158,7 +158,7 @@ module.exports = {
       ["Kann ich den Plan am Tag ändern?", "Ja. Sagen Sie es dem Fahrer; zusätzliche Stopps sind innerhalb der gebuchten Stunden kein Problem. Wird der Tag länger, gelten für Zusatzstunden die vereinbarten Sätze."],
       ["Können wir die Prinzeninseln besuchen?", "Auf den Inseln sind keine Autos erlaubt. Der Fahrer bringt Sie zur Fähre in Kabataş oder Bostancı und holt Sie bei der Rückkehr ab; dazwischen kann er andere Fahrten übernehmen."],
       ["Kann die Tour am Flughafen oder Kreuzfahrthafen beginnen?", "Ja. Wir holen Sie am Flughafen Istanbul, in Sabiha Gökçen oder am Galataport ab, zeigen Ihnen die Stadt mit dem Gepäck im Auto und bringen Sie zum Hotel."],
-      ["Gilt der Preis pro Person?", "Nein, pro Auto: bis zu 3 Personen in der Limousine, 6 in der V-Klasse, 7 im Minivan und 16 im Minibus."]
+      ["Gilt der Preis pro Person?", "Nein, pro Auto: bis zu 3 Personen in der Limousine, 6 in der V-Klasse, 6 im Minivan und 13 im Minibus."]
     ]
   },
   fr: {
@@ -197,7 +197,7 @@ module.exports = {
       ["Puis-je changer le programme le jour même ?", "Oui. Dites-le au chauffeur ; les arrêts supplémentaires ne posent pas de problème dans vos heures. Si la journée se prolonge, les heures en plus sont facturées au tarif convenu."],
       ["Peut-on aller aux îles des Princes ?", "Les voitures ne sont pas autorisées sur les îles. Le chauffeur vous dépose au ferry à Kabataş ou Bostancı et vous récupère au retour, ou assure d'autres trajets entre-temps."],
       ["La visite peut-elle commencer à l'aéroport ou au port de croisière ?", "Oui. Nous vous prenons à l'aéroport d'Istanbul, à Sabiha Gökçen ou à Galataport, vous montrons la ville avec vos bagages dans la voiture et vous déposons à l'hôtel."],
-      ["Le prix est-il par personne ?", "Non, par véhicule : jusqu'à 3 personnes en berline, 6 en Classe V, 7 en monospace et 16 en minibus."]
+      ["Le prix est-il par personne ?", "Non, par véhicule : jusqu'à 3 personnes en berline, 6 en Classe V, 6 en monospace et 13 en minibus."]
     ]
   },
   it: {
@@ -236,7 +236,7 @@ module.exports = {
       ["Posso cambiare programma durante la giornata?", "Sì. Dillo all'autista; le tappe in più vanno bene entro le ore prenotate. Se la giornata si allunga, le ore extra si pagano alla tariffa concordata."],
       ["Possiamo visitare le Isole dei Principi?", "Sulle isole non sono ammesse auto. L'autista ti porta al traghetto a Kabataş o Bostancı e ti riprende al ritorno, oppure nel frattempo fa altre tappe."],
       ["Il tour può partire dall'aeroporto o dal porto crociere?", "Sì. Ti prendiamo all'aeroporto di Istanbul, a Sabiha Gökçen o a Galataport, ti mostriamo la città con i bagagli in auto e ti lasciamo in hotel."],
-      ["Il prezzo è a persona?", "No, è per auto: fino a 3 persone in berlina, 6 in Classe V, 7 in minivan e 16 in minibus."]
+      ["Il prezzo è a persona?", "No, è per auto: fino a 3 persone in berlina, 6 in Classe V, 6 in minivan e 13 in minibus."]
     ]
   },
   nl: {
@@ -275,7 +275,7 @@ module.exports = {
       ["Kan ik het plan op de dag zelf wijzigen?", "Ja. Zeg het tegen de chauffeur; extra stops zijn geen probleem binnen je geboekte uren. Loopt de dag uit, dan gelden voor extra uren de afgesproken tarieven."],
       ["Kunnen we naar de Prinseneilanden?", "Op de eilanden zijn geen auto's toegestaan. De chauffeur brengt je naar de veerboot in Kabataş of Bostancı en haalt je bij terugkomst op, of rijdt tussendoor andere stops."],
       ["Kan de tour op de luchthaven of in de cruisehaven beginnen?", "Ja. We halen je op bij Istanbul Airport, Sabiha Gökçen of Galataport, laten je de stad zien met je bagage in de auto en zetten je af bij je hotel."],
-      ["Is de prijs per persoon?", "Nee, per auto: tot 3 personen in een sedan, 6 in een V-Klasse, 7 in een minivan en 16 in een minibus."]
+      ["Is de prijs per persoon?", "Nee, per auto: tot 3 personen in een sedan, 6 in een V-Klasse, 6 in een minivan en 13 in een minibus."]
     ]
   },
   ar: {
@@ -314,7 +314,7 @@ module.exports = {
       ["هل يمكنني تغيير الخطة في اليوم نفسه؟", "نعم. أخبر السائق؛ المحطات الإضافية لا مشكلة فيها ضمن الساعات المحجوزة. وإذا طال اليوم تُحسب الساعات الإضافية بالسعر المتفق عليه."],
       ["هل يمكننا زيارة جزر الأميرات؟", "لا يُسمح بالسيارات في الجزر. يوصلك السائق إلى العبّارة في كاباتاش أو بوستانجي ويستقبلك عند عودتك، أو يكمل مشاوير أخرى في الأثناء."],
       ["هل يمكن أن تبدأ الجولة من المطار أو الميناء السياحي؟", "نعم. نستقبلك في مطار إسطنبول أو صبيحة كوكجن أو غلطة بورت، ونريك المدينة وأمتعتك في السيارة، ثم نوصلك إلى فندقك."],
-      ["هل السعر للشخص الواحد؟", "لا، السعر للسيارة: حتى 3 أشخاص في السيدان، و6 في الفئة V، و7 في الميني فان، و16 في الميني باص."]
+      ["هل السعر للشخص الواحد؟", "لا، السعر للسيارة: حتى 3 أشخاص في السيدان، و6 في الفئة V، و6 في الميني فان، و13 في الميني باص."]
     ]
   }
 };

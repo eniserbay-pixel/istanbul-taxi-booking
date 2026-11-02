@@ -31,7 +31,7 @@ const ui = {
     fleetH: "Choisissez votre véhicule", fleetLead: "Le prix est par véhicule, pas par personne. Péages, parking et attente sont compris.",
     routesH: "Trajets de transfert populaires à Istanbul", routesLead: "Prix fixes par véhicule, aller simple.", routesPeak: "Les prises en charge à IST de {istFrom} à {istTo} et à SAW de {sawFrom} à {sawTo} coûtent {pct} % de plus.",
     vsH: "Taxi au compteur ou notre taxi aéroport ?",
-    vs: [["Prix", "Dépend du trafic et de l'itinéraire du chauffeur", "Fixé à la réservation"], ["À l'arrivée", "File d'attente à la station de taxis", "Chauffeur avec une pancarte à votre nom"], ["Retard du vol", "-", "Suivi du vol, 60 min d'attente offertes"], ["Bagages et groupes", "Petit taxi jaune", "Berline, monospace, Classe V ou minibus jusqu'à 16"], ["Paiement", "Au compteur, souvent en espèces", "En espèces au chauffeur en EUR, USD ou TRY"]],
+    vs: [["Prix", "Dépend du trafic et de l'itinéraire du chauffeur", "Fixé à la réservation"], ["À l'arrivée", "File d'attente à la station de taxis", "Chauffeur avec une pancarte à votre nom"], ["Retard du vol", "-", "Suivi du vol, 60 min d'attente offertes"], ["Bagages et groupes", "Petit taxi jaune", "Berline, monospace, Classe V ou minibus jusqu'à 13"], ["Paiement", "Au compteur, souvent en espèces", "En espèces au chauffeur en EUR, USD ou TRY"]],
     vsCols: ["", "Taxi classique", "{brand}"],
     howH: "Comment ça marche",
     how: [["Demande", "Choisissez votre trajet, votre véhicule et l'heure. Cela prend une minute, sans paiement à l'avance."], ["Confirmation", "Nous vérifions la disponibilité et vous envoyons une confirmation par e-mail, en général dans l'heure."], ["Trajet", "Votre chauffeur vous accueille avec une pancarte à votre nom. Vous payez le prix fixe en espèces à la fin."]],
@@ -47,7 +47,7 @@ const ui = {
     ["Comment payer ?", "En espèces au chauffeur à la fin du trajet, en euros, dollars américains ou livres turques. Pas de paiement en ligne ni d'acompte."],
     ["Quand ma réservation est-elle confirmée ?", "Dès l'envoi du formulaire, nous vous écrivons que nous avons reçu votre demande. Une fois le véhicule attribué, en général dans l'heure, vous recevez l'e-mail de confirmation."],
     ["Et si mon vol est en retard ?", "Nous suivons votre vol et adaptons l'heure de prise en charge. Les 60 premières minutes après l'atterrissage sont gratuites."],
-    ["Le prix est-il par personne ?", "Non, le prix est par véhicule. Une berline accueille jusqu'à 3 passagers, un monospace jusqu'à 7, une Classe V jusqu'à 6 et un minibus jusqu'à 16."],
+    ["Le prix est-il par personne ?", "Non, le prix est par véhicule. Une berline accueille jusqu'à 3 passagers, un monospace jusqu'à 6, une Classe V jusqu'à 6 et un minibus jusqu'à 13."],
     ["Puis-je annuler ?", "Oui, gratuitement jusqu'à 24 heures avant la prise en charge. Répondez simplement à l'e-mail de confirmation ou écrivez-nous sur WhatsApp."]
   ],
   route: {
@@ -59,7 +59,7 @@ const ui = {
     pricesH: "Prix {from} – {to}", car: "Véhicule", seats: "Passagers", bags: "Valises", price: "Prix par véhicule",
     areaH: "Quartiers à ce prix", meetH: "Où vous attend votre chauffeur",
     faq: [
-      ["Combien coûte un taxi {from} – {to} ?", "Chez nous, un prix fixe de {price} € par véhicule en berline, {van} € en monospace jusqu'à 7, {vclass} € en Mercedes Classe V et {bus} € en minibus jusqu'à 16 personnes."],
+      ["Combien coûte un taxi {from} – {to} ?", "Chez nous, un prix fixe de {price} € par véhicule en berline, {van} € en monospace jusqu'à 6, {vclass} € en Mercedes Classe V et {bus} € en minibus jusqu'à 13 personnes."],
       ["Combien de temps dure le trajet ?", "Environ {min} minutes pour {km} km hors heures de pointe. Les soirs de semaine, cela peut être plus long ; le prix ne change pas."],
       ["Dois-je payer plus si mon vol est en retard ?", "Non. Nous suivons votre vol et les 60 premières minutes après l'atterrissage sont gratuites."]
     ],
@@ -132,7 +132,7 @@ const blog = {
 <h2>Attente : file ou pancarte à votre nom</h2>
 <p>À la station de taxis, vous faites la queue, parfois longtemps quand plusieurs vols atterrissent en même temps. Avec un transfert, votre chauffeur suit votre vol et vous attend dans le hall des arrivées avec une pancarte à votre nom. Chez {brand}, les 60 premières minutes après l'atterrissage sont gratuites : une longue file au contrôle des passeports ou une valise en retard ne coûtent rien de plus.</p>
 <h2>Bagages et groupes</h2>
-<p>Un taxi jaune prend jusqu'à quatre passagers et peu de bagages. Avec un transfert, vous choisissez le véhicule adapté : une berline jusqu'à 3, un monospace jusqu'à 7, une Mercedes Classe V jusqu'à 6 ou un minibus jusqu'à 16 personnes. Un prix par véhicule, pas par personne.</p>
+<p>Un taxi jaune prend jusqu'à quatre passagers et peu de bagages. Avec un transfert, vous choisissez le véhicule adapté : une berline jusqu'à 3, un monospace jusqu'à 6, une Mercedes Classe V jusqu'à 6 ou un minibus jusqu'à 13 personnes. Un prix par véhicule, pas par personne.</p>
 <h2>Langue et sécurité</h2>
 <p>Inutile d'expliquer l'adresse de votre hôtel en turc : elle figure déjà dans votre réservation. Vous voyagez avec un chauffeur professionnel qui connaît le chemin et vous payez le prix convenu à la fin.</p>
 <h2>Quand un taxi reste une bonne option</h2>

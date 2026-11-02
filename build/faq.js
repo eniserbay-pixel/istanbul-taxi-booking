@@ -29,7 +29,7 @@ module.exports = {
         ["Can I book on WhatsApp or by phone?", "Yes, write or call {phone}. The online form is the fastest way: you see the price at once and get your booking number by e-mail."]
       ]],
       ["Prices and payment", [
-        ["Is the price per person or per car?", "Per car. The price stays the same whether you are one person or as many as the car takes: sedan 3, minivan 7, Mercedes V-Class 6, minibus 16."],
+        ["Is the price per person or per car?", "Per car. The price stays the same whether you are one person or as many as the car takes: sedan 3, minivan 6, Mercedes V-Class 6, minibus 13."],
         ["What is included in the price?", "Tolls, bridges, parking, meet and greet with a name sign, help with your luggage and waiting time: the first {wait} minutes after landing at the airports. There is no meter and nothing extra to pay at the end."],
         ["How do I pay?", "In cash to the driver at the end of the ride, in euros, US dollars or Turkish lira at the day's rate. Companies that need monthly invoicing can open a corporate account."],
         ["How much does a transfer cost?", "Prices start at €{min} per car, one way. The price depends on the route and the car; our price list shows every route."],
@@ -46,8 +46,8 @@ module.exports = {
         ["Do you drive between Istanbul Airport and Sabiha Gökçen?", "Yes, at a fixed price per car. The drive across the city often takes more than an hour, so leave plenty of time between your flights."]
       ]],
       ["Cars and luggage", [
-        ["Which car should I choose?", "For 1–3 people a sedan, for 4–7 people a minivan, for up to 6 who want more comfort the Mercedes V-Class, and for 8–16 people a minibus. For bigger groups, book several cars."],
-        ["How much luggage fits in each car?", "As many standard suitcases as passengers: sedan 3, minivan 7, Mercedes V-Class 6, minibus 16, plus hand luggage. Enter the number of suitcases in the booking form."],
+        ["Which car should I choose?", "For 1–3 people a sedan, for 4–6 people a minivan, for up to 6 who want more comfort the Mercedes V-Class, and for 7–13 people a minibus. For bigger groups, book several cars."],
+        ["How much luggage fits in each car?", "Standard suitcases per car: sedan 3, minivan 7, Mercedes V-Class 6, minibus 16, plus hand luggage. Enter the number of suitcases in the booking form."],
         ["I have a stroller, golf bag, skis or a wheelchair. Is that a problem?", "No, just tell us in the note. Bulky items take space, so with a full car choose the next size up and we send a car they fit in."],
         ["Do you have child seats?", "Yes, baby and child seats are €{seat} each. Children need one, so add them in the booking form and write the children's ages in the note."],
         ["Will I get exactly the car in the photo?", "You get the car class you booked. The models shown are examples; the exact make and colour may vary."]
@@ -93,7 +93,7 @@ module.exports = {
         ["WhatsApp'tan veya telefonla rezervasyon yapabilir miyim?", "Evet, {phone} numarasına yazın veya arayın. En hızlı yol online formdur: fiyatı hemen görür, rezervasyon numaranızı e-postayla alırsınız."]
       ]],
       ["Fiyat ve ödeme", [
-        ["Fiyat kişi başı mı, araç başı mı?", "Araç başı. Tek kişi de olsanız aracın alabileceği kadar kişi de olsanız fiyat aynıdır: sedan 3, minivan 7, Mercedes V-Class 6, minibüs 16 kişi."],
+        ["Fiyat kişi başı mı, araç başı mı?", "Araç başı. Tek kişi de olsanız aracın alabileceği kadar kişi de olsanız fiyat aynıdır: sedan 3, minivan 6, Mercedes V-Class 6, minibüs 13 kişi."],
         ["Fiyata neler dahil?", "Köprü, otoyol, otopark, isim tabelasıyla karşılama, bagaj yardımı ve bekleme süresi: havalimanlarında inişten sonraki ilk {wait} dakika. Taksimetre yoktur, sonunda ek ödeme çıkmaz."],
         ["Nasıl öderim?", "Yolculuk sonunda şoföre nakit; euro, ABD doları veya günün kuruyla Türk lirası. Aylık fatura isteyen şirketler kurumsal hesap açabilir."],
         ["Transfer ne kadar tutar?", "Fiyatlar tek yön araç başı €{min}'dan başlar. Fiyat güzergaha ve araca göre değişir; fiyat listemizde tüm güzergahlar var."],
@@ -110,8 +110,8 @@ module.exports = {
         ["İstanbul Havalimanı ile Sabiha Gökçen arasında transfer var mı?", "Evet, araç başı sabit fiyatla. Şehri boydan boya geçen yol çoğu zaman bir saatten uzun sürer; uçuşlarınız arasında bol zaman bırakın."]
       ]],
       ["Araçlar ve bagaj", [
-        ["Hangi aracı seçmeliyim?", "1–3 kişi için sedan, 4–7 kişi için minivan, daha fazla konfor isteyen 6 kişiye kadar gruplar için Mercedes V-Class, 8–16 kişi için minibüs. Daha büyük gruplar birden fazla araç ayırtabilir."],
-        ["Her araca ne kadar bagaj sığar?", "Yolcu sayısı kadar standart bavul: sedan 3, minivan 7, Mercedes V-Class 6, minibüs 16; artı el bagajı. Bavul sayısını rezervasyon formuna yazın."],
+        ["Hangi aracı seçmeliyim?", "1–3 kişi için sedan, 4–6 kişi için minivan, daha fazla konfor isteyen 6 kişiye kadar gruplar için Mercedes V-Class, 7–13 kişi için minibüs. Daha büyük gruplar birden fazla araç ayırtabilir."],
+        ["Her araca ne kadar bagaj sığar?", "Araç başı standart bavul: sedan 3, minivan 7, Mercedes V-Class 6, minibüs 16; artı el bagajı. Bavul sayısını rezervasyon formuna yazın."],
         ["Bebek arabası, golf çantası, kayak veya tekerlekli sandalyem var. Sorun olur mu?", "Hayır, notta belirtmeniz yeterli. Hacimli eşyalar yer kaplar; araç doluysa bir üst aracı seçin, eşyalarınızın sığacağı aracı gönderelim."],
         ["Çocuk koltuğu var mı?", "Evet, bebek ve çocuk koltuğu tanesi €{seat}. Çocuklar için gereklidir; rezervasyon formunda ekleyin ve çocukların yaşlarını notta yazın."],
         ["Fotoğraftaki aracın aynısı mı gelir?", "Ayırttığınız araç sınıfı gelir. Gösterilen modeller örnektir; marka ve renk değişebilir."]
@@ -157,7 +157,7 @@ module.exports = {
         ["Можно ли заказать через WhatsApp или по телефону?", "Да, пишите или звоните: {phone}. Быстрее всего онлайн-форма: вы сразу видите цену и получаете номер заказа по e-mail."]
       ]],
       ["Цены и оплата", [
-        ["Цена за человека или за автомобиль?", "За автомобиль. Цена одна и та же, едете ли вы один или столько человек, сколько вмещает машина: седан 3, минивэн 7, Mercedes V-Class 6, микроавтобус 16."],
+        ["Цена за человека или за автомобиль?", "За автомобиль. Цена одна и та же, едете ли вы один или столько человек, сколько вмещает машина: седан 3, минивэн 6, Mercedes V-Class 6, микроавтобус 13."],
         ["Что входит в цену?", "Платные дороги, мосты, парковка, встреча с табличкой, помощь с багажом и ожидание: первые {wait} минут после посадки в аэропортах. Счётчика нет, в конце доплачивать ничего не нужно."],
         ["Как оплатить?", "Наличными водителю в конце поездки: евро, доллары США или турецкие лиры по курсу дня. Компании, которым нужен ежемесячный счёт, могут открыть корпоративный аккаунт."],
         ["Сколько стоит трансфер?", "Цены начинаются от €{min} за автомобиль в одну сторону. Цена зависит от маршрута и автомобиля; все маршруты есть в нашем прайс-листе."],
@@ -174,8 +174,8 @@ module.exports = {
         ["Есть ли трансфер между аэропортом Стамбула и Сабихой Гёкчен?", "Да, по фиксированной цене за автомобиль. Дорога через весь город часто занимает больше часа, поэтому оставляйте достаточно времени между рейсами."]
       ]],
       ["Автомобили и багаж", [
-        ["Какой автомобиль выбрать?", "Для 1–3 человек седан, для 4–7 человек минивэн, до 6 человек с повышенным комфортом Mercedes V-Class, для 8–16 человек микроавтобус. Большим группам лучше заказать несколько автомобилей."],
-        ["Сколько багажа помещается?", "Столько стандартных чемоданов, сколько пассажиров: седан 3, минивэн 7, Mercedes V-Class 6, микроавтобус 16, плюс ручная кладь. Укажите число чемоданов в форме заказа."],
+        ["Какой автомобиль выбрать?", "Для 1–3 человек седан, для 4–6 человек минивэн, до 6 человек с повышенным комфортом Mercedes V-Class, для 7–13 человек микроавтобус. Большим группам лучше заказать несколько автомобилей."],
+        ["Сколько багажа помещается?", "Стандартных чемоданов на машину: седан 3, минивэн 7, Mercedes V-Class 6, микроавтобус 16, плюс ручная кладь. Укажите число чемоданов в форме заказа."],
         ["У меня коляска, сумка для гольфа, лыжи или инвалидное кресло. Это проблема?", "Нет, просто напишите об этом в комментарии. Громоздкие вещи занимают место, поэтому при полной машине выберите автомобиль побольше, и мы пришлём тот, в который всё поместится."],
         ["Есть ли детские кресла?", "Да, детское кресло или автолюлька стоит €{seat} за штуку. Для детей оно обязательно: добавьте его в форме заказа и укажите возраст детей в комментарии."],
         ["Приедет ли именно автомобиль с фото?", "Приедет автомобиль заказанного класса. Модели на фото приведены как пример; марка и цвет могут отличаться."]
@@ -221,7 +221,7 @@ module.exports = {
         ["Kann ich per WhatsApp oder Telefon buchen?", "Ja, schreiben Sie oder rufen Sie an: {phone}. Am schnellsten geht es über das Online-Formular: Sie sehen sofort den Preis und erhalten Ihre Buchungsnummer per E-Mail."]
       ]],
       ["Preise und Bezahlung", [
-        ["Gilt der Preis pro Person oder pro Fahrzeug?", "Pro Fahrzeug. Der Preis bleibt gleich, ob Sie allein reisen oder so viele sind, wie das Fahrzeug fasst: Limousine 3, Minivan 7, Mercedes V-Klasse 6, Kleinbus 16."],
+        ["Gilt der Preis pro Person oder pro Fahrzeug?", "Pro Fahrzeug. Der Preis bleibt gleich, ob Sie allein reisen oder so viele sind, wie das Fahrzeug fasst: Limousine 3, Minivan 6, Mercedes V-Klasse 6, Kleinbus 13."],
         ["Was ist im Preis enthalten?", "Maut, Brücken, Parken, Empfang mit Namensschild, Hilfe mit dem Gepäck und Wartezeit: an den Flughäfen die ersten {wait} Minuten nach der Landung. Kein Taxameter, am Ende nichts extra zu zahlen."],
         ["Wie bezahle ich?", "Bar beim Fahrer am Ende der Fahrt, in Euro, US-Dollar oder türkischer Lira zum Tageskurs. Firmen mit monatlicher Rechnung können ein Firmenkonto eröffnen."],
         ["Was kostet ein Transfer?", "Die Preise beginnen bei €{min} pro Fahrzeug und Strecke. Der Preis hängt von Strecke und Fahrzeug ab; unsere Preisliste zeigt alle Strecken."],
@@ -238,8 +238,8 @@ module.exports = {
         ["Fahren Sie zwischen dem Flughafen Istanbul und Sabiha Gökçen?", "Ja, zum Festpreis pro Fahrzeug. Die Fahrt quer durch die Stadt dauert oft über eine Stunde, planen Sie also genug Zeit zwischen Ihren Flügen ein."]
       ]],
       ["Fahrzeuge und Gepäck", [
-        ["Welches Fahrzeug passt zu mir?", "Für 1–3 Personen die Limousine, für 4–7 Personen der Minivan, für bis zu 6 Personen mit mehr Komfort die Mercedes V-Klasse und für 8–16 Personen der Kleinbus. Größere Gruppen buchen mehrere Fahrzeuge."],
-        ["Wie viel Gepäck passt hinein?", "So viele Standardkoffer wie Fahrgäste: Limousine 3, Minivan 7, Mercedes V-Klasse 6, Kleinbus 16, dazu Handgepäck. Geben Sie die Zahl der Koffer im Buchungsformular an."],
+        ["Welches Fahrzeug passt zu mir?", "Für 1–3 Personen die Limousine, für 4–6 Personen der Minivan, für bis zu 6 Personen mit mehr Komfort die Mercedes V-Klasse und für 7–13 Personen der Kleinbus. Größere Gruppen buchen mehrere Fahrzeuge."],
+        ["Wie viel Gepäck passt hinein?", "Standardkoffer pro Fahrzeug: Limousine 3, Minivan 7, Mercedes V-Klasse 6, Kleinbus 16, dazu Handgepäck. Geben Sie die Zahl der Koffer im Buchungsformular an."],
         ["Ich habe Kinderwagen, Golftasche, Skier oder einen Rollstuhl. Ist das ein Problem?", "Nein, schreiben Sie es einfach in die Notiz. Sperriges Gepäck braucht Platz; bei vollem Fahrzeug wählen Sie die nächste Größe, und wir schicken ein Fahrzeug, in das alles passt."],
         ["Haben Sie Kindersitze?", "Ja, Baby- und Kindersitze kosten €{seat} pro Stück. Kinder brauchen einen; fügen Sie ihn im Buchungsformular hinzu und notieren Sie das Alter der Kinder."],
         ["Bekomme ich genau das Fahrzeug vom Foto?", "Sie bekommen die gebuchte Fahrzeugklasse. Die gezeigten Modelle sind Beispiele; Marke und Farbe können abweichen."]
@@ -285,7 +285,7 @@ module.exports = {
         ["Puis-je réserver sur WhatsApp ou par téléphone ?", "Oui, écrivez ou appelez le {phone}. Le formulaire en ligne est le plus rapide : vous voyez le prix tout de suite et recevez votre numéro de réservation par e-mail."]
       ]],
       ["Prix et paiement", [
-        ["Le prix est-il par personne ou par véhicule ?", "Par véhicule. Le prix reste le même, que vous soyez seul ou aussi nombreux que le véhicule le permet : berline 3, minivan 7, Mercedes Classe V 6, minibus 16."],
+        ["Le prix est-il par personne ou par véhicule ?", "Par véhicule. Le prix reste le même, que vous soyez seul ou aussi nombreux que le véhicule le permet : berline 3, minivan 6, Mercedes Classe V 6, minibus 13."],
         ["Qu'est-ce qui est inclus dans le prix ?", "Péages, ponts, parking, accueil avec pancarte, aide pour les bagages et temps d'attente : les {wait} premières minutes après l'atterrissage aux aéroports. Pas de compteur, rien à payer en plus à la fin."],
         ["Comment payer ?", "En espèces au chauffeur à la fin du trajet, en euros, dollars américains ou livres turques au cours du jour. Les entreprises qui souhaitent une facture mensuelle peuvent ouvrir un compte entreprise."],
         ["Combien coûte un transfert ?", "Les prix commencent à {min} € par véhicule, aller simple. Le prix dépend du trajet et du véhicule ; notre liste de prix montre tous les trajets."],
@@ -302,8 +302,8 @@ module.exports = {
         ["Faites-vous le trajet entre l'aéroport d'Istanbul et Sabiha Gökçen ?", "Oui, à prix fixe par véhicule. La traversée de la ville prend souvent plus d'une heure : prévoyez assez de temps entre vos vols."]
       ]],
       ["Véhicules et bagages", [
-        ["Quel véhicule choisir ?", "Pour 1 à 3 personnes une berline, pour 4 à 7 personnes un minivan, jusqu'à 6 personnes avec plus de confort la Mercedes Classe V, et pour 8 à 16 personnes un minibus. Les groupes plus grands réservent plusieurs véhicules."],
-        ["Combien de bagages tiennent dans chaque véhicule ?", "Autant de valises standard que de passagers : berline 3, minivan 7, Mercedes Classe V 6, minibus 16, plus les bagages à main. Indiquez le nombre de valises dans le formulaire."],
+        ["Quel véhicule choisir ?", "Pour 1 à 3 personnes une berline, pour 4 à 6 personnes un minivan, jusqu'à 6 personnes avec plus de confort la Mercedes Classe V, et pour 7 à 13 personnes un minibus. Les groupes plus grands réservent plusieurs véhicules."],
+        ["Combien de bagages tiennent dans chaque véhicule ?", "Valises standard par véhicule : berline 3, minivan 7, Mercedes Classe V 6, minibus 16, plus les bagages à main. Indiquez le nombre de valises dans le formulaire."],
         ["J'ai une poussette, un sac de golf, des skis ou un fauteuil roulant. Est-ce un problème ?", "Non, indiquez-le simplement dans la note. Les objets encombrants prennent de la place : avec un véhicule plein, choisissez la taille au-dessus et nous envoyons un véhicule où tout rentre."],
         ["Avez-vous des sièges enfant ?", "Oui, les sièges bébé et enfant coûtent {seat} € pièce. Ils sont nécessaires pour les enfants : ajoutez-les dans le formulaire et indiquez l'âge des enfants dans la note."],
         ["Aurai-je exactement le véhicule de la photo ?", "Vous aurez la catégorie de véhicule réservée. Les modèles montrés sont des exemples ; la marque et la couleur peuvent varier."]
@@ -349,7 +349,7 @@ module.exports = {
         ["Posso prenotare su WhatsApp o per telefono?", "Sì, scrivi o chiama il {phone}. Il modulo online è il modo più rapido: vedi subito il prezzo e ricevi il numero di prenotazione via e-mail."]
       ]],
       ["Prezzi e pagamento", [
-        ["Il prezzo è a persona o a veicolo?", "A veicolo. Il prezzo resta lo stesso che tu sia da solo o in tanti quanti il veicolo può portare: berlina 3, minivan 7, Mercedes Classe V 6, minibus 16."],
+        ["Il prezzo è a persona o a veicolo?", "A veicolo. Il prezzo resta lo stesso che tu sia da solo o in tanti quanti il veicolo può portare: berlina 3, minivan 6, Mercedes Classe V 6, minibus 13."],
         ["Cosa è incluso nel prezzo?", "Pedaggi, ponti, parcheggio, accoglienza con cartello, aiuto con i bagagli e attesa: i primi {wait} minuti dopo l'atterraggio negli aeroporti. Niente tassametro, niente da pagare in più alla fine."],
         ["Come pago?", "In contanti all'autista alla fine della corsa, in euro, dollari USA o lire turche al cambio del giorno. Le aziende che vogliono la fattura mensile possono aprire un account aziendale."],
         ["Quanto costa un transfer?", "I prezzi partono da €{min} a veicolo, sola andata. Il prezzo dipende da percorso e veicolo; il nostro listino mostra tutti i percorsi."],
@@ -366,8 +366,8 @@ module.exports = {
         ["Fate il tragitto tra l'aeroporto di Istanbul e il Sabiha Gökçen?", "Sì, a prezzo fisso a veicolo. Attraversare la città richiede spesso più di un'ora, quindi lascia abbastanza tempo tra i voli."]
       ]],
       ["Veicoli e bagagli", [
-        ["Quale veicolo scegliere?", "Per 1–3 persone la berlina, per 4–7 persone il minivan, fino a 6 persone con più comfort la Mercedes Classe V e per 8–16 persone il minibus. I gruppi più grandi prenotano più veicoli."],
-        ["Quanti bagagli entrano in ogni veicolo?", "Tante valigie standard quanti sono i passeggeri: berlina 3, minivan 7, Mercedes Classe V 6, minibus 16, più il bagaglio a mano. Indica il numero di valigie nel modulo."],
+        ["Quale veicolo scegliere?", "Per 1–3 persone la berlina, per 4–6 persone il minivan, fino a 6 persone con più comfort la Mercedes Classe V e per 7–13 persone il minibus. I gruppi più grandi prenotano più veicoli."],
+        ["Quanti bagagli entrano in ogni veicolo?", "Valigie standard per veicolo: berlina 3, minivan 7, Mercedes Classe V 6, minibus 16, più il bagaglio a mano. Indica il numero di valigie nel modulo."],
         ["Ho un passeggino, una sacca da golf, gli sci o una sedia a rotelle. È un problema?", "No, scrivilo nella nota. Gli oggetti ingombranti occupano spazio: con il veicolo pieno scegli la misura superiore e mandiamo un veicolo in cui entra tutto."],
         ["Avete seggiolini per bambini?", "Sì, i seggiolini per neonati e bambini costano €{seat} l'uno. Per i bambini servono: aggiungili nel modulo e indica l'età dei bambini nella nota."],
         ["Avrò esattamente il veicolo della foto?", "Avrai la categoria di veicolo prenotata. I modelli mostrati sono esempi; marca e colore possono variare."]
@@ -413,7 +413,7 @@ module.exports = {
         ["Kan ik via WhatsApp of telefonisch boeken?", "Ja, stuur een bericht of bel {phone}. Het online formulier is het snelst: je ziet meteen de prijs en krijgt je boekingsnummer per e-mail."]
       ]],
       ["Prijzen en betalen", [
-        ["Is de prijs per persoon of per auto?", "Per auto. De prijs blijft gelijk of je nu alleen bent of met zoveel mensen als de auto meeneemt: sedan 3, minivan 7, Mercedes V-Klasse 6, minibus 16."],
+        ["Is de prijs per persoon of per auto?", "Per auto. De prijs blijft gelijk of je nu alleen bent of met zoveel mensen als de auto meeneemt: sedan 3, minivan 6, Mercedes V-Klasse 6, minibus 13."],
         ["Wat zit er in de prijs?", "Tol, bruggen, parkeren, ontvangst met naambordje, hulp met je bagage en wachttijd: de eerste {wait} minuten na de landing op de luchthavens. Geen taxameter, aan het eind niets extra te betalen."],
         ["Hoe betaal ik?", "Contant aan de chauffeur aan het eind van de rit, in euro, Amerikaanse dollar of Turkse lira tegen de dagkoers. Bedrijven die maandelijks een factuur willen, kunnen een zakelijk account openen."],
         ["Wat kost een transfer?", "Prijzen beginnen bij €{min} per auto, enkele reis. De prijs hangt af van de route en de auto; onze prijslijst toont alle routes."],
@@ -430,8 +430,8 @@ module.exports = {
         ["Rijden jullie tussen Istanbul Airport en Sabiha Gökçen?", "Ja, voor een vaste prijs per auto. De rit dwars door de stad duurt vaak meer dan een uur, dus plan genoeg tijd tussen je vluchten."]
       ]],
       ["Auto's en bagage", [
-        ["Welke auto moet ik kiezen?", "Voor 1–3 personen een sedan, voor 4–7 personen een minivan, tot 6 personen met meer comfort de Mercedes V-Klasse en voor 8–16 personen een minibus. Grotere groepen boeken meerdere auto's."],
-        ["Hoeveel bagage past erin?", "Evenveel standaardkoffers als passagiers: sedan 3, minivan 7, Mercedes V-Klasse 6, minibus 16, plus handbagage. Vul het aantal koffers in het boekingsformulier in."],
+        ["Welke auto moet ik kiezen?", "Voor 1–3 personen een sedan, voor 4–6 personen een minivan, tot 6 personen met meer comfort de Mercedes V-Klasse en voor 7–13 personen een minibus. Grotere groepen boeken meerdere auto's."],
+        ["Hoeveel bagage past erin?", "Standaardkoffers per auto: sedan 3, minivan 7, Mercedes V-Klasse 6, minibus 16, plus handbagage. Vul het aantal koffers in het boekingsformulier in."],
         ["Ik heb een kinderwagen, golftas, ski's of een rolstoel. Is dat een probleem?", "Nee, zet het gewoon in de notitie. Grote spullen nemen ruimte in; kies bij een volle auto de maat groter, dan sturen we een auto waar alles in past."],
         ["Hebben jullie kinderzitjes?", "Ja, baby- en kinderzitjes kosten €{seat} per stuk. Kinderen hebben er een nodig; voeg ze toe in het boekingsformulier en zet de leeftijden in de notitie."],
         ["Krijg ik precies de auto van de foto?", "Je krijgt de autoklasse die je hebt geboekt. De getoonde modellen zijn voorbeelden; merk en kleur kunnen verschillen."]
@@ -477,7 +477,7 @@ module.exports = {
         ["هل يمكنني الحجز عبر واتساب أو الهاتف؟", "نعم، راسلنا أو اتصل على {phone}. النموذج الإلكتروني هو الأسرع: ترى السعر فوراً ويصلك رقم الحجز بالبريد الإلكتروني."]
       ]],
       ["الأسعار والدفع", [
-        ["هل السعر للشخص أم للسيارة؟", "للسيارة. يبقى السعر نفسه سواء كنت وحدك أو بعدد ما تتسع له السيارة: سيدان 3، ميني فان 7، مرسيدس V-Class ستة، ميني باص 16."],
+        ["هل السعر للشخص أم للسيارة؟", "للسيارة. يبقى السعر نفسه سواء كنت وحدك أو بعدد ما تتسع له السيارة: سيدان 3، ميني فان 6، مرسيدس V-Class ستة، ميني باص 13."],
         ["ماذا يشمل السعر؟", "رسوم الطرق والجسور والمواقف، والاستقبال بلوحة تحمل اسمك، والمساعدة في الأمتعة، ووقت الانتظار: أول {wait} دقيقة بعد الهبوط في المطارات. لا عدّاد ولا أي مبلغ إضافي في النهاية."],
         ["كيف أدفع؟", "نقداً للسائق في نهاية الرحلة، باليورو أو الدولار الأمريكي أو الليرة التركية بسعر صرف اليوم. ويمكن للشركات التي تحتاج إلى فاتورة شهرية فتح حساب شركات."],
         ["كم تكلفة رحلة النقل؟", "تبدأ الأسعار من {min} يورو للسيارة في اتجاه واحد. يعتمد السعر على المسار والسيارة، وتجد كل المسارات في قائمة أسعارنا."],
@@ -494,8 +494,8 @@ module.exports = {
         ["هل توفرون النقل بين مطار إسطنبول وصبيحة كوكجن؟", "نعم، بسعر ثابت للسيارة. عبور المدينة يستغرق غالباً أكثر من ساعة، لذا اترك وقتاً كافياً بين رحلتيك."]
       ]],
       ["السيارات والأمتعة", [
-        ["أي سيارة أختار؟", "لشخص إلى 3 أشخاص سيدان، ومن 4 إلى 7 أشخاص ميني فان، وحتى 6 أشخاص مع راحة أكبر مرسيدس V-Class، ومن 8 إلى 16 شخصاً ميني باص. وللمجموعات الأكبر احجز أكثر من سيارة."],
-        ["كم من الأمتعة تتسع كل سيارة؟", "عدد الحقائب القياسية يساوي عدد الركاب: سيدان 3، ميني فان 7، مرسيدس V-Class ستة، ميني باص 16، إضافة إلى حقائب اليد. اكتب عدد الحقائب في نموذج الحجز."],
+        ["أي سيارة أختار؟", "لشخص إلى 3 أشخاص سيدان، ومن 4 إلى 6 أشخاص ميني فان، وحتى 6 أشخاص مع راحة أكبر مرسيدس V-Class، ومن 7 إلى 13 شخصاً ميني باص. وللمجموعات الأكبر احجز أكثر من سيارة."],
+        ["كم من الأمتعة تتسع كل سيارة؟", "الحقائب القياسية لكل سيارة: سيدان 3، ميني فان 7، مرسيدس V-Class ستة، ميني باص 16، إضافة إلى حقائب اليد. اكتب عدد الحقائب في نموذج الحجز."],
         ["لدي عربة أطفال أو حقيبة غولف أو معدات تزلج أو كرسي متحرك. هل هذه مشكلة؟", "لا، فقط اذكر ذلك في الملاحظة. الأغراض الكبيرة تأخذ مساحة، فإن كانت السيارة ممتلئة اختر الحجم الأكبر وسنرسل سيارة تتسع لكل شيء."],
         ["هل لديكم مقاعد أطفال؟", "نعم، مقعد الرضيع أو الطفل بسعر {seat} يورو للمقعد. الأطفال يحتاجون إليه، فأضفه في نموذج الحجز واكتب أعمار الأطفال في الملاحظة."],
         ["هل أحصل على السيارة نفسها التي في الصورة؟", "تحصل على فئة السيارة التي حجزتها. الطرازات المعروضة أمثلة، وقد يختلف الطراز واللون."]

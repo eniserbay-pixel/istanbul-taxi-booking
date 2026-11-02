@@ -26,7 +26,7 @@ module.exports = {
       fleetH: "Choose your car", fleetLead: "The price is per car, not per person. Tolls, parking and waiting time are included.",
       routesH: "Popular transfer routes in Istanbul", routesLead: "Fixed prices per car, one way.", routesPeak: "Pickups at IST {istFrom}–{istTo} and SAW {sawFrom}–{sawTo} cost {pct}% more.",
       vsH: "Metered taxi or our airport taxi?",
-      vs: [["Price", "Changes with traffic and the route the driver takes", "Fixed when you book"], ["At arrivals", "Queue at the taxi rank", "Driver waits with your name sign"], ["Flight delay", "-", "We track your flight, 60 min free waiting"], ["Luggage and groups", "Small yellow cab", "Sedan, minivan, V-Class or minibus up to 16"], ["Payment", "Meter, often cash only", "Cash to the driver in EUR, USD or TRY"]],
+      vs: [["Price", "Changes with traffic and the route the driver takes", "Fixed when you book"], ["At arrivals", "Queue at the taxi rank", "Driver waits with your name sign"], ["Flight delay", "-", "We track your flight, 60 min free waiting"], ["Luggage and groups", "Small yellow cab", "Sedan, minivan, V-Class or minibus up to 13"], ["Payment", "Meter, often cash only", "Cash to the driver in EUR, USD or TRY"]],
       vsCols: ["", "Street taxi", "{brand}"],
       howH: "How it works",
       how: [["Request", "Pick your route, car and time. It takes a minute and no payment is needed."], ["Confirmation", "We check availability and send you a confirmation e-mail, usually within an hour."], ["Ride", "Your driver meets you with your name sign. Pay the fixed price in cash at the end."]],
@@ -42,7 +42,7 @@ module.exports = {
       ["How do I pay?", "You pay the driver in cash at the end of the ride, in euro, US dollar or Turkish lira. There is no online payment and no deposit."],
       ["When is my booking confirmed?", "Right after you send the form we e-mail you that we received your request. Once we assign a car we send a confirmation e-mail, usually within an hour."],
       ["What if my flight is late?", "We track your flight and adjust the pickup time. The first 60 minutes after landing are free."],
-      ["Is the price per person?", "No, the price is per car. A sedan takes up to 3 passengers, a minivan up to 7, a V-Class up to 6 and a minibus up to 16."],
+      ["Is the price per person?", "No, the price is per car. A sedan takes up to 3 passengers, a minivan up to 6, a V-Class up to 6 and a minibus up to 13."],
       ["Can I cancel?", "Yes, free of charge up to 24 hours before pickup. Just reply to your confirmation e-mail or write to us on WhatsApp."]
     ],
     route: {
@@ -54,7 +54,7 @@ module.exports = {
       pricesH: "Prices from {from} to {to}", car: "Car", seats: "Passengers", bags: "Suitcases", price: "Price per car",
       areaH: "Areas covered by this price", meetH: "Where your driver waits",
       faq: [
-        ["How much is a taxi from {from} to {to}?", "With us it is a fixed €{price} per car in a sedan, €{van} in a minivan for up to 7, €{vclass} in a Mercedes V-Class and €{bus} in a minibus for up to 16."],
+        ["How much is a taxi from {from} to {to}?", "With us it is a fixed €{price} per car in a sedan, €{van} in a minivan for up to 6, €{vclass} in a Mercedes V-Class and €{bus} in a minibus for up to 13."],
         ["How long does it take?", "About {min} minutes for the {km} km outside rush hour. Weekday evenings can take longer; the price stays the same."],
         ["Do I pay more if my flight is late?", "No. We track your flight and the first 60 minutes after landing are free."]
       ],
