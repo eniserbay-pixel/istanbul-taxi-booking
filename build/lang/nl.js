@@ -1,4 +1,4 @@
-// Dutch: page texts (same keys as the English block in i18n.js), blog posts and legal texts.
+// Dutch: page texts (same keys as the English block in i18n.js), blog posts.
 const SRC = require("../blog-src");
 const B = {
   shortage: "waarom-is-het-moeilijk-om-een-taxi-te-vinden-in-istanbul",
@@ -159,25 +159,4 @@ const blog = {
   }
 };
 
-const legal = {
-  terms: {
-    title: "Algemene voorwaarden",
-    desc: "Voorwaarden voor boeking, vaste prijs, contante betaling, wachttijd en gratis annulering van luchthaventransfers in Istanbul die via deze website worden geboekt.",
-    html: `<p>Deze voorwaarden gelden voor transfers die via deze website worden geboekt. De website wordt beheerd door {company} ({address}), TÜRSAB-licentie {tursab}.</p>
-<h2>Boeking</h2><p>Het versturen van het boekingsformulier is een aanvraag. Een boeking is pas bindend nadat we je een bevestiging per e-mail hebben gestuurd. Kunnen we je aanvraag niet uitvoeren, dan laten we je dat per e-mail weten.</p>
-<h2>Prijs en betaling</h2><p>De prijs die bij het boeken wordt getoond, is een vaste prijs per auto, inclusief tol, parkeren en de wachttijd hieronder. Je betaalt de chauffeur contant aan het einde van de rit, in euro, Amerikaanse dollar of Turkse lira tegen de dagkoers.</p>
-<h2>Wachttijd</h2><p>Op de luchthavens zijn de eerste 60 minuten na de landing gratis. Op andere adressen wacht de chauffeur 15 minuten na de geboekte tijd.</p>
-<h2>Wijzigen en annuleren</h2><p>Je kunt tot 24 uur voor het ophalen gratis wijzigen of annuleren, door te reageren op de bevestigingsmail of via WhatsApp. Kom je niet opdagen zonder het ons te laten weten, dan kunnen we de ritprijs in rekening brengen.</p>
-<h2>Passagiers en bagage</h2><p>Het aantal passagiers en koffers moet passen bij de geboekte auto. Kinderen hebben een kinderzitje nodig, dat je bij het boeken kunt toevoegen.</p>
-<h2>Contact</h2><p>{email} · {phone}</p>`
-  },
-  privacy: {
-    title: "Privacyverklaring",
-    desc: "Hoe we de naam, telefoon, e-mail en vluchtgegevens gebruiken die je opgeeft bij het boeken van een luchthaventaxi in Istanbul, en hoe je ons daarover bereikt.",
-    html: `<p>{company} verwerkt de persoonsgegevens die je bij het boeken opgeeft (naam, e-mail, telefoon, vluchtnummer, adressen, opmerkingen) alleen om je transfer te regelen en uit te voeren, om contact met je op te nemen en om te voldoen aan wettelijke plichten, zoals de passagierslijsten die de Turkse wet voorschrijft.</p>
-<p>Je gegevens worden alleen gedeeld met de chauffeur of partner die de rit uitvoert en met dienstverleners die we gebruiken voor deze website (hosting, database, e-mail). Ze worden bewaard zolang de wet dat vereist.</p>
-<p>Je kunt je gegevens inzien, laten corrigeren of laten verwijderen door te mailen naar {email}.</p>`
-  }
-};
-
-module.exports = { ui, blog, legal };
+module.exports = { ui, blog };

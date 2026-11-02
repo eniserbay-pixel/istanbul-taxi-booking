@@ -34,14 +34,12 @@ const HB = require("./hubs");
 ["de", "fr", "it", "nl"].forEach(l => {
   const X = require("./lang/" + l);
   I[l] = X.ui;
-  legal[l] = X.legal;
   ALL_POSTS.forEach(p => { p[l] = p[l] || X.blog[p.id]; });
 });
 // Turkish and Arabic: the same, plus their texts for every other page group and the zone and car names
 ["tr", "ar"].forEach(l => {
   const X = require("./lang/" + l);
   I[l] = { ...X.ui, dir: X.dir };
-  legal[l] = X.legal;
   ALL_POSTS.forEach(p => { p[l] = X.blog[p.id]; });
   PORT[l] = X.port;
   CO.T[l] = X.company;
@@ -684,10 +682,22 @@ function book(lang) {
 }
 
 function legalPages(lang) {
-  const t = I[lang];
+  const t = I[lang], L = legal[lang], R = L.ui.rows, info = site.legal || {};
+  const address = info.address || site.address[lang];
+  // Company details: only the fields filled in data/site.json → legal are shown
+  const rows = [[R.company, site.company], [R.address, address], [R.mersis, info.mersis], [R.tax, [info.taxOffice, info.taxNo].filter(Boolean).join(" · ")],
+    [R.tradeReg, info.tradeReg], [R.kep, info.kep], [R.tursab, site.tursab], [R.verbis, info.verbis], [R.euRep, info.euRep],
+    [R.email, `<a href="mailto:${esc(site.email)}">${esc(site.email)}</a>`], [R.phone, `<a href="https://wa.me/${esc(site.whatsapp)}"><bdi>${esc(site.phone)}</bdi></a>`]];
+  const details = `<ul>${rows.filter(r => r[1]).map(([k, v]) => `<li><strong>${k}:</strong> <bdi>${/^<a /.test(v) ? v : esc(v)}</bdi></li>`).join("")}</ul>`;
+  const link = k => `<a href="${t.paths[k]}">${legal[lang][k].title}</a>`;
+  const vars = { ...site, address: `<bdi>${esc(address)}</bdi>`, company: `<bdi>${esc(site.company)}</bdi>`, url: site.url.replace(/^https?:\/\//, ""), seat: P.rules.childSeat, wait: P.rules.freeWaitMin,
+    returnPct: P.rules.returnDiscountPct, details, termsLink: link("terms"), privacyLink: link("privacy") };
   ["terms", "privacy"].forEach(k => {
-    const L = legal[lang][k];
-    page({ lang, path: t.paths[k], alts: ALL(l => I[l].paths[k]), title: L.title + " · " + site.brand, desc: L.desc, body: `<section class="sec"><div class="wrap narrow prose"><h1>${L.title}</h1>${fill(L.html, { ...site, address: site.address[lang] })}</div></section>` });
+    const D = L[k];
+    const toc = `<nav class="legal-toc" aria-label="${L.ui.toc}"><p><strong>${L.ui.toc}</strong></p><ol>${D.sections.map((s, i) => `<li><a href="#s${i + 1}">${s[0]}</a></li>`).join("")}</ol></nav>`;
+    const secs = D.sections.map((s, i) => `<h2 id="s${i + 1}">${i + 1}. ${s[0]}</h2>${s[1]}`).join("\n");
+    page({ lang, path: t.paths[k], alts: ALL(l => I[l].paths[k]), title: D.title + " · " + site.brand, desc: D.desc,
+      body: `<section class="sec"><div class="wrap narrow prose"><h1>${D.title}</h1><p><em>${L.ui.updated}: ${L.updated}</em></p>${fill(D.intro + toc + secs, vars)}</div></section>` });
   });
 }
 

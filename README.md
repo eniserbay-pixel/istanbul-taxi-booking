@@ -5,11 +5,11 @@ ITB Transfer firmasının sitesi: İstanbul Havalimanı (IST) ve Sabiha Gökçen
 - **Rezervasyon akışı:** müşteri formu gönderir → kayıt "Talep" olarak düşer, müşteriye "talebinizi aldık", ofise "yeni talep" e-postası gider → `/admin` panelinde **Onayla** → müşteriye onay e-postası gider. Ödeme yolculuk sonunda şoföre nakit.
 - **Araçlar:** Sedan (3), Minivan (7), Mercedes V-Class (6), Minibüs (16).
 - **Fiyatlar:** `data/pricing.json` (euro, bölge × bölge × araç). Yoğun saat farkı, dönüş indirimi ve çocuk koltuğu da orada. Sunucu fiyatı aynı dosyadan yeniden hesaplar. Panelde (Fiyatlandırma) kaydedilen fiyatlar ve ücretler rezervasyon formunda ~30 saniyede görünür; derleme de onları Redis'ten okuyup `data/pricing.json` üzerine koyar (`build/live-prices.js`), böylece rota sayfaları, fiyat tabloları, rehberler, blog yazıları ve `llms.txt` panelle aynı fiyatı ve yoğun saatleri gösterir. Panel kaydı bunu otomatik yeniden derlesin diye Vercel'de **Settings → Git → Deploy Hooks** ile `main` için bir hook oluşturup adresini `DEPLOY_HOOK_URL` ortam değişkenine yaz.
-- **Marka ve iletişim bilgileri:** `data/site.json` (marka adı, alan adı, telefon, WhatsApp, e-posta, TÜRSAB no, şirket unvanı, buluşma noktası metni). Yayından önce doldurulmalı.
+- **Marka ve iletişim bilgileri:** `data/site.json` (marka adı, alan adı, telefon, WhatsApp, e-posta, TÜRSAB no, şirket unvanı, buluşma noktası metni) ve `legal` altında yasal sayfalarda görünen şirket bilgileri (kayıtlı adres, MERSİS, vergi dairesi/no, ticaret sicil no, KEP, VERBİS, AB temsilcisi; boş olanlar gösterilmez, derleme uyarır). Yayından önce doldurulmalı.
 
 ## Yapı
 
-- `build/build.js` sayfaları `public/` içine üretir: ana sayfa, rezervasyon, 2 havalimanı sayfası, 25 rota sayfası, fiyat listesi, yasal sayfalar, 4 İngilizce rehber sayfası (`build/guides.js`: cheap / private / black taxi, best airport transfer), `sitemap.xml`, `robots.txt`, `llms.txt`, `404.html`, `/admin`. Metinler `build/i18n.js`, yasal metinler `build/legal.js` (taslak, avukat kontrolünden geçmeli).
+- `build/build.js` sayfaları `public/` içine üretir: ana sayfa, rezervasyon, 2 havalimanı sayfası, 25 rota sayfası, fiyat listesi, yasal sayfalar, 4 İngilizce rehber sayfası (`build/guides.js`: cheap / private / black taxi, best airport transfer), `sitemap.xml`, `robots.txt`, `llms.txt`, `404.html`, `/admin`. Metinler `build/i18n.js`, yasal metinler `build/legal-texts/<dil>.js` (kullanım koşulları ve KVKK/GDPR gizlilik metni; taslak, avukat kontrolünden geçmeli).
 - `public/assets/` stil (`site.css`), rezervasyon ve arama kutusu (`site.js`), fiyat hesabı (`quote.js`, tarayıcı ve sunucu ortak).
 - `api/booking.js` talebi kaydeder, `api/admin.js` panelin API'si. Paket bağımlılığı yok.
 

@@ -1,4 +1,4 @@
-// French: page texts (same keys as the English block in i18n.js), blog posts and legal texts.
+// French: page texts (same keys as the English block in i18n.js), blog posts.
 const SRC = require("../blog-src");
 const B = {
   shortage: "pourquoi-est-il-difficile-de-trouver-un-taxi-a-istanbul",
@@ -159,25 +159,4 @@ const blog = {
   }
 };
 
-const legal = {
-  terms: {
-    title: "Conditions générales",
-    desc: "Conditions de réservation, prix fixe, paiement en espèces, temps d'attente et annulation gratuite des transferts aéroport à Istanbul réservés sur ce site.",
-    html: `<p>Ces conditions s'appliquent aux transferts réservés sur ce site, exploité par {company} ({address}), licence TÜRSAB {tursab}.</p>
-<h2>Réservation</h2><p>L'envoi du formulaire de réservation constitue une demande. La réservation ne devient ferme qu'après l'envoi de notre e-mail de confirmation. Si nous ne pouvons pas donner suite à votre demande, nous vous en informons par e-mail.</p>
-<h2>Prix et paiement</h2><p>Le prix affiché lors de la réservation est fixe par véhicule et comprend les péages, le parking et le temps d'attente ci-dessous. Vous payez le chauffeur en espèces à la fin du trajet, en euros, dollars américains ou livres turques au cours du jour.</p>
-<h2>Temps d'attente</h2><p>Aux aéroports, les 60 premières minutes après l'atterrissage sont gratuites. Aux autres adresses, le chauffeur attend 15 minutes après l'heure réservée.</p>
-<h2>Modification et annulation</h2><p>Vous pouvez modifier ou annuler gratuitement jusqu'à 24 heures avant la prise en charge, en répondant à l'e-mail de confirmation ou sur WhatsApp. En cas d'absence sans prévenir, nous pouvons demander le prix de la course.</p>
-<h2>Passagers et bagages</h2><p>Le nombre de passagers et de valises doit correspondre au véhicule réservé. Les enfants doivent voyager dans un siège enfant, à ajouter lors de la réservation.</p>
-<h2>Contact</h2><p>{email} · {phone}</p>`
-  },
-  privacy: {
-    title: "Politique de confidentialité",
-    desc: "Comment nous utilisons le nom, le téléphone, l'e-mail et les informations de vol que vous indiquez en réservant un taxi aéroport à Istanbul, et comment nous joindre.",
-    html: `<p>{company} traite les données personnelles que vous indiquez lors de la réservation (nom, e-mail, téléphone, numéro de vol, adresses, messages) uniquement pour organiser et effectuer votre transfert, vous contacter à ce sujet et respecter ses obligations légales, comme les listes de passagers exigées par la loi turque.</p>
-<p>Vos données ne sont communiquées qu'au chauffeur ou au partenaire qui effectue le trajet et aux prestataires que nous utilisons pour faire fonctionner ce site (hébergement, base de données, e-mail). Elles sont conservées aussi longtemps que la loi l'exige.</p>
-<p>Vous pouvez demander à consulter, corriger ou supprimer vos données en écrivant à {email}.</p>`
-  }
-};
-
-module.exports = { ui, blog, legal };
+module.exports = { ui, blog };
