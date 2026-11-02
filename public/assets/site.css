@@ -361,3 +361,27 @@ p { margin: 0 0 1em; }
 .kv dt { font-weight: 700; }
 .kv dd { margin: 0; }
 @media (max-width: 620px) { .kv { grid-template-columns: 1fr; gap: 2px; } .kv dd { margin-bottom: 12px; } }
+
+/* Fleet page: one block per car, photo beside the text, alternating sides */
+.fl-list { display: grid; gap: 28px; }
+.fl-car { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 36px; align-items: center; border: 1.5px solid var(--ice-2); border-radius: 22px; padding: 28px; scroll-margin-top: 90px; }
+.fl-car.pop { border-color: var(--mustard); }
+.fl-car:nth-child(even) .fl-img { order: 2; }
+.fl-img { margin: 0; position: relative; background: var(--ice); border-radius: 18px; padding: 18px; }
+.fl-img img { width: 100%; aspect-ratio: 2 / 1; object-fit: contain; }
+.fl-badge { position: absolute; top: 12px; left: 12px; background: var(--mustard); color: var(--black); font-weight: 800; font-size: 13px; border-radius: 999px; padding: 4px 12px; }
+.fl-t h2 { margin: 0; }
+.fl-t .cap { margin: 4px 0 12px; }
+.fl-ideal { background: var(--ice); border-radius: 10px; padding: 10px 14px; }
+.ticks { list-style: none; padding: 0; margin: 0 0 18px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px 18px; }
+.ticks li { position: relative; padding-left: 26px; }
+.ticks li::before { content: "✓"; position: absolute; left: 0; top: 0; font-weight: 900; color: var(--ok); }
+.fl-buy { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 18px; border-top: 1px dashed var(--line); padding-top: 14px; }
+.fl-buy .from { margin: 0; padding: 0; border: 0; }
+.hero .fl-jump a { color: var(--ink); }
+.opt.pref { border-color: var(--black); box-shadow: 0 0 0 2px var(--mustard); }
+@media (max-width: 860px) { .fl-car { grid-template-columns: 1fr; gap: 18px; padding: 18px; } .fl-car:nth-child(even) .fl-img { order: 0; } }
+@media (max-width: 520px) { .ticks { grid-template-columns: 1fr; } }
+[dir=rtl] .fl-badge { left: auto; right: 12px; }
+[dir=rtl] .ticks li { padding-left: 0; padding-right: 26px; }
+[dir=rtl] .ticks li::before { left: auto; right: 0; }

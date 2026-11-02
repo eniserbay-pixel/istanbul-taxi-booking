@@ -26,6 +26,7 @@ const PL = require("./places");
 const SV = require("./services");
 const AB = require("./about");
 const HW = require("./howto");
+const FL = require("./fleet");
 const HB = require("./hubs");
 // German, French, Italian and Dutch: page texts, blog posts and legal texts in one file per language
 ["de", "fr", "it", "nl"].forEach(l => {
@@ -114,7 +115,7 @@ ${ld.map(x => `<script type="application/ld+json">${JSON.stringify(x)}</script>`
   const p = t.paths;
   const header = `<header class="top"><div class="wrap top-in">
 <a class="logo" href="${p.home}"><img src="/img/logo.webp" alt="${esc(site.brand)} – Istanbul Taxi Booking" width="92" height="52"></a>
-<nav class="nav"><a href="${p.prices}">${t.nav.prices}</a><a href="${p.home}#fleet">${t.nav.fleet}</a><a href="${HW[o.lang].path}">${t.nav.how}</a><a href="${p.home}#faq">${t.nav.faq}</a><a href="${p.blog}">${t.nav.blog}</a>
+<nav class="nav"><a href="${p.prices}">${t.nav.prices}</a><a href="${FL[o.lang].path}">${t.nav.fleet}</a><a href="${HW[o.lang].path}">${t.nav.how}</a><a href="${p.home}#faq">${t.nav.faq}</a><a href="${p.blog}">${t.nav.blog}</a>
 ${langSwitch(o.lang, alts)}</nav>
 <a class="btn btn-y btn-sm" href="${p.book}">${t.nav.book}</a></div></header>`;
   const popular = [["IST", "sultanahmet"], ["IST", "taksim"], ["IST", "kadikoy"], ["SAW", "taksim"], ["SAW", "kadikoy"], ["SAW", "sultanahmet"]];
@@ -264,19 +265,24 @@ const hubPath = (lang, a) => isPort(a) ? PORT[lang].path : I[lang].paths[a];
 // Everything the Galataport page lists, as [route, destination]: the airports first, then the districts
 const portList = () => AIRPORTS.map(a => [[a.id, "galataport"], a.id]).concat(PORT_TO.map(z => [["galataport", z], z]));
 
+// One-way prices of every car on the most asked-for routes (home page, fleet page)
+function popularTable(lang) {
+  const t = I[lang], popular = ROUTES.filter(([a, z]) => ["sultanahmet", "taksim", "besiktas", "kadikoy", "sisli", "SAW"].includes(z));
+  return `<div class="tbl-wrap"><table class="tbl"><thead><tr><th>${t.ui.route}</th>${P.cars.map(c => `<th>${esc(c.name[lang])}</th>`).join("")}</tr></thead><tbody>
+${popular.map(([a, z]) => `<tr><td><a href="${routePath(lang, a, z)}">${esc(Q.zone(P, a).short[lang])} → ${esc(Q.zone(P, z).short[lang])}</a></td>${P.cars.map(c => `<td>€${Q.base(P, a, z, c.id)}</td>`).join("")}</tr>`).join("")}
+</tbody></table></div>`;
+}
+
 function home(lang) {
   const t = I[lang], h = t.home;
   const faq = t.faq.map(([q, a]) => [fill(q, { brand: site.brand }), fill(a, { brand: site.brand })]);
-  const popular = ROUTES.filter(([a, z]) => ["sultanahmet", "taksim", "besiktas", "kadikoy", "sisli", "SAW"].includes(z));
   const body = `<section class="hero hero-home"><div class="wrap hero-in"><div class="hero-t">
 <h1>${h.h1}</h1><p class="lead">${fill(h.lead, { min: minPrice, brand: site.brand })}</p></div>
 
 ${searchForm(lang)}${assure(lang)}</div></section>
-<section class="sec ice" id="fleet"><div class="wrap"><h2>${h.fleetH}</h2><p class="sub">${h.fleetLead}</p>${fleet(lang)}</div></section>
+<section class="sec ice" id="fleet"><div class="wrap"><h2>${h.fleetH}</h2><p class="sub">${h.fleetLead}</p>${fleet(lang)}<p><a class="more" href="${FL[lang].path}">${esc(FL[lang].more)} →</a></p></div></section>
 <section class="sec"><div class="wrap"><h2>${h.routesH}</h2><p class="sub">${h.routesLead}</p>
-<div class="tbl-wrap"><table class="tbl"><thead><tr><th>${t.ui.route}</th>${P.cars.map(c => `<th>${esc(c.name[lang])}</th>`).join("")}</tr></thead><tbody>
-${popular.map(([a, z]) => `<tr><td><a href="${routePath(lang, a, z)}">${esc(Q.zone(P, a).short[lang])} → ${esc(Q.zone(P, z).short[lang])}</a></td>${P.cars.map(c => `<td>€${Q.base(P, a, z, c.id)}</td>`).join("")}</tr>`).join("")}
-</tbody></table></div><p><a class="more" href="${t.paths.prices}">${t.nav.prices} →</a></p></div></section>
+${popularTable(lang)}<p><a class="more" href="${t.paths.prices}">${t.nav.prices} →</a></p></div></section>
 <section class="sec dark"><div class="wrap"><h2>${h.vsH}</h2><div class="tbl-wrap"><table class="tbl vs"><thead><tr>${h.vsCols.map(c => `<th>${esc(fill(c, { brand: site.brand }))}</th>`).join("")}</tr></thead>
 <tbody>${h.vs.map(r => `<tr><th scope="row">${r[0]}</th><td>${r[1]}</td><td class="ok">${r[2]}</td></tr>`).join("")}</tbody></table></div></div></section>
 <section class="sec" id="how"><div class="wrap"><h2>${h.howH}</h2><ol class="how">${h.how.map(([a, b]) => `<li><h3>${a}</h3><p>${b}</p></li>`).join("")}</ol><p><a class="more" href="${HW[lang].path}">${esc(HW[lang].more)} →</a></p></div></section>
@@ -502,6 +508,41 @@ function howPage(lang) {
   page({ lang, path: x.path, alts: ALL(l => HW[l].path), title: x.title, desc: x.desc, body, ld: [ld, faqLd(x.faq), crumbs([[site.brand, t.paths.home], [x.nav, x.path]])] });
 }
 
+// Fleet page (build/fleet.js): each car in detail with its lowest price and a button that books it, a
+// comparison table, prices on popular routes, what every ride includes and an FAQ
+function fleetPage(lang) {
+  const t = I[lang], x = FL[lang];
+  const v = { seat: P.rules.childSeat, wait: P.rules.freeWaitMin, ret: P.rules.returnDiscountPct };
+  const F = s => fill(s, v);
+  // the same "from" price as the home page cars
+  const low = id => Math.min(...AIRPORTS.flatMap(a => PLACES.map(z => Q.base(P, a.id, z.id, id)).filter(Boolean)));
+  const book = id => `${t.paths.book}?car=${id}`;
+  const cars = P.cars.map((c, i) => { const d = x.cars[c.id]; return `<article class="fl-car${c.popular ? " pop" : ""}" id="${c.id}">
+<figure class="fl-img"><img src="${c.img}" alt="${esc(c.name[lang])} – ${esc(c.models[lang])}" width="760" height="380" loading="${i ? "lazy" : "eager"}">${c.popular ? `<span class="fl-badge">★ ${esc(x.popular)}</span>` : ""}</figure>
+<div class="fl-t"><h2>${esc(c.name[lang])}</h2><p class="models">${esc(c.models[lang])}</p>
+<p class="cap"><span>👤 ${c.seats} ${esc(x.pax)}</span><span>🧳 ${c.bags} ${esc(x.bags)}</span></p>
+<p class="fl-ideal"><strong>${esc(x.ideal)}:</strong> ${esc(d.ideal)}</p><p>${esc(d.desc)}</p>
+<ul class="ticks">${d.feats.map(f => `<li>${esc(F(f))}</li>`).join("")}</ul>
+<div class="fl-buy"><p class="from">${esc(x.from)} <strong>€${low(c.id)}</strong> <span>${esc(x.per)}</span></p><a class="btn btn-y" href="${book(c.id)}">${esc(x.book)}</a></div></div></article>`; }).join("");
+  const body = `<section class="hero hero-s"><div class="wrap"><div class="hero-t"><nav class="crumbs"><a href="${t.paths.home}">${esc(site.brand)}</a> › ${esc(x.nav)}</nav>
+<h1>${esc(x.h1)}</h1><p class="lead answer">${esc(x.lead)}</p>
+<nav class="chips fl-jump">${P.cars.map(c => `<a href="#${c.id}">${esc(c.name[lang])} · 👤 ${c.seats}</a>`).join("")}</nav></div></div></section>
+<section class="sec"><div class="wrap fl-list">${cars}</div></section>
+<section class="sec ice"><div class="wrap"><h2>${esc(x.cmpH)}</h2><div class="tbl-wrap"><table class="tbl"><thead><tr>${x.cols.map(c => `<th>${esc(c)}</th>`).join("")}</tr></thead><tbody>
+${P.cars.map(c => `<tr><th scope="row"><a href="#${c.id}">${esc(c.name[lang])}</a></th><td>${c.seats}</td><td>${c.bags}</td><td>${esc(x.cars[c.id].ideal)}</td><td>€${low(c.id)}</td></tr>`).join("")}
+</tbody></table></div></div></section>
+<section class="sec"><div class="wrap"><h2>${esc(x.pricesH)}</h2><p class="sub">${esc(x.pricesLead)}</p>${popularTable(lang)}<p><a class="more" href="${t.paths.prices}">${t.nav.prices} →</a></p></div></section>
+<section class="sec ice"><div class="wrap"><h2>${esc(x.inclH)}</h2><ol class="how how-4">${x.incl.map(([h, p]) => `<li><h3>${esc(h)}</h3><p>${esc(F(p))}</p></li>`).join("")}</ol></div></section>
+<section class="sec"><div class="wrap narrow"><h2>${t.home.faqH}</h2>${faqBlock(x.faq.map(([q, a]) => [q, esc(F(a))]))}</div></section>
+<section class="cta"><div class="wrap"><h2>${esc(x.ctaH)}</h2><p>${esc(x.ctaP)}</p><a class="btn btn-k" href="${t.paths.book}">${t.nav.book}</a></div></section>`;
+  const ld = { "@context": "https://schema.org", "@type": "ItemList", name: x.h1, description: x.desc, url: URL_ + x.path, inLanguage: lang,
+    itemListElement: P.cars.map((c, i) => ({ "@type": "ListItem", position: i + 1, item: { "@type": "Product", name: `${c.name[lang]} (${c.models[lang]})`, description: x.cars[c.id].desc, image: URL_ + c.img, url: `${URL_}${x.path}#${c.id}`,
+      additionalProperty: [{ "@type": "PropertyValue", name: "seatingCapacity", value: c.seats }, { "@type": "PropertyValue", name: "suitcases", value: c.bags }],
+      offers: { "@type": "AggregateOffer", priceCurrency: P.currency, lowPrice: low(c.id), highPrice: Math.max(...ROUTES.map(([a, z]) => Q.base(P, a, z, c.id)).filter(Boolean)) } } })) };
+  const faq = x.faq.map(([q, a]) => [q, F(a)]);
+  page({ lang, path: x.path, alts: ALL(l => FL[l].path), title: x.title, desc: x.desc, body, ld: [ld, faqLd(faq), crumbs([[site.brand, t.paths.home], [x.nav, x.path]])] });
+}
+
 // English guide pages for the big searches (build/guides.js): a quotable answer, a price table, sections, FAQ
 function guide(g) {
   const lang = "en", t = I.en, sedan = (a, z) => Q.base(P, a, z, "sedan");
@@ -666,7 +707,7 @@ function admin() {
   fs.readdirSync(path.join(__dirname, "static", "fonts")).forEach(f => put("static/fonts/" + f, "fonts/" + f));
 }
 
-LANGS.forEach(l => { home(l); AIRPORTS.forEach(a => hub(l, a.id)); portHub(l); aboutPage(l); howPage(l); CO.ORDER.forEach(k => companyPage(l, k)); ROUTES.forEach(([a, z]) => route(l, a, z)); PL.L.forEach(x => place(l, x)); SV.S.forEach(x => service(l, x)); prices(l); book(l); legalPages(l); blogIndex(l); POSTS.forEach(x => blogPost(l, x)); });
+LANGS.forEach(l => { home(l); AIRPORTS.forEach(a => hub(l, a.id)); portHub(l); aboutPage(l); howPage(l); fleetPage(l); CO.ORDER.forEach(k => companyPage(l, k)); ROUTES.forEach(([a, z]) => route(l, a, z)); PL.L.forEach(x => place(l, x)); SV.S.forEach(x => service(l, x)); prices(l); book(l); legalPages(l); blogIndex(l); POSTS.forEach(x => blogPost(l, x)); });
 GUIDES.forEach(guide);
 notFound();
 admin();

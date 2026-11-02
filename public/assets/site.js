@@ -21,6 +21,9 @@
       var v = params.get(n);
       if (v && f.elements[n] && (n !== "from" && n !== "to" || !f.elements[n].value || window.BOOK)) f.elements[n].value = v;
     });
+    // A car picked on the fleet page rides along with the search, so the booking page can mark it
+    var car = params.get("car");
+    if (car && /^[a-z]+$/.test(car) && !f.elements.car) { var h = document.createElement("input"); h.type = "hidden"; h.name = "car"; h.value = car; f.appendChild(h); }
     if (!f.elements.date.value) f.elements.date.value = today(1);
     if (!f.elements.time.value) f.elements.time.value = "12:00";
     if (params.get("ret") === "1") ret.checked = true;
@@ -168,7 +171,7 @@
       var r = Quote.quote(P, { from: s.from, to: s.to, car: c.id, time: s.time, ret: s.ret, childSeats: 0 });
       if (!r) return "";
       var ok = Quote.fits(c, s.pax, 0);
-      return '<div class="opt' + (c.popular ? " pop" : "") + '" aria-disabled="' + !ok + '"><img src="' + c.img + '" alt="" width="140" height="70">' +
+      return '<div class="opt' + (c.popular ? " pop" : "") + (c.id === params.get("car") ? " pref" : "") + '" aria-disabled="' + !ok + '"><img src="' + c.img + '" alt="" width="140" height="70">' +
         "<div><h3>" + esc(c.name[L]) + '</h3><p class="models small">' + esc(c.models[L]) + '</p><p class="cap small"><span>👤 ' + c.seats + "</span><span>🧳 " + c.bags + "</span></p>" +
         (ok ? "" : '<p class="small" style="color:var(--err)">' + esc(T.tooMany) + "</p>") + "</div>" +
         '<div class="price"><div><strong>€' + r.total + "</strong><small>" + esc(s.ret ? T.withReturn : T.oneWay) + (peak ? " · " + esc(T.peak) : "") + "</small></div>" +
