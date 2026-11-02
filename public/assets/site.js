@@ -131,7 +131,7 @@
     pax: Math.max(1, Math.min(16, +params.get("pax") || 2)),
     ret: params.get("ret") === "1" && params.get("rdate") ? { date: params.get("rdate"), time: params.get("rtime") || "" } : null,
     car: "", bags: 0, childSeats: 0, name: "", email: "", phone: "", flight: "", pickup: "", dropoff: "", note: "",
-    retFlight: "", retPickup: "", retDropoff: "", step: 0
+    retFlight: "", retPickup: "", retDropoff: "", step: 0, max: 0
   };
   // The return's route: its own one when "different return route" was ticked, otherwise the way back
   if (s.ret) {
@@ -150,9 +150,27 @@
   function q() {
     return Quote.quote(P, { from: s.from, to: s.to, car: s.car, time: s.time, ret: s.ret, childSeats: s.childSeats });
   }
+  // Step tabs: every step already reached can be opened again, back or forward; nothing once the booking is sent
   function steps() {
-    $$("[data-step-i]", root).forEach(function (li, i) { li.className = i === s.step ? "on" : i < s.step ? "done" : ""; });
+    $$("[data-step-i]", root).forEach(function (li, i) {
+      var open = s.step < 3 && i !== s.step && i <= s.max;
+      li.className = (i === s.step ? "on" : i < s.step || i <= s.max && s.step < 3 ? "done" : "") + (open ? " link" : "");
+      if (open) { li.setAttribute("role", "button"); li.tabIndex = 0; } else { li.removeAttribute("role"); li.removeAttribute("tabindex"); }
+      if (i === s.step) li.setAttribute("aria-current", "step"); else li.removeAttribute("aria-current");
+    });
   }
+  function jump(n) {
+    if (s.step >= 3 || n === s.step || n > s.max) return;
+    if (s.step === 1) {
+      read();
+      if (n > 1 && !check()) return;
+    }
+    go(n);
+  }
+  $$("[data-step-i]", root).forEach(function (li, i) {
+    li.addEventListener("click", function () { jump(i); });
+    li.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); jump(i); } });
+  });
   function summary() {
     return '<div class="summary"><span><b>' + esc(zoneName(s.from)) + ARROW + esc(zoneName(s.to)) + "</b></span><span>" + esc(day(s.date)) + " " + esc(s.time) +
       "</span><span>👤 " + s.pax + "</span>" + (s.ret ? "<span>↩ " + (s.ret.own ? "<b>" + esc(zoneName(s.ret.from)) + ARROW + esc(zoneName(s.ret.to)) + "</b> " : "") + esc(day(s.ret.date)) + " " + esc(s.ret.time) + "</span>" : "") + "</div>";
@@ -171,15 +189,25 @@
       var r = Quote.quote(P, { from: s.from, to: s.to, car: c.id, time: s.time, ret: s.ret, childSeats: 0 });
       if (!r) return "";
       var ok = Quote.fits(c, s.pax, 0);
-      return '<div class="opt' + (c.popular ? " pop" : "") + (c.id === params.get("car") ? " pref" : "") + '" aria-disabled="' + !ok + '"><img src="' + c.img + '" alt="" width="140" height="70">' +
+      return '<div class="opt' + (c.popular ? " pop" : "") + (c.id === s.car ? " sel" : (!s.car && c.id === params.get("car") ? " pref" : "")) + '" aria-disabled="' + !ok + '"><img src="' + c.img + '" alt="" width="140" height="70">' +
         "<div><h3>" + esc(c.name[L]) + '</h3><p class="models small">' + esc(c.models[L]) + '</p><p class="cap small"><span>👤 ' + c.seats + "</span><span>🧳 " + c.bags + "</span></p>" +
         (ok ? "" : '<p class="small" style="color:var(--err)">' + esc(T.tooMany) + "</p>") + "</div>" +
         '<div class="price"><div><strong>€' + r.total + "</strong><small>" + esc(s.ret ? T.withReturn : T.oneWay) + (peak ? " · " + esc(T.peak) : "") + "</small></div>" +
         '<button class="btn btn-y btn-sm" type="button" data-car="' + c.id + '"' + (ok ? "" : " disabled") + ">" + esc(T.choose) + "</button></div></div>";
-    }).join("") + "</div>";
+    }).join("") + "</div>" +
+      // Back here after choosing: go on with the same car and the details already typed
+      (s.car && s.max > 0 ? '<div class="actions"><span></span><button class="btn btn-y" type="button" data-next>' + esc(T.next) + "</button></div>" : "");
     $$("[data-car]", view).forEach(function (b) {
-      b.addEventListener("click", function () { s.car = b.getAttribute("data-car"); go(1); });
+      b.addEventListener("click", function () {
+        var c = b.getAttribute("data-car");
+        // Another car may take fewer bags: the review needs the details checked again
+        if (c !== s.car && s.max > 1) s.max = 1;
+        s.car = c;
+        go(1);
+      });
     });
+    var nx = $("[data-next]", view);
+    if (nx) nx.addEventListener("click", function () { go(1); });
   }
 
   function field(name, label, type, opts) {
@@ -208,6 +236,7 @@
       field("note", T.note, "textarea", { full: 1 }) +
       '<input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">' +
       '</form><div class="actions"><button class="btn btn-o" type="button" data-back>' + esc(T.back) + '</button><button class="btn btn-y" type="button" data-next>' + esc(T.next) + "</button></div>";
+    if (s.bags > car.bags) s.bags = car.bags;
     if (!s.dropoff && !isAirport(s.to)) s.dropoff = "";
     $("[data-back]", view).addEventListener("click", function () { read(); go(0); });
     $("[data-next]", view).addEventListener("click", function () { read(); if (check()) go(2); });
@@ -292,11 +321,27 @@
       });
   }
 
-  function go(n) {
+  // Each step is an entry in the browser history, so the phone's back and forward buttons move between steps
+  function go(n, fromHistory) {
+    if (n > 0 && !s.car) n = 0;
     s.step = n;
+    s.max = Math.max(s.max, n);
     steps();
     [stepCar, stepDetails, stepReview][n]();
-    if (n) root.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (fromHistory !== true) {
+      try { history[fromHistory === "first" ? "replaceState" : "pushState"]({ bk: n }, ""); } catch (e) { /* history off */ }
+    }
+    if (fromHistory !== "first") root.scrollIntoView({ behavior: "smooth", block: "start" });
   }
-  go(0);
+  window.addEventListener("popstate", function (e) {
+    var n = e.state && typeof e.state.bk === "number" ? e.state.bk : 0;
+    if (s.step >= 3) return;
+    if (s.step === 1) {
+      read();
+      // Forward past details that were changed to something invalid: stay and show what to fix
+      if (n === 2 && !check()) { try { history.replaceState({ bk: 1 }, ""); } catch (x) { /* history off */ } return; }
+    }
+    go(Math.min(n, s.max), true);
+  });
+  go(0, "first");
 })();
