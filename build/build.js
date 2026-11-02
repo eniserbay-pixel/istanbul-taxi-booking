@@ -367,6 +367,20 @@ ${AIRPORTS.map(a => `<tr><td><a href="${routePath(lang, a.id, z)}">${esc(a.name[
   page({ lang, path: p, alts: ALL(l => PL.T[l].path(pl.id)), title: F(T.title), desc: F(T.desc), body, ld: [offer, faqLd(faq), crumbs([[site.brand, t.paths.home], [t.nav.prices, t.paths.prices], [F(T.h1), p]])] });
 }
 
+// The VIP cars with driver (build/chauffeur-cars.js): real photos of each car (outside large, inside below), what it
+// offers and a WhatsApp button that asks for that car. Shown on every service page.
+const CC = require("./chauffeur-cars");
+function vipCars(lang) {
+  const T = CC.T[lang];
+  const img = (n, alt, i, half) => `<img src="/img/vip/${n}-640.webp" srcset="/img/vip/${n}-640.webp 640w, /img/vip/${n}-1200.webp 1200w" sizes="${half ? "(max-width: 860px) 46vw, 280px" : "(max-width: 860px) 92vw, 560px"}" alt="${esc(alt)}" width="640" height="480" loading="lazy" decoding="async">`;
+  return `<section class="sec" id="vip"><div class="wrap"><h2>${esc(T.h)}</h2><p class="sub">${esc(T.lead)}</p><div class="vip-list">${CC.cars.map(c => {
+    const x = T.cars[c.id], wa = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(fill(T.waText, { car: x.name }))}`;
+    return `<article class="vip-car" id="vip-${c.id}"><div class="vip-ph" style="--n:${c.photos.length - 1}">${c.photos.map((n, i) => img(n, x.alt[i], i, i && c.photos.length > 2)).join("")}</div>
+<div class="vip-t"><h3>${esc(x.name)}</h3><p class="models">${esc(x.tag)}</p><p class="cap"><span>👤 ${c.seats} ${esc(T.pax)}</span><span>🧳 ${c.bags} ${esc(T.bags)}</span></p>
+<p>${esc(x.desc)}</p><ul class="vip-f">${x.feats.map(f => `<li>${esc(f)}</li>`).join("")}</ul><a class="btn btn-y" href="${wa}" rel="noopener">${esc(T.ask)}</a></div></article>`;
+  }).join("")}</div></div></section>`;
+}
+
 // Service page (build/services.js): chauffeur by the hour, city tour, wedding and event cars. Priced on request on WhatsApp.
 function service(lang, sv) {
   const t = I[lang], T = SV.T[lang], x = sv[lang];
@@ -377,10 +391,11 @@ function service(lang, sv) {
   const body = `<section class="hero hero-s"><div class="wrap"><div class="hero-t"><nav class="crumbs"><a href="${t.paths.home}">${esc(site.brand)}</a> › ${esc(T.head)}</nav>
 <h1>${esc(x.h1)}</h1><p class="lead answer">${esc(x.lead)}</p>${cta}</div></div></section>
 <section class="sec ice"><div class="wrap narrow prose"><h2>${esc(T.whatH)}</h2><ul>${x.points.map(p => `<li>${esc(p)}</li>`).join("")}</ul></div></section>
-<section class="sec" id="how"><div class="wrap"><h2>${esc(T.howH)}</h2><ol class="how">${x.how.map(([a, b]) => `<li><h3>${esc(a)}</h3><p>${esc(b)}</p></li>`).join("")}</ol>${cta}</div></section>
-<section class="sec ice"><div class="wrap"><h2>${esc(T.cars)}</h2>${fleet(lang, null, null, true)}</div></section>
-<section class="sec"><div class="wrap narrow"><h2>${t.home.faqH}</h2>${faqBlock(faq)}</div></section>
-<section class="sec ice"><div class="wrap"><h2>${esc(T.head)}</h2><div class="chips">${SV.S.filter(y => y.id !== sv.id).map(y => `<a href="${y[lang].path}">${esc(y[lang].nav)}</a>`).join("")}<a href="${t.paths.IST}">${esc(Q.zone(P, "IST").short[lang])}</a><a href="${t.paths.SAW}">${esc(Q.zone(P, "SAW").short[lang])}</a></div></div></section>`;
+${vipCars(lang)}
+<section class="sec ice" id="how"><div class="wrap"><h2>${esc(T.howH)}</h2><ol class="how">${x.how.map(([a, b]) => `<li><h3>${esc(a)}</h3><p>${esc(b)}</p></li>`).join("")}</ol>${cta}</div></section>
+<section class="sec"><div class="wrap"><h2>${esc(T.cars)}</h2>${fleet(lang, null, null, true)}</div></section>
+<section class="sec ice"><div class="wrap narrow"><h2>${t.home.faqH}</h2>${faqBlock(faq)}</div></section>
+<section class="sec"><div class="wrap"><h2>${esc(T.head)}</h2><div class="chips">${SV.S.filter(y => y.id !== sv.id).map(y => `<a href="${y[lang].path}">${esc(y[lang].nav)}</a>`).join("")}<a href="${t.paths.IST}">${esc(Q.zone(P, "IST").short[lang])}</a><a href="${t.paths.SAW}">${esc(Q.zone(P, "SAW").short[lang])}</a></div></div></section>`;
   const ld = { "@context": "https://schema.org", "@type": "Service", serviceType: sv.en.nav, name: x.h1, description: x.desc, provider: { "@id": URL_ + "/#service" }, areaServed: { "@type": "City", name: "Istanbul" } };
   page({ lang, path: x.path, alts: ALL(l => sv[l].path), title: x.title, desc: x.desc, body, ld: [ld, faqLd(faq), crumbs([[site.brand, t.paths.home], [x.h1, x.path]])] });
 }
