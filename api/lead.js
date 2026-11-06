@@ -6,6 +6,7 @@ const store = require("./_lib/store");
 const stats = require("./_lib/stats");
 const { cleanLead, reachable } = require("./_lib/booking");
 const { body, ip, send } = require("./_lib/http");
+const hub = require("./_lib/hub");
 
 module.exports = async (req, res) => {
   if (req.method !== "POST") return send(res, 405, { error: "method" });
@@ -36,6 +37,8 @@ module.exports = async (req, res) => {
       createdAt: prev ? prev.createdAt : now, updatedAt: now
     });
     await store.saveLead(next);
+    // the office handles every site's Aranacaklar in the Transfer3E panel (_lib/hub.js)
+    await hub.pushLead(next);
     send(res, 200, { ok: true });
   } catch (e) {
     console.error(e);

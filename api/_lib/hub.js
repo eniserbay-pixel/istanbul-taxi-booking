@@ -66,7 +66,27 @@ async function flush() {
   return n;
 }
 
+// A visitor who started a booking here and left before sending it (this site's Aranacaklar) also goes to the
+// panel's Aranacaklar, marked with this site, and to its Telegram once. Best effort: the lead stays in this site's
+// own list either way. Never throws; returns true when the panel has it.
+async function pushLead(l) {
+  if (!configured() || !l || !l.id) return false;
+  const lead = { lang: l.lang, step: l.step, car: l.car, carName: l.carName, customer: l.customer, legs: l.legs, total: l.total, currency: l.currency };
+  const raw = JSON.stringify({ action: "lead", id: String(l.id), lead }), time = String(Math.floor(Date.now() / 1000));
+  try {
+    const r = await fetch(URL_() + "/api/hub", {
+      method: "POST", headers: { "Content-Type": "application/json", "X-Hub-Site": KEY, "X-Hub-Time": time, "X-Hub-Sig": sign(time, raw) },
+      body: raw, signal: AbortSignal.timeout(5000)
+    });
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    return true;
+  } catch (e) {
+    console.error("hub lead", e.message);
+    return false;
+  }
+}
+
 // The panel's address (Telegram's "Panelde aç" button)
 const PANEL = () => URL_() + "/admin#rezervasyonlar";
 
-module.exports = { KEY, configured, verify, push, flush, PANEL };
+module.exports = { KEY, configured, verify, push, pushLead, flush, PANEL };
