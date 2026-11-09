@@ -2551,7 +2551,7 @@ dialog.bl-dlg::backdrop { background: rgba(15, 27, 45, .45); }
     var liveRows = live.map(function (p) {
       return '<tr><td><div class="ttl">' + esc(p.title) + '</div></td><td class="nowrap">' + dmy(p.date) + '</td><td>' + linkPills(p.langs) + '</td></tr>';
     }).join("");
-    $("main").innerHTML = '<div class="head"><div><h1>Blog</h1><p class="sub">Yayın takvimi ve sitedeki yazılar. Yazılar 8 dilde hazırlanıp siteye eklenir; ileri tarihli bir yazı, o gün sabah 09:00\'da kendiliğinden yayına girer.</p></div></div>' +
+    $("main").innerHTML = '<div class="head"><div><h1>Blog</h1><p class="sub">Yayın takvimi ve sitedeki yazılar. Yeni yazılar İngilizce, Almanca, Rusça ve Arapça hazırlanıp siteye eklenir; ileri tarihli bir yazı, o gün sabah 09:00\'da kendiliğinden yayına girer.</p></div></div>' +
       '<div class="card tbl-wrap" style="margin-bottom:16px"><div class="pad" style="padding-bottom:4px"><h2 class="h2">Yayın takvimi</h2><p class="m" style="margin:4px 0 0">Planlanan yazılar, yayın tarihleri ve hangi dillerde çıkacakları.</p></div>' +
       (cal.length ? '<table class="bl-tbl"><thead><tr><th>Yayın tarihi</th><th>Yazı</th><th>Tür</th><th>Diller</th><th>Durum</th></tr></thead><tbody>' + calRows + '</tbody></table>' : '<p class="pad m">Takvimde planlanmış yazı yok.</p>') + '</div>' +
       '<div class="card tbl-wrap"><div class="pad" style="padding-bottom:4px"><h2 class="h2">Yayındaki yazılar (' + live.length + ')</h2><p class="m" style="margin:4px 0 0">Dil kısaltmasına tıklayınca yazı o dilde sitede açılır.</p></div>' +
