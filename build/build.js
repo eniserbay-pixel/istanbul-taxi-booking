@@ -40,7 +40,7 @@ const HB = require("./hubs");
 ["tr", "ar"].forEach(l => {
   const X = require("./lang/" + l);
   I[l] = { ...X.ui, dir: X.dir };
-  ALL_POSTS.forEach(p => { p[l] = X.blog[p.id]; });
+  ALL_POSTS.forEach(p => { p[l] = p[l] || X.blog[p.id]; });
   PORT[l] = X.port;
   CO.T[l] = X.company;
   DI.T[l] = X.districts.T;
@@ -105,7 +105,7 @@ function layout(o) {
   const head = `<!doctype html><html lang="${t.htmlLang}"${t.dir ? ` dir="${t.dir}"` : ""}><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${esc(o.title)}</title><meta name="description" content="${esc(o.desc)}">${site.googleVerification && o.path === I.en.paths.home ? `<meta name="google-site-verification" content="${esc(site.googleVerification)}">` : ""}${site.yandexVerification && o.path === I.en.paths.home ? `<meta name="yandex-verification" content="${esc(site.yandexVerification)}">` : ""}
 <link rel="canonical" href="${URL_}${o.path === "/" ? "/" : o.path}">
-${o.alts ? LANGS.map(l => `<link rel="alternate" hreflang="${l}" href="${URL_}${o.alts[l]}">`).join("") + `<link rel="alternate" hreflang="x-default" href="${URL_}${o.alts.en}">` : ""}
+${o.alts ? (o.hl || LANGS).map(l => `<link rel="alternate" hreflang="${l}" href="${URL_}${o.alts[l]}">`).join("") + `<link rel="alternate" hreflang="x-default" href="${URL_}${o.alts.en}">` : ""}
 <meta property="og:type" content="website"><meta property="og:title" content="${esc(o.title)}"><meta property="og:description" content="${esc(o.desc)}"><meta property="og:url" content="${URL_}${o.path}"><meta property="og:image" content="${URL_}/img/og.png"><meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#000000"><link rel="icon" href="/img/favicon-32.png" sizes="32x32"><link rel="apple-touch-icon" href="/img/icon-192.png">
 ${o.noindex ? '<meta name="robots" content="noindex">' : ""}
@@ -144,7 +144,7 @@ function write(p, html) {
 }
 function page(o) {
   write(o.path, layout(o));
-  if (!o.noindex) pages.push({ path: o.path, alts: o.alts, lang: o.lang });
+  if (!o.noindex) pages.push({ path: o.path, alts: o.alts, hl: o.hl, lang: o.lang });
 }
 
 // Language menu in the header: the current language's flag, opening a list of all eight
@@ -220,7 +220,7 @@ function faqBlock(items) {
 const postPath = (lang, post) => I[lang].paths.blog + "/" + post[lang].slug;
 // max: show only the newest ones (home page, other posts)
 function blogCards(lang, skip, max) {
-  return `<div class="posts">${POSTS.filter(x => x.id !== skip).slice(0, max || POSTS.length).map(x => `<a class="post-c" href="${postPath(lang, x)}"><h3>${esc(x[lang].title)}</h3><p>${esc(fill(x[lang].lead, { brand: site.brand }))}</p><span class="more">${I[lang].blog.read} →</span></a>`).join("")}</div>`;
+  return `<div class="posts">${POSTS.filter(x => x.id !== skip && x[lang]).slice(0, max || POSTS.length).map(x => `<a class="post-c" href="${postPath(lang, x)}"><h3>${esc(x[lang].title)}</h3><p>${esc(fill(x[lang].lead, { brand: site.brand }))}</p><span class="more">${I[lang].blog.read} →</span></a>`).join("")}</div>`;
 }
 // The booking box in a blog post: it leaves the narrow text column so the search fields fit in one row on desktop
 const blogWidget = lang => `</div><div class="wrap"><aside class="blog-widget"><h2>${I[lang].blog.widgetH}</h2>${searchForm(lang)}${assure(lang)}</aside></div><div class="wrap narrow prose">`;
@@ -242,7 +242,7 @@ function blogPost(lang, post) {
 ${article}
 <section class="sec ice"><div class="wrap"><h2>${t.blog.more}</h2>${blogCards(lang, post.id, 4)}</div></section>`;
   const ld = { "@context": "https://schema.org", "@type": "BlogPosting", headline: x.title, description: x.desc, datePublished: post.date, dateModified: post.date, inLanguage: lang, mainEntityOfPage: URL_ + p, author: { "@type": "Organization", name: site.brand }, publisher: { "@id": URL_ + "/#service" }, image: URL_ + "/img/og.png" };
-  page({ lang, path: p, alts: ALL(l => postPath(l, post)), title: x.title, desc: x.desc, body, ld: [ld, crumbs([[site.brand, t.paths.home], [t.nav.blog, t.paths.blog], [x.title, p]])] });
+  page({ lang, path: p, alts: ALL(l => post[l] ? postPath(l, post) : I[l].paths.blog), hl: LANGS.filter(l => post[l]), title: x.title, desc: x.desc, body, ld: [ld, crumbs([[site.brand, t.paths.home], [t.nav.blog, t.paths.blog], [x.title, p]])] });
 }
 
 const faqLd = items => ({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: items.map(([q, a]) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a.replace(/<[^>]+>/g, "") } })) });
@@ -711,7 +711,7 @@ function extras() {
   const today = new Date().toISOString().slice(0, 10);
   fs.writeFileSync(path.join(OUT, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
-${pages.map(p => `<url><loc>${URL_}${p.path}</loc><lastmod>${today}</lastmod>${p.alts ? LANGS.map(l => `<xhtml:link rel="alternate" hreflang="${l}" href="${URL_}${p.alts[l]}"/>`).join("") + `<xhtml:link rel="alternate" hreflang="x-default" href="${URL_}${p.alts.en}"/>` : ""}</url>`).join("\n")}
+${pages.map(p => `<url><loc>${URL_}${p.path}</loc><lastmod>${today}</lastmod>${p.alts ? (p.hl || LANGS).map(l => `<xhtml:link rel="alternate" hreflang="${l}" href="${URL_}${p.alts[l]}"/>`).join("") + `<xhtml:link rel="alternate" hreflang="x-default" href="${URL_}${p.alts.en}"/>` : ""}</url>`).join("\n")}
 </urlset>
 `);
   // AI search and answer bots get the same rules as everyone (a bot's own group replaces the * group, so it is one group)
@@ -791,7 +791,7 @@ function admin() {
   fs.readdirSync(path.join(__dirname, "static", "fonts")).forEach(f => put("static/fonts/" + f, "fonts/" + f));
 }
 
-LANGS.forEach(l => { home(l); AIRPORTS.forEach(a => hub(l, a.id)); portHub(l); aboutPage(l); howPage(l); fleetPage(l); faqPage(l); CO.ORDER.forEach(k => companyPage(l, k)); ROUTES.forEach(([a, z]) => route(l, a, z)); PL.L.forEach(x => place(l, x)); SV.S.forEach(x => service(l, x)); prices(l); book(l); legalPages(l); blogIndex(l); POSTS.forEach(x => blogPost(l, x)); });
+LANGS.forEach(l => { home(l); AIRPORTS.forEach(a => hub(l, a.id)); portHub(l); aboutPage(l); howPage(l); fleetPage(l); faqPage(l); CO.ORDER.forEach(k => companyPage(l, k)); ROUTES.forEach(([a, z]) => route(l, a, z)); PL.L.forEach(x => place(l, x)); SV.S.forEach(x => service(l, x)); prices(l); book(l); legalPages(l); blogIndex(l); POSTS.forEach(x => x[l] && blogPost(l, x)); });
 GUIDES.forEach(guide);
 notFound();
 admin();
