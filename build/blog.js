@@ -5,6 +5,7 @@ const SRC = require("./blog-src");
 
 module.exports = [
   // newest first; in every language in their own files
+  ...require("./blog-posts"),
   ...require("./blog-guides"),
   require("./blog-galataport"),
   {
