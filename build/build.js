@@ -59,6 +59,8 @@ const OUT = path.join(__dirname, "..", "public");
 const URL_ = (process.env.SITE_URL || site.url).replace(/\/$/, "");
 const LANGS = ["en", "tr", "ru", "de", "fr", "it", "nl", "ar"];
 // The same page in every language: { en: "/prices", ru: "/ru/ceny", ... }
+// WhatsApp buttons without their own text open the chat with this greeting typed in, so we know the customer came from the site
+const WA = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent("Hello, I got your number from ITB.")}`;
 const ALL = fn => Object.fromEntries(LANGS.map(l => [l, fn(l)]));
 const AIRPORTS = P.zones.filter(z => z.type === "airport");
 const PLACES = P.zones.filter(z => z.type !== "airport");
@@ -125,10 +127,10 @@ ${langSwitch(o.lang, alts)}</nav>
 <div><h3>${t.footer.routes}</h3>${popular.map(([a, z]) => `<a href="${p.route(a, Q.zone(P, z).slug)}">${esc(Q.zone(P, a).short[o.lang])} → ${esc(Q.zone(P, z).short[o.lang])}</a>`).join("")}<a href="${PORT[o.lang].path}">${esc(Q.zone(P, "galataport").name[o.lang])}</a>${o.lang === "en" ? GUIDES.map(g => `<a href="${g.path}">${esc(g.nav)}</a>`).join("") : ""}</div>
 <div><h3>${SV.T[o.lang].head}</h3>${SV.S.map(x => `<a href="${x[o.lang].path}">${esc(x[o.lang].nav)}</a>`).join("")}</div>
 <div><h3>${CO.T[o.lang].head}</h3><a href="${AB[o.lang].path}">${esc(AB[o.lang].nav)}</a>${CO.ORDER.map(k => `<a href="${CO.path(o.lang, k)}">${CO.T[o.lang].pages[k].nav}</a>`).join("")}</div>
-<div><h3>${t.footer.contact}</h3><a href="https://wa.me/${site.whatsapp}" rel="noopener">WhatsApp <bdi dir="ltr">${esc(site.phone)}</bdi></a><a href="tel:${site.phone.replace(/\s/g, "")}"><bdi dir="ltr">${esc(site.phone)}</bdi></a><a href="mailto:${site.email}">${esc(site.email)}</a></div>
+<div><h3>${t.footer.contact}</h3><a href="${WA}" rel="noopener">WhatsApp <bdi dir="ltr">${esc(site.phone)}</bdi></a><a href="tel:${site.phone.replace(/\s/g, "")}"><bdi dir="ltr">${esc(site.phone)}</bdi></a><a href="mailto:${site.email}">${esc(site.email)}</a></div>
 <div><h3>${t.footer.legal}</h3><a href="${p.terms}">${t.ui.terms}</a><a href="${p.privacy}">${t.ui.privacy}</a><a href="${p.prices}">${t.nav.prices}</a><a href="${p.blog}">${t.nav.blog}</a></div>
 </div><div class="wrap copy">© ${new Date().getFullYear()} ${esc(site.brand)}. ${t.footer.rights}</div></footer>
-<a class="wa-float" href="https://wa.me/${site.whatsapp}" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.8-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z"/></svg></a>
+<a class="wa-float" href="${WA}" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.8-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z"/></svg></a>
 <script>window.SITE=${JSON.stringify({ lang: o.lang, book: p.book, wa: site.whatsapp })};</script>
 ${o.scripts || ""}<script src="/assets/timewheel.js?v=${ver}" defer></script><script src="/assets/site.js?v=${ver}" defer></script></body></html>`;
   const html = head + header + "<main>" + o.body + "</main>" + footer;
@@ -609,7 +611,7 @@ function faqPage(lang) {
 <p class="fq-rel">${esc(x.related)}: ${rel[c.id].map(([l, p]) => `<a href="${p}">${esc(l)}</a>`).join(" · ")}</p></div>`).join("\n")}
 <p class="fq-none" data-faq-none hidden>${esc(x.noHits)}</p></div></section>
 <section class="sec ice"><div class="wrap narrow fq-contact"><h2>${esc(x.contactH)}</h2><p>${esc(x.contactP)}</p>
-<p class="fq-btns"><a class="btn btn-y" href="https://wa.me/${site.whatsapp}" rel="noopener">WhatsApp</a><a class="btn btn-o" href="tel:${site.phone.replace(/\s/g, "")}"><bdi dir="ltr">${esc(site.phone)}</bdi></a><a class="btn btn-o" href="mailto:${site.email}">${esc(site.email)}</a></p></div></section>
+<p class="fq-btns"><a class="btn btn-y" href="${WA}" rel="noopener">WhatsApp</a><a class="btn btn-o" href="tel:${site.phone.replace(/\s/g, "")}"><bdi dir="ltr">${esc(site.phone)}</bdi></a><a class="btn btn-o" href="mailto:${site.email}">${esc(site.email)}</a></p></div></section>
 <section class="cta"><div class="wrap"><h2>${esc(x.ctaH)}</h2><p>${esc(x.ctaP)}</p><a class="btn btn-k" href="${t.paths.book}">${t.nav.book}</a></div></section>`;
   page({ lang, path: x.path, alts: ALL(l => FQ[l].path), title: F(x.title), desc: F(x.desc), body, ld: [faqLd(all), crumbs([[site.brand, t.paths.home], [x.nav, x.path]])] });
 }
@@ -687,7 +689,7 @@ function legalPages(lang) {
   // Company details: only the fields filled in data/site.json → legal are shown
   const rows = [[R.company, site.company], [R.address, address], [R.mersis, info.mersis], [R.tax, [info.taxOffice, info.taxNo].filter(Boolean).join(" · ")],
     [R.tradeReg, info.tradeReg], [R.kep, info.kep], [R.tursab, site.tursab], [R.verbis, info.verbis], [R.euRep, info.euRep],
-    [R.email, `<a href="mailto:${esc(site.email)}">${esc(site.email)}</a>`], [R.phone, `<a href="https://wa.me/${esc(site.whatsapp)}"><bdi>${esc(site.phone)}</bdi></a>`]];
+    [R.email, `<a href="mailto:${esc(site.email)}">${esc(site.email)}</a>`], [R.phone, `<a href="${WA}"><bdi>${esc(site.phone)}</bdi></a>`]];
   const details = `<ul>${rows.filter(r => r[1]).map(([k, v]) => `<li><strong>${k}:</strong> <bdi>${/^<a /.test(v) ? v : esc(v)}</bdi></li>`).join("")}</ul>`;
   const link = k => `<a href="${t.paths[k]}">${legal[lang][k].title}</a>`;
   const vars = { ...site, address: `<bdi>${esc(address)}</bdi>`, company: `<bdi>${esc(site.company)}</bdi>`, url: site.url.replace(/^https?:\/\//, ""), seat: P.rules.childSeat, wait: P.rules.freeWaitMin,
