@@ -5,7 +5,7 @@
 //   GET  names               place and vehicle names in the site's languages (_lib/names.json), for the WhatsApp confirmation
 //   GET  voucher&id=[&lang=] the booking's voucher PDF (the one the approval e-mail attaches), as a download
 //   POST create {booking}    manual booking (also sent to the Transfer3E panel, _lib/hub.js)
-//   POST update {id, booking}
+//   POST update {id, booking}     (also sent to the Transfer3E panel)
 //   POST status {ids, status}      (no e-mail, except the thank-you below)
 //   POST status {ids: [id], status, notify: true, reason}   the booking drawer's status buttons: Onaylandı sends the
 //                                  voucher e-mail, Reddedildi the decline and İptal the cancellation (with `reason` if given)
@@ -119,11 +119,21 @@ module.exports = async (req, res) => {
       return send(res, 200, { ok, sent: ok ? urls.length : 0, total: all.length, due, rebuilt });
     } catch (e) { console.error("indexnow", e); return send(res, 500, { error: "failed" }); }
   }
+  // Every few minutes from .github/workflows/hub-tick.yml: bookings the Transfer3E panel did not get yet, and those
+  // from 1 November 2026 on that it never had (_lib/hub.js backfill). Open to anyone; only sends what is missing.
+  if (a === "hubtick" && req.method === "GET") {
+    if (!store.configured() || !(await store.allow("rl:hubtick", 3, 60))) return send(res, 429, { error: "too_many" });
+    const h = require("./_lib/hub");
+    const retried = await h.flush().catch(e => { console.error(e); return 0; });
+    const backfilled = await h.backfill(15).catch(e => { console.error(e); return 0; });
+    return send(res, 200, { ok: true, retried, backfilled });
+  }
   // Every few minutes from .github/workflows/telegram-tick.yml: half-finished site bookings. Open to anyone, but each item is sent only once, and calls are limited.
   if (a === "tgtick" && req.method === "GET") {
     if (!store.configured() || !(await store.allow("rl:tgtick", 3, 60))) return send(res, 429, { error: "too_many" });
     // bookings the Transfer3E panel did not get yet (_lib/hub.js) go again
     await require("./_lib/hub").flush().catch(e => console.error(e));
+    await require("./_lib/hub").backfill(10).catch(e => console.error(e));
     return send(res, 200, await telegram.tick().catch(e => { console.error(e); return { error: "failed" }; }));
   }
   if (req.method === "POST" && req.headers["x-iap-admin"] !== "1") return send(res, 403, { error: "forbidden" });
@@ -197,6 +207,8 @@ module.exports = async (req, res) => {
         [{ at: now(), text: "Düzenlendi" }]
       ).slice(-50);
       if (prev.status !== "tamamlandi") await flow.completed(next);
+      // the Transfer3E panel gets the edit too (a booking it never had is added there)
+      if (hub.configured()) await hub.push(next);
       return send(res, 200, { booking: await store.saveBooking(next) });
     }
 

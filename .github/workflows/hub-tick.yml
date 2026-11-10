@@ -1,0 +1,13 @@
+# Transfer3E panel link (api/_lib/hub.js): bookings it did not get yet are sent again, and those from 1 November 2026
+# on that it never had are sent once (backfill). GitHub runs this about every 10 minutes (it can be late when busy).
+name: Hub tick
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+jobs:
+  tick:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - run: curl -fsS --max-time 60 "https://www.istanbultaxibooking.com/api/admin?a=hubtick"
