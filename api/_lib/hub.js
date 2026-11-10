@@ -28,14 +28,15 @@ function log(b, text) { b.history = (b.history || []).concat([{ at: new Date().t
 
 // Sends the booking to the panel. Returns true when the panel has it; a booking it could not get is marked
 // (hubPending) and sent again with the next booking or the next Telegram tick. Changes `b` without saving it.
-async function push(b) {
+// `backfill`: the panel never had it (backfill() below): added there quietly and never written over one it has.
+async function push(b, backfill) {
   if (!configured()) return false;
   const out = Object.assign({}, b);
   delete out.history;
   if (b.partner) {
     try { const p = (await require("./partner").list()).find(x => x.id === b.partner); if (p) out.partnerName = p.name; } catch (e) { console.error(e); }
   }
-  const raw = JSON.stringify({ action: "booking", id: String(b.id), booking: out }), time = String(Math.floor(Date.now() / 1000));
+  const raw = JSON.stringify(Object.assign({ action: "booking", id: String(b.id), booking: out }, backfill ? { backfill: true } : {})), time = String(Math.floor(Date.now() / 1000));
   try {
     const r = await fetch(URL_() + "/api/hub", {
       method: "POST", headers: { "Content-Type": "application/json", "X-Hub-Site": KEY, "X-Hub-Time": time, "X-Hub-Sig": sign(time, raw) },
@@ -43,7 +44,7 @@ async function push(b) {
     });
     if (!r.ok) throw new Error("HTTP " + r.status);
     if (b.hubPending) delete b.hubPending;
-    if (!b.hubAt) log(b, "Transfer3E paneline aktarıldı");
+    if (!b.hubAt) log(b, "Transfer3E paneline aktarıldı" + (backfill ? " (geriye dönük)" : ""));
     b.hubAt = new Date().toISOString();
     return true;
   } catch (e) {
@@ -62,6 +63,27 @@ async function flush() {
     if (Date.now() - Date.parse(s.createdAt) > 14 * 86400000) continue;
     const b = await store.getBooking(s.id);
     if (b && b.hubPending && await push(b)) { await store.saveBooking(b).catch(e => console.error(e)); n++; }
+  }
+  return n;
+}
+
+// Bookings from 1 November 2026 on (made, or travelling, on or after that day; not cancelled or declined) that the
+// panel never got, because they were made before the link or never got through: sent once, a few a call, oldest
+// first. Each one sent gets hubAt; when none is left a flag stops the scan.
+const BACKFILL_FROM = "2026-11-01";
+async function backfill(max) {
+  if (!configured() || !store.configured()) return 0;
+  if (await store.cmd("GET", "hub:backfill:done")) return 0;
+  const due = (await store.listBookings()).filter(s => !s.hubAt && (s.hubTries || 0) < 5 && !["iptal", "reddedildi"].includes(s.status) &&
+    (String(s.createdAt || "").slice(0, 10) >= BACKFILL_FROM || (s.legs || []).some(l => String(l && l.date || "") >= BACKFILL_FROM)));
+  if (!due.length) { await store.cmd("SET", "hub:backfill:done", new Date().toISOString()); return 0; }
+  let n = 0;
+  for (const s of due.reverse().slice(0, max || 15)) {
+    const b = await store.getBooking(s.id);
+    if (!b || b.hubAt) continue;
+    if (await push(b, true)) n++;
+    else b.hubTries = (b.hubTries || 0) + 1; // one the panel keeps refusing is left after five tries
+    await store.saveBooking(b).catch(e => console.error(e));
   }
   return n;
 }
@@ -89,4 +111,4 @@ async function pushLead(l) {
 // The panel's address (Telegram's "Panelde aç" button)
 const PANEL = () => URL_() + "/admin#rezervasyonlar";
 
-module.exports = { KEY, configured, verify, push, pushLead, flush, PANEL };
+module.exports = { KEY, configured, verify, push, pushLead, flush, backfill, PANEL };

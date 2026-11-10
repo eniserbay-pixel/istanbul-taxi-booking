@@ -18,14 +18,17 @@ function log(b, text) { b.history = (b.history || []).concat([{ at: now(), text 
 
 // What the panel decides about a booking, written over the booking here. The driver (assign) and Tamamlandı (done, from
 // which a cash fare counts as collected) of each transfer come from the panel when it sends them, so this site's
-// panel shows the office's work; the supplier fee and U-ETDS stay as they are here.
+// panel shows the office's work, as does the supplier fee typed there; U-ETDS stays as it is here.
 function merge(b, x) {
   const has = (o, k) => Object.prototype.hasOwnProperty.call(o, k);
   const legs = (Array.isArray(x.legs) ? x.legs : []).map((l, i) => {
     const was = b.legs[i] || {};
     return Object.assign({}, was, l, {
       assign: has(l, "assign") ? l.assign || null : was.assign || null,
-      cost: was.cost || 0, costTry: was.costTry || 0, uetds: was.uetds || null,
+      // the supplier fee typed in the panel (in TL; cost in this booking's currency), when it sends one
+      cost: has(l, "cost") ? Math.max(0, +l.cost || 0) : was.cost || 0,
+      costTry: has(l, "costTry") ? Math.max(0, +l.costTry || 0) : was.costTry || 0,
+      uetds: was.uetds || null,
       done: has(l, "done") ? l.done || "" : was.done || ""
     });
   });
