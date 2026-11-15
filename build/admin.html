@@ -1186,8 +1186,14 @@ dialog.bl-dlg::backdrop { background: rgba(15, 27, 45, .45); }
         '<dt>Şoför</dt><dd>' + (l.assign ? esc(l.assign.label) + (l.assign.phone ? ', ' + esc(l.assign.phone) : '') : '<span class="m">Atanmadı</span>') + '</dd>' +
         (l.price ? '<dt>Tutar</dt><dd>' + money(l.price, b.currency) + '</dd>' : '') +
         (l.cost ? '<dt>Tedarik ücreti</dt><dd>' + money(l.cost, b.currency) + '</dd>' : '') +
-        '</dl></div>';
+        '</dl>' + (b.legs.length > 1 && !b.hourly && !l.done && b.status !== "reddedildi" && b.status !== "iptal" ? '<button type="button" class="btn btn-s btn-d" data-cleg="' + i + '" style="margin-top:6px">' + (i ? "Dönüşü" : "Gidişi") + ' iptal et</button>' : '') + '</div>';
     };
+    // ways of a return booking cancelled on their own ("Gidişi / Dönüşü iptal et", here or in the Transfer3E panel)
+    var goneHtml = (b.cancelledLegs || []).map(function (g) {
+      var t = g.on ? created(g.on) : null;
+      return '<p class="m" style="margin:8px 0 0"><b>İptal edilen ' + (g.leg ? "dönüş" : "gidiş") + ':</b> ' + dmy(g.at.slice(0, 10)) + ' ' + esc(g.at.slice(11, 16)) + ' · ' + esc(g.from) + ' → ' + esc(g.to) +
+        (g.amount ? ' · ' + money(g.amount, g.cur || b.currency) : '') + (t ? ' (iptal: ' + t.date + ' ' + t.time + (g.reason ? ', ' + esc(g.reason) : '') + ')' : '') + '</p>';
+    }).join("");
     // Decision on a request: approve, decline with a reason, or e-mail the customer a changed booking
     var pr = b.proposal;
     var propHtml = pr ? '<div class="prop"><b>Müşteriye gönderilen değişiklik</b> <span class="m">' + created(pr.at).date + ' ' + created(pr.at).time + '</span>' +
@@ -1207,7 +1213,7 @@ dialog.bl-dlg::backdrop { background: rgba(15, 27, 45, .45); }
         ((b.travelers || []).length ? '<dt>Yolcular (UETDS)</dt><dd>' + b.travelers.map(function (t) { return esc(t.name) + (t.nat || t.doc ? ' <span class="m">' + esc([t.nat, t.doc].filter(Boolean).join(" · ")) + '</span>' : ''); }).join("<br>") + '</dd>' : '') +
         '<dt>Site dili</dt><dd>' + esc((b.lang || "-").toUpperCase()) + '</dd></dl>' +
         (wa ? '<p style="margin:12px 0 0"><a class="btn btn-s" href="' + wa + '" target="_blank" rel="noopener" style="color:#16a34a">' + svg("wa").replace('<svg', '<svg width="16" height="16"') + 'WhatsApp ile yaz</a></p>' : '') + '</section>' +
-      '<section><h3>' + (b.hourly ? "Şoförlü araç (saatlik)" : "Transfer") + ' · ' + esc(carName(b)) + '</h3>' + b.legs.map(legHtml).join("") + '</section>' +
+      '<section><h3>' + (b.hourly ? "Şoförlü araç (saatlik)" : "Transfer") + ' · ' + esc(carName(b)) + '</h3>' + b.legs.map(legHtml).join("") + goneHtml + '</section>' +
       '<section><h3>Ödeme</h3><dl class="kv"><dt>Toplam</dt><dd><b>' + money(b.total, b.currency) + '</b></dd><dt>Ödeme</dt><dd>' + esc(PAY[b.payment] || b.payment) + '</dd>' +
         '<dt>Rezervasyon no</dt><dd>' + esc(b.ref || "-") + '</dd><dt>Kaynak</dt><dd>' + (function (k) { return esc(k[0]) + (k[1] ? '<div class="m">' + esc(k[1]) + '</div>' : ''); })(srcInfo(b)) + '</dd>' +
         (b.partnerRef ? '<dt>Partner referansı</dt><dd>' + esc(b.partnerRef) + '</dd>' : '') +
@@ -1221,6 +1227,26 @@ dialog.bl-dlg::backdrop { background: rgba(15, 27, 45, .45); }
     $("drawer-wrap").hidden = false;
     document.body.style.overflow = "hidden";
     $("d-cedit").addEventListener("click", function () { custForm(b); });
+    // Gidişi / Dönüşü iptal et: that way is cancelled, the other stays as a one-way booking with the price left
+    $("drawer").querySelectorAll("[data-cleg]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var i = +btn.getAttribute("data-cleg"), l = b.legs[i], keep = b.legs[i ? 0 : 1], what = i ? "dönüş" : "gidiş";
+        var head = "#" + b.id + ": yalnız " + what + " iptal edilecek (" + dmy(l.date) + " " + l.time + ", " + place(l.from, l.fromName) + " → " + place(l.to, l.toName) + "). Diğer yön tek yön olarak kalır; şoförü ve tedarik ücreti korunur.";
+        var t = prompt(head + "\n\nKalan ücret (" + b.currency + ", toplam " + money(b.total, b.currency) + "):", String(keep.price || b.total));
+        if (t === null) return;
+        var total = Number(String(t).replace(",", "."));
+        if (!(isFinite(total) && total >= 0 && total <= b.total + 0.005)) return toast("Kalan ücret 0 ile " + money(b.total, b.currency) + " arasında olmalı");
+        var reason = prompt("İptal nedeni (iç not, isteğe bağlı):", "");
+        if (reason === null) return;
+        var notify = false;
+        if (b.status === "onaylandi" && b.customer.email && S.ready.mail) notify = confirm("Müşteriye güncel voucher e-postası gönderilsin mi (" + b.customer.email + ")?\n\nTamam: gönder · İptal: gönderme");
+        if (!confirm(head + "\nKalan ücret: " + money(total, b.currency) + (notify ? " · müşteriye güncel voucher gidecek" : "") + ". Onaylıyor musunuz?")) return;
+        btn.disabled = true;
+        api("cancelleg", { id: b.id, leg: i, total: total, reason: reason.trim(), notify: notify }).then(function (j) {
+          upsert(j.booking); toast("#" + b.id + ": " + what + " iptal edildi"); openDrawer(b.id); refresh();
+        }).catch(function (e) { toast(e.message); btn.disabled = false; });
+      });
+    });
     $("drawer").querySelectorAll("[data-set]").forEach(function (btn) {
       btn.addEventListener("click", function () {
         var st = btn.getAttribute("data-set");

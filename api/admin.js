@@ -301,6 +301,40 @@ module.exports = async (req, res) => {
       return send(res, 200, { resources: await store.saveResources(list) });
     }
 
+    // One way of a return booking cancelled, the other kept as a one-way booking priced `total` (the booking's
+    // currency). leg: 0 outbound, 1 return; notify: the customer gets the approval e-mail again with the voucher of
+    // the trip that is left. The Transfer3E panel gets it too (_lib/hub.js).
+    if (a === "cancelleg" && req.method === "POST") {
+      const input = await body(req) || {};
+      const b = await store.getBooking(+input.id);
+      if (!b) return send(res, 404, { error: "Rezervasyon bulunamadı" });
+      if (b.hourly || b.legs.length !== 2) return send(res, 400, { error: "Bu rezervasyon gidiş-dönüş değil" });
+      if (b.status === "reddedildi" || b.status === "iptal") return send(res, 400, { error: "Bu rezervasyon zaten iptal ya da reddedildi" });
+      const i = +input.leg === 1 ? 1 : 0, l = b.legs[i];
+      if (l.done) return send(res, 400, { error: (i ? "Dönüş" : "Gidiş") + " tamamlanmış, iptal edilemez" });
+      const total = Math.round(Number(input.total) * 100) / 100;
+      if (!(Number.isFinite(total) && total >= 0 && total <= 1e7)) return send(res, 400, { error: "Kalan yönün ücretini yazın" });
+      if (b.total > 0 && total > b.total + 0.005) return send(res, 400, { error: "Kalan ücret, toplamdan büyük olamaz" });
+      const reason = str(input.reason, 500), was = b.total;
+      const at = l.date + "T" + (l.time || "00:00"), from = l.fromName || l.from, to = l.toName || l.to;
+      b.cancelledLegs = (b.cancelledLegs || []).concat([{ leg: i, at, from, to, flight: l.flight || "", amount: l.price || null, cur: b.currency, on: now(), reason }]).slice(-5);
+      b.legs.splice(i, 1);
+      b.total = total;
+      // the way that is left keeps its own price only when it is the whole total now
+      if (Math.abs((b.legs[0].price || 0) - total) >= 0.005) b.legs[0].price = 0;
+      const log = t => { b.history = (b.history || []).concat([{ at: now(), text: t }]).slice(-50); };
+      log((i ? "Dönüş" : "Gidiş") + " iptal edildi: " + at.replace("T", " ") + " · " + from + " → " + to + (reason ? " · " + reason : ""));
+      if (Math.abs(total - was) >= 0.005) log("Fiyat: " + was + " " + b.currency + " → " + total + " " + b.currency);
+      // the way that is left was already driven: the booking is finished
+      if (b.status !== "tamamlandi" && b.legs[0].done) { b.status = "tamamlandi"; log("Durum: " + STATUS_TR.tamamlandi); await flow.completed(b); }
+      if (input.notify && b.status === "onaylandi" && b.customer.email) {
+        const ok = mail.configured() ? await mail.send(mail.customerMail("approved", b)) : null;
+        log(ok === null ? "Güncel voucher e-postası gönderilmedi (e-posta ayarı yok)" : "Güncel voucher e-postası " + (ok ? "gönderildi" : "gönderilemedi") + ": " + b.customer.email);
+      }
+      if (hub.configured()) await hub.push(b);
+      return send(res, 200, { booking: await store.saveBooking(b) });
+    }
+
     if (a === "assign" && req.method === "POST") {
       const input = await body(req) || {};
       const b = await store.getBooking(+input.id);
