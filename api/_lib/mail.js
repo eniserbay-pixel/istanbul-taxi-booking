@@ -13,6 +13,8 @@ const VT = require("./vouchertext");
 const voucher = { build: d => require("./voucher").build(d) };
 const THANKS = require("./thankstext");
 const CANCEL = require("./canceltext");
+// the invoice PDF and its box in the thank-you e-mail
+const invoice = require("./invoice");
 // Review pages in the thank-you e-mail
 const REVIEW_GOOGLE = () => process.env.REVIEW_GOOGLE_URL || "https://g.page/r/CcNqky0zmAGxEBM/review";
 const REVIEW_TRUSTPILOT = () => process.env.REVIEW_TRUSTPILOT_URL || "https://www.trustpilot.com/evaluate/istanbultaxibooking.com";
@@ -47,7 +49,7 @@ async function send(msg) {
   if (!configured() || !EMAIL.test(String(msg.to || ""))) return false;
   try {
     // `attachments` may be a promise (the voucher PDF); if building it fails the e-mail still goes out without it
-    const attachments = await Promise.resolve(msg.attachments).catch(e => { console.error("voucher", e.message); return null; });
+    const attachments = await Promise.resolve(msg.attachments).catch(e => { console.error("attachment", e.message); return null; });
     await resend("/emails", "POST", { from: FROM(), to: [msg.to], subject: msg.subject, html: msg.html, text: msg.text, reply_to: msg.replyTo || OFFICE(),
       attachments: attachments || undefined });
     return true;
@@ -300,9 +302,11 @@ function customerMail(kind, b, extra) {
     hero = '<div style="background:#000000;padding:26px 22px;text-align:center"><div style="color:#e1ad01;font-size:30px;letter-spacing:4px">★★★★★</div>' +
       '<div style="color:#ffffff;font-size:22px;font-weight:800;margin-top:8px">' + esc(Y.s) + '</div></div>';
     const rate = (href, label, bg, logo) => '<a href="' + esc(href) + '" style="display:block;background:' + bg + ';color:#ffffff;text-decoration:none;font-weight:800;font-size:16px;border-radius:12px;padding:14px 10px;margin:0 0 10px;text-align:center">' + logo + ' ' + esc(label) + '</a>';
-    html = p(hello(T, b)) + p(Y.t1) + p(Y.t2) +
+    const inv = invoice.forMail(b, lang, esc);
+    if (inv) attachments = inv.attachments;
+    html = p(hello(T, b)) + p(Y.t1) + (inv ? inv.html : "") + p(Y.t2) +
       '<div style="margin:18px 0 8px">' + rate(REVIEW_GOOGLE(), Y.g, "#1a73e8", "★") + rate(REVIEW_TRUSTPILOT(), Y.tp, "#00b67a", "★") + '</div>' + p(Y.t3);
-    text = [hello(T, b), Y.t1, Y.t2, Y.g + ": " + REVIEW_GOOGLE(), Y.tp + ": " + REVIEW_TRUSTPILOT(), Y.t3];
+    text = [hello(T, b), Y.t1, inv ? inv.text : "", Y.t2, Y.g + ": " + REVIEW_GOOGLE(), Y.tp + ": " + REVIEW_TRUSTPILOT(), Y.t3];
   }
   html = layout(lang, html, hero);
   text = text.filter(Boolean).concat([footText()]).join("\n\n");
