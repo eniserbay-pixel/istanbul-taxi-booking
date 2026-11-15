@@ -36,6 +36,8 @@ function merge(b, x) {
   const c = clean(Object.assign({}, b, x, keep, { legs }));
   Object.assign(b, c);
   if (x.rejectReason) b.rejectReason = String(x.rejectReason).slice(0, 1000);
+  // the invoice number the panel gave the booking (sent with the thank-you): the thank-you e-mail attaches that invoice
+  if (x.invoice && x.invoice.no) b.invoice = { no: String(x.invoice.no).slice(0, 40), date: String(x.invoice.date || "").slice(0, 10), vatRate: Number(x.invoice.vatRate) || 20 };
   return b;
 }
 
