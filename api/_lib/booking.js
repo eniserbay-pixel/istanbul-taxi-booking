@@ -122,6 +122,16 @@ function cleanHourly(h) {
   return { hours: +h.hours, km: int(h.km, 0, 2000), extra: num(h.extra) };
 }
 
+function cleanGone(g) {
+  g = g || {};
+  const amount = Number(g.amount);
+  return {
+    leg: +g.leg === 0 ? 0 : 1, at: str(g.at, 16), from: str(g.from, 300), to: str(g.to, 300), flight: str(g.flight, 20),
+    amount: Number.isFinite(amount) && amount > 0 ? Math.round(amount * 100) / 100 : null, cur: CURRENCIES.includes(g.cur) ? g.cur : "",
+    on: iso(g.on), reason: str(g.reason, 500)
+  };
+}
+
 // `b` is untrusted input. Returns the fields a booking keeps; id, dates and history are set by the caller.
 function clean(b) {
   b = b || {};
@@ -146,6 +156,10 @@ function clean(b) {
     cashCur: CURRENCIES.includes(b.cashCur) ? b.cashCur : "",
     adminNote: str(b.adminNote, 2000)
   };
+  // ways of a return booking cancelled on their own (panel "Gidişi / Dönüşü iptal et", or the Transfer3E panel):
+  // no longer in legs, kept to show what was cancelled
+  const gone = (Array.isArray(b.cancelledLegs) ? b.cancelledLegs : []).slice(-5).map(cleanGone).filter(g => g.at);
+  if (gone.length) out.cancelledLegs = gone;
   // the UETDS list is everyone in the vehicle, so a transfer never carries fewer passengers than it lists
   legs.forEach(l => { if (l.pax < out.travelers.length) l.pax = out.travelers.length; });
   const hourly = cleanHourly(b.hourly);

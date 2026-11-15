@@ -21,8 +21,11 @@ function log(b, text) { b.history = (b.history || []).concat([{ at: now(), text 
 // panel shows the office's work, as does the supplier fee typed there; U-ETDS stays as it is here.
 function merge(b, x) {
   const has = (o, k) => Object.prototype.hasOwnProperty.call(o, k);
+  // the Transfer3E panel cancelled the outbound of this return booking: its one leg is the return here
+  const gone = Array.isArray(x.cancelledLegs) ? x.cancelledLegs[x.cancelledLegs.length - 1] : null;
+  const mine = gone && +gone.leg === 0 && b.legs.length === 2 && Array.isArray(x.legs) && x.legs.length === 1 ? b.legs.slice(1) : b.legs;
   const legs = (Array.isArray(x.legs) ? x.legs : []).map((l, i) => {
-    const was = b.legs[i] || {};
+    const was = mine[i] || {};
     return Object.assign({}, was, l, {
       assign: has(l, "assign") ? l.assign || null : was.assign || null,
       // the supplier fee typed in the panel (in TL; cost in this booking's currency), when it sends one
