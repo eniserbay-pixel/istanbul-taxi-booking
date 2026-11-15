@@ -16,11 +16,185 @@ const L = Object.fromEntries(LANGS.map(l => {
 }));
 const E = {
   sult: pr("IST", "sultanahmet"), taksim: pr("IST", "taksim"), kadikoy: pr("SAW", "kadikoy"),
-  sultVan: pr("IST", "sultanahmet", "minivan"), wait: P.rules.freeWaitMin, seat: P.rules.childSeat
+  sultVan: pr("IST", "sultanahmet", "minivan"), sultVip: pr("IST", "sultanahmet", "vclass"), sultBus: pr("IST", "sultanahmet", "minibus"),
+  wait: P.rules.freeWaitMin, seat: P.rules.childSeat
 };
+const MEET = site.meet.IST;
 const K = { sult: km("IST", "sultanahmet"), taksim: km("IST", "taksim") };
 
 module.exports = [
+  {
+    id: "ist-to-sultanahmet",
+    date: "2026-11-17",
+    en: {
+      slug: "istanbul-airport-to-sultanahmet-every-way-compared",
+      title: "Istanbul Airport to Sultanahmet: Every Way Compared",
+      desc: `Metro, Havaist bus, taxi or private transfer from Istanbul Airport to Sultanahmet: time, cost, changes and luggage compared. Fixed transfer price €${E.sult} per car.`,
+      lead: `Sultanahmet, the old city with the Blue Mosque and Hagia Sophia, is about ${K.sult[0]} km from Istanbul Airport. There are four ways to get there, and the right one depends on your luggage, your arrival time and how many of you are travelling.`,
+      body: `<h2>The short answer</h2>
+<p>If you travel light and on a budget, the <strong>metro</strong> is the cheapest way, but it takes several changes. The <strong>Havaist bus</strong> is a simple middle option. A <strong>taxi</strong> needs no booking but runs on the meter. A <strong>private transfer</strong> takes you from the arrivals hall to your hotel door for a fixed price: with us €${E.sult} per car in a sedan.</p>
+<h2>1. Metro</h2>
+<p>The M11 metro starts under the airport terminal. To reach Sultanahmet you change at least twice, for example to the M2 at Gayrettepe and then to the Marmaray or the T1 tram near the old city. You pay with an Istanbulkart, which you can buy and top up at the machines in the airport station.</p>
+<ul>
+<li><strong>Good:</strong> the cheapest option, and no traffic.</li>
+<li><strong>Less good:</strong> changes, stairs and crowded trains with suitcases; the last part to your hotel is on foot over cobblestones.</li>
+</ul>
+<h2>2. Havaist bus</h2>
+<p>Havaist is the official airport bus. It leaves from the bus area below the arrivals hall and has a line towards the old city. It costs more than the metro but far less than a car.</p>
+<ul>
+<li><strong>Good:</strong> one seat, luggage in the hold, no changes.</li>
+<li><strong>Less good:</strong> it is stuck in the same traffic as cars, runs on a timetable, and you still walk from the stop to your hotel.</li>
+</ul>
+{widget}
+<h2>3. Taxi from the rank</h2>
+<p>Taxis wait outside arrivals. You need no booking, but the fare runs on the meter, so traffic on the motorway or in the old city adds to the price. After a wave of landings there can be a queue, and a family with several suitcases may not fit in one car. Sultanahmet's narrow streets also mean some drivers stop short of the hotel.</p>
+<h2>4. Private transfer</h2>
+<p>${MEET.en} Your driver tracks your flight, so a delay changes nothing, and the first ${E.wait} minutes of waiting are free. The price is fixed per car, not per person, and includes traffic, motorway tolls and luggage. The ride takes about ${K.sult[1]} minutes without heavy traffic.</p>
+<h2>Side by side</h2>
+<table><thead><tr><th></th><th>Metro</th><th>Havaist</th><th>Taxi</th><th>Transfer</th></tr></thead><tbody>
+<tr><td>Price</td><td>Lowest</td><td>Low</td><td>Meter</td><td>Fixed, from €${E.sult} per car</td></tr>
+<tr><td>Changes</td><td>2 or more</td><td>None</td><td>None</td><td>None</td></tr>
+<tr><td>To the hotel door</td><td>No</td><td>No</td><td>Usually</td><td>Yes</td></tr>
+<tr><td>Luggage</td><td>Carry it yourself</td><td>In the hold</td><td>Limited space</td><td>Car chosen for your bags</td></tr>
+<tr><td>Late at night</td><td>Limited</td><td>Limited</td><td>Yes</td><td>Yes, 24/7</td></tr>
+</tbody></table>
+<h2>What does a transfer cost?</h2>
+<p>From Istanbul Airport to <a href="${L.en.sult}">Sultanahmet</a>: €${E.sult} in a sedan (up to 3 people), €${E.sultVan} in a minivan (up to 6), €${E.sultVip} in a Mercedes V-Class and €${E.sultBus} in a minibus for up to 13. A child seat is €${E.seat}. All routes are on our <a href="${L.en.prices}">prices page</a>.</p>
+<h2>Which one should you choose?</h2>
+<ul>
+<li><strong>Metro or Havaist</strong> if you travel alone or as a couple with small bags, during the day.</li>
+<li><strong>A private transfer</strong> after a long flight, at night, with children, with a group or with a lot of luggage.</li>
+</ul>
+<p>Booking with {brand} takes about a minute: no account and no payment up front. You pay the driver in cash at the end of the ride.</p>
+{widget}`
+    },
+    de: {
+      slug: "flughafen-istanbul-nach-sultanahmet-alle-wege",
+      title: "Vom Flughafen Istanbul nach Sultanahmet: alle Wege im Vergleich",
+      desc: `Metro, Havaist, Taxi oder Privattransfer vom Flughafen Istanbul nach Sultanahmet: Zeit, Kosten und Gepäck im Vergleich. Festpreis €${E.sult} pro Fahrzeug.`,
+      lead: `Sultanahmet, die Altstadt mit Blauer Moschee und Hagia Sophia, liegt etwa ${K.sult[0]} km vom Flughafen Istanbul entfernt. Es gibt vier Wege dorthin, und welcher passt, hängt von Gepäck, Ankunftszeit und Gruppengröße ab.`,
+      body: `<h2>Kurz gesagt</h2>
+<p>Mit wenig Gepäck und kleinem Budget ist die <strong>Metro</strong> am günstigsten, aber mit mehrmaligem Umsteigen. Der <strong>Havaist-Bus</strong> ist ein einfacher Mittelweg. Ein <strong>Taxi</strong> braucht keine Buchung, fährt aber nach Taxameter. Ein <strong>Privattransfer</strong> bringt Sie zum Festpreis von der Ankunftshalle bis vor die Hoteltür: bei uns €${E.sult} pro Fahrzeug in der Limousine.</p>
+<h2>1. Metro</h2>
+<p>Die Metro M11 fährt direkt unter dem Terminal ab. Nach Sultanahmet steigen Sie mindestens zweimal um, zum Beispiel in Gayrettepe in die M2 und dann in den Marmaray oder die Straßenbahn T1 nahe der Altstadt. Bezahlt wird mit der Istanbulkart, die Sie an den Automaten im Flughafenbahnhof kaufen und aufladen.</p>
+<ul>
+<li><strong>Vorteil:</strong> am günstigsten und kein Stau.</li>
+<li><strong>Nachteil:</strong> Umsteigen, Treppen und volle Züge mit Koffern; das letzte Stück zum Hotel geht zu Fuß über Kopfsteinpflaster.</li>
+</ul>
+<h2>2. Havaist-Bus</h2>
+<p>Havaist ist der offizielle Flughafenbus. Er fährt im Busbereich unter der Ankunftshalle ab und hat eine Linie Richtung Altstadt. Er kostet mehr als die Metro, aber viel weniger als ein Auto.</p>
+<ul>
+<li><strong>Vorteil:</strong> ein Sitzplatz, Gepäck im Laderaum, kein Umsteigen.</li>
+<li><strong>Nachteil:</strong> steht im selben Stau wie Autos, fährt nach Fahrplan, und von der Haltestelle zum Hotel gehen Sie zu Fuß.</li>
+</ul>
+{widget}
+<h2>3. Taxi vom Taxistand</h2>
+<p>Taxis warten vor der Ankunftshalle. Sie brauchen keine Buchung, aber es wird nach Taxameter abgerechnet, Stau auf der Autobahn oder in der Altstadt erhöht also den Preis. Nach einer Welle von Landungen gibt es oft eine Schlange, und eine Familie mit mehreren Koffern passt nicht immer in ein Auto. In den engen Gassen von Sultanahmet halten manche Fahrer auch vor dem Hotel an.</p>
+<h2>4. Privattransfer</h2>
+<p>${MEET.de} Ihr Fahrer verfolgt Ihren Flug, eine Verspätung ändert also nichts, und die ersten ${E.wait} Minuten Wartezeit sind kostenlos. Der Preis gilt pro Fahrzeug, nicht pro Person, und schließt Stau, Autobahngebühren und Gepäck ein. Die Fahrt dauert ohne starken Verkehr etwa ${K.sult[1]} Minuten.</p>
+<h2>Im Vergleich</h2>
+<table><thead><tr><th></th><th>Metro</th><th>Havaist</th><th>Taxi</th><th>Transfer</th></tr></thead><tbody>
+<tr><td>Preis</td><td>Am niedrigsten</td><td>Niedrig</td><td>Taxameter</td><td>Festpreis, ab €${E.sult} pro Fahrzeug</td></tr>
+<tr><td>Umsteigen</td><td>2 oder mehr</td><td>Keins</td><td>Keins</td><td>Keins</td></tr>
+<tr><td>Bis zur Hoteltür</td><td>Nein</td><td>Nein</td><td>Meist</td><td>Ja</td></tr>
+<tr><td>Gepäck</td><td>Selbst tragen</td><td>Im Laderaum</td><td>Wenig Platz</td><td>Fahrzeug passend zum Gepäck</td></tr>
+<tr><td>Spät nachts</td><td>Eingeschränkt</td><td>Eingeschränkt</td><td>Ja</td><td>Ja, rund um die Uhr</td></tr>
+</tbody></table>
+<h2>Was kostet ein Transfer?</h2>
+<p>Vom Flughafen Istanbul nach <a href="${L.de.sult}">Sultanahmet</a>: €${E.sult} in der Limousine (bis 3 Personen), €${E.sultVan} im Minivan (bis 6), €${E.sultVip} in der Mercedes V-Klasse und €${E.sultBus} im Kleinbus für bis zu 13. Ein Kindersitz kostet €${E.seat}. Alle Strecken finden Sie auf unserer <a href="${L.de.prices}">Preisseite</a>.</p>
+<h2>Was sollten Sie wählen?</h2>
+<ul>
+<li><strong>Metro oder Havaist</strong>, wenn Sie allein oder zu zweit mit kleinem Gepäck tagsüber reisen.</li>
+<li><strong>Einen Privattransfer</strong> nach einem langen Flug, nachts, mit Kindern, als Gruppe oder mit viel Gepäck.</li>
+</ul>
+<p>Die Buchung bei {brand} dauert etwa eine Minute: ohne Konto und ohne Vorauszahlung. Sie bezahlen den Fahrer am Ende der Fahrt in bar.</p>
+{widget}`
+    },
+    ru: {
+      slug: "iz-aeroporta-stambula-v-sultanahmet-vse-sposoby",
+      title: "Из аэропорта Стамбула в Султанахмет: все способы",
+      desc: `Метро, автобус Havaist, такси или трансфер из аэропорта Стамбула в Султанахмет: время, цена, пересадки и багаж. Трансфер по фиксированной цене €${E.sult} за машину.`,
+      lead: `Султанахмет, старый город с Голубой мечетью и Святой Софией, находится примерно в ${K.sult[0]} км от аэропорта Стамбула. Добраться туда можно четырьмя способами, и выбор зависит от багажа, времени прилёта и количества человек.`,
+      body: `<h2>Коротко</h2>
+<p>Если у вас мало вещей и небольшой бюджет, дешевле всего <strong>метро</strong>, но с несколькими пересадками. <strong>Автобус Havaist</strong> — простой средний вариант. <strong>Такси</strong> не нужно бронировать, но оплата по счётчику. <strong>Индивидуальный трансфер</strong> довезёт вас из зала прилёта до дверей отеля по фиксированной цене: у нас €${E.sult} за машину на седане.</p>
+<h2>1. Метро</h2>
+<p>Линия метро M11 начинается прямо под терминалом. До Султанахмета нужно минимум две пересадки, например на M2 в Гайреттепе, а затем на Мармарай или трамвай T1 рядом со старым городом. Оплата картой Istanbulkart, её можно купить и пополнить в автоматах на станции аэропорта.</p>
+<ul>
+<li><strong>Плюсы:</strong> самый дешёвый вариант, без пробок.</li>
+<li><strong>Минусы:</strong> пересадки, лестницы и переполненные вагоны с чемоданами; последний отрезок до отеля пешком по брусчатке.</li>
+</ul>
+<h2>2. Автобус Havaist</h2>
+<p>Havaist — официальный автобус аэропорта. Он отправляется из автобусной зоны под залом прилёта, есть линия в сторону старого города. Дороже метро, но намного дешевле машины.</p>
+<ul>
+<li><strong>Плюсы:</strong> одно место, багаж в багажном отделении, без пересадок.</li>
+<li><strong>Минусы:</strong> стоит в тех же пробках, что и машины, ходит по расписанию, а от остановки до отеля всё равно идти пешком.</li>
+</ul>
+{widget}
+<h2>3. Такси со стоянки</h2>
+<p>Такси ждут у выхода из зала прилёта. Бронировать не нужно, но оплата по счётчику, поэтому пробки на трассе или в старом городе увеличивают цену. После волны прилётов бывает очередь, а семья с несколькими чемоданами может не поместиться в одну машину. На узких улицах Султанахмета некоторые водители высаживают, не доезжая до отеля.</p>
+<h2>4. Индивидуальный трансфер</h2>
+<p>${MEET.ru} Водитель следит за рейсом, поэтому задержка ничего не меняет, а первые ${E.wait} минут ожидания бесплатны. Цена указана за машину, а не за человека, и включает пробки, платные дороги и багаж. Дорога занимает около ${K.sult[1]} минут без сильных пробок.</p>
+<h2>Сравнение</h2>
+<table><thead><tr><th></th><th>Метро</th><th>Havaist</th><th>Такси</th><th>Трансфер</th></tr></thead><tbody>
+<tr><td>Цена</td><td>Самая низкая</td><td>Низкая</td><td>Счётчик</td><td>Фиксированная, от €${E.sult} за машину</td></tr>
+<tr><td>Пересадки</td><td>2 и больше</td><td>Нет</td><td>Нет</td><td>Нет</td></tr>
+<tr><td>До дверей отеля</td><td>Нет</td><td>Нет</td><td>Обычно</td><td>Да</td></tr>
+<tr><td>Багаж</td><td>Несёте сами</td><td>В багажном отделении</td><td>Мало места</td><td>Машина под ваш багаж</td></tr>
+<tr><td>Поздно ночью</td><td>Ограниченно</td><td>Ограниченно</td><td>Да</td><td>Да, круглосуточно</td></tr>
+</tbody></table>
+<h2>Сколько стоит трансфер?</h2>
+<p>Из аэропорта Стамбула в <a href="${L.ru.sult}">Султанахмет</a>: €${E.sult} на седане (до 3 человек), €${E.sultVan} на минивэне (до 6), €${E.sultVip} на Mercedes V-Class и €${E.sultBus} на микроавтобусе до 13 человек. Детское кресло — €${E.seat}. Все маршруты — на <a href="${L.ru.prices}">странице цен</a>.</p>
+<h2>Что выбрать?</h2>
+<ul>
+<li><strong>Метро или Havaist</strong>, если вы едете один или вдвоём с небольшим багажом днём.</li>
+<li><strong>Индивидуальный трансфер</strong> после долгого перелёта, ночью, с детьми, компанией или с большим багажом.</li>
+</ul>
+<p>Заказ в {brand} занимает около минуты: без регистрации и предоплаты. Вы платите водителю наличными в конце поездки.</p>
+{widget}`
+    },
+    ar: {
+      slug: "min-matar-istanbul-ila-alsultan-ahmad-kull-alturuq",
+      title: "من مطار إسطنبول إلى السلطان أحمد: مقارنة بين كل الطرق",
+      desc: `المترو أو حافلة هافايست أو التاكسي أو التوصيل الخاص من مطار إسطنبول إلى السلطان أحمد: الوقت والتكلفة والتبديل والأمتعة. توصيل بسعر ثابت €${E.sult} للسيارة.`,
+      lead: `تقع منطقة السلطان أحمد، المدينة القديمة التي تضم المسجد الأزرق وآيا صوفيا، على بعد حوالي ${K.sult[0]} كم من مطار إسطنبول. هناك أربع طرق للوصول إليها، والخيار المناسب يعتمد على أمتعتك ووقت وصولك وعدد المسافرين.`,
+      body: `<h2>باختصار</h2>
+<p>إذا كانت أمتعتك قليلة وميزانيتك محدودة، فإن <strong>المترو</strong> هو الأرخص لكنه يتطلب عدة تبديلات. <strong>حافلة هافايست</strong> خيار وسط بسيط. <strong>التاكسي</strong> لا يحتاج إلى حجز لكن الأجرة بالعدّاد. أما <strong>التوصيل الخاص</strong> فيأخذك من صالة الوصول إلى باب الفندق بسعر ثابت: عندنا €${E.sult} للسيارة السيدان.</p>
+<h2>1. المترو</h2>
+<p>يبدأ خط المترو M11 تحت مبنى المطار مباشرة. للوصول إلى السلطان أحمد تحتاج إلى تبديلين على الأقل، مثلًا إلى خط M2 في محطة غيرتبه، ثم إلى قطار مرمراي أو ترام T1 قرب المدينة القديمة. تدفع ببطاقة إسطنبول كارت التي يمكنك شراؤها وشحنها من أجهزة محطة المطار.</p>
+<ul>
+<li><strong>الإيجابيات:</strong> الأرخص وبدون زحام.</li>
+<li><strong>السلبيات:</strong> تبديلات وسلالم وقطارات مزدحمة مع الحقائب، والجزء الأخير إلى الفندق سيرًا على الأقدام فوق الحجارة.</li>
+</ul>
+<h2>2. حافلة هافايست</h2>
+<p>هافايست هي حافلة المطار الرسمية. تنطلق من منطقة الحافلات أسفل صالة الوصول، ولها خط باتجاه المدينة القديمة. سعرها أعلى من المترو لكنه أقل بكثير من السيارة.</p>
+<ul>
+<li><strong>الإيجابيات:</strong> مقعد واحد، والأمتعة في صندوق الحافلة، وبدون تبديل.</li>
+<li><strong>السلبيات:</strong> تقف في الزحام نفسه مثل السيارات، وتعمل حسب جدول مواعيد، وتمشي من المحطة إلى الفندق.</li>
+</ul>
+{widget}
+<h2>3. التاكسي من الموقف</h2>
+<p>تنتظر سيارات التاكسي أمام صالة الوصول. لا تحتاج إلى حجز، لكن الأجرة بالعدّاد، لذلك يرفع الزحام على الطريق السريع أو في المدينة القديمة السعر. بعد وصول عدة رحلات قد يكون هناك طابور، وقد لا تتسع سيارة واحدة لعائلة معها عدة حقائب. وفي شوارع السلطان أحمد الضيقة يتوقف بعض السائقين قبل الفندق.</p>
+<h2>4. التوصيل الخاص</h2>
+<p>ينتظرك السائق في صالة الوصول عند المخرج المحدد في الحجز (عادة المخرج 13) حاملًا لوحة باسمك. يتابع السائق رحلتك الجوية، فلا يغيّر التأخير شيئًا، وأول ${E.wait} دقيقة من الانتظار مجانية. السعر للسيارة وليس للشخص، ويشمل الزحام ورسوم الطرق والأمتعة. تستغرق الرحلة حوالي ${K.sult[1]} دقيقة بدون زحام شديد.</p>
+<h2>مقارنة سريعة</h2>
+<table><thead><tr><th></th><th>المترو</th><th>هافايست</th><th>التاكسي</th><th>التوصيل</th></tr></thead><tbody>
+<tr><td>السعر</td><td>الأقل</td><td>منخفض</td><td>بالعدّاد</td><td>ثابت، من €${E.sult} للسيارة</td></tr>
+<tr><td>التبديل</td><td>مرتان أو أكثر</td><td>لا</td><td>لا</td><td>لا</td></tr>
+<tr><td>حتى باب الفندق</td><td>لا</td><td>لا</td><td>غالبًا</td><td>نعم</td></tr>
+<tr><td>الأمتعة</td><td>تحملها بنفسك</td><td>في صندوق الحافلة</td><td>مساحة محدودة</td><td>سيارة تناسب أمتعتك</td></tr>
+<tr><td>في وقت متأخر من الليل</td><td>محدود</td><td>محدود</td><td>نعم</td><td>نعم، على مدار الساعة</td></tr>
+</tbody></table>
+<h2>كم يكلف التوصيل؟</h2>
+<p>من مطار إسطنبول إلى <a href="${L.ar.sult}">السلطان أحمد</a>: €${E.sult} بسيارة سيدان (حتى 3 أشخاص)، و€${E.sultVan} بميني فان (حتى 6)، و€${E.sultVip} بمرسيدس V-Class، و€${E.sultBus} بميني باص حتى 13 شخصًا. مقعد الأطفال €${E.seat}. جميع المسارات في <a href="${L.ar.prices}">صفحة الأسعار</a>.</p>
+<h2>ماذا تختار؟</h2>
+<ul>
+<li><strong>المترو أو هافايست</strong> إذا كنت مسافرًا وحدك أو مع شخص آخر بأمتعة صغيرة في النهار.</li>
+<li><strong>التوصيل الخاص</strong> بعد رحلة طويلة، أو في الليل، أو مع الأطفال، أو مع مجموعة، أو مع أمتعة كثيرة.</li>
+</ul>
+<p>يستغرق الحجز مع {brand} دقيقة تقريبًا: بدون حساب وبدون دفع مسبق. وتدفع للسائق نقدًا في نهاية الرحلة.</p>
+{widget}`
+    }
+  },
   {
     id: "uber-taxi-transfer",
     date: "2026-11-10",

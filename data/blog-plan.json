@@ -1,5 +1,4 @@
 [
-  { "date": "2026-11-17", "kind": "new", "title": "İstanbul Havalimanı'ndan Sultanahmet'e tüm ulaşım yolları", "en": "Istanbul Airport to Sultanahmet: every way compared", "langs": ["en", "de", "ru", "ar"] },
   { "date": "2026-11-24", "kind": "new", "title": "İstanbul Havalimanı'na gece varış rehberi", "en": "Arriving at Istanbul Airport at night", "langs": ["en", "de", "ru", "ar"] },
   { "date": "2026-12-01", "kind": "new", "title": "İstanbul Havalimanı taksi ücretleri 2026: tüm semtler", "en": "Istanbul Airport taxi prices 2026: every district", "langs": ["en", "de", "ru", "ar"], "note": "Aralık teması: fiyat soruları" },
   { "date": "2026-12-08", "kind": "new", "title": "İstanbul'da yılbaşı: havalimanı ve şehir içi ulaşım", "en": "New Year in Istanbul: airport and city transport", "langs": ["en", "de", "ru", "ar"], "note": "Sezonluk" },
