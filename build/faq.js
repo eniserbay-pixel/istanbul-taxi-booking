@@ -11,7 +11,7 @@ module.exports = {
   CATS,
   en: {
     path: "/faq", nav: "FAQ",
-    title: "Istanbul Airport Transfer FAQ: Booking, Prices, Pickup · {brand}",
+    title: "Istanbul Airport Transfer FAQ: Prices, Pickup · {brand}",
     desc: "All questions about your Istanbul transfer with {brand}: booking, prices and payment, airport pickup, cars and luggage, changes and cancellation.",
     h1: "Frequently asked questions",
     lead: "Everything about your Istanbul transfer with {brand}: prices and payment, airport pickup, cars and luggage, changes and cancellation. Can't find your answer? Write to us on WhatsApp.",
@@ -75,7 +75,7 @@ module.exports = {
   },
   tr: {
     path: "/tr/sss", nav: "SSS",
-    title: "Sıkça Sorulan Sorular: İstanbul Havalimanı Transferi · {brand}",
+    title: "İstanbul Transferi: Sıkça Sorulan Sorular · {brand}",
     desc: "{brand} ile İstanbul transferi hakkında merak edilenler: rezervasyon, fiyat ve ödeme, havalimanında karşılama, araçlar ve bagaj, değişiklik ve iptal.",
     h1: "Sıkça sorulan sorular",
     lead: "{brand} ile İstanbul transferiniz hakkında bilmeniz gereken her şey: fiyat ve ödeme, havalimanında karşılama, araçlar ve bagaj, değişiklik ve iptal. Cevabını bulamadığınız soru için WhatsApp'tan yazın.",
@@ -267,7 +267,7 @@ module.exports = {
   },
   fr: {
     path: "/fr/questions-frequentes", nav: "Questions fréquentes",
-    title: "Questions fréquentes : transfert aéroport d'Istanbul · {brand}",
+    title: "Transfert aéroport d'Istanbul : FAQ et prix · {brand}",
     desc: "Vos questions sur le transfert à Istanbul avec {brand} : réservation, prix et paiement, accueil à l'aéroport, véhicules, bagages et annulation.",
     h1: "Questions fréquentes",
     lead: "Tout sur votre transfert à Istanbul avec {brand} : prix et paiement, accueil à l'aéroport, véhicules et bagages, modification et annulation. Vous ne trouvez pas votre réponse ? Écrivez-nous sur WhatsApp.",

@@ -20,7 +20,9 @@ const TODAY = new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Istanbul" }).
 const POSTS = ALL_POSTS.filter(p => p.date <= TODAY);
 const PORT = require("./port");
 const CO = require("./company");
+const CI = require("./company-info");
 const GUIDES = require("./guides");
+const GI = require("./guides-i18n");
 const DI = require("./districts");
 const PL = require("./places");
 const SV = require("./services");
@@ -124,7 +126,7 @@ ${langSwitch(o.lang, alts)}</nav>
   const footer = `<footer class="foot"><div class="wrap foot-in">
 <div><a class="logo" href="${p.home}"><img src="/img/logo.webp" alt="${esc(site.brand)}" width="141" height="80" loading="lazy"></a>
 <p><bdi>${esc(site.company)}</bdi><br>${esc(site.address[o.lang])}<br>${t.footer.tursab}: ${esc(site.tursab)}</p></div>
-<div><h3>${t.footer.routes}</h3>${popular.map(([a, z]) => `<a href="${p.route(a, Q.zone(P, z).slug)}">${esc(Q.zone(P, a).short[o.lang])} → ${esc(Q.zone(P, z).short[o.lang])}</a>`).join("")}<a href="${PORT[o.lang].path}">${esc(Q.zone(P, "galataport").name[o.lang])}</a>${o.lang === "en" ? GUIDES.map(g => `<a href="${g.path}">${esc(g.nav)}</a>`).join("") : ""}</div>
+<div><h3>${t.footer.routes}</h3>${popular.map(([a, z]) => `<a href="${p.route(a, Q.zone(P, z).slug)}">${esc(Q.zone(P, a).short[o.lang])} → ${esc(Q.zone(P, z).short[o.lang])}</a>`).join("")}<a href="${PORT[o.lang].path}">${esc(Q.zone(P, "galataport").name[o.lang])}</a>${GUIDES.map(g => GI.text(g, o.lang)).map(x => `<a href="${x.path}">${esc(x.nav)}</a>`).join("")}</div>
 <div><h3>${SV.T[o.lang].head}</h3>${SV.S.map(x => `<a href="${x[o.lang].path}">${esc(x[o.lang].nav)}</a>`).join("")}</div>
 <div><h3>${CO.T[o.lang].head}</h3><a href="${AB[o.lang].path}">${esc(AB[o.lang].nav)}</a>${CO.ORDER.map(k => `<a href="${CO.path(o.lang, k)}">${CO.T[o.lang].pages[k].nav}</a>`).join("")}</div>
 <div><h3>${t.footer.contact}</h3><a href="${WA}" rel="noopener">WhatsApp <bdi dir="ltr">${esc(site.phone)}</bdi></a><a href="tel:${site.phone.replace(/\s/g, "")}"><bdi dir="ltr">${esc(site.phone)}</bdi></a><a href="mailto:${site.email}">${esc(site.email)}</a></div>
@@ -486,9 +488,19 @@ ${ex.html}`;
   page({ lang, path: X.path, alts: ALL(l => PORT[l].path), title: fill(X.hub.title, v), desc: fill(X.hub.desc, v), body, ld: [faqLd(ex.faq), crumbs([[site.brand, t.paths.home], [A.short[lang], X.path]])] });
 }
 
+// The longer part of a company page (build/company-info): who it is for, the steps and its questions
+function companyInfo(lang, kind) {
+  const y = CI[lang][kind], F = s => fill(s, { brand: site.brand, min: minPrice, wait: P.rules.freeWaitMin, phone: site.phone });
+  const faq = y.faq.map(([q, a]) => [F(q), F(a)]);
+  const html = `<section class="sec ice"><div class="wrap narrow prose"><h2>${esc(F(y.h))}</h2>${y.intro.map(p => `<p>${esc(F(p))}</p>`).join("")}
+<h2>${esc(y.stepsH)}</h2><ol>${y.steps.map(s => `<li>${esc(F(s))}</li>`).join("")}</ol></div></section>
+<section class="sec"><div class="wrap narrow"><h2>${esc(y.faqH)}</h2>${faqBlock(faq.map(([q, a]) => [q, esc(a)]))}</div></section>`;
+  return { html, faq };
+}
+
 // Company pages: what we offer the group, and its application form (sent to api/apply.js, panel: Başvurular)
 function companyPage(lang, kind) {
-  const C = CO.T[lang], x = C.pages[kind];
+  const C = CO.T[lang], x = C.pages[kind], info = companyInfo(lang, kind);
   const field = ([name, type, req, opts]) => {
     const label = C.labels[name] + (req ? " *" : ""), full = type === "textarea" || type === "checks";
     const input = type === "textarea" ? `<textarea name="${name}" rows="4"></textarea>`
@@ -504,9 +516,10 @@ function companyPage(lang, kind) {
 ${CO.FORMS[kind].map(field).join("\n")}
 <input class="hp" name="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
 <div class="full" data-msg></div><div class="full"><button class="btn btn-y" type="submit">${esc(C.send)}</button></div></form></div></section>
+${info.html}
 <section class="sec ice"><div class="wrap"><h2>${esc(C.head)}</h2><div class="chips">${CO.ORDER.filter(k => k !== kind).map(k => `<a href="${CO.path(lang, k)}">${esc(C.pages[k].nav)}</a>`).join("")}</div></div></section>`;
   page({ lang, path: CO.path(lang, kind), alts: ALL(l => CO.path(l, kind)), title: fill(x.title, { brand: site.brand }), desc: x.desc, body,
-    ld: [crumbs([[site.brand, I[lang].paths.home], [x.h1, CO.path(lang, kind)]])] });
+    ld: [faqLd(info.faq), crumbs([[site.brand, I[lang].paths.home], [x.h1, CO.path(lang, kind)]])] });
 }
 
 // About us: why the company was started, what it stands for, and the facts a guest can check
@@ -585,10 +598,12 @@ ${P.cars.map(c => `<tr><th scope="row"><a href="#${c.id}">${esc(c.name[lang])}</
 
 // FAQ page (build/faq.js): every question by topic, a search box that filters them (site.js), a "read more" link
 // per topic, a contact box and FAQPage structured data. A question whose placeholder has no value is left out.
+// the values the FAQ texts (build/faq.js) are filled with
+const faqVars = lang => ({ brand: site.brand, phone: site.phone, tursab: site.tursab, min: minPrice, wait: P.rules.freeWaitMin, seat: P.rules.childSeat,
+  ret: P.rules.returnDiscountPct, ...(peakVars(lang) || {}), meetIST: (site.meet.IST || {})[lang], meetSAW: (site.meet.SAW || {})[lang] });
+
 function faqPage(lang) {
-  const t = I[lang], x = FQ[lang], pk = peakVars(lang) || {};
-  const v = { brand: site.brand, phone: site.phone, tursab: site.tursab, min: minPrice, wait: P.rules.freeWaitMin, seat: P.rules.childSeat,
-    ret: P.rules.returnDiscountPct, ...pk, meetIST: (site.meet.IST || {})[lang], meetSAW: (site.meet.SAW || {})[lang] };
+  const t = I[lang], x = FQ[lang], v = faqVars(lang);
   const F = s => fill(s, v);
   const zn = id => Q.zone(P, id).name[lang];
   // the pages each topic links to, as [label, path]
@@ -617,8 +632,8 @@ function faqPage(lang) {
 }
 
 // English guide pages for the big searches (build/guides.js): a quotable answer, a price table, sections, FAQ
-function guide(g) {
-  const lang = "en", t = I.en, sedan = (a, z) => Q.base(P, a, z, "sedan");
+function guide(g, lang) {
+  const t = I[lang], X = GI.text(g, lang), U = GI.ui[lang], sedan = (a, z) => Q.base(P, a, z, "sedan");
   const lowest = (car, a) => Math.min(...ROUTES.filter(([x]) => !a || x === a).map(([x, y]) => Q.base(P, x, y, car)).filter(Boolean));
   const v = {
     brand: site.brand, min: minPrice, istMin: lowest("sedan", "IST"), sawMin: lowest("sedan", "SAW"), van: lowest("minivan"), vip: lowest("vclass"), bus: lowest("minibus"),
@@ -635,40 +650,44 @@ function guide(g) {
   if (g.table === "cheap") {
     const cheap = ROUTES.filter(([a]) => a !== "galataport").sort((x, y) => sedan(...x) - sedan(...y)).slice(0, 10);
     const car = id => CAR(id).name[lang] + " (" + CAR(id).seats + ")";
-    head = [t.ui.route, car("sedan"), "Per person", car("minivan"), "Per person"];
+    head = [t.ui.route, car("sedan"), U.perPerson, car("minivan"), U.perPerson];
     rows = cheap.map(([a, z]) => { const s = sedan(a, z), m = Q.base(P, a, z, "minivan"); return row(a, z, [`€${s}`, `€${Math.ceil(s / CAR("sedan").seats)}`, `€${m}`, `€${Math.ceil(m / CAR("minivan").seats)}`]); });
   } else if (g.table === "vip") {
-    head = [t.ui.route, CAR("vclass").name[lang], "Per person (6)"];
+    head = [t.ui.route, CAR("vclass").name[lang], U.perPerson + " (6)"];
     rows = popular.map(([a, z]) => { const p = Q.base(P, a, z, "vclass"); return row(a, z, [`€${p}`, `€${Math.ceil(p / CAR("vclass").seats)}`]); });
   } else {
     head = [t.ui.route].concat(P.cars.map(c => c.name[lang]));
     rows = popular.map(([a, z]) => row(a, z, P.cars.map(c => `€${Q.base(P, a, z, c.id)}`)));
   }
-  const faq = g.faq.map(([q, a]) => [F(q), F(a)]);
+  const faq = X.faq.map(([q, a]) => [F(q), F(a)]);
   const body = `<section class="hero hero-s"><div class="wrap hero-in"><div class="hero-t"><nav class="crumbs"><a href="${t.paths.home}">${esc(site.brand)}</a></nav>
-<h1>${esc(F(g.h1))}</h1><p class="lead answer">${F(g.lead)}</p></div>${searchForm(lang)}${assure(lang)}</div></section>
-<section class="sec ice"><div class="wrap"><h2>${esc(F(g.tableH))}</h2><div class="tbl-wrap"><table class="tbl"><thead><tr>${head.map(h => `<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>
-${rows.join("\n")}</tbody></table></div><p class="sub small">${esc(g.tableNote)} ${t.home.routesLead}</p><p><a class="more" href="${t.paths.prices}">${t.nav.prices} →</a></p></div></section>
+<h1>${esc(F(X.h1))}</h1><p class="lead answer">${F(X.lead)}</p></div>${searchForm(lang)}${assure(lang)}</div></section>
+<section class="sec ice"><div class="wrap"><h2>${esc(F(X.tableH))}</h2><div class="tbl-wrap"><table class="tbl"><thead><tr>${head.map(h => `<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>
+${rows.join("\n")}</tbody></table></div><p class="sub small">${esc(X.tableNote)} ${t.home.routesLead}</p><p><a class="more" href="${t.paths.prices}">${t.nav.prices} →</a></p></div></section>
 ${g.id === "black" ? "" : `<section class="sec"><div class="wrap"><h2>${t.home.fleetH}</h2><p class="sub">${t.home.fleetLead}</p>${fleet(lang)}</div></section>`}
-${g.sections.map(([h, html], i) => `<section class="sec${i % 2 ? " ice" : ""}"><div class="wrap narrow prose"><h2>${esc(F(h))}</h2>${F(html)}</div></section>`).join("\n")}
+${X.sections.map(([h, html], i) => `<section class="sec${i % 2 ? " ice" : ""}"><div class="wrap narrow prose"><h2>${esc(F(h))}</h2>${F(html)}</div></section>`).join("\n")}
 <section class="sec"><div class="wrap narrow"><h2>${t.home.faqH}</h2>${faqBlock(faq)}</div></section>
-<section class="sec ice"><div class="wrap"><h2>More guides</h2><div class="chips">${GUIDES.filter(x => x.id !== g.id).map(x => `<a href="${x.path}">${esc(x.nav)}</a>`).join("")}<a href="${t.paths.IST}">${esc(Q.zone(P, "IST").short[lang])}</a><a href="${t.paths.SAW}">${esc(Q.zone(P, "SAW").short[lang])}</a></div></div></section>
+<section class="sec ice"><div class="wrap"><h2>${esc(U.more)}</h2><div class="chips">${GUIDES.filter(x => x.id !== g.id).map(x => GI.text(x, lang)).map(x => `<a href="${x.path}">${esc(x.nav)}</a>`).join("")}<a href="${t.paths.IST}">${esc(Q.zone(P, "IST").short[lang])}</a><a href="${t.paths.SAW}">${esc(Q.zone(P, "SAW").short[lang])}</a></div></div></section>
 <section class="cta"><div class="wrap"><h2>${t.home.ctaH}</h2><p>${t.home.ctaP}</p><a class="btn btn-k" href="${t.paths.book}">${t.nav.book}</a></div></section>`;
   const offer = {
-    "@context": "https://schema.org", "@type": "Service", serviceType: g.service, name: F(g.h1), description: F(g.desc), provider: { "@id": URL_ + "/#service" }, areaServed: { "@type": "City", name: "Istanbul" },
+    "@context": "https://schema.org", "@type": "Service", serviceType: g.service, name: F(X.h1), description: F(X.desc), provider: { "@id": URL_ + "/#service" }, areaServed: { "@type": "City", name: "Istanbul" },
     offers: (g.table === "vip" ? [CAR("vclass")] : P.cars).map(c => ({ "@type": "AggregateOffer", name: c.name[lang], priceCurrency: P.currency, lowPrice: lowest(c.id), highPrice: Math.max(...ROUTES.map(([x, y]) => Q.base(P, x, y, c.id)).filter(Boolean)), eligibleQuantity: { "@type": "QuantitativeValue", maxValue: c.seats, unitText: "passengers" } }))
   };
-  page({ lang, path: g.path, title: F(g.title), desc: F(g.desc), body, ld: [offer, faqLd(faq), crumbs([[site.brand, t.paths.home], [F(g.h1), g.path]])] });
+  page({ lang, path: X.path, alts: ALL(l => GI.text(g, l).path), title: F(X.title), desc: F(X.desc), body, ld: [offer, faqLd(faq), crumbs([[site.brand, t.paths.home], [F(X.h1), X.path]])] });
 }
 
 function prices(lang) {
-  const t = I[lang];
+  const t = I[lang], v = faqVars(lang), F = s => fill(s, v);
+  // the FAQ's "prices and payment" questions explain what the prices include and how to pay
+  const cat = FQ[lang].cats[FQ.CATS.indexOf("prices")];
+  const faq = cat[1].map(([q, a]) => [F(q), F(a)]).filter(([q, a]) => !/\{\w+\}/.test(q + a));
   const body = `<section class="sec"><div class="wrap"><h1>${t.prices.h1}</h1><p class="sub">${t.home.routesLead}</p>
 ${AIRPORTS.concat(Q.zone(P, "galataport")).map(a => `<h2>${esc(a.name[lang])}</h2><div class="tbl-wrap"><table class="tbl"><thead><tr><th>${t.prices.to}</th>${P.cars.map(c => `<th>${esc(c.name[lang])}</th>`).join("")}</tr></thead><tbody>
 ${ROUTES.filter(([x, y]) => x === a.id || y === a.id).map(([x, y]) => { const to = x === a.id ? y : x; return `<tr><td><a href="${routePath(lang, x, y)}">${esc(Q.zone(P, to).name[lang])}</a></td>${P.cars.map(c => `<td>€${Q.base(P, x, y, c.id)}</td>`).join("")}</tr>`; }).join("")}
 </tbody></table></div>`).join("")}
-<h2>${esc(PL.T[lang].more)}</h2><div class="chips">${PL.L.map(x => `<a href="${PL.T[lang].path(x.id)}">${esc(x.name[lang])}</a>`).join("")}</div></div></section>`;
-  page({ lang, path: t.paths.prices, alts: ALL(l => I[l].paths.prices), title: fill(t.prices.title, { brand: site.brand }), desc: t.prices.desc, body });
+<h2>${esc(PL.T[lang].more)}</h2><div class="chips">${PL.L.map(x => `<a href="${PL.T[lang].path(x.id)}">${esc(x.name[lang])}</a>`).join("")}</div></div></section>
+<section class="sec ice"><div class="wrap narrow"><h2>${esc(cat[0])}</h2>${faqBlock(faq.map(([q, a]) => [q, esc(a)]))}<p class="fq-rel"><a href="${FQ[lang].path}">${esc(FQ[lang].more)} →</a></p></div></section>`;
+  page({ lang, path: t.paths.prices, alts: ALL(l => I[l].paths.prices), title: fill(t.prices.title, { brand: site.brand }), desc: t.prices.desc, body, ld: [faqLd(faq)] });
 }
 
 function book(lang) {
@@ -794,7 +813,7 @@ function admin() {
 }
 
 LANGS.forEach(l => { home(l); AIRPORTS.forEach(a => hub(l, a.id)); portHub(l); aboutPage(l); howPage(l); fleetPage(l); faqPage(l); CO.ORDER.forEach(k => companyPage(l, k)); ROUTES.forEach(([a, z]) => route(l, a, z)); PL.L.forEach(x => place(l, x)); SV.S.forEach(x => service(l, x)); prices(l); book(l); legalPages(l); blogIndex(l); POSTS.forEach(x => x[l] && blogPost(l, x)); });
-GUIDES.forEach(guide);
+GUIDES.forEach(g => LANGS.forEach(l => guide(g, l)));
 notFound();
 admin();
 extras();

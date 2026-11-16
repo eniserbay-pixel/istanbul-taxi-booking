@@ -5,7 +5,7 @@
 module.exports = {
   en: {
     path: "/fleet", nav: "Our fleet",
-    title: "Our Fleet: Sedan, Minivan, V-Class and Minibus · Istanbul Transfer",
+    title: "Istanbul Transfer Fleet: Sedan, Minivan, V-Class, Minibus",
     desc: "Four cars for your Istanbul transfer: sedan for 3, minivan for 6, Mercedes V-Class VIP for 6, minibus for 13. Luggage, features and fixed prices per car.",
     h1: "Our fleet: four cars for every group",
     lead: "From a sedan for two to a minibus for thirteen: every car comes with a professional driver, meet and greet at the airport and a fixed price per car, not per person.",
@@ -33,7 +33,7 @@ module.exports = {
   },
   tr: {
     path: "/tr/araclar", nav: "Araç filomuz",
-    title: "Araç Filomuz: Sedan, Minivan, V-Class ve Minibüs · İstanbul Transfer",
+    title: "İstanbul Transfer Araçları: Sedan, Minivan, V-Class, Minibüs",
     desc: "İstanbul transferiniz için dört araç: 3 kişilik sedan, 6 kişilik minivan, 6 kişilik V-Class VIP, 13 kişilik minibüs. Bagaj, özellikler ve araç başı sabit fiyat.",
     h1: "Araç filomuz: her gruba uygun dört araç",
     lead: "İki kişilik sedandan on üç kişilik minibüse kadar: her araç profesyonel şoför, havalimanında isimli karşılama ve kişi başı değil araç başı sabit fiyatla gelir.",
@@ -61,7 +61,7 @@ module.exports = {
   },
   ru: {
     path: "/ru/avtomobili", nav: "Наш автопарк",
-    title: "Автопарк: седан, минивэн, V-Class и микроавтобус · трансфер Стамбул",
+    title: "Трансфер в Стамбуле: седан, минивэн, V-Class, микроавтобус",
     desc: "Четыре машины для трансфера в Стамбуле: седан на 3, минивэн на 6, V-Class VIP на 6, микроавтобус на 13 человек. Багаж, удобства и фиксированные цены.",
     h1: "Наш автопарк: четыре машины для любой группы",
     lead: "От седана для двоих до микроавтобуса на тринадцать человек: каждая машина — с профессиональным водителем, встречей с табличкой в аэропорту и фиксированной ценой за машину, а не за человека.",
@@ -201,7 +201,7 @@ module.exports = {
   },
   ar: {
     path: "/ar/sayyarat", nav: "أسطولنا",
-    title: "أسطولنا: سيدان، ميني فان، مرسيدس V-Class وميني باص · توصيلات إسطنبول",
+    title: "أسطول توصيلات إسطنبول: سيدان، ميني فان، V-Class، ميني باص",
     desc: "السيارات الأربع لتوصيلك من مطار إسطنبول: سيدان لـ3 ركاب، ميني فان لـ6، مرسيدس V-Class VIP لـ6 وميني باص لـ13. عدد الركاب والحقائب والمزايا والأسعار الثابتة للسيارة.",
     h1: "أسطولنا: أربع سيارات تناسب كل مجموعة",
     lead: "من سيارة سيدان لشخصين إلى ميني باص لثلاثة عشر شخصاً: كل سيارة مع سائق محترف واستقبال بلوحة باسمك في المطار وسعر ثابت للسيارة لا للشخص.",

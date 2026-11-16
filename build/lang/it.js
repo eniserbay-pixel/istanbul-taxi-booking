@@ -141,7 +141,7 @@ const blog = {
   },
   "how-to-book": {
     slug: B.howto,
-    title: "Come prenotare il transfer dall'aeroporto di Istanbul in un minuto",
+    title: "Transfer aeroporto Istanbul: come prenotare in un minuto",
     desc: "Prenota il tuo transfer dall'aeroporto di Istanbul con ITB Transfer in un minuto, senza account né anticipo. Cosa succede dopo l'invio, passo per passo.",
     lead: "Prenotare un transfer con {brand} è più veloce che aspettare al posteggio taxi. Ci vuole circa un minuto, senza account e senza pagamento anticipato. Ecco esattamente cosa succede.",
     body: `<h2>1. Scegli percorso e orario</h2>

@@ -43,7 +43,7 @@ module.exports = function audit(OUT, o) {
     if (!f) { add("missing", "error", "tech", "Site haritasındaki sayfa dosyası yok", "Sayfanın derlemede oluştuğunu kontrol edin.", pg.path); return; }
     const html = fs.readFileSync(f, "utf8"), p = pg.path;
     bytes += html.length;
-    const title = (html.match(/<title>([\s\S]*?)<\/title>/) || [])[1] || "";
+    const title = ((html.match(/<title>([\s\S]*?)<\/title>/) || [])[1] || "").replace(/&(amp|quot|#39|lt|gt);/g, "&"); // as Google shows it
     const desc = (html.match(/<meta name="description" content="([^"]*)"/) || [])[1] || "";
     const canon = (html.match(/<link rel="canonical" href="([^"]*)"/) || [])[1] || "";
     const h1 = (html.match(/<h1[\s>]/g) || []).length;
