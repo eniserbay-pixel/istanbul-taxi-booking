@@ -136,7 +136,7 @@ const blog = {
   },
   "taxi-vs-transfer": {
     slug: B.versus,
-    title: "İstanbul Havalimanı: Taksi Durağı mı, Önceden Ayırtılan Transfer mi?",
+    title: "İstanbul Havalimanı: Taksi mi, Önceden Transfer mi?",
     desc: "İstanbul Havalimanı veya Sabiha Gökçen'de taksi durağı mı, önceden ayırtılan özel transfer mi? Fiyat, bekleme, bagaj ve güvenlik karşılaştırması.",
     lead: "İstanbul Havalimanı'na ya da Sabiha Gökçen'e indiniz ve otelinize gitmeniz gerekiyor. Taksi kuyruğuna girebilir ya da sizi bekleyen bir şoförle yola çıkabilirsiniz. İkisinin karşılaştırması şöyle.",
     body: `<h2>Fiyat: taksimetre mi, sabit fiyat mı</h2>
@@ -326,7 +326,7 @@ const company = {
     b2b: { nav: "Acenteler için B2B", title: "Acenteler İçin B2B Transfer İş Birliği · {brand}", desc: "Seyahat acenteleri, tur operatörleri, oteller ve platformlar: İstanbul havalimanı transferlerini kendi partner sayfanızdan net B2B fiyatlarla ayırtın.",
       h1: "Acenteler için B2B transfer", lead: "Seyahat acenteleri, tur operatörleri, oteller ve online platformlar: misafirleriniz için İstanbul transferlerini kendi partner sayfanızdan net fiyatlarla ayırtın.",
       points: ["Tüm güzergah ve araçlar için net B2B fiyatlar", "Rezervasyon ve faturalarınızın olduğu kendi sayfanız", "Misafirleriniz isim tabelasıyla karşılanır, 7/24", "İsterseniz ücret misafirden tahsil edilir"] },
-    partner: { nav: "İş birlikleri", title: "İş Birlikleri: Oteller, Rehberler ve İçerik Üreticileri · {brand}", desc: "Oteller, rehberler, influencer'lar ve seyahat siteleri: ITB Transfer'i misafir ve okurlarınıza önerin, her rezervasyondan kazanın.",
+    partner: { nav: "İş birlikleri", title: "İş Birlikleri: Otel, Rehber, Influencer · {brand}", desc: "Oteller, rehberler, influencer'lar ve seyahat siteleri: ITB Transfer'i misafir ve okurlarınıza önerin, her rezervasyondan kazanın.",
       h1: "Birlikte çalışalım", lead: "Oteller, rehberler, influencer'lar ve seyahat siteleri: transferlerimizi misafirlerinize ve okurlarınıza önerin, her rezervasyondan kazanın.",
       points: ["Her rezervasyonda komisyon veya özel fiyat", "Adınıza özel rezervasyon linki", "Misafirlerinize WhatsApp'tan hızlı yanıt", "Misafirlerinizin güvenebileceği sabit fiyatlar"] }
   }

@@ -24,7 +24,7 @@ const ui = {
     airports: "Flughäfen", districts: "Istanbul", port: "Kreuzfahrthafen", choose: "Bitte wählen…", swap: "Tauschen"
   },
   home: {
-    title: "Flughafen Istanbul Taxi & Privattransfer ab €{min} · {brand}",
+    title: "Flughafen Istanbul Taxi & Transfer ab €{min} · {brand}",
     desc: "{brand} ist ein Transferunternehmen in Istanbul: privates Flughafentaxi ab IST und Sabiha Gökçen zum Festpreis ab €{min} pro Auto. Barzahlung beim Fahrer.",
     h1: "Flughafentaxi und Privattransfer in Istanbul zum <em>Festpreis</em>",
     lead: "{brand} ist ein Transferunternehmen in Istanbul. Wir bringen Sie im privaten Auto vom Flughafen Istanbul (IST) oder Sabiha Gökçen (SAW) zu Ihrem Hotel, ab €{min} pro Auto. Ihr Fahrer wartet mit einem Namensschild und Sie zahlen am Ende der Fahrt bar.",

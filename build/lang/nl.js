@@ -24,7 +24,7 @@ const ui = {
     airports: "Luchthavens", districts: "Istanbul", port: "Cruisehaven", choose: "Kies…", swap: "Omdraaien"
   },
   home: {
-    title: "Taxi en privétransfer luchthaven Istanbul vanaf €{min} · {brand}",
+    title: "Taxi luchthaven Istanbul & transfer vanaf €{min} · {brand}",
     desc: "{brand} is een transferbedrijf in Istanbul: privétaxi vanaf luchthaven IST en Sabiha Gökçen voor een vaste prijs vanaf €{min} per auto. Contant betalen.",
     h1: "Luchthaventaxi en privétransfer in Istanbul voor een <em>vaste prijs</em>",
     lead: "{brand} is een transferbedrijf in Istanbul. We brengen je met een privéauto van luchthaven Istanbul (IST) of Sabiha Gökçen (SAW) naar je hotel, vanaf €{min} per auto. Je chauffeur wacht met een naambordje en je betaalt contant aan het einde van de rit.",
@@ -51,7 +51,7 @@ const ui = {
     ["Kan ik annuleren?", "Ja, gratis tot 24 uur voor het ophalen. Reageer gewoon op de bevestigingsmail of stuur ons een bericht via WhatsApp."]
   ],
   route: {
-    title: "Taxi {from} – {to} · vaste prijs €{price} per auto",
+    title: "Taxi {from} – {to} · vaste prijs €{price}",
     desc: "Privétaxi {from} – {to}: vaste prijs vanaf €{price} per auto, {km} km, ongeveer {min} min. Naambordje, vlucht wordt gevolgd, contant betalen.",
     h1: "Taxi {from} – {to}",
     answer: "Een privétaxi van {fromLong} naar {toLong} kost een vaste <strong>€{price} per auto</strong> in een sedan voor maximaal 3 passagiers. De {km} km duren buiten de spits ongeveer {min} minuten. Tol en parkeren zijn inbegrepen en je betaalt de chauffeur contant.",
