@@ -459,6 +459,42 @@ tr.dayrow td { display: block; }
 .p-pub { background: var(--green-soft); color: var(--green); }
 .p-draft { background: #eef0f3; color: #4b5563; }
 .p-sched { background: var(--purple-soft); color: var(--purple); }
+.p-bad { background: var(--red-soft); color: var(--red); }
+.p-warn { background: var(--amber-soft); color: var(--amber); }
+.sh-gs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 0 0 12px; }
+.sh-g { display: flex; flex-direction: column; align-items: center; padding: 14px 10px 12px; text-align: center; }
+.sh-g b { font-size: 15px; margin-top: 4px; }
+.sh-g small { color: var(--mute); font-size: 12px; }
+.sh-fix td { vertical-align: top; }
+.sh-fix .ttl { font-weight: 600; }
+.sh-pg summary { cursor: pointer; color: var(--blue); font-size: 13px; margin-top: 4px; }
+.sh-pg a { display: inline-block; margin: 4px 10px 0 0; font-size: 12.5px; color: var(--ink); }
+.sh-cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 0 0 16px; }
+.sh-cols2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.sh-chk { list-style: none; margin: 10px 0 0; padding: 0; }
+.sh-chk li { position: relative; padding: 7px 0 7px 26px; border-top: 1px solid var(--line); font-size: 13.5px; }
+.sh-chk li:first-child { border-top: 0; }
+.sh-chk li b { display: block; font-weight: 600; }
+.sh-chk li span { display: block; font-size: 12.5px; }
+.sh-chk li::before { position: absolute; left: 0; top: 7px; width: 18px; height: 18px; border-radius: 50%; font-size: 12px; font-weight: 700; display: grid; place-items: center; }
+.sh-chk li.ok::before { content: "✓"; background: var(--green-soft); color: var(--green); }
+.sh-chk li.no::before { content: "!"; background: var(--amber-soft); color: var(--amber); }
+.sh-psh { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; margin-bottom: 10px; }
+.sh-psb { display: flex; gap: 8px; flex-wrap: wrap; }
+.sh-psb input, .sh-psb select, #shQ { height: 40px; border: 1px solid var(--line); border-radius: 8px; padding: 0 10px; font: inherit; }
+.sh-psb input { width: 320px; max-width: 100%; }
+.sh-ps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin: 6px 0 12px; }
+.sh-ps div { border: 1px solid var(--line); border-radius: 10px; padding: 10px; text-align: center; }
+.sh-ps b { display: block; font-size: 26px; }
+.sh-ps span { color: var(--mute); font-size: 12.5px; }
+.sh-h3 { font-size: 14px; margin: 14px 0 6px; }
+.sh-ops { margin: 0; padding-left: 18px; font-size: 13.5px; }
+.sh-ops li { margin: 4px 0; }
+.sh-pages td { font-size: 13px; }
+.sh-pages td a { color: var(--ink); }
+.sh-bad { color: var(--red); font-weight: 700; }
+.sh-tag { display: inline-block; background: #eef0f3; border-radius: 6px; padding: 1px 6px; margin: 1px 3px 1px 0; font-size: 11.5px; }
+@media (max-width: 900px) { .sh-gs, .sh-ps { grid-template-columns: repeat(2, minmax(0, 1fr)); } .sh-cols, .sh-cols2 { grid-template-columns: 1fr; } }
 .bl-ed { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 18px; align-items: start; margin-top: 14px; }
 .bl-side { display: grid; gap: 14px; position: sticky; top: 14px; }
 .bl-side .card, .bl-main > .card { padding: 14px 16px; }
@@ -723,6 +759,7 @@ dialog.bl-dlg::backdrop { background: rgba(15, 27, 45, .45); }
     table: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 10v10"/>',
     car: '<path d="M3 16v-3l2-5h14l2 5v3"/><path d="M3 16h18v2H3z"/>',
     chart: '<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
+    pulse: '<path d="M2 12h4l3-8 4 16 3-8h6"/>',
     fx: '<path d="M4 8h13l-3-3M20 16H7l3 3"/>',
     eye: '<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
     edit: '<path d="M4 20h4L19 9l-4-4L4 16z"/>',
@@ -768,6 +805,7 @@ dialog.bl-dlg::backdrop { background: rgba(15, 27, 45, .45); }
     { id: "doviz", t: "Döviz Kurları", i: "fx" },
     { h: "Büyüme ve İçerik", c: "#e1ad01" },
     { id: "analitik", t: "Site Analitiği", i: "chart" },
+    { id: "site-sagligi", t: "Site Sağlığı", i: "pulse" },
     { id: "blog", t: "Blog", i: "doc" },
     { h: "Ayarlar", c: "#e1ad01" },
     { id: "fiyatlandirma", t: "Fiyatlandırma", i: "tag" },
@@ -993,6 +1031,7 @@ dialog.bl-dlg::backdrop { background: rgba(15, 27, 45, .45); }
     if (S.view === "raporlar") return viewReports();
     if (S.view === "doviz") return viewFx();
     if (S.view === "analitik") return viewStats();
+    if (S.view === "site-sagligi") return viewSiteHealth();
     if (S.view === "telegram") return viewTg();
     if (S.view === "yeni") {
       var base = parts[1] === "ek" && S.all.find(function (x) { return x.id === +parts[2]; });
@@ -2556,6 +2595,106 @@ dialog.bl-dlg::backdrop { background: rgba(15, 27, 45, .45); }
   // admin/blog.json, which every build writes. A post dated in the future stays off the site until that morning.
   var SB_KIND = { "new": "Yeni yazı", translate: "Çeviri", edit: "Güncelleme" };
   var SB_LANG = { en: "İngilizce", tr: "Türkçe", ru: "Rusça", de: "Almanca", fr: "Fransızca", it: "İtalyanca", nl: "Felemenkçe", ar: "Arapça" };
+  // ---------- Site Sağlığı: the build checks every page (build/audit.js) and writes /admin/audit.json; speed comes live from Google PageSpeed ----------
+  var SH_CAT = { seo: "SEO", geo: "GEO (yapay zeka)", tech: "Teknik" };
+  var SH_SEV = { error: ["Hata", "p-bad"], warn: ["Uyarı", "p-warn"], info: ["Bilgi", "p-draft"] };
+  var SH_LANG = { en: "İngilizce", tr: "Türkçe", ru: "Rusça", de: "Almanca", fr: "Fransızca", it: "İtalyanca", nl: "Felemenkçe", ar: "Arapça" };
+  var SH_LD = { TaxiService: "Firma ve hizmet (TaxiService)", FAQPage: "Soru-cevap (FAQPage)", BreadcrumbList: "Sayfa yolu (Breadcrumb)", Service: "Hizmet / rota (Service)", BlogPosting: "Blog yazısı (BlogPosting)", HowTo: "Nasıl yapılır (HowTo)", AboutPage: "Hakkımızda (AboutPage)", ItemList: "Liste (ItemList)" };
+  function shColor(n) { return n >= 90 ? "var(--green)" : n >= 50 ? "var(--amber)" : "var(--red)"; }
+  function shGauge(n, label, sub) {
+    var r = 34, c = 2 * Math.PI * r, col = n == null ? "var(--line)" : shColor(n);
+    return '<div class="card sh-g"><svg viewBox="0 0 80 80" width="92" height="92"><circle cx="40" cy="40" r="' + r + '" fill="none" stroke="var(--line)" stroke-width="7"/>' +
+      (n == null ? '' : '<circle cx="40" cy="40" r="' + r + '" fill="none" stroke="' + col + '" stroke-width="7" stroke-linecap="round" stroke-dasharray="' + (c * n / 100).toFixed(1) + ' ' + c.toFixed(1) + '" transform="rotate(-90 40 40)"/>') +
+      '<text x="40" y="47" text-anchor="middle" font-size="21" font-weight="700" fill="' + col + '">' + (n == null ? "–" : n) + '</text></svg><b>' + esc(label) + '</b><small>' + esc(sub || "") + '</small></div>';
+  }
+  function viewSiteHealth() {
+    $("main").innerHTML = '<h1>Site Sağlığı</h1><p class="sub">Yükleniyor…</p>';
+    fetch("/admin/audit.json", { cache: "no-store" }).then(function (r) { if (!r.ok) throw new Error("Denetim sonucu okunamadı (" + r.status + ")"); return r.json(); })
+      .then(function (A) { S.audit = A; drawSiteHealth(); })
+      .catch(function (e) { $("main").innerHTML = '<h1>Site Sağlığı</h1><div class="err">' + esc(e.message) + '</div>'; });
+  }
+  function drawSiteHealth() {
+    var A = S.audit, C = A.counts, ps = S.ps || {};
+    var at = new Date(A.at), when = at.toLocaleDateString("tr-TR") + " " + at.toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" });
+    var nErr = A.issues.filter(function (x) { return x.sev === "error"; }).length, nWarn = A.issues.filter(function (x) { return x.sev === "warn"; }).length;
+    var gauges = '<div class="sh-gs">' + shGauge(A.scores.seo, "SEO", "Google'da bulunma") + shGauge(A.scores.geo, "GEO", "ChatGPT, Gemini, Claude") + shGauge(A.scores.tech, "Teknik", "Linkler, görseller, dosyalar") +
+      shGauge(ps.res ? ps.res.perf : null, "Hız (mobil)", ps.res ? "Google PageSpeed" : "Aşağıdan ölçün") + '</div>';
+    var kpi = [["Sayfa", C.pages, "site haritasında " + C.sitemap], ["Hata", nErr, "düzeltilmeli"], ["Uyarı", nWarn, "iyileştirilebilir"], ["Kontrol edilen link", C.links.toLocaleString("tr-TR"), "iç linkler"], ["Yayındaki blog", C.posts, C.lastPost ? "son: " + dmy(C.lastPost) : ""]]
+      .map(function (k, i) { return '<div class="card rp-k" style="--kc:' + ["var(--accent)", "var(--red)", "var(--amber)", "var(--green)", "var(--purple)"][i] + '"><span>' + k[0] + '</span><b>' + k[1] + '</b><small>' + esc(k[2]) + '</small></div>'; }).join("");
+    // what to fix, most serious first
+    var fix = A.issues.map(function (x, i) {
+      var sv = SH_SEV[x.sev], pg = x.pages.length;
+      return '<tr><td><span class="pill ' + sv[1] + '">' + sv[0] + '</span></td><td><div class="ttl">' + esc(x.msg) + '</div><div class="m">' + esc(x.fix) + '</div>' +
+        (pg ? '<details class="sh-pg"><summary>' + pg + ' sayfada</summary>' + x.pages.slice(0, 60).map(function (p) { return '<a target="_blank" rel="noopener" href="' + esc(A.url + p) + '">' + esc(p) + '</a>'; }).join("") + (pg > 60 ? '<span class="m">… ve ' + (pg - 60) + ' sayfa daha</span>' : '') + '</details>' : '') +
+        '</td><td class="nowrap">' + SH_CAT[x.cat] + '</td></tr>';
+    }).join("");
+    // structure: checklist per area
+    var chk = function (cat) {
+      return A.checks.filter(function (c) { return c.cat === cat; }).map(function (c) {
+        return '<li class="' + (c.ok ? "ok" : "no") + '"><b>' + esc(c.label) + '</b><span class="m">' + esc(c.ok ? c.why : c.fix) + '</span></li>';
+      }).join("");
+    };
+    var ld = Object.keys(C.ld).sort(function (a, b) { return C.ld[b] - C.ld[a]; }).map(function (k) { return '<tr><td>' + esc(SH_LD[k] || k) + '</td><td class="n">' + C.ld[k] + '</td></tr>'; }).join("");
+    var langs = Object.keys(C.langs).map(function (l) { return '<tr><td>' + esc(SH_LANG[l] || l) + '</td><td class="n">' + C.langs[l] + '</td></tr>'; }).join("");
+    // PageSpeed
+    var psBox;
+    if (ps.busy) psBox = '<p class="m">Google sayfayı ölçüyor, 20–40 saniye sürebilir…</p>';
+    else if (ps.err) psBox = '<div class="err">' + esc(ps.err) + '</div>';
+    else if (ps.res) {
+      var R = ps.res;
+      psBox = '<div class="sh-ps">' + [["Performans", R.perf], ["SEO", R.seo], ["Erişilebilirlik", R.a11y], ["En iyi uygulamalar", R.bp]].map(function (x) { return '<div><b style="color:' + shColor(x[1]) + '">' + x[1] + '</b><span>' + x[0] + '</span></div>'; }).join("") + '</div>' +
+        '<table class="rp-t"><tbody>' + R.metrics.map(function (m) { return '<tr><td>' + esc(m[0]) + '</td><td class="n"><b style="color:' + shColor(m[2] * 100) + '">' + esc(m[1]) + '</b></td></tr>'; }).join("") + '</tbody></table>' +
+        (R.ops.length ? '<h3 class="sh-h3">Hızlandırmak için</h3><ul class="sh-ops">' + R.ops.map(function (o) { return '<li><b>' + esc(o[0]) + '</b>' + (o[1] ? ' <span class="m">' + esc(o[1]) + '</span>' : '') + '</li>'; }).join("") + '</ul>' : '') +
+        '<p class="m">' + esc(R.url) + ' · ' + esc(R.strategy === "mobile" ? "mobil" : "masaüstü") + ' · ' + esc(R.at) + '</p>';
+    } else psBox = '<p class="m">Google PageSpeed ile canlı sitenin hızını, mobil uyumunu ve erişilebilirliğini ölçün.</p>';
+    var pages = A.pages.slice().sort(function (a, b) { return b.bad - a.bad || a.p.localeCompare(b.p); });
+    var q = (S.shQ || "").toLowerCase();
+    var shown = pages.filter(function (r) { return !q || r.p.toLowerCase().indexOf(q) >= 0; }), lim = S.shAll || q ? 600 : 40;
+    var prow = shown.slice(0, lim).map(function (r) {
+      var c = function (ok, v) { return '<td class="n' + (ok ? '' : ' sh-bad') + '">' + v + '</td>'; };
+      return '<tr><td><a target="_blank" rel="noopener" href="' + esc(A.url + r.p) + '">' + esc(r.p) + '</a></td><td>' + r.lang.toUpperCase() + '</td>' +
+        c(r.title >= 20 && r.title <= 65, r.title) + c(r.desc >= 70 && r.desc <= 165, r.desc) + c(r.h1 === 1, r.h1) + c(r.words >= 250, r.words.toLocaleString("tr-TR")) +
+        '<td>' + (r.ld.length ? r.ld.map(function (t) { return '<span class="sh-tag">' + esc(t) + '</span>'; }).join("") : '<span class="m">–</span>') + '</td>' +
+        '<td class="n">' + (r.bad ? '<span class="pill p-warn">' + r.bad + '</span>' : '<span class="pill p-pub">Temiz</span>') + '</td></tr>';
+    }).join("");
+
+    $("main").innerHTML = '<div class="head"><div><h1>Site Sağlığı</h1><p class="sub">Sitedeki ' + C.pages + ' sayfanın SEO, GEO (yapay zeka görünürlüğü) ve teknik denetimi. Her yayında kendiliğinden yenilenir. Son denetim: ' + esc(when) + '.</p></div></div>' +
+      gauges + '<div class="rp-kpi">' + kpi + '</div>' +
+      '<div class="card tbl-wrap" style="margin-bottom:16px"><div class="pad" style="padding-bottom:4px"><h2 class="h2">Neyi düzeltmeli?</h2><p class="m" style="margin:4px 0 0">Önce hatalar, sonra uyarılar. Sayfa sayısına tıklayınca hangi sayfalarda olduğu açılır.</p></div>' +
+      (fix ? '<table class="rp-t sh-fix"><thead><tr><th>Önem</th><th>Sorun ve çözüm</th><th>Alan</th></tr></thead><tbody>' + fix + '</tbody></table>' : '<p class="pad m">Sorun bulunmadı.</p>') + '</div>' +
+      '<div class="card pad" style="margin-bottom:16px"><div class="sh-psh"><div><h2 class="h2">Hız testi (Google PageSpeed)</h2></div><div class="sh-psb"><select id="shStrat"><option value="mobile">Mobil</option><option value="desktop"' + (ps.strategy === "desktop" ? " selected" : "") + '>Masaüstü</option></select>' +
+      '<input id="shUrl" value="' + esc(ps.url || A.url + "/") + '"><button class="btn" id="shRun"' + (ps.busy ? " disabled" : "") + '>Ölç</button></div></div>' + psBox + '</div>' +
+      '<div class="sh-cols"><div class="card pad"><h2 class="h2">SEO yapısı</h2><ul class="sh-chk">' + chk("seo") + '</ul></div>' +
+      '<div class="card pad"><h2 class="h2">GEO: yapay zeka görünürlüğü</h2><ul class="sh-chk">' + chk("geo") + '</ul></div>' +
+      '<div class="card pad"><h2 class="h2">Teknik</h2><ul class="sh-chk">' + chk("tech") + '</ul></div></div>' +
+      '<div class="sh-cols sh-cols2"><div class="card tbl-wrap"><div class="pad" style="padding-bottom:4px"><h2 class="h2">Yapısal veri (schema)</h2><p class="m" style="margin:4px 0 0">Google ve yapay zekanın sayfaları anlamasını sağlayan etiketler; kaç sayfada olduğu.</p></div><table class="rp-t"><tbody>' + ld + '</tbody></table></div>' +
+      '<div class="card tbl-wrap"><div class="pad" style="padding-bottom:4px"><h2 class="h2">Dillere göre sayfalar</h2><p class="m" style="margin:4px 0 0">Toplam ' + C.words.toLocaleString("tr-TR") + ' kelime içerik, ' + C.images + ' görsel.</p></div><table class="rp-t"><tbody>' + langs + '</tbody></table></div></div>' +
+      '<div class="card tbl-wrap"><div class="pad sh-psh" style="padding-bottom:4px"><div><h2 class="h2">Sayfa sayfa</h2><p class="m" style="margin:4px 0 0">Kırmızı değerler sınırın dışında: başlık 20–65, açıklama 70–165 karakter, tek H1, en az 250 kelime.</p></div><input id="shQ" placeholder="Sayfa ara" value="' + esc(S.shQ || "") + '"></div>' +
+      '<table class="rp-t sh-pages"><thead><tr><th>Sayfa</th><th>Dil</th><th class="n">Başlık</th><th class="n">Açıklama</th><th class="n">H1</th><th class="n">Kelime</th><th>Yapısal veri</th><th class="n">Durum</th></tr></thead><tbody>' + prow + '</tbody></table>' + (shown.length > lim ? '<p class="pad"><button class="btn btn-s" id="shAll">Tüm sayfaları göster (' + shown.length + ')</button></p>' : '') + '</div>';
+
+    if ($("shAll")) $("shAll").onclick = function () { S.shAll = true; drawSiteHealth(); };
+    $("shRun").onclick = function () { shSpeed($("shUrl").value.trim(), $("shStrat").value); };
+    $("shQ").oninput = function () { S.shQ = this.value; var p = this.selectionStart; drawSiteHealth(); var i = $("shQ"); i.focus(); i.setSelectionRange(p, p); };
+  }
+  function shSpeed(url, strategy) {
+    S.ps = { busy: true, url: url, strategy: strategy }; drawSiteHealth();
+    var u = "https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=" + encodeURIComponent(url) + "&strategy=" + strategy + "&locale=tr" + (S.audit.psKey ? "&key=" + encodeURIComponent(S.audit.psKey) : "") +
+      ["performance", "seo", "accessibility", "best-practices"].map(function (c) { return "&category=" + c; }).join("");
+    fetch(u).then(function (r) { return r.json().then(function (j) { if (r.status === 429) throw new Error("Google'ın anahtarsız ücretsiz kotası şu an dolu. Ücretsiz bir PageSpeed API anahtarı eklenince bu sorun kalkar."); if (!r.ok) throw new Error((j.error && j.error.message) || ("PageSpeed hata " + r.status)); return j; }); })
+      .then(function (j) {
+        var L = j.lighthouseResult, cat = L.categories, au = L.audits, sc = function (k) { return Math.round((cat[k] && cat[k].score || 0) * 100); };
+        var metric = function (id, name) { var a = au[id]; return a ? [name, a.displayValue || "–", a.score == null ? 1 : a.score] : null; };
+        var ops = Object.keys(au).map(function (k) { return au[k]; })
+          .filter(function (a) { return a.details && a.details.type === "opportunity" && a.score != null && a.score < 0.9; })
+          .sort(function (a, b) { return (b.details.overallSavingsMs || 0) - (a.details.overallSavingsMs || 0); }).slice(0, 8)
+          .map(function (a) { return [a.title, a.details.overallSavingsMs ? "≈ " + (a.details.overallSavingsMs / 1000).toFixed(1) + " sn kazanç" : a.displayValue || ""]; });
+        S.ps = { url: url, strategy: strategy, res: { perf: sc("performance"), seo: sc("seo"), a11y: sc("accessibility"), bp: sc("best-practices"), url: L.finalDisplayedUrl || url, strategy: strategy, at: new Date().toLocaleString("tr-TR"), ops: ops,
+          metrics: [metric("first-contentful-paint", "İlk içerik görünümü (FCP)"), metric("largest-contentful-paint", "En büyük içerik (LCP)"), metric("total-blocking-time", "Toplam engelleme süresi (TBT)"), metric("cumulative-layout-shift", "Sayfa kayması (CLS)"), metric("speed-index", "Hız endeksi")].filter(Boolean) } };
+        if (S.view === "site-sagligi") drawSiteHealth();
+      })
+      .catch(function (e) { S.ps = { url: url, strategy: strategy, err: "Ölçüm yapılamadı: " + e.message + " Birkaç dakika sonra tekrar deneyin." }; if (S.view === "site-sagligi") drawSiteHealth(); });
+  }
+
   function viewSiteBlog() {
     $("main").innerHTML = '<h1>Blog</h1><p class="sub">Yükleniyor…</p>';
     fetch("/admin/blog.json", { cache: "no-store" }).then(function (r) { if (!r.ok) throw new Error("Blog listesi okunamadı (" + r.status + ")"); return r.json(); })
