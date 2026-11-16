@@ -798,4 +798,5 @@ GUIDES.forEach(guide);
 notFound();
 admin();
 extras();
+const AU = require("./audit")(OUT, { site, URL: URL_, pages, posts: ALL_POSTS, today: TODAY });
 console.log("built " + pages.length + " pages into public/");
