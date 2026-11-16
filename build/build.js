@@ -32,6 +32,7 @@ const HW = require("./howto");
 const FL = require("./fleet");
 const FQ = require("./faq");
 const HB = require("./hubs");
+const MAP = require("./map");
 // German, French, Italian and Dutch: page texts, blog posts and legal texts in one file per language
 ["de", "fr", "it", "nl"].forEach(l => {
   const X = require("./lang/" + l);
@@ -88,7 +89,7 @@ const maxPrice = () => Math.max(...ROUTES.flatMap(([a, z]) => P.cars.map(c => Q.
 const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 const dist = (a, b) => (P.dist[a] && P.dist[a][b]) || (P.dist[b] && P.dist[b][a]) || null;
 const css = fs.readFileSync(path.join(OUT, "assets", "site.css"), "utf8");
-const ver = require("crypto").createHash("md5").update(css + fs.readFileSync(path.join(OUT, "assets", "site.js"), "utf8") + fs.readFileSync(path.join(OUT, "assets", "timewheel.js"), "utf8")).digest("hex").slice(0, 8);
+const ver = require("crypto").createHash("md5").update(css + fs.readFileSync(path.join(OUT, "assets", "site.js"), "utf8") + fs.readFileSync(path.join(OUT, "assets", "timewheel.js"), "utf8") + fs.readFileSync(path.join(OUT, "assets", "map.js"), "utf8")).digest("hex").slice(0, 8);
 
 // Every page: same head, header and footer. alts = the same page in every language.
 function layout(o) {
@@ -119,14 +120,14 @@ ${ld.map(x => `<script type="application/ld+json">${JSON.stringify(x)}</script>`
   const p = t.paths;
   const header = `<header class="top"><div class="wrap top-in">
 <a class="logo" href="${p.home}"><img src="/img/logo.webp" alt="${esc(site.brand)} – Istanbul Taxi Booking" width="92" height="52"></a>
-<nav class="nav"><a href="${p.prices}">${t.nav.prices}</a><a href="${FL[o.lang].path}">${t.nav.fleet}</a><a href="${HW[o.lang].path}">${t.nav.how}</a><a href="${FQ[o.lang].path}">${t.nav.faq}</a><a href="${p.blog}">${t.nav.blog}</a>
+<nav class="nav"><a href="${p.prices}">${t.nav.prices}</a><a href="${FL[o.lang].path}">${t.nav.fleet}</a><a href="${HW[o.lang].path}">${t.nav.how}</a><a href="${FQ[o.lang].path}">${t.nav.faq}</a><a href="${p.blog}">${t.nav.blog}</a>${o.lang === "en" ? `<a href="${MAP.T.path}">${MAP.T.nav}</a>` : ""}
 ${langSwitch(o.lang, alts)}</nav>
 <a class="btn btn-y btn-sm" href="${p.book}">${t.nav.book}</a></div></header>`;
   const popular = [["IST", "sultanahmet"], ["IST", "taksim"], ["IST", "kadikoy"], ["SAW", "taksim"], ["SAW", "kadikoy"], ["SAW", "sultanahmet"]];
   const footer = `<footer class="foot"><div class="wrap foot-in">
 <div><a class="logo" href="${p.home}"><img src="/img/logo.webp" alt="${esc(site.brand)}" width="141" height="80" loading="lazy"></a>
 <p><bdi>${esc(site.company)}</bdi><br>${esc(site.address[o.lang])}<br>${t.footer.tursab}: ${esc(site.tursab)}</p></div>
-<div><h3>${t.footer.routes}</h3>${popular.map(([a, z]) => `<a href="${p.route(a, Q.zone(P, z).slug)}">${esc(Q.zone(P, a).short[o.lang])} → ${esc(Q.zone(P, z).short[o.lang])}</a>`).join("")}<a href="${PORT[o.lang].path}">${esc(Q.zone(P, "galataport").name[o.lang])}</a>${GUIDES.map(g => GI.text(g, o.lang)).map(x => `<a href="${x.path}">${esc(x.nav)}</a>`).join("")}</div>
+<div><h3>${t.footer.routes}</h3>${popular.map(([a, z]) => `<a href="${p.route(a, Q.zone(P, z).slug)}">${esc(Q.zone(P, a).short[o.lang])} → ${esc(Q.zone(P, z).short[o.lang])}</a>`).join("")}<a href="${PORT[o.lang].path}">${esc(Q.zone(P, "galataport").name[o.lang])}</a>${o.lang === "en" ? `<a href="${MAP.T.path}">Istanbul transfer map</a>` : ""}${GUIDES.map(g => GI.text(g, o.lang)).map(x => `<a href="${x.path}">${esc(x.nav)}</a>`).join("")}</div>
 <div><h3>${SV.T[o.lang].head}</h3>${SV.S.map(x => `<a href="${x[o.lang].path}">${esc(x[o.lang].nav)}</a>`).join("")}</div>
 <div><h3>${CO.T[o.lang].head}</h3><a href="${AB[o.lang].path}">${esc(AB[o.lang].nav)}</a>${CO.ORDER.map(k => `<a href="${CO.path(o.lang, k)}">${CO.T[o.lang].pages[k].nav}</a>`).join("")}</div>
 <div><h3>${t.footer.contact}</h3><a href="${WA}" rel="noopener">WhatsApp <bdi dir="ltr">${esc(site.phone)}</bdi></a><a href="tel:${site.phone.replace(/\s/g, "")}"><bdi dir="ltr">${esc(site.phone)}</bdi></a><a href="mailto:${site.email}">${esc(site.email)}</a></div>
@@ -676,12 +677,129 @@ ${X.sections.map(([h, html], i) => `<section class="sec${i % 2 ? " ice" : ""}"><
   page({ lang, path: X.path, alts: ALL(l => GI.text(g, l).path), title: F(X.title), desc: F(X.desc), body, ld: [offer, faqLd(faq), crumbs([[site.brand, t.paths.home], [F(X.h1), X.path]])] });
 }
 
+// Istanbul transfer map (build/map.js; public/assets/map.js makes it interactive). English only for now.
+const MAP_FROM = ["IST", "SAW", "galataport"];
+function mapPage() {
+  const lang = "en", t = I[lang], M = MAP, X = M.T, Z = id => Q.zone(P, id);
+  const zones = P.zones.filter(z => M.POS[z.id]);
+  const xy = id => [M.X(M.POS[id].at[1]), M.Y(M.POS[id].at[0])];
+  const routeUrl = (a, z) => ROUTES.some(([x, y]) => x === a && y === z) ? routePath(lang, a, z) : ROUTES.some(([x, y]) => x === z && y === a) ? routePath(lang, z, a) : null;
+  const bookUrl = (a, z) => `${t.paths.book}?from=${a}&to=${z}`;
+  const andList = a => a.length > 1 ? a.slice(0, -1).join(", ") + " and " + a[a.length - 1] : a.join("");
+  // every route the map can show: price of each car, km and minutes, its page and the booking link
+  const R = {};
+  MAP_FROM.forEach(a => zones.forEach(z => {
+    // from Galataport only the routes the port's own page sells: the airports, Taksim and Sultanahmet
+    if (z.id === a || a === "galataport" && z.type !== "airport" && !PORT_TO.includes(z.id)) return;
+    const d = dist(a, z.id);
+    R[a + "|" + z.id] = { p: P.cars.map(c => Q.base(P, a, z.id, c.id)), km: d ? d[0] : null, min: d ? d[1] : null, u: routeUrl(a, z.id), b: bookUrl(a, z.id) };
+  }));
+  const sedan = (a, z) => Q.base(P, a, z, "sedan");
+  const v = { min: minPrice, istSult: dist("IST", "sultanahmet")[0], istSultMin: dist("IST", "sultanahmet")[1], istSultP: sedan("IST", "sultanahmet"), sawSult: dist("SAW", "sultanahmet")[0],
+    pairKm: dist("IST", "SAW")[0], pairMin: dist("IST", "SAW")[1], pairP: sedan("IST", "SAW"), pairVan: Q.base(P, "IST", "SAW", "minivan"),
+    gIst: dist("IST", "galataport")[0], gIstMin: dist("IST", "galataport")[1], gSaw: dist("SAW", "galataport")[0], gSawMin: dist("SAW", "galataport")[1],
+    gT: dist("galataport", "taksim")[1], gS: dist("galataport", "sultanahmet")[1], wait: P.rules.freeWaitMin };
+  // which airport is closer to each place (by road distance, then time)
+  const places = PLACES.filter(z => M.POS[z.id]);
+  const closer = id => { const a = dist("IST", id), b = dist("SAW", id); return !a || !b ? null : a[0] !== b[0] ? (a[0] < b[0] ? "IST" : "SAW") : a[1] <= b[1] ? "IST" : "SAW"; };
+  v.eList = andList(places.filter(z => closer(z.id) === "IST").map(z => z.short.en));
+  v.aList = andList(places.filter(z => closer(z.id) === "SAW").map(z => z.short.en));
+  v.maxDiff = Math.max(...places.filter(z => closer(z.id)).map(z => Math.abs(dist("IST", z.id)[1] - dist("SAW", z.id)[1])));
+  const tk = [dist("IST", "taksim"), dist("SAW", "taksim")], tc = closer("taksim");
+  v.taksimAns = `${Z(tc).name.en} is closer: Taksim is ${tk[0][0]} km (about ${tk[0][1]} min) from Istanbul Airport and ${tk[1][0]} km (about ${tk[1][1]} min) from Sabiha Gökçen. A sedan costs €${sedan("IST", "taksim")} from IST and €${sedan("SAW", "taksim")} from SAW.`;
+  const pk = peakVars(lang);
+  const F = s => fill(s, v);
+
+  // The info card of a route (public/assets/map.js draws the same card when another route is picked)
+  const card = (a, z) => {
+    const r = R[a + "|" + z], C = X.card, zz = Z(z), side = M.POS[z].side;
+    return `<p class="tm-rt">${esc(Z(a).short.en)} → ${esc(zz.short.en)}</p><h3>${esc(zz.name.en)}</h3>
+<p class="tm-meta">${r.km ? `<span>${fill(C.km, r)}</span><span>${fill(C.min, r)}</span>` : `<span>${C.noKm}</span>`}<span>${C.side[side]}</span></p>
+${zz.area ? `<p class="tm-area"><strong>${C.areas}:</strong> ${esc(zz.area.en)}</p>` : ""}
+<ul class="tm-cars">${P.cars.map((c, i) => `<li><span>${esc(c.name.en)} <small>${fill(C.seats, { n: c.seats })}</small></span><strong>€${r.p[i]}</strong></li>`).join("")}</ul>
+<p class="small tm-per">${C.perCar}</p><p class="tm-act"><a class="btn btn-y" href="${r.b}">${C.book}</a>${r.u ? `<a class="more" href="${r.u}">${C.details} →</a>` : ""}</p>`;
+  };
+  // route line: a gentle curve from the start to the destination
+  const curve = (a, z) => {
+    const [x1, y1] = xy(a), [x2, y2] = xy(z), dx = x2 - x1, dy = y2 - y1;
+    return `M${x1} ${y1}Q${Math.round((x1 + x2) / 2 - dy * .18)} ${Math.round((y1 + y2) / 2 + dx * .18)} ${x2} ${y2}`;
+  };
+  const kind = z => z.type === "airport" ? "air" : z.type === "port" ? "port" : "zone";
+  const LAB = { r: 'x="12" y="4.5"', l: 'x="-12" y="4.5" text-anchor="end"', t: 'y="-12" text-anchor="middle"', b: 'y="20" text-anchor="middle"' };
+  const icon = k => k === "air" ? '<circle r="12"/><path class="ic" d="M0-8l1.6 5 6.4 3.4v1.8L1.6 1l-.4 4.6 2.4 1.6v1.2L0 7.4l-3.6 1V7.2l2.4-1.6L-1.6 1-8 2.2V.4l6.4-3.4z"/>'
+    : k === "port" ? '<circle r="10"/><path class="ic ic-s" d="M0-5.5v11M-3.5-2.5h7M-5.5 1.5a5.5 5 0 0 0 11 0"/>' : '<circle r="7"/>';
+  const placeZone = id => PL.L.find(x => x.id === id).zone;
+  const svg = `<svg class="tm-svg" viewBox="0 0 ${M.W} ${M.H}" role="img" aria-labelledby="tm-title" data-map>
+<title id="tm-title">${esc(X.mapAlt)}</title>
+<rect class="tm-land" width="${M.W}" height="${M.H}"/>
+<path class="tm-sea" d="M${M.pts(M.SEA).join("L")}Z"/><path class="tm-sea" d="M${M.pts(M.HORN).join("L")}Z"/>
+${M.ISLANDS.map(([la, lo, rx, ry]) => `<ellipse class="tm-land" cx="${M.X(lo)}" cy="${M.Y(la)}" rx="${rx}" ry="${ry}"/>`).join("")}
+<g class="tm-labels">${M.SEA_LABELS.map(([n, la, lo, k]) => `<g transform="translate(${M.X(lo)} ${M.Y(la)})"><text class="sc tl-${k}" text-anchor="middle">${esc(n)}</text></g>`).join("")}</g>
+<g class="tm-cross">${M.CROSS.map(c => `<path class="${c.tunnel ? "tm-tn" : "tm-br"}" d="M${M.X(c.a[1])} ${M.Y(c.a[0])}L${M.X(c.b[1])} ${M.Y(c.b[0])}" vector-effect="non-scaling-stroke"><title>${esc(c.name)}</title></path>`).join("")}
+${M.CROSS.map(c => `<g transform="translate(${M.X(c.lab[1])} ${M.Y(c.lab[0])})"><text class="sc z2 tl-cross"${c.tunnel ? ' text-anchor="end"' : ""}>${esc(c.name)}</text></g>`).join("")}</g>
+<g class="tm-lines" data-lines>${zones.filter(z => z.id !== "IST").map(z => `<path d="${curve("IST", z.id)}" data-to="${z.id}"${z.id === "sultanahmet" ? ' class="on"' : ""} vector-effect="non-scaling-stroke"/>`).join("")}</g>
+<g class="tm-places">${PL.L.filter(x => M.PLACE_POS[x.id]).map(x => `<a href="${PL.T.en.path(x.id)}" data-id="${placeZone(x.id)}" class="mk mk-place"><g transform="translate(${M.X(M.PLACE_POS[x.id][1])} ${M.Y(M.PLACE_POS[x.id][0])})"><g class="sc"><circle r="4"/><text class="z3" x="7" y="4">${esc(x.name.en)}</text></g></g><title>${esc(x.name.en)}</title></a>`).join("")}</g>
+<g class="tm-marks">${zones.map(z => { const p = M.POS[z.id], [x, y] = xy(z.id), k = kind(z); return `<a href="${R["IST|" + z.id] ? R["IST|" + z.id].u || R["IST|" + z.id].b : hubPath(lang, "IST")}" data-id="${z.id}" class="mk mk-${k}${z.id === "IST" ? " from" : z.id === "sultanahmet" ? " on" : ""}"><g transform="translate(${x} ${y})"><g class="sc">${icon(k)}<text ${LAB[p.lab]}${p.dense ? ' class="z2"' : ""}>${esc(z.short.en)}</text></g></g><title>${esc(z.name.en)}</title></a>`; }).join("")}</g>
+</svg>`;
+  const group = z => z.type !== "district" ? "a" : M.POS[z.id].side === "a" ? "s" : "e";
+  const dests = ["a", "e", "s"].map(g => `<div class="tm-dg"><h3>${X.groups[g]}</h3><ul>${zones.filter(z => group(z) === g).map(z => { const r = R["IST|" + z.id]; return `<li${z.id === "IST" ? " hidden" : ""}><a href="${r ? r.u || r.b : hubPath(lang, "IST")}" data-id="${z.id}"${z.id === "sultanahmet" ? ' aria-current="true"' : ""}><span>${esc(z.short.en)}</span><b>${r ? "€" + r.p[0] : ""}</b></a></li>`; }).join("")}</ul></div>`).join("");
+  const legend = `<ul class="tm-legend">${X.legend.map(([k, n]) => `<li><i class="lg-${k}"></i>${n}</li>`).join("")}</ul>`;
+  const mapSec = `<section class="sec ice" id="map"><div class="wrap"><h2>${X.mapH}</h2>
+<div class="tm" data-tmap><div class="tm-map"><div class="tm-bar"><div class="tm-from" role="group" aria-label="${X.startFrom}"><span>${X.startFrom}:</span>${MAP_FROM.map(a => `<button type="button" data-from="${a}" aria-pressed="${a === "IST"}">${esc(Z(a).short.en)}</button>`).join("")}</div></div>
+<div class="tm-frame">${svg}<div class="tm-zoom"><button type="button" data-zoom="1" aria-label="${X.zoomIn}">+</button><button type="button" data-zoom="-1" aria-label="${X.zoomOut}">−</button></div></div>
+<div class="tm-views" role="group" aria-label="${X.views}">${M.VIEWS.map(([n], i) => `<button type="button" data-view="${i}">${esc(n)}</button>`).join("")}</div>
+${legend}<p class="small tm-hint">${X.hint}</p><p class="small sub tm-note">${X.mapNote}</p></div>
+<aside class="tm-side"><div class="tm-card" data-card aria-live="polite">${card("IST", "sultanahmet")}</div>
+<nav class="tm-dests" aria-label="${X.dests}">${dests}</nav></aside></div></div></section>`;
+
+  const td = (a, z) => { const d = dist(a, z); return d ? fill(X.cell, { km: d[0], min: d[1], p: sedan(a, z) }) : "–"; };
+  const table = `<section class="sec"><div class="wrap"><h2>${X.tableH}</h2><p class="sub">${X.tableLead}</p><div class="tbl-wrap"><table class="tbl tm-tbl"><thead><tr>${X.cols.map(c => `<th>${c}</th>`).join("")}</tr></thead><tbody>
+${places.map(z => { const c = closer(z.id); return `<tr><td><a href="${routePath(lang, c || "IST", z.id)}">${esc(z.short.en)}</a></td><td>${X.card.side[M.POS[z.id].side]}</td><td${c === "IST" ? ' class="ok"' : ""}>${td("IST", z.id)}</td><td${c === "SAW" ? ' class="ok"' : ""}>${td("SAW", z.id)}</td><td>${c ? (c === "IST" ? "IST ✓" : "SAW ✓") : "–"}</td></tr>`; }).join("\n")}
+</tbody></table></div><p class="sub small">${t.home.routesLead}</p></div></section>`;
+
+  const two = `<section class="sec ice"><div class="wrap narrow prose"><h2>${X.twoH}</h2>${X.two.map(p => `<p>${esc(F(p))}</p>`).join("")}</div></section>`;
+  const cross = `<section class="sec"><div class="wrap"><h2>${X.crossH}</h2><p class="sub">${X.crossLead}</p><div class="tm-x">${X.cross.map(([h, p]) => `<div><h3>${esc(h)}</h3><p>${esc(p)}</p></div>`).join("")}</div></div></section>`;
+  const pricePair = (a, z) => { const d = dist(a, z); return `<a href="${routeUrl(a, z) || bookUrl(a, z)}">${a === "galataport" ? X.fromPort : a === "IST" ? X.fromIst : X.fromSaw}${d ? ` ${d[0]} km` : ""} · €${sedan(a, z)}</a>`; };
+  const areas = `<section class="sec ice"><div class="wrap"><h2>${X.areaH}</h2><p class="sub">${X.areaLead}</p><div class="tm-areas">${PLACES.filter(z => M.AREA[z.id]).map(z => {
+    const d1 = dist("IST", z.id), d2 = dist("SAW", z.id), sub = PL.L.filter(x => x.zone === z.id);
+    return `<article class="tm-a" id="area-${z.slug}"><h3>${esc(z.name.en)} <small>${X.card.side[M.POS[z.id].side]}</small></h3><p>${esc(fill(M.AREA[z.id], { gT: v.gT, gS: v.gS, istKm: d1 && d1[0], sawKm: d2 && d2[0] }))}</p>
+<p class="tm-a-areas"><strong>${X.card.areas}:</strong> ${esc(z.area.en)}</p>
+<p class="tm-a-go">${AIRPORTS.map(a => pricePair(a.id, z.id)).join("")}${z.id === "galataport" ? "" : PORT_TO.includes(z.id) ? pricePair("galataport", z.id) : ""}</p>${sub.length ? `<p class="tm-a-sub">${sub.map(x => `<a href="${PL.T.en.path(x.id)}">${esc(x.name.en)}</a>`).join("")}</p>` : ""}</article>`; }).join("")}</div></div></section>`;
+  const rush = `<section class="sec"><div class="wrap narrow prose"><h2>${X.rushH}</h2>${X.rush.map(p => p === "{peak}" ? (pk ? `<p>${esc(fill(X.peak, pk))}</p>` : "") : `<p>${esc(F(p))}</p>`).join("")}</div></section>`;
+  const faq = X.faq.map(([q, a]) => [F(q), esc(F(a))]);
+  const more = `<section class="sec ice"><div class="wrap"><h2>${X.more}</h2><div class="chips"><a href="${t.paths.IST}">${esc(Z("IST").short.en)}</a><a href="${t.paths.SAW}">${esc(Z("SAW").short.en)}</a><a href="${PORT.en.path}">${esc(Z("galataport").name.en)}</a><a href="${t.paths.prices}">${t.nav.prices}</a><a href="${FL.en.path}">${esc(FL.en.nav)}</a><a href="${HW.en.path}">${esc(HW.en.nav)}</a><a href="${FQ.en.path}">${esc(FQ.en.nav)}</a></div></div></section>`;
+  const body = `<section class="hero hero-s"><div class="wrap hero-in"><div class="hero-t"><nav class="crumbs"><a href="${t.paths.home}">${esc(site.brand)}</a> › ${esc(X.nav)}</nav>
+<h1>${X.h1}</h1><p class="lead answer">${F(X.lead)}</p></div>${searchForm(lang)}${assure(lang)}</div></section>
+${mapSec}
+${table}
+${two}
+${cross}
+${areas}
+${rush}
+<section class="sec ice"><div class="wrap narrow"><h2>${X.faqH}</h2>${faqBlock(faq)}</div></section>
+${more}
+<section class="cta"><div class="wrap"><h2>${X.ctaH}</h2><p>${X.ctaP}</p><a class="btn btn-k" href="${t.paths.book}">${t.nav.book}</a></div></section>`;
+  // data for public/assets/map.js
+  const data = {
+    W: M.W, H: M.H, from: MAP_FROM, views: M.VIEWS.map(([, la, lo, z]) => [M.X(lo), M.Y(la), z]),
+    z: Object.fromEntries(zones.map(z => [z.id, { xy: xy(z.id), n: z.name.en, s: z.short.en, side: M.POS[z.id].side, area: z.area ? z.area.en : "" }])),
+    r: R, cars: P.cars.map(c => ({ n: c.name.en, seats: c.seats })), T: X.card, hub: Object.fromEntries(MAP_FROM.map(a => [a, hubPath(lang, a)]))
+  };
+  const ld = [
+    { "@context": "https://schema.org", "@type": "Map", name: X.h1, description: F(X.desc), url: URL_ + X.path, mapType: "https://schema.org/TransitMap", about: { "@type": "City", name: "Istanbul" }, provider: { "@id": URL_ + "/#service" } },
+    { "@context": "https://schema.org", "@type": "ItemList", name: "Istanbul transfer routes", itemListElement: ROUTES.filter(([a]) => a !== "galataport").map(([a, z], i) => { const d = dist(a, z); return { "@type": "ListItem", position: i + 1, url: URL_ + routePath(lang, a, z), name: `${Z(a).short.en} → ${Z(z).short.en}${d ? ` · ${d[0]} km` : ""} · from €${sedan(a, z)}` }; }) },
+    faqLd(faq), crumbs([[site.brand, t.paths.home], [X.nav, X.path]])
+  ];
+  page({ lang, path: X.path, alts: ALL(l => l === "en" ? X.path : I[l].paths.home), hl: ["en"], title: X.title, desc: F(X.desc), body, ld,
+    scripts: `<script>window.TMAP=${JSON.stringify(data).replace(/</g, "\\u003c")};</script><script src="/assets/map.js?v=${ver}" defer></script>` });
+}
+
 function prices(lang) {
   const t = I[lang], v = faqVars(lang), F = s => fill(s, v);
   // the FAQ's "prices and payment" questions explain what the prices include and how to pay
   const cat = FQ[lang].cats[FQ.CATS.indexOf("prices")];
   const faq = cat[1].map(([q, a]) => [F(q), F(a)]).filter(([q, a]) => !/\{\w+\}/.test(q + a));
-  const body = `<section class="sec"><div class="wrap"><h1>${t.prices.h1}</h1><p class="sub">${t.home.routesLead}</p>
+  const body = `<section class="sec"><div class="wrap"><h1>${t.prices.h1}</h1><p class="sub">${t.home.routesLead}</p>${lang === "en" ? `<p><a class="more" href="${MAP.T.path}">See every route on the Istanbul transfer map →</a></p>` : ""}
 ${AIRPORTS.concat(Q.zone(P, "galataport")).map(a => `<h2>${esc(a.name[lang])}</h2><div class="tbl-wrap"><table class="tbl"><thead><tr><th>${t.prices.to}</th>${P.cars.map(c => `<th>${esc(c.name[lang])}</th>`).join("")}</tr></thead><tbody>
 ${ROUTES.filter(([x, y]) => x === a.id || y === a.id).map(([x, y]) => { const to = x === a.id ? y : x; return `<tr><td><a href="${routePath(lang, x, y)}">${esc(Q.zone(P, to).name[lang])}</a></td>${P.cars.map(c => `<td>€${Q.base(P, x, y, c.id)}</td>`).join("")}</tr>`; }).join("")}
 </tbody></table></div>`).join("")}
@@ -786,6 +904,7 @@ ${GUIDES.map(g => `- ${g.nav}: ${URL_}${g.path}`).join("\n")}
 ## Pages
 - Book: ${URL_}/book
 - All prices: ${URL_}/prices
+- Istanbul transfer map (both airports, cruise port and districts with road distances, drive times and prices): ${URL_}${MAP.T.path}
 - Frequently asked questions (booking, payment, airport pickup, cars and luggage, cancellation): ${URL_}${FQ.en.path}
 - Other languages: ${LANGS.filter(l => l !== "en").map(l => `${LANG_NAME[l]} ${URL_}${I[l].paths.home}`).join(", ")}
 `);
@@ -814,6 +933,7 @@ function admin() {
 
 LANGS.forEach(l => { home(l); AIRPORTS.forEach(a => hub(l, a.id)); portHub(l); aboutPage(l); howPage(l); fleetPage(l); faqPage(l); CO.ORDER.forEach(k => companyPage(l, k)); ROUTES.forEach(([a, z]) => route(l, a, z)); PL.L.forEach(x => place(l, x)); SV.S.forEach(x => service(l, x)); prices(l); book(l); legalPages(l); blogIndex(l); POSTS.forEach(x => x[l] && blogPost(l, x)); });
 GUIDES.forEach(g => LANGS.forEach(l => guide(g, l)));
+mapPage();
 notFound();
 admin();
 extras();
