@@ -739,19 +739,28 @@ ${M.ISLANDS.map(([la, lo, rx, ry]) => `<ellipse class="tm-land" cx="${M.X(lo)}" 
 ${M.CROSS.map(c => `<g transform="translate(${M.X(c.lab[1])} ${M.Y(c.lab[0])})"><text class="sc z2 tl-cross"${c.tunnel ? ' text-anchor="end"' : ""}>${esc(c.name)}</text></g>`).join("")}</g>
 <g class="tm-lines" data-lines>${zones.filter(z => z.id !== "IST").map(z => `<path d="${curve("IST", z.id)}" data-to="${z.id}"${z.id === "sultanahmet" ? ' class="on"' : ""} vector-effect="non-scaling-stroke"/>`).join("")}</g>
 <g class="tm-places">${PL.L.filter(x => M.PLACE_POS[x.id]).map(x => `<a href="${PL.T.en.path(x.id)}" data-id="${placeZone(x.id)}" class="mk mk-place"><g transform="translate(${M.X(M.PLACE_POS[x.id][1])} ${M.Y(M.PLACE_POS[x.id][0])})"><g class="sc"><circle r="4"/><text class="z3" x="7" y="4">${esc(x.name.en)}</text></g></g><title>${esc(x.name.en)}</title></a>`).join("")}</g>
+<g class="tm-sights">${M.SIGHTS.map(x => `<a href="#sight-${x.id}" data-sight="${x.id}" class="mk mk-sight"><g transform="translate(${M.X(x.at[1])} ${M.Y(x.at[0])})"><g class="sc"><path d="M0 0C-2-4.5-7-7.5-7-12.5a7 7 0 1 1 14 0C7-7.5 2-4.5 0 0z"/><circle cy="-12.5" r="2.6"/><text class="z3" x="9" y="-9">${esc(x.n)}</text></g></g><title>${esc(x.n)}</title></a>`).join("")}</g>
 <g class="tm-marks">${zones.map(z => { const p = M.POS[z.id], [x, y] = xy(z.id), k = kind(z); return `<a href="${R["IST|" + z.id] ? R["IST|" + z.id].u || R["IST|" + z.id].b : hubPath(lang, "IST")}" data-id="${z.id}" class="mk mk-${k}${z.id === "IST" ? " from" : z.id === "sultanahmet" ? " on" : ""}"><g transform="translate(${x} ${y})"><g class="sc">${icon(k)}<text ${LAB[p.lab]}${p.dense ? ' class="z2"' : ""}>${esc(z.short.en)}</text></g></g><title>${esc(z.name.en)}</title></a>`; }).join("")}</g>
 </svg>`;
   const group = z => z.type !== "district" ? "a" : M.POS[z.id].side === "a" ? "s" : "e";
   const dests = ["a", "e", "s"].map(g => `<div class="tm-dg"><h3>${X.groups[g]}</h3><ul>${zones.filter(z => group(z) === g).map(z => { const r = R["IST|" + z.id]; return `<li${z.id === "IST" ? " hidden" : ""}><a href="${r ? r.u || r.b : hubPath(lang, "IST")}" data-id="${z.id}"${z.id === "sultanahmet" ? ' aria-current="true"' : ""}><span>${esc(z.short.en)}</span><b>${r ? "€" + r.p[0] : ""}</b></a></li>`; }).join("")}</ul></div>`).join("");
   const legend = `<ul class="tm-legend">${X.legend.map(([k, n]) => `<li><i class="lg-${k}"></i>${n}</li>`).join("")}</ul>`;
   const mapSec = `<section class="sec ice" id="map"><div class="wrap"><h2>${X.mapH}</h2>
-<div class="tm" data-tmap><div class="tm-map"><div class="tm-bar"><div class="tm-from" role="group" aria-label="${X.startFrom}"><span>${X.startFrom}:</span>${MAP_FROM.map(a => `<button type="button" data-from="${a}" aria-pressed="${a === "IST"}">${esc(Z(a).short.en)}</button>`).join("")}</div></div>
-<div class="tm-frame">${svg}<div class="tm-zoom"><button type="button" data-zoom="1" aria-label="${X.zoomIn}">+</button><button type="button" data-zoom="-1" aria-label="${X.zoomOut}">−</button></div></div>
+<div class="tm" data-tmap><div class="tm-map"><div class="tm-bar"><div class="tm-from" role="group" aria-label="${X.startFrom}"><span>${X.startFrom}:</span>${MAP_FROM.map(a => `<button type="button" data-from="${a}" aria-pressed="${a === "IST"}">${esc(Z(a).short.en)}</button>`).join("")}</div><button type="button" class="tm-sgt" data-sights aria-pressed="true"><i></i>${M.ST.toggle}</button></div>
+<div class="tm-frame">${svg}<div class="tm-pop" data-pop hidden></div><div class="tm-zoom"><button type="button" data-zoom="1" aria-label="${X.zoomIn}">+</button><button type="button" data-zoom="-1" aria-label="${X.zoomOut}">−</button></div></div>
 <div class="tm-views" role="group" aria-label="${X.views}">${M.VIEWS.map(([n], i) => `<button type="button" data-view="${i}">${esc(n)}</button>`).join("")}</div>
 ${legend}<p class="small tm-hint">${X.hint}</p><p class="small sub tm-note">${X.mapNote}</p></div>
 <aside class="tm-side"><div class="tm-card" data-card aria-live="polite">${card("IST", "sultanahmet")}</div>
 <nav class="tm-dests" aria-label="${X.dests}">${dests}</nav></aside></div></div></section>`;
 
+  // sights near each area: cards (the map's pins open the same text in a pop-up)
+  const sightGo = x => { const a = closer(x.zone) || "IST"; return { u: routeUrl(a, x.zone) || bookUrl(a, x.zone), p: sedan(a, x.zone), a }; };
+  const sightImg = (x, cls) => x.px ? `<img class="${cls}" src="/img/sights/${x.id}.webp" alt="${esc(x.n)}, Istanbul" width="640" height="420" loading="lazy" decoding="async">` : `<div class="${cls} sg-ph" aria-hidden="true"><svg viewBox="0 0 24 24" width="44" height="44"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg><span>${esc(x.n)}</span></div>`;
+  const sightZones = [...new Set(M.SIGHTS.map(x => x.zone))];
+  const sights = `<section class="sec" id="sights"><div class="wrap"><h2>${M.ST.h}</h2><p class="sub">${M.ST.lead}</p>
+${sightZones.map(zid => `<h3 class="sg-h">${esc(Z(zid).name.en)}</h3><div class="sg-list">${M.SIGHTS.filter(x => x.zone === zid).map(x => { const g = sightGo(x); return `<article class="sg" id="sight-${x.id}">${sightImg(x, "sg-img")}<div class="sg-t"><h4>${esc(x.n)}</h4><p>${esc(x.about)}</p><p class="sg-tip"><strong>${M.ST.tip}:</strong> ${esc(x.tip)}</p>
+<p class="sg-act"><a class="more" href="#map" data-show-sight="${x.id}">${M.ST.show}</a><a class="sg-go" href="${g.u}">${fill(M.ST.transfer, { a: g.a, p: g.p })}</a></p>${x.px ? `<p class="sg-cr"><a href="https://www.pexels.com/photo/${x.px}/" rel="noopener nofollow">${M.ST.credit}</a></p>` : ""}</div></article>`; }).join("")}</div>`).join("\n")}
+</div></section>`;
   const td = (a, z) => { const d = dist(a, z); return d ? fill(X.cell, { km: d[0], min: d[1], p: sedan(a, z) }) : "–"; };
   const table = `<section class="sec"><div class="wrap"><h2>${X.tableH}</h2><p class="sub">${X.tableLead}</p><div class="tbl-wrap"><table class="tbl tm-tbl"><thead><tr>${X.cols.map(c => `<th>${c}</th>`).join("")}</tr></thead><tbody>
 ${places.map(z => { const c = closer(z.id); return `<tr><td><a href="${routePath(lang, c || "IST", z.id)}">${esc(z.short.en)}</a></td><td>${X.card.side[M.POS[z.id].side]}</td><td${c === "IST" ? ' class="ok"' : ""}>${td("IST", z.id)}</td><td${c === "SAW" ? ' class="ok"' : ""}>${td("SAW", z.id)}</td><td>${c ? (c === "IST" ? "IST ✓" : "SAW ✓") : "–"}</td></tr>`; }).join("\n")}
@@ -771,6 +780,7 @@ ${places.map(z => { const c = closer(z.id); return `<tr><td><a href="${routePath
   const body = `<section class="hero hero-s"><div class="wrap hero-in"><div class="hero-t"><nav class="crumbs"><a href="${t.paths.home}">${esc(site.brand)}</a> › ${esc(X.nav)}</nav>
 <h1>${X.h1}</h1><p class="lead answer">${F(X.lead)}</p></div>${searchForm(lang)}${assure(lang)}</div></section>
 ${mapSec}
+${sights}
 ${table}
 ${two}
 ${cross}
@@ -783,11 +793,13 @@ ${more}
   const data = {
     W: M.W, H: M.H, from: MAP_FROM, views: M.VIEWS.map(([, la, lo, z]) => [M.X(lo), M.Y(la), z]),
     z: Object.fromEntries(zones.map(z => [z.id, { xy: xy(z.id), n: z.name.en, s: z.short.en, side: M.POS[z.id].side, area: z.area ? z.area.en : "" }])),
-    r: R, cars: P.cars.map(c => ({ n: c.name.en, seats: c.seats })), T: X.card, hub: Object.fromEntries(MAP_FROM.map(a => [a, hubPath(lang, a)]))
+    r: R, cars: P.cars.map(c => ({ n: c.name.en, seats: c.seats })), T: X.card, ST: M.ST,
+    s: Object.fromEntries(M.SIGHTS.map(x => [x.id, { xy: [M.X(x.at[1]), M.Y(x.at[0])], n: x.n, zone: x.zone, about: x.about, tip: x.tip, img: x.px ? `/img/sights/${x.id}.webp` : "" }])), hub: Object.fromEntries(MAP_FROM.map(a => [a, hubPath(lang, a)]))
   };
   const ld = [
     { "@context": "https://schema.org", "@type": "Map", name: X.h1, description: F(X.desc), url: URL_ + X.path, mapType: "https://schema.org/TransitMap", about: { "@type": "City", name: "Istanbul" }, provider: { "@id": URL_ + "/#service" } },
     { "@context": "https://schema.org", "@type": "ItemList", name: "Istanbul transfer routes", itemListElement: ROUTES.filter(([a]) => a !== "galataport").map(([a, z], i) => { const d = dist(a, z); return { "@type": "ListItem", position: i + 1, url: URL_ + routePath(lang, a, z), name: `${Z(a).short.en} → ${Z(z).short.en}${d ? ` · ${d[0]} km` : ""} · from €${sedan(a, z)}` }; }) },
+    { "@context": "https://schema.org", "@type": "ItemList", name: "Sights in Istanbul by area", itemListElement: M.SIGHTS.map((x, i) => ({ "@type": "ListItem", position: i + 1, item: { "@type": "TouristAttraction", name: x.n, description: x.about, url: URL_ + X.path + "#sight-" + x.id, ...(x.px ? { image: URL_ + `/img/sights/${x.id}.webp` } : {}), geo: { "@type": "GeoCoordinates", latitude: x.at[0], longitude: x.at[1] }, containedInPlace: { "@type": "City", name: "Istanbul" } } })) },
     faqLd(faq), crumbs([[site.brand, t.paths.home], [X.nav, X.path]])
   ];
   page({ lang, path: X.path, alts: ALL(l => l === "en" ? X.path : I[l].paths.home), hl: ["en"], title: X.title, desc: F(X.desc), body, ld,
