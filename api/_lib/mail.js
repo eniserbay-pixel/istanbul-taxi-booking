@@ -16,7 +16,7 @@ const CANCEL = require("./canceltext");
 // the invoice PDF and its box in the thank-you e-mail
 const invoice = require("./invoice");
 // Review pages in the thank-you e-mail
-const REVIEW_GOOGLE = () => process.env.REVIEW_GOOGLE_URL || "https://g.page/r/CcNqky0zmAGxEBM/review";
+const REVIEW_GOOGLE = () => process.env.REVIEW_GOOGLE_URL || "https://g.page/r/CZ6H_gswAftOEBM/review";
 const REVIEW_TRUSTPILOT = () => process.env.REVIEW_TRUSTPILOT_URL || "https://www.trustpilot.com/evaluate/istanbultaxibooking.com";
 // Language of the thank-you e-mail from the passenger's (else the customer's) phone code; English otherwise
 const THANKS_BY_CODE = [["+7", "ru"], ["+33", "fr"], ["+39", "it"], ["+41", "de"]];
