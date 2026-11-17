@@ -541,3 +541,47 @@ p { margin: 0 0 1em; }
 .tm-a-sub a { background: var(--white); border: 1.5px solid var(--ice-2); font-weight: 600; }
 @media (max-width: 1000px) { .tm { grid-template-columns: 1fr; } .tm-side { position: static; grid-template-columns: 1fr 1fr; align-items: start; } .tm-x { grid-template-columns: 1fr 1fr; } .tm-areas { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 680px) { .tm-side { grid-template-columns: 1fr; } .tm-x, .tm-areas { grid-template-columns: 1fr; } .tm button { padding: 7px 12px; } }
+/* Transfer map: sights (pins, pop-up, cards) */
+.mk-sight path { fill: #c2410c; stroke: var(--white); stroke-width: 1.5; }
+.mk-sight circle { fill: var(--white); stroke: none; }
+.mk-sight text { font-size: 11px; font-weight: 700; fill: #9a3412; }
+.mk-sight.on path { fill: var(--black); stroke: var(--mustard); stroke-width: 2; }
+.mk-sight.on circle { fill: var(--mustard); }
+.mk-sight text { pointer-events: none; } .tm-svg .mk-sight .z3 { display: none; } .tm-svg .mk-sight.on .z3, .tm-svg.k3 .mk-sight:hover .z3 { display: inline; }
+.mk-sight:hover path, .mk-sight:focus-visible path { fill: #9a3412; }
+.mk-sight:hover circle { stroke: none; }
+.tm-svg.no-sights .tm-sights { display: none; }
+.tm .tm-sgt { display: inline-flex; align-items: center; gap: 6px; }
+.tm .tm-sgt i { width: 10px; height: 10px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); background: #c2410c; }
+.tm .tm-sgt[aria-pressed="false"] { color: var(--muted); }
+.tm .tm-sgt[aria-pressed="false"] i { background: var(--line); }
+.tm:not(.js) .tm-sgt { display: none; }
+.tm-legend .lg-sight { border: 0; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); background: #c2410c; width: 12px; height: 12px; }
+.tm-pop { position: absolute; left: 10px; bottom: 10px; width: min(340px, calc(100% - 70px)); max-height: calc(100% - 20px); overflow: auto; background: var(--white); border-radius: 12px; box-shadow: var(--shadow); border-top: 4px solid #c2410c; }
+.tm-pop img { width: 100%; height: auto; aspect-ratio: 640 / 420; object-fit: cover; }
+.tm-pop-t { padding: 12px 14px 14px; }
+.tm-pop-t h3 { font-size: 18px; margin: 0 0 6px; }
+.tm-pop-t p { font-size: 14px; margin: 0 0 8px; }
+.tm-pop-t .tm-rt { margin: 0 0 2px; font-size: 12px; }
+.tm-pop-a { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin: 4px 0 0 !important; }
+.tm-pop-a .btn { padding: 9px 14px; font-size: 14px; }
+.tm .tm-pop-x { position: absolute; top: 8px; right: 8px; width: 32px; height: 32px; padding: 0; font-size: 20px; line-height: 1; background: rgba(255,255,255,.92); }
+.sg-h { margin: 28px 0 12px; font-size: 20px; }
+.sg-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.sg { background: var(--white); border-radius: var(--r); overflow: hidden; border: 1.5px solid var(--ice-2); display: flex; flex-direction: column; scroll-margin-top: 90px; }
+.sg:target { border-color: #c2410c; box-shadow: var(--shadow); }
+.sg-img { width: 100%; height: auto; aspect-ratio: 640 / 420; object-fit: cover; background: var(--ice); }
+.sg-ph { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; color: #9a3412; background: linear-gradient(135deg, #fdf3e3, var(--ice)); font-weight: 800; text-align: center; padding: 12px; }
+.sg-ph svg { fill: #c2410c; }
+.sg-ph svg circle { fill: #fff; }
+.sg-t { padding: 14px 16px 12px; display: flex; flex-direction: column; flex: 1; }
+.sg-t h4 { font-size: 18px; margin: 0 0 6px; }
+.sg-t p { font-size: 15px; margin: 0 0 8px; }
+.sg-tip { color: var(--muted); }
+.sg-act { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; margin-top: auto !important; padding-top: 4px; }
+.sg-go { font-size: 14px; font-weight: 700; text-decoration: none; border-radius: 999px; padding: 4px 10px; background: var(--ice); }
+.sg-go:hover { background: var(--mustard); }
+.sg-cr { font-size: 12px; margin: 6px 0 0 !important; }
+.sg-cr a { color: var(--muted); }
+@media (max-width: 1000px) { .sg-list { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 620px) { .sg-list { grid-template-columns: 1fr; } .tm-pop { position: static; width: auto; max-height: none; border-radius: 0; box-shadow: none; } }

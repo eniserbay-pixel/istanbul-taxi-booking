@@ -116,8 +116,55 @@
   $$("[data-from]").forEach(function (b) { b.addEventListener("click", function () { start(b.getAttribute("data-from")); }); });
   $$("[data-zoom]").forEach(function (b) { b.addEventListener("click", function () { go(st.cx, st.cy, st.z * (b.getAttribute("data-zoom") === "1" ? 1.7 : 1 / 1.7)); }); });
   $$("[data-view]").forEach(function (b) { b.addEventListener("click", function () { var v = D.views[+b.getAttribute("data-view")]; go(v[0], v[1], v[2]); }); });
+  // ---- Sights: pins, pop-up, toggle ----
+  var pop = $("[data-pop]"), S = D.s || {}, ST = D.ST || {};
+  function hidePop() {
+    pop.hidden = true;
+    $$(".mk-sight.on", svg).forEach(function (m) { m.classList.remove("on"); });
+  }
+  function showSight(id, zoom) {
+    var x = S[id];
+    if (!x) return;
+    var z = D.z[x.zone];
+    $$(".mk-sight", svg).forEach(function (m) { m.classList.toggle("on", m.getAttribute("data-sight") === id); });
+    var can = x.zone !== st.from && route(x.zone);
+    pop.innerHTML = '<button type="button" class="tm-pop-x" data-pop-x aria-label="' + esc(ST.close) + '">×</button>' +
+      (x.img ? '<img src="' + esc(x.img) + '" alt="" width="640" height="420">' : "") +
+      '<div class="tm-pop-t"><p class="tm-rt">' + esc(z.s) + "</p><h3>" + esc(x.n) + "</h3><p>" + esc(x.about) + '</p><p class="small"><strong>' + esc(ST.tip) + ":</strong> " + esc(x.tip) + "</p>" +
+      '<p class="tm-pop-a">' + (can ? '<button type="button" class="btn btn-y btn-sm" data-go-zone="' + esc(x.zone) + '">' + esc(D.z[st.from].s) + " → " + esc(z.s) + " · €" + route(x.zone).p[0] + "</button>" : "") +
+      '<a class="more" href="#sight-' + esc(id) + '">' + esc(ST.near) + " →</a></p></div>";
+    pop.hidden = false;
+    // the pop-up covers the left of a wide map: keep the pin to the right of it
+    var zz = Math.max(st.z, 5), wide = svg.getBoundingClientRect().width > 620;
+    if (zoom) go(x.xy[0] - (wide ? D.W / zz * .2 : 0), x.xy[1], zz);
+  }
+  $("[data-sights]").addEventListener("click", function () {
+    var on = this.getAttribute("aria-pressed") !== "true";
+    this.setAttribute("aria-pressed", String(on));
+    svg.classList.toggle("no-sights", !on);
+    if (!on) hidePop();
+  });
+  pop.addEventListener("click", function (e) {
+    if (e.target.closest("[data-pop-x]")) { hidePop(); return; }
+    var b = e.target.closest("[data-go-zone]");
+    if (b) { hidePop(); pick(b.getAttribute("data-go-zone"), true); }
+  });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !pop.hidden) hidePop(); });
+  // "Show on map" on the sight cards below the map
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest && e.target.closest("[data-show-sight]");
+    if (!a) return;
+    e.preventDefault();
+    var tog = $("[data-sights]");
+    if (tog.getAttribute("aria-pressed") !== "true") tog.click();
+    document.getElementById("map").scrollIntoView({ behavior: reduce ? "auto" : "smooth" });
+    showSight(a.getAttribute("data-show-sight"), true);
+  });
+
   var dragged = false;
   root.addEventListener("click", function (e) {
+    var sg = e.target.closest && e.target.closest("a[data-sight]");
+    if (sg) { e.preventDefault(); if (!dragged) showSight(sg.getAttribute("data-sight"), false); return; }
     var a = e.target.closest && e.target.closest("a[data-id]");
     if (!a || !root.contains(a)) return;
     if (dragged) { e.preventDefault(); return; }
