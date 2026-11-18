@@ -55,6 +55,18 @@
   {
    "id": "atasehir",
    "type": "district"
+  },
+  {
+   "id": "tuzla",
+   "type": "district"
+  },
+  {
+   "id": "pendik",
+   "type": "district"
+  },
+  {
+   "id": "ambarli",
+   "type": "district"
   }
  ],
  "cars": [

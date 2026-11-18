@@ -9,6 +9,12 @@ const path = require("path");
 const P = require("../data/pricing.json");
 // before the page modules below read the prices
 if (require("./live-prices").apply(P)) console.log("Prices: the panel's");
+// A zone gets pages and a place in the forms only once it has a sedan price from both airports (Tuzla, Pendik and
+// Ambarlı are built in without prices; the panel's Fiyatlandırma gives them theirs, and saving there rebuilds the site)
+P.zones = P.zones.filter(z => z.type === "airport" || P.zones.filter(a => a.type === "airport").every(a => {
+  const r = P.prices[a.id + "|" + z.id] || P.prices[z.id + "|" + a.id];
+  return r && r.sedan > 0;
+}));
 const site = require("../data/site.json");
 const Q = require("../public/assets/quote.js");
 const I = require("./i18n");
@@ -420,18 +426,22 @@ function business(lang, bz) {
   const t = I[lang], T = BIZ.T[lang], x = bz[lang];
   const wa = text => `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(text)}`;
   const nm = id => BIZ.V[id].name[lang] || BIZ.V[id].name.en;
+  // the venue's price zone, or null while that zone has no price (it is then priced on WhatsApp)
+  const vz = id => BIZ.V[id].zone && Q.zone(P, BIZ.V[id].zone) ? BIZ.V[id].zone : null;
   const v = { wait: P.rules.freeWaitMin };
-  bz.venues.forEach(id => { const z = BIZ.V[id].zone; if (z) { v[id] = Q.base(P, "IST", z, "sedan"); v[id + "Saw"] = Q.base(P, "SAW", z, "sedan"); } });
+  bz.venues.forEach(id => { const z = vz(id); if (z) { v[id] = Q.base(P, "IST", z, "sedan"); v[id + "Saw"] = Q.base(P, "SAW", z, "sedan"); } });
   const F = s => String(s).replace(/\{([\w-]+)\}/g, (m, k) => v[k] != null ? v[k] : m);
   const ask = fill(T.waText, { service: x.nav });
   const cta = `<p class="cta-row"><a class="btn btn-y" href="${wa(ask)}" rel="noopener">${esc(T.ask)}</a> <span class="small">${esc(T.call)} <a href="tel:${site.phone.replace(/\s/g, "")}"><bdi dir="ltr">${esc(site.phone)}</bdi></a></span></p>`;
   const rows = bz.venues.map(id => {
-    const V = BIZ.V[id], z = V.zone;
+    const V = BIZ.V[id], z = vz(id);
     const price = a => z ? `€${Q.base(P, a, z, "sedan")}` : `<a href="${wa(fill(T.waText, { service: x.nav + " · " + nm(id) }))}" rel="noopener">${esc(T.onReq)}</a>`;
     const book = z ? `<a href="${routePath(lang, bz.from === "SAW" && z !== "SAW" ? "SAW" : "IST", z)}">${esc(T.book)} →</a>` : `<a href="${wa(fill(T.waText, { service: x.nav + " · " + nm(id) }))}" rel="noopener">WhatsApp →</a>`;
     return `<tr><td><bdi>${esc(nm(id))}</bdi><br><span class="small"><bdi>${esc(V.area)}</bdi></span></td><td>${price("IST")}</td><td>${price("SAW")}</td><td>${book}</td></tr>`;
   }).join("\n");
-  const faq = x.faq.map(([q, a], i) => [F(q), F(a) + (i === x.faq.length - 1 ? ` <a href="${CO.path(lang, "corporate")}">${esc(CO.T[lang].pages.corporate.nav)}</a>` : "")]);
+  // the crew page's price question: per trip until Tuzla has a price, then that price
+  const qa = x.priced && v.tuzla ? [[x.faq[0][0], x.priced]].concat(x.faq.slice(1)) : x.faq;
+  const faq = qa.map(([q, a], i) => [F(q), F(a) + (i === qa.length - 1 ? ` <a href="${CO.path(lang, "corporate")}">${esc(CO.T[lang].pages.corporate.nav)}</a>` : "")]);
   const body = `<section class="hero hero-s"><div class="wrap hero-in"><div class="hero-t"><nav class="crumbs"><a href="${t.paths.home}">${esc(site.brand)}</a> › ${esc(T.head)}</nav>
 <h1>${esc(x.h1)}</h1><p class="lead answer">${esc(x.lead)}</p>${cta}</div>${searchForm(lang, { from: bz.from, to: bz.to })}${assure(lang)}</div></section>
 <section class="sec ice"><div class="wrap"><h2>${esc(T.venuesH)}</h2><div class="tbl-wrap"><table class="tbl"><thead><tr><th>${esc(T.venue)}</th><th>${esc(T.ist)}</th><th>${esc(T.saw)}</th><th></th></tr></thead><tbody>
@@ -444,7 +454,7 @@ ${rows}
 <section class="sec"><div class="wrap"><h2>${esc(T.head)}</h2><div class="chips">${BIZ.S.filter(y => y.id !== bz.id).map(y => `<a href="${y[lang].path}">${esc(y[lang].nav)}</a>`).join("")}${SV.S.map(y => `<a href="${y[lang].path}">${esc(y[lang].nav)}</a>`).join("")}<a href="${t.paths.IST}">${esc(Q.zone(P, "IST").short[lang])}</a><a href="${t.paths.SAW}">${esc(Q.zone(P, "SAW").short[lang])}</a></div></div></section>`;
   const ld = {
     "@context": "https://schema.org", "@type": "Service", serviceType: bz.en.nav, name: x.h1, description: x.desc, provider: { "@id": URL_ + "/#service" }, areaServed: { "@type": "City", name: "Istanbul" },
-    offers: bz.venues.filter(id => BIZ.V[id].zone).flatMap(id => AIRPORTS.map(a => ({ "@type": "Offer", name: `${a.short[lang]} → ${nm(id)} · ${CAR("sedan").name[lang]}`, price: Q.base(P, a.id, BIZ.V[id].zone, "sedan"), priceCurrency: P.currency })))
+    offers: bz.venues.filter(vz).flatMap(id => AIRPORTS.map(a => ({ "@type": "Offer", name: `${a.short[lang]} → ${nm(id)} · ${CAR("sedan").name[lang]}`, price: Q.base(P, a.id, vz(id), "sedan"), priceCurrency: P.currency })))
   };
   page({ lang, path: x.path, alts: ALL(l => bz[l].path), title: x.title, desc: x.desc, body, ld: [ld, faqLd(faq), crumbs([[site.brand, t.paths.home], [x.h1, x.path]])] });
 }

@@ -1,7 +1,7 @@
 // Business travel pages: transfers to fairs and congresses (TÜYAP, Istanbul Expo Center, ICC...), to the big private
 // hospitals (medical travel) and for ship crews (Tuzla shipyards, ports). Each page lists its venues with the sedan price
 // of the venue's price zone (data/pricing.json) from both airports; a venue without a zone (Tuzla, Pendik, Ambarlı) is
-// priced on WhatsApp. T: labels per language; V: the venues; S: the pages in order, each with its venues and texts.
+// priced on WhatsApp until the panel gives their zones a price. T: labels per language; V: the venues; S: the pages in order, each with its venues and texts.
 module.exports = {
   T: {
     en: { head: "Business travel", venuesH: "Prices to the main venues", venue: "Venue", area: "Area", ist: "From Istanbul Airport", saw: "From Sabiha Gökçen", onReq: "Price on WhatsApp", book: "Book", note: "Sedan prices per car for up to 3 passengers, tolls included. Minivan, Mercedes V-Class and minibus prices are on the booking page.", whatH: "What you get", ask: "Ask for a price on WhatsApp", call: "or call", corp: "Booking for a company? A corporate account gives you fixed prices and one monthly invoice.", waText: "Hello, I need a transfer for: {service}. Date: , from: , to: , passengers: " },
@@ -13,7 +13,7 @@ module.exports = {
     nl: { head: "Zakenreizen", venuesH: "Prijzen naar de belangrijkste locaties", venue: "Locatie", area: "Wijk", ist: "Vanaf Istanbul Airport", saw: "Vanaf Sabiha Gökçen", onReq: "Prijs via WhatsApp", book: "Boeken", note: "Prijzen per sedan voor maximaal 3 personen, tol inbegrepen. Prijzen voor minivan, Mercedes V-Klasse en minibus staan op de boekingspagina.", whatH: "Wat je krijgt", ask: "Vraag een prijs via WhatsApp", call: "of bel", corp: "Boek je voor een bedrijf? Met een zakelijk account krijg je vaste prijzen en één maandfactuur.", waText: "Hallo, ik heb een transfer nodig voor: {service}. Datum: , van: , naar: , personen: " },
     ar: { head: "سفر الأعمال", venuesH: "الأسعار إلى أهم الأماكن", venue: "المكان", area: "المنطقة", ist: "من مطار إسطنبول", saw: "من مطار صبيحة كوكجن", onReq: "السعر عبر واتساب", book: "احجز", note: "الأسعار لسيارة سيدان حتى 3 ركاب للسيارة، شاملة رسوم الطرق. أسعار الميني فان ومرسيدس V-Class والميني باص في صفحة الحجز.", whatH: "ما نقدمه لك", ask: "اطلب السعر عبر واتساب", call: "أو اتصل", corp: "تحجز لشركة؟ الحساب المؤسسي يمنحك أسعارًا ثابتة وفاتورة شهرية واحدة.", waText: "مرحبًا، أحتاج نقلًا من أجل: {service}. التاريخ: ، من: ، إلى: ، عدد الركاب: " }
   },
-  // zone: the price zone in data/pricing.json, or null when the price is given on WhatsApp. name: per language, falling
+  // zone: the price zone in data/pricing.json; while it has no sedan price from both airports, the price is given on WhatsApp. name: per language, falling
   // back to English; area: the district, the same in every language.
   V: {
     tuyap: { zone: "beylikduzu", area: "Büyükçekmece / Beylikdüzü", name: { en: "TÜYAP Fair and Congress Center", tr: "TÜYAP Fuar ve Kongre Merkezi" } },
@@ -33,9 +33,9 @@ module.exports = {
     "memorial-atasehir": { zone: "atasehir", area: "Ataşehir", name: { en: "Memorial Ataşehir Hospital", tr: "Memorial Ataşehir Hastanesi" } },
     "acibadem-altunizade": { zone: "uskudar", area: "Altunizade, Üsküdar", name: { en: "Acıbadem Altunizade Hospital", tr: "Acıbadem Altunizade Hastanesi" } },
     "medicalpark-goztepe": { zone: "kadikoy", area: "Göztepe, Kadıköy", name: { en: "Medical Park Göztepe Hospital", tr: "Medical Park Göztepe Hastanesi" } },
-    tuzla: { zone: null, area: "Tuzla", name: { en: "Tuzla shipyards", tr: "Tuzla Tersaneler Bölgesi", ru: "Верфи Тузлы", de: "Werften in Tuzla", fr: "Chantiers navals de Tuzla", it: "Cantieri navali di Tuzla", nl: "Scheepswerven van Tuzla", ar: "أحواض بناء السفن في توزلا" } },
-    pendik: { zone: null, area: "Pendik", name: { en: "Pendik port and marina", tr: "Pendik Limanı ve Marinası", ru: "Порт и марина Пендик", de: "Hafen und Marina Pendik", fr: "Port et marina de Pendik", it: "Porto e marina di Pendik", nl: "Haven en jachthaven Pendik", ar: "ميناء ومارينا بنديك" } },
-    ambarli: { zone: null, area: "Avcılar", name: { en: "Ambarlı port (Marport, Kumport)", tr: "Ambarlı Limanı (Marport, Kumport)", ru: "Порт Амбарлы (Marport, Kumport)", de: "Hafen Ambarlı (Marport, Kumport)", fr: "Port d'Ambarlı (Marport, Kumport)", it: "Porto di Ambarlı (Marport, Kumport)", nl: "Haven Ambarlı (Marport, Kumport)", ar: "ميناء أمبارلي (Marport، Kumport)" } },
+    tuzla: { zone: "tuzla", area: "Tuzla", name: { en: "Tuzla shipyards", tr: "Tuzla Tersaneler Bölgesi", ru: "Верфи Тузлы", de: "Werften in Tuzla", fr: "Chantiers navals de Tuzla", it: "Cantieri navali di Tuzla", nl: "Scheepswerven van Tuzla", ar: "أحواض بناء السفن في توزلا" } },
+    pendik: { zone: "pendik", area: "Pendik", name: { en: "Pendik port and marina", tr: "Pendik Limanı ve Marinası", ru: "Порт и марина Пендик", de: "Hafen und Marina Pendik", fr: "Port et marina de Pendik", it: "Porto e marina di Pendik", nl: "Haven en jachthaven Pendik", ar: "ميناء ومارينا بنديك" } },
+    ambarli: { zone: "ambarli", area: "Avcılar", name: { en: "Ambarlı port (Marport, Kumport)", tr: "Ambarlı Limanı (Marport, Kumport)", ru: "Порт Амбарлы (Marport, Kumport)", de: "Hafen Ambarlı (Marport, Kumport)", fr: "Port d'Ambarlı (Marport, Kumport)", it: "Porto di Ambarlı (Marport, Kumport)", nl: "Haven Ambarlı (Marport, Kumport)", ar: "ميناء أمبارلي (Marport، Kumport)" } },
     haydarpasa: { zone: "kadikoy", area: "Kadıköy", name: { en: "Haydarpaşa port", tr: "Haydarpaşa Limanı", ru: "Порт Хайдарпаша", de: "Hafen Haydarpaşa", fr: "Port d'Haydarpaşa", it: "Porto di Haydarpaşa", nl: "Haven Haydarpaşa", ar: "ميناء حيدر باشا" } },
     galataport: { zone: "galataport", area: "Karaköy", name: { en: "Galataport / Karaköy quay", tr: "Galataport / Karaköy rıhtımı", ru: "Галатапорт / причал Каракёй", de: "Galataport / Kai Karaköy", fr: "Galataport / quai de Karaköy", it: "Galataport / banchina di Karaköy", nl: "Galataport / kade Karaköy", ar: "غالاتابورت / رصيف كاراكوي" } }
   },
@@ -196,7 +196,7 @@ module.exports = {
       id: "crew", from: "SAW", to: "kadikoy",
       venues: ["tuzla", "pendik", "haydarpasa", "galataport", "ambarli"],
       en: {
-        path: "/shipyard-crew-transfer-istanbul", nav: "Ship crew transfers",
+        path: "/shipyard-crew-transfer-istanbul", priced: "Tuzla is in its own price zone: a fixed €{tuzlaSaw} per car in a sedan from Sabiha Gökçen and €{tuzla} from Istanbul Airport, tolls included. Minivan and minibus prices are on the booking page.", nav: "Ship crew transfers",
         title: "Ship Crew Transfer Istanbul · Tuzla Shipyards and Ports",
         desc: "Crew change transfers in Istanbul for seafarers, captains and superintendents: airports to Tuzla shipyards, Pendik, Haydarpaşa, Ambarlı and Galataport, 24/7.",
         h1: "Ship crew transfers in Istanbul: shipyards and ports",
@@ -205,7 +205,7 @@ module.exports = {
         faq: [["How much is a transfer from Sabiha Gökçen to the Tuzla shipyards?", "Tuzla, Pendik and Ambarlı are priced per trip: send us the date, the shipyard or berth and the number of crew on WhatsApp and we reply with a fixed price per car."], ["The crew lands at night or the vessel is delayed. What happens?", "We work 24/7 and follow the flight. If the ship or the sign-off is delayed, tell us and we move the pick-up; waiting at the airport is free for {wait} minutes after landing."], ["Can the agent book and pay for the crew?", "Yes. The agent books by WhatsApp or the booking page with each crew member's name. With a corporate account the rides go on one monthly invoice."]]
       },
       tr: {
-        path: "/tr/tersane-gemi-adami-transferi", nav: "Tersane ve gemi adamı transferi",
+        path: "/tr/tersane-gemi-adami-transferi", priced: "Tuzla'nın kendi fiyat bölgesi var: Sabiha Gökçen'den sedan araç başı sabit €{tuzlaSaw}, İstanbul Havalimanı'ndan €{tuzla}, köprü-otoyol dahil. Minivan ve minibüs fiyatları rezervasyon sayfasında.", nav: "Tersane ve gemi adamı transferi",
         title: "Gemi Adamı Transferi İstanbul · Tuzla Tersaneleri ve Limanlar",
         desc: "Gemi adamı, kaptan ve süperintendentler için İstanbul'da transfer: havalimanlarından Tuzla tersanelerine, Pendik, Haydarpaşa, Ambarlı ve Galataport'a, 7/24.",
         h1: "İstanbul'da tersane ve liman transferi: gemi adamı, kaptan, ekip",
@@ -214,7 +214,7 @@ module.exports = {
         faq: [["Sabiha Gökçen'den Tuzla tersanelerine transfer ne kadar?", "Tuzla, Pendik ve Ambarlı için fiyat yolculuğa göre verilir: tarihi, tersaneyi veya rıhtımı ve kişi sayısını WhatsApp'tan yazın, araç başı sabit fiyatla dönelim."], ["Ekip gece iniyor ya da gemi gecikti. Ne olur?", "7/24 çalışıyor ve uçuşu takip ediyoruz. Gemi veya ayrılış gecikirse haber verin, alış saatini değiştiririz; havalimanında inişten sonra {wait} dakika bekleme ücretsizdir."], ["Acente ekip adına rezervasyon yapıp ödeyebilir mi?", "Evet. Acente WhatsApp'tan ya da rezervasyon sayfasından her gemi adamının adıyla rezervasyon yapar. Kurumsal hesapla yolculuklar tek aylık faturada toplanır."]]
       },
       ru: {
-        path: "/ru/transfer-ekipazha-verf-stambul", nav: "Трансфер экипажей",
+        path: "/ru/transfer-ekipazha-verf-stambul", priced: "У Тузлы своя ценовая зона: фиксированные €{tuzlaSaw} за седан из Сабихи Гёкчен и €{tuzla} из аэропорта Стамбула, платные дороги включены. Цены на минивэн и микроавтобус — на странице заказа.", nav: "Трансфер экипажей",
         title: "Трансфер экипажа в Стамбуле · верфи Тузлы и порты",
         desc: "Трансфер при смене экипажа в Стамбуле для моряков, капитанов и суперинтендантов: из аэропортов на верфи Тузлы, в Пендик, Хайдарпашу, Амбарлы и Галатапорт, 24/7.",
         h1: "Трансфер экипажей в Стамбуле: верфи и порты",
@@ -223,7 +223,7 @@ module.exports = {
         faq: [["Сколько стоит трансфер из Сабихи Гёкчен на верфи Тузлы?", "Для Тузлы, Пендика и Амбарлы цена считается под поездку: напишите в WhatsApp дату, верфь или причал и число людей, и мы ответим фиксированной ценой за машину."], ["Экипаж прилетает ночью или судно задерживается. Что тогда?", "Мы работаем 24/7 и следим за рейсом. Если судно или списание задерживается, сообщите нам, и мы перенесём подачу; ожидание в аэропорту бесплатно {wait} минут после посадки."], ["Может ли агент заказать и оплатить трансфер за экипаж?", "Да. Агент заказывает в WhatsApp или на странице заказа с именем каждого моряка. С корпоративным аккаунтом поездки идут в один счёт в месяц."]]
       },
       de: {
-        path: "/de/crew-transfer-werft-istanbul", nav: "Crew-Transfers",
+        path: "/de/crew-transfer-werft-istanbul", priced: "Tuzla hat eine eigene Preiszone: fest €{tuzlaSaw} pro Sedan ab Sabiha Gökçen und €{tuzla} ab Flughafen Istanbul, Maut inklusive. Preise für Minivan und Minibus stehen auf der Buchungsseite.", nav: "Crew-Transfers",
         title: "Crew-Transfer Istanbul · Werften in Tuzla und Häfen",
         desc: "Transfers beim Crewwechsel in Istanbul für Seeleute, Kapitäne und Superintendents: Flughäfen zu den Werften in Tuzla, Pendik, Haydarpaşa, Ambarlı und Galataport.",
         h1: "Crew-Transfers in Istanbul: Werften und Häfen",
@@ -232,7 +232,7 @@ module.exports = {
         faq: [["Was kostet der Transfer von Sabiha Gökçen zu den Werften in Tuzla?", "Für Tuzla, Pendik und Ambarlı nennen wir den Preis je Fahrt: Schicken Sie uns per WhatsApp Datum, Werft oder Liegeplatz und Personenzahl, und wir antworten mit einem Festpreis pro Auto."], ["Die Crew landet nachts oder das Schiff verspätet sich. Was dann?", "Wir arbeiten rund um die Uhr und verfolgen den Flug. Verzögert sich Schiff oder Sign-off, sagen Sie Bescheid und wir verlegen die Abholung; am Flughafen sind {wait} Minuten Wartezeit nach der Landung kostenlos."], ["Kann der Agent für die Crew buchen und bezahlen?", "Ja. Der Agent bucht per WhatsApp oder über die Buchungsseite mit dem Namen jedes Seemanns. Mit einem Firmenkonto kommen die Fahrten auf eine Monatsrechnung."]]
       },
       fr: {
-        path: "/fr/transfert-equipage-chantier-naval-istanbul", nav: "Transferts d'équipages",
+        path: "/fr/transfert-equipage-chantier-naval-istanbul", priced: "Tuzla a sa propre zone tarifaire : €{tuzlaSaw} fixes par berline depuis Sabiha Gökçen et €{tuzla} depuis l'aéroport d'Istanbul, péages inclus. Les prix du minivan et du minibus sont sur la page de réservation.", nav: "Transferts d'équipages",
         title: "Transfert d'équipage Istanbul · chantiers de Tuzla et ports",
         desc: "Transferts pour relève d'équipage à Istanbul, marins, capitaines et superintendants : aéroports vers les chantiers de Tuzla, Pendik, Haydarpaşa, Ambarlı, Galataport.",
         h1: "Transferts d'équipages à Istanbul : chantiers navals et ports",
@@ -241,7 +241,7 @@ module.exports = {
         faq: [["Combien coûte un transfert de Sabiha Gökçen aux chantiers de Tuzla ?", "Pour Tuzla, Pendik et Ambarlı, le prix est donné par trajet : envoyez-nous sur WhatsApp la date, le chantier ou le quai et le nombre de personnes, et nous répondons avec un prix fixe par voiture."], ["L'équipage atterrit de nuit ou le navire a du retard. Que se passe-t-il ?", "Nous travaillons 24 h/24 et suivons le vol. Si le navire ou le débarquement est retardé, prévenez-nous et nous décalons la prise en charge ; l'attente à l'aéroport est gratuite {wait} minutes après l'atterrissage."], ["L'agent peut-il réserver et payer pour l'équipage ?", "Oui. L'agent réserve sur WhatsApp ou sur la page de réservation avec le nom de chaque marin. Avec un compte entreprise, les trajets sont regroupés sur une facture mensuelle."]]
       },
       it: {
-        path: "/it/transfer-equipaggio-cantiere-istanbul", nav: "Transfer equipaggi",
+        path: "/it/transfer-equipaggio-cantiere-istanbul", priced: "Tuzla ha una sua zona tariffaria: €{tuzlaSaw} fissi per berlina da Sabiha Gökçen ed €{tuzla} dall'Aeroporto di Istanbul, pedaggi inclusi. I prezzi di minivan e minibus sono nella pagina di prenotazione.", nav: "Transfer equipaggi",
         title: "Transfer equipaggi Istanbul · cantieri di Tuzla e porti",
         desc: "Transfer per cambio equipaggio a Istanbul per marittimi, comandanti e superintendent: dagli aeroporti ai cantieri di Tuzla, Pendik, Haydarpaşa, Ambarlı e Galataport.",
         h1: "Transfer equipaggi a Istanbul: cantieri navali e porti",
@@ -250,7 +250,7 @@ module.exports = {
         faq: [["Quanto costa un transfer da Sabiha Gökçen ai cantieri di Tuzla?", "Per Tuzla, Pendik e Ambarlı il prezzo è per corsa: inviaci su WhatsApp data, cantiere o banchina e numero di persone e ti rispondiamo con un prezzo fisso per auto."], ["L'equipaggio atterra di notte o la nave è in ritardo. Cosa succede?", "Lavoriamo 24 ore su 24 e seguiamo il volo. Se la nave o lo sbarco ritardano, avvisaci e spostiamo il prelievo; l'attesa in aeroporto è gratuita per {wait} minuti dopo l'atterraggio."], ["L'agente può prenotare e pagare per l'equipaggio?", "Sì. L'agente prenota su WhatsApp o dalla pagina di prenotazione con il nome di ogni marittimo. Con un conto aziendale le corse finiscono in un'unica fattura mensile."]]
       },
       nl: {
-        path: "/nl/bemanning-transfer-scheepswerf-istanbul", nav: "Bemanningstransfers",
+        path: "/nl/bemanning-transfer-scheepswerf-istanbul", priced: "Tuzla heeft een eigen prijszone: vast €{tuzlaSaw} per sedan vanaf Sabiha Gökçen en €{tuzla} vanaf Istanbul Airport, tol inbegrepen. Prijzen voor minivan en minibus staan op de boekingspagina.", nav: "Bemanningstransfers",
         title: "Bemanningstransfer Istanbul · werven van Tuzla en havens",
         desc: "Transfers bij bemanningswissel in Istanbul voor zeevarenden en kapiteins: luchthavens naar de werven van Tuzla, Pendik, Haydarpaşa, Ambarlı en Galataport.",
         h1: "Bemanningstransfers in Istanbul: scheepswerven en havens",
@@ -259,7 +259,7 @@ module.exports = {
         faq: [["Wat kost een transfer van Sabiha Gökçen naar de werven van Tuzla?", "Voor Tuzla, Pendik en Ambarlı geven we de prijs per rit: stuur ons via WhatsApp de datum, de werf of ligplaats en het aantal personen, dan antwoorden we met een vaste prijs per auto."], ["De bemanning landt 's nachts of het schip is vertraagd. Wat dan?", "We werken 24/7 en volgen de vlucht. Is het schip of de afmonstering vertraagd, laat het ons weten en we verzetten het ophalen; wachten op de luchthaven is {wait} minuten na de landing gratis."], ["Kan de agent boeken en betalen voor de bemanning?", "Ja. De agent boekt via WhatsApp of de boekingspagina met de naam van elk bemanningslid. Met een zakelijk account komen de ritten op één maandfactuur."]]
       },
       ar: {
-        path: "/ar/transfer-taqim-al-sufun", nav: "نقل طواقم السفن",
+        path: "/ar/transfer-taqim-al-sufun", priced: "لتوزلا منطقة أسعار خاصة: سعر ثابت €{tuzlaSaw} لسيارة سيدان من صبيحة كوكجن و€{tuzla} من مطار إسطنبول، شاملًا رسوم الطرق. أسعار الميني فان والميني باص في صفحة الحجز.", nav: "نقل طواقم السفن",
         title: "نقل طواقم السفن في إسطنبول · أحواض توزلا والموانئ",
         desc: "نقل البحارة والقباطنة والمشرفين عند تبديل الطاقم في إسطنبول: من المطارات إلى أحواض توزلا وموانئ بنديك وحيدر باشا وأمبارلي وغالاتابورت، على مدار الساعة.",
         h1: "نقل طواقم السفن في إسطنبول: أحواض السفن والموانئ",
