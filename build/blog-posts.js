@@ -24,6 +24,142 @@ const K = { sult: km("IST", "sultanahmet"), taksim: km("IST", "taksim") };
 
 module.exports = [
   {
+    id: "ist-night-arrival",
+    date: "2026-11-24",
+    en: {
+      slug: "arriving-at-istanbul-airport-at-night",
+      title: "Arriving at Istanbul Airport at Night: A Practical Guide",
+      desc: `Landing at Istanbul Airport late at night? Passport control, cash, SIM cards, metro and bus hours, taxis and a fixed-price transfer from €${E.taksim} per car.`,
+      lead: `Istanbul Airport is one of the busiest hubs in the world, and many flights land between midnight and dawn. A late arrival is easy if you know what is open, what is not, and how you will get to your hotel before you step off the plane.`,
+      body: `<h2>The short answer</h2>
+<p>The airport itself never closes: passport control, baggage belts, exchange offices, cash machines and phone shops work through the night. What changes is getting into the city. The metro does not run all night, buses run less often, and the taxi rank can have a queue when several long-haul flights land together. A <strong>pre-booked transfer</strong> is the calmest option at night: your driver waits in arrivals with your name, and the price is fixed before you fly.</p>
+<h2>Before you land</h2>
+<ul>
+<li><strong>Tell your hotel</strong> you will arrive late. Small hotels in Sultanahmet and Taksim often have a night bell or a short reception shift.</li>
+<li><strong>Save your hotel address</strong> offline, in Turkish if you can, with the hotel phone number.</li>
+<li><strong>Get an eSIM</strong> before the flight, or plan to buy a Turkish SIM at the shops in arrivals.</li>
+<li><strong>Book your ride</strong> and note the meeting point.</li>
+</ul>
+<h2>Passport control and luggage</h2>
+<p>At night the queues depend on how many flights land at once. Wide-body arrivals from Asia and the Gulf often come in waves, so allow 30 to 60 minutes from landing to the arrivals hall. If you need an e-Visa, have it printed or saved on your phone.</p>
+{widget}
+<h2>Money and phone</h2>
+<p>Exchange offices and cash machines in the arrivals hall are open around the clock. Rates at the airport are usually weaker than in the city, so change only what you need for the first day. Phone shops for the main Turkish networks are also in arrivals.</p>
+<h2>Getting to the city at night</h2>
+<ul>
+<li><strong>Metro (M11):</strong> the cheapest way, but it does not run through the night and you still need changes to reach the old city. Check the last train before you rely on it.</li>
+<li><strong>Havaist bus:</strong> some lines keep running at night with longer gaps between buses, and you walk from the stop to your hotel.</li>
+<li><strong>Taxi rank:</strong> available, but the fare runs on the meter and after a wave of landings there can be a queue. Families with several suitcases may need two cars.</li>
+<li><strong>Private transfer:</strong> ${MEET.en} The driver follows your flight, so a delay changes nothing, and the first ${E.wait} minutes of waiting are free.</li>
+</ul>
+<h2>How long is the ride at night?</h2>
+<p>Roads are much quieter after midnight. The ${K.sult[0]} km to Sultanahmet, about ${K.sult[1]} minutes in normal traffic, is often clearly faster at night. Taksim is about ${K.taksim[0]} km away.</p>
+<h2>What does a night transfer cost?</h2>
+<p>With us the price is the same at 3 am as at noon, because it is fixed when you book: <a href="${L.en.sult}">Sultanahmet €${E.sult}</a> and <a href="${L.en.taksim}">Taksim €${E.taksim}</a> in a sedan for up to 3 people, or €${E.sultVan} to Sultanahmet in a minivan for up to 6. The price is per car, not per person, and includes tolls and luggage. A child seat is €${E.seat}. All routes are on our <a href="${L.en.prices}">prices page</a>.</p>
+<p>Booking with {brand} takes about a minute: no account and no payment up front. You pay the driver in cash at the end of the ride.</p>
+{widget}`
+    },
+    de: {
+      slug: "nachts-am-flughafen-istanbul-ankommen",
+      title: "Nachts am Flughafen Istanbul ankommen: der praktische Ratgeber",
+      desc: `Späte Landung in Istanbul? Passkontrolle, Bargeld, SIM-Karte, Metro und Bus in der Nacht, Taxi und Transfer zum Festpreis ab €${E.taksim} pro Fahrzeug.`,
+      lead: `Der Flughafen Istanbul ist eines der größten Drehkreuze der Welt, und viele Flüge landen zwischen Mitternacht und Morgengrauen. Eine späte Ankunft ist einfach, wenn Sie vorher wissen, was geöffnet ist und wie Sie ins Hotel kommen.`,
+      body: `<h2>Kurz gesagt</h2>
+<p>Der Flughafen schließt nie: Passkontrolle, Gepäckbänder, Wechselstuben, Geldautomaten und Handyläden sind die ganze Nacht offen. Schwieriger ist der Weg in die Stadt. Die Metro fährt nicht die ganze Nacht, Busse fahren seltener, und am Taxistand kann es eine Schlange geben, wenn mehrere Langstreckenflüge gleichzeitig landen. Am entspanntesten ist nachts ein <strong>vorab gebuchter Transfer</strong>: Ihr Fahrer wartet mit Namensschild in der Ankunftshalle, und der Preis steht vor dem Abflug fest.</p>
+<h2>Vor der Landung</h2>
+<ul>
+<li><strong>Sagen Sie dem Hotel Bescheid</strong>, dass Sie spät ankommen. Kleine Hotels in Sultanahmet und Taksim haben nachts oft nur eine Klingel oder eine kurze Rezeptionsschicht.</li>
+<li><strong>Speichern Sie die Hoteladresse</strong> offline, am besten auf Türkisch, mit der Telefonnummer des Hotels.</li>
+<li><strong>Holen Sie sich eine eSIM</strong> vor dem Flug oder kaufen Sie eine türkische SIM-Karte in der Ankunftshalle.</li>
+<li><strong>Buchen Sie Ihre Fahrt</strong> und notieren Sie den Treffpunkt.</li>
+</ul>
+<h2>Passkontrolle und Gepäck</h2>
+<p>Nachts hängen die Wartezeiten davon ab, wie viele Flüge gleichzeitig landen. Großraumflugzeuge aus Asien und vom Golf kommen oft in Wellen, rechnen Sie also mit 30 bis 60 Minuten von der Landung bis zur Ankunftshalle. Falls Sie ein E-Visum brauchen, halten Sie es ausgedruckt oder auf dem Handy bereit.</p>
+{widget}
+<h2>Geld und Handy</h2>
+<p>Wechselstuben und Geldautomaten in der Ankunftshalle sind rund um die Uhr geöffnet. Die Kurse am Flughafen sind meist schlechter als in der Stadt, tauschen Sie also nur, was Sie am ersten Tag brauchen. Läden der großen türkischen Mobilfunkanbieter finden Sie ebenfalls in der Ankunftshalle.</p>
+<h2>Nachts in die Stadt</h2>
+<ul>
+<li><strong>Metro (M11):</strong> am günstigsten, fährt aber nicht die ganze Nacht, und bis zur Altstadt müssen Sie umsteigen. Prüfen Sie die letzte Abfahrt.</li>
+<li><strong>Havaist-Bus:</strong> einige Linien fahren auch nachts, mit längeren Abständen, und von der Haltestelle gehen Sie zu Fuß zum Hotel.</li>
+<li><strong>Taxistand:</strong> verfügbar, aber mit Taxameter, und nach einer Landewelle kann es eine Schlange geben. Familien mit viel Gepäck brauchen eventuell zwei Autos.</li>
+<li><strong>Privattransfer:</strong> ${MEET.de} Der Fahrer verfolgt Ihren Flug, eine Verspätung ändert also nichts, und die ersten ${E.wait} Minuten Wartezeit sind kostenlos.</li>
+</ul>
+<h2>Wie lange dauert die Fahrt nachts?</h2>
+<p>Nach Mitternacht sind die Straßen deutlich leerer. Die ${K.sult[0]} km nach Sultanahmet, bei normalem Verkehr etwa ${K.sult[1]} Minuten, gehen nachts oft spürbar schneller. Taksim liegt etwa ${K.taksim[0]} km entfernt.</p>
+<h2>Was kostet ein Nachttransfer?</h2>
+<p>Bei uns kostet die Fahrt um 3 Uhr nachts genauso viel wie mittags, denn der Preis wird bei der Buchung festgelegt: <a href="${L.de.sult}">Sultanahmet €${E.sult}</a> und <a href="${L.de.taksim}">Taksim €${E.taksim}</a> in der Limousine für bis zu 3 Personen, oder €${E.sultVan} nach Sultanahmet im Minivan für bis zu 6. Der Preis gilt pro Fahrzeug, nicht pro Person, inklusive Maut und Gepäck. Ein Kindersitz kostet €${E.seat}. Alle Strecken finden Sie auf unserer <a href="${L.de.prices}">Preisseite</a>.</p>
+<p>Die Buchung bei {brand} dauert etwa eine Minute: kein Konto, keine Vorauszahlung. Sie zahlen am Ende der Fahrt bar beim Fahrer.</p>
+{widget}`
+    },
+    ru: {
+      slug: "nochnoy-prilet-v-aeroport-stambula",
+      title: "Ночной прилёт в аэропорт Стамбула: практический гид",
+      desc: `Прилетаете в Стамбул ночью? Паспортный контроль, деньги, SIM-карта, метро и автобусы ночью, такси и трансфер по фиксированной цене от €${E.taksim} за машину.`,
+      lead: `Аэропорт Стамбула — один из крупнейших хабов мира, и много рейсов садится между полуночью и рассветом. Поздний прилёт пройдёт спокойно, если заранее знать, что работает ночью и как вы доберётесь до отеля.`,
+      body: `<h2>Коротко</h2>
+<p>Аэропорт не закрывается никогда: паспортный контроль, выдача багажа, обменники, банкоматы и салоны связи работают всю ночь. Сложнее добраться до города. Метро ходит не всю ночь, автобусы — реже, а на стоянке такси бывает очередь, когда одновременно садятся несколько дальнемагистральных рейсов. Ночью спокойнее всего <strong>заранее заказанный трансфер</strong>: водитель ждёт в зале прилёта с табличкой, а цена известна ещё до вылета.</p>
+<h2>До посадки</h2>
+<ul>
+<li><strong>Предупредите отель</strong>, что приедете поздно. В небольших отелях Султанахмета и Таксима ночью часто работает только звонок или короткая смена ресепшена.</li>
+<li><strong>Сохраните адрес отеля</strong> офлайн, лучше на турецком, вместе с телефоном отеля.</li>
+<li><strong>Купите eSIM</strong> до вылета или турецкую SIM-карту в зале прилёта.</li>
+<li><strong>Закажите поездку</strong> и запомните место встречи.</li>
+</ul>
+<h2>Паспортный контроль и багаж</h2>
+<p>Ночью очереди зависят от того, сколько рейсов садится одновременно. Широкофюзеляжные самолёты из Азии и стран Залива часто прилетают волнами, поэтому закладывайте 30–60 минут от посадки до зала прилёта. Если нужна электронная виза, держите её распечатанной или в телефоне.</p>
+{widget}
+<h2>Деньги и связь</h2>
+<p>Обменники и банкоматы в зале прилёта работают круглосуточно. Курс в аэропорту обычно хуже, чем в городе, поэтому меняйте только то, что нужно на первый день. Салоны основных турецких операторов тоже находятся в зале прилёта.</p>
+<h2>Как добраться до города ночью</h2>
+<ul>
+<li><strong>Метро (M11):</strong> самый дешёвый вариант, но ходит не всю ночь, а до старого города нужны пересадки. Проверьте время последнего поезда.</li>
+<li><strong>Автобус Havaist:</strong> некоторые линии работают и ночью, но с большими интервалами, а от остановки до отеля идти пешком.</li>
+<li><strong>Стоянка такси:</strong> такси есть, но оплата по счётчику, а после волны прилётов бывает очередь. Семье с несколькими чемоданами может понадобиться две машины.</li>
+<li><strong>Индивидуальный трансфер:</strong> ${MEET.ru} Водитель следит за рейсом, так что задержка ничего не меняет, а первые ${E.wait} минут ожидания бесплатны.</li>
+</ul>
+<h2>Сколько ехать ночью?</h2>
+<p>После полуночи дороги заметно свободнее. ${K.sult[0]} км до Султанахмета, обычно около ${K.sult[1]} минут, ночью часто проезжаются заметно быстрее. До Таксима около ${K.taksim[0]} км.</p>
+<h2>Сколько стоит ночной трансфер?</h2>
+<p>У нас поездка в 3 часа ночи стоит столько же, сколько днём: цена фиксируется при заказе. <a href="${L.ru.sult}">Султанахмет €${E.sult}</a> и <a href="${L.ru.taksim}">Таксим €${E.taksim}</a> на седане до 3 человек или €${E.sultVan} до Султанахмета на минивэне до 6 человек. Цена за машину, а не за человека, включая платные дороги и багаж. Детское кресло — €${E.seat}. Все маршруты — на <a href="${L.ru.prices}">странице цен</a>.</p>
+<p>Заказ в {brand} занимает около минуты: без регистрации и без предоплаты. Вы платите водителю наличными в конце поездки.</p>
+{widget}`
+    },
+    ar: {
+      slug: "alwusul-ila-matar-istanbul-laylan",
+      title: "الوصول إلى مطار إسطنبول ليلًا: دليل عملي",
+      desc: `تصل إلى مطار إسطنبول في الليل؟ الجوازات والنقود وشريحة الهاتف والمترو والحافلات ليلًا والتاكسي، وتوصيل بسعر ثابت من €${E.taksim} للسيارة.`,
+      lead: `مطار إسطنبول من أكبر مراكز العبور في العالم، وكثير من الرحلات تهبط بين منتصف الليل والفجر. يصبح الوصول المتأخر سهلًا إذا عرفت مسبقًا ما الذي يعمل في الليل وكيف ستصل إلى فندقك.`,
+      body: `<h2>باختصار</h2>
+<p>المطار لا يغلق أبدًا: الجوازات وسيور الأمتعة ومكاتب الصرافة وأجهزة الصراف الآلي ومحلات الهواتف تعمل طوال الليل. الصعوبة في الوصول إلى المدينة. المترو لا يعمل طوال الليل، والحافلات أقل تكرارًا، وقد يكون هناك طابور عند موقف التاكسي عندما تهبط عدة رحلات طويلة في الوقت نفسه. في الليل يكون <strong>التوصيل المحجوز مسبقًا</strong> هو الخيار الأكثر راحة: السائق ينتظرك في صالة الوصول ومعه لوحة باسمك، والسعر معروف قبل السفر.</p>
+<h2>قبل الهبوط</h2>
+<ul>
+<li><strong>أخبر الفندق</strong> بأنك ستصل متأخرًا. كثير من الفنادق الصغيرة في السلطان أحمد وتقسيم يكون فيها جرس ليلي أو موظف استقبال لوقت قصير.</li>
+<li><strong>احفظ عنوان الفندق</strong> بدون إنترنت، ويفضل بالتركية، مع رقم هاتف الفندق.</li>
+<li><strong>احصل على شريحة eSIM</strong> قبل السفر، أو اشترِ شريحة تركية من محلات صالة الوصول.</li>
+<li><strong>احجز رحلتك</strong> واحفظ مكان اللقاء.</li>
+</ul>
+<h2>الجوازات والأمتعة</h2>
+<p>في الليل يعتمد الانتظار على عدد الرحلات التي تهبط معًا. الطائرات الكبيرة القادمة من آسيا والخليج تصل غالبًا على دفعات، لذلك احسب 30 إلى 60 دقيقة من الهبوط حتى صالة الوصول. وإذا كنت تحتاج إلى تأشيرة إلكترونية، فاحتفظ بها مطبوعة أو على هاتفك.</p>
+{widget}
+<h2>النقود والهاتف</h2>
+<p>مكاتب الصرافة وأجهزة الصراف الآلي في صالة الوصول تعمل على مدار الساعة. أسعار الصرف في المطار عادة أقل من المدينة، فاصرف فقط ما تحتاجه لليوم الأول. ومحلات شركات الاتصالات التركية الرئيسية موجودة أيضًا في صالة الوصول.</p>
+<h2>الوصول إلى المدينة ليلًا</h2>
+<ul>
+<li><strong>المترو (M11):</strong> الأرخص، لكنه لا يعمل طوال الليل، والوصول إلى المدينة القديمة يحتاج إلى تبديل. تأكد من موعد آخر قطار.</li>
+<li><strong>حافلة هافايست:</strong> بعض الخطوط تعمل في الليل بفترات انتظار أطول، ومن المحطة تمشي إلى الفندق.</li>
+<li><strong>موقف التاكسي:</strong> متوفر، لكن الأجرة بالعدّاد، وقد يكون هناك طابور بعد هبوط عدة رحلات. العائلة التي معها حقائب كثيرة قد تحتاج إلى سيارتين.</li>
+<li><strong>التوصيل الخاص:</strong> ينتظرك السائق في صالة الوصول عند المخرج الذي تحدده عند الحجز (عادة المخرج 13) ومعه لوحة باسمك. يتابع السائق رحلتك، فلا يتغير شيء إذا تأخرت، وأول ${E.wait} دقيقة من الانتظار مجانية.</li>
+</ul>
+<h2>كم تستغرق الرحلة ليلًا؟</h2>
+<p>الطرق بعد منتصف الليل أهدأ بكثير. مسافة ${K.sult[0]} كم إلى السلطان أحمد، التي تستغرق عادة حوالي ${K.sult[1]} دقيقة، تكون غالبًا أسرع بوضوح في الليل. وتقسيم على بعد حوالي ${K.taksim[0]} كم.</p>
+<h2>كم يكلف التوصيل ليلًا؟</h2>
+<p>عندنا سعر الرحلة في الثالثة فجرًا هو نفسه في الظهر، لأن السعر يُحدد عند الحجز: <a href="${L.ar.sult}">السلطان أحمد €${E.sult}</a> و<a href="${L.ar.taksim}">تقسيم €${E.taksim}</a> بسيارة سيدان حتى 3 أشخاص، أو €${E.sultVan} إلى السلطان أحمد بميني فان حتى 6 أشخاص. السعر للسيارة وليس للشخص، ويشمل رسوم الطرق والأمتعة. مقعد الأطفال €${E.seat}. جميع المسارات في <a href="${L.ar.prices}">صفحة الأسعار</a>.</p>
+<p>يستغرق الحجز مع {brand} دقيقة تقريبًا: بدون حساب وبدون دفع مسبق. وتدفع للسائق نقدًا في نهاية الرحلة.</p>
+{widget}`
+    }
+  },
+  {
     id: "ist-to-sultanahmet",
     date: "2026-11-17",
     en: {
