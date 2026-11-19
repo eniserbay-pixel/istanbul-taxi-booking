@@ -713,7 +713,7 @@ dialog.bl-dlg::backdrop { background: rgba(15, 27, 45, .45); }
 (function () {
   "use strict";
   // ---------- Data the panel knows about the site ----------
-  var PLACES = { IST: "İstanbul Havalimanı (IST)", SAW: "Sabiha Gökçen Havalimanı (SAW)", sultanahmet: "Sultanahmet / Tarihi Yarımada", taksim: "Taksim / Beyoğlu", karakoy: "Karaköy / Galata", galataport: "Galataport Kruvaziyer Limanı", besiktas: "Beşiktaş / Ortaköy", sisli: "Şişli / Nişantaşı", sariyer: "Sarıyer", bakirkoy: "Bakırköy / Yeşilköy", beylikduzu: "Beylikdüzü / Esenyurt", kadikoy: "Kadıköy / Moda", uskudar: "Üsküdar", atasehir: "Ataşehir / Ümraniye" };
+  var PLACES = { IST: "İstanbul Havalimanı (IST)", SAW: "Sabiha Gökçen Havalimanı (SAW)", sultanahmet: "Sultanahmet / Tarihi Yarımada", taksim: "Taksim / Beyoğlu", karakoy: "Karaköy / Galata", galataport: "Galataport Kruvaziyer Limanı", besiktas: "Beşiktaş / Ortaköy", sisli: "Şişli / Nişantaşı", sariyer: "Sarıyer", bakirkoy: "Bakırköy / Yeşilköy", beylikduzu: "Beylikdüzü / Esenyurt", kadikoy: "Kadıköy / Moda", uskudar: "Üsküdar", atasehir: "Ataşehir / Ümraniye", tuzla: "Tuzla / Tersaneler", pendik: "Pendik / Kurtköy", ambarli: "Avcılar / Ambarlı Limanı" };
   var CARS = { sedan: "Sedan", minivan: "Minivan", vclass: "Mercedes V-Class", minibus: "Minibüs" };
   // talep: site request waiting for a decision; degisiklik: a change was e-mailed to the customer, waiting for their answer
   var STATUS = { talep: "Talep", degisiklik: "Müşteri onayı bekliyor", yeni: "Yeni", onaylandi: "Onaylandı", tamamlandi: "Tamamlandı", reddedildi: "Reddedildi", iptal: "İptal" };
@@ -726,7 +726,7 @@ dialog.bl-dlg::backdrop { background: rgba(15, 27, 45, .45); }
   // UETDS: Istanbul's 39 districts (panel only, the site's zones stay as they are), the district each
   // site zone is in, the fee reported for every trip (not the booking's price) and the trip length
   var ILCELER = ["Adalar", "Arnavutköy", "Ataşehir", "Avcılar", "Bağcılar", "Bahçelievler", "Bakırköy", "Başakşehir", "Bayrampaşa", "Beşiktaş", "Beykoz", "Beylikdüzü", "Beyoğlu", "Büyükçekmece", "Çatalca", "Çekmeköy", "Esenler", "Esenyurt", "Eyüpsultan", "Fatih", "Gaziosmanpaşa", "Güngören", "Kadıköy", "Kağıthane", "Kartal", "Küçükçekmece", "Maltepe", "Pendik", "Sancaktepe", "Sarıyer", "Silivri", "Sultanbeyli", "Sultangazi", "Şile", "Şişli", "Tuzla", "Ümraniye", "Üsküdar", "Zeytinburnu"];
-  var ZONE_ILCE = { IST: "Arnavutköy", SAW: "Pendik", galataport: "Beyoğlu", taksim: "Beyoğlu", sultanahmet: "Fatih", karakoy: "Beyoğlu", besiktas: "Beşiktaş", sisli: "Şişli", sariyer: "Sarıyer", bakirkoy: "Bakırköy", beylikduzu: "Beylikdüzü", kadikoy: "Kadıköy", uskudar: "Üsküdar", atasehir: "Ataşehir" };
+  var ZONE_ILCE = { IST: "Arnavutköy", SAW: "Pendik", galataport: "Beyoğlu", taksim: "Beyoğlu", sultanahmet: "Fatih", karakoy: "Beyoğlu", besiktas: "Beşiktaş", sisli: "Şişli", sariyer: "Sarıyer", bakirkoy: "Bakırköy", beylikduzu: "Beylikdüzü", kadikoy: "Kadıköy", uskudar: "Üsküdar", atasehir: "Ataşehir", tuzla: "Tuzla", pendik: "Pendik", ambarli: "Avcılar" };
   var UETDS_FEE = 500, UETDS_HOURS = 3;
   var GENDER = { k: "Kadın", e: "Erkek" };
   // Nationalities: every country, named in Turkish by the browser (ISO 3166 codes), Türkiye first.

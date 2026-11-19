@@ -1,7 +1,7 @@
 // The prices and fees saved in the panel (Fiyatlandırma, stored in Redis, see api/_lib/pricing.js), put over
 // data/pricing.json before the pages are built, so the route pages, price tables, guides, blog posts and
 // llms.txt show what the panel shows. Without Redis (a local build) or when it cannot be read, the built
-// prices stay. A route or vehicle the panel has no price for keeps the built one on the static pages; the
+// prices stay. A route the built list lacks takes the panel's price. A route or vehicle the panel has no price for keeps the built one on the static pages; the
 // booking form (which reads /api/pricing) does not offer it.
 // apply(P) changes P in place; build.js calls it before the page modules read the prices.
 const { execFileSync } = require("child_process");
@@ -30,6 +30,15 @@ function apply(P, cfg) {
   Object.keys(P.prices).forEach(k => {
     const [a, b] = k.split("|"), row = L.prices[k] || L.prices[b + "|" + a] || {};
     Object.keys(row).forEach(c => { if (row[c] > 0) P.prices[k][c] = row[c]; });
+  });
+  // routes the built list has no price for (zones added later, such as Tuzla, Pendik and Ambarlı): the panel's price
+  const ids = P.zones.map(z => z.id), cars = P.cars.map(c => c.id);
+  Object.keys(L.prices).forEach(k => {
+    const [a, b] = k.split("|");
+    if (P.prices[k] || P.prices[b + "|" + a] || !ids.includes(a) || !ids.includes(b)) return;
+    const row = {};
+    Object.keys(L.prices[k]).forEach(c => { if (cars.includes(c) && L.prices[k][c] > 0) row[c] = L.prices[k][c]; });
+    if (Object.keys(row).length) P.prices[k] = row;
   });
   P.rules = L.rules;
   return true;

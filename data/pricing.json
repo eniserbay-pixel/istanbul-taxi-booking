@@ -430,6 +430,102 @@
     "it": "Ataşehir, Ümraniye, Kozyatağı, Maltepe",
     "nl": "Ataşehir, Ümraniye, Kozyatağı, Maltepe"
    }
+  },
+  {
+   "id": "tuzla",
+   "type": "district",
+   "slug": "tuzla",
+   "name": {
+    "en": "Tuzla / Shipyards",
+    "tr": "Tuzla / Tersaneler",
+    "ru": "Тузла / верфи",
+    "de": "Tuzla / Werften",
+    "fr": "Tuzla / chantiers navals",
+    "it": "Tuzla / cantieri navali",
+    "nl": "Tuzla / scheepswerven"
+   },
+   "short": {
+    "en": "Tuzla",
+    "tr": "Tuzla",
+    "ru": "Тузла",
+    "de": "Tuzla",
+    "fr": "Tuzla",
+    "it": "Tuzla",
+    "nl": "Tuzla"
+   },
+   "area": {
+    "en": "Tuzla, Tuzla shipyards, Aydınlı, İçmeler",
+    "tr": "Tuzla, Tuzla tersaneleri, Aydınlı, İçmeler",
+    "ru": "Тузла, верфи Тузлы, Айдынлы, Ичмелер",
+    "de": "Tuzla, Werften von Tuzla, Aydınlı, İçmeler",
+    "fr": "Tuzla, chantiers navals de Tuzla, Aydınlı, İçmeler",
+    "it": "Tuzla, cantieri di Tuzla, Aydınlı, İçmeler",
+    "nl": "Tuzla, werven van Tuzla, Aydınlı, İçmeler"
+   }
+  },
+  {
+   "id": "pendik",
+   "type": "district",
+   "slug": "pendik",
+   "name": {
+    "en": "Pendik / Kurtköy",
+    "tr": "Pendik / Kurtköy",
+    "ru": "Пендик / Курткёй",
+    "de": "Pendik / Kurtköy",
+    "fr": "Pendik / Kurtköy",
+    "it": "Pendik / Kurtköy",
+    "nl": "Pendik / Kurtköy"
+   },
+   "short": {
+    "en": "Pendik",
+    "tr": "Pendik",
+    "ru": "Пендик",
+    "de": "Pendik",
+    "fr": "Pendik",
+    "it": "Pendik",
+    "nl": "Pendik"
+   },
+   "area": {
+    "en": "Pendik, Pendik port and marina, Kurtköy, Kartal",
+    "tr": "Pendik, Pendik Limanı ve Marinası, Kurtköy, Kartal",
+    "ru": "Пендик, порт и марина Пендик, Курткёй, Картал",
+    "de": "Pendik, Hafen und Marina Pendik, Kurtköy, Kartal",
+    "fr": "Pendik, port et marina de Pendik, Kurtköy, Kartal",
+    "it": "Pendik, porto e marina di Pendik, Kurtköy, Kartal",
+    "nl": "Pendik, haven en jachthaven Pendik, Kurtköy, Kartal"
+   }
+  },
+  {
+   "id": "ambarli",
+   "type": "district",
+   "slug": "ambarli",
+   "name": {
+    "en": "Avcılar / Ambarlı Port",
+    "tr": "Avcılar / Ambarlı Limanı",
+    "ru": "Авджылар / порт Амбарлы",
+    "de": "Avcılar / Hafen Ambarlı",
+    "fr": "Avcılar / port d'Ambarlı",
+    "it": "Avcılar / porto di Ambarlı",
+    "nl": "Avcılar / haven Ambarlı"
+   },
+   "short": {
+    "en": "Ambarlı",
+    "tr": "Ambarlı",
+    "ru": "Амбарлы",
+    "de": "Ambarlı",
+    "fr": "Ambarlı",
+    "it": "Ambarlı",
+    "nl": "Ambarlı"
+   },
+   "area": {
+    "en": "Ambarlı port (Marport, Kumport), Avcılar",
+    "tr": "Ambarlı Limanı (Marport, Kumport), Avcılar",
+    "ru": "Порт Амбарлы (Marport, Kumport), Авджылар",
+    "de": "Hafen Ambarlı (Marport, Kumport), Avcılar",
+    "fr": "Port d'Ambarlı (Marport, Kumport), Avcılar",
+    "it": "Porto di Ambarlı (Marport, Kumport), Avcılar",
+    "nl": "Haven Ambarlı (Marport, Kumport), Avcılar"
+   }
   }
  ],
  "cars": [
@@ -1181,6 +1277,18 @@
    "atasehir": [
     58,
     65
+   ],
+   "tuzla": [
+    85,
+    75
+   ],
+   "pendik": [
+    78,
+    70
+   ],
+   "ambarli": [
+    45,
+    45
    ]
   },
   "SAW": {
@@ -1231,6 +1339,18 @@
    "atasehir": [
     28,
     30
+   ],
+   "tuzla": [
+    20,
+    25
+   ],
+   "pendik": [
+    12,
+    20
+   ],
+   "ambarli": [
+    72,
+    70
    ]
   },
   "galataport": {
