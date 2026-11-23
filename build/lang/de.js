@@ -67,12 +67,12 @@ const ui = {
     otherH: "Weitere Strecken ab {from}", back: "Alle Taxipreise ab {from}"
   },
   hub: {
-    title: "Taxi {from} · Festpreise in alle Stadtteile",
+    title: "Taxi {from} · Festpreise ab €{price} pro Auto",
     desc: "Privates Taxi zum Festpreis ab {from} nach Sultanahmet, Taksim, Kadıköy und in alle zentralen Stadtteile, ab €{price} pro Auto. Mit Namensschild.",
     h1: "Taxipreise ab {from}",
     lead: "Festpreise pro Auto ab {fromLong} in die zentralen Stadtteile Istanbuls. Wählen Sie Ihr Ziel, um alle vier Fahrzeuge zu sehen."
   },
-  prices: { title: "Taxipreise Flughafen Istanbul · {brand}", desc: "Alle Festpreise für das Flughafentaxi ab Flughafen Istanbul und Sabiha Gökçen, pro Auto: Limousine, Minivan, V-Klasse und Kleinbus.", h1: "Preise Flughafentaxi", to: "Nach" },
+  prices: { title: "Taxipreise Flughafen Istanbul ab €{min} · {brand}", desc: "Alle Festpreise für das Flughafentaxi ab Flughafen Istanbul und Sabiha Gökçen, pro Auto: Limousine, Minivan, V-Klasse und Kleinbus.", h1: "Preise Flughafentaxi", to: "Nach" },
   book: {
     title: "Flughafentaxi buchen · {brand}", h1: "Flughafentaxi buchen",
     steps: ["Fahrzeug", "Daten", "Prüfen"],
