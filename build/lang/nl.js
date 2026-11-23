@@ -67,12 +67,12 @@ const ui = {
     otherH: "Andere routes vanaf {from}", back: "Alle taxiprijzen vanaf {from}"
   },
   hub: {
-    title: "Taxi {from} · vaste prijzen naar elke wijk",
+    title: "Taxi {from} · vaste prijzen vanaf €{price} per auto",
     desc: "Privétaxi voor een vaste prijs vanaf {from} naar Sultanahmet, Taksim, Kadıköy en alle centrale wijken, vanaf €{price} per auto. Met naambordje.",
     h1: "Taxiprijzen vanaf {from}",
     lead: "Vaste prijzen per auto vanaf {fromLong} naar de centrale wijken van Istanbul. Kies je bestemming om alle vier de auto's te zien."
   },
-  prices: { title: "Taxiprijzen luchthaven Istanbul · {brand}", desc: "Alle vaste prijzen voor de luchthaventaxi vanaf luchthaven Istanbul en Sabiha Gökçen, per auto: sedan, minivan, V-Klasse en minibus.", h1: "Prijzen luchthaventaxi", to: "Naar" },
+  prices: { title: "Taxiprijzen luchthaven Istanbul vanaf €{min} · {brand}", desc: "Alle vaste prijzen voor de luchthaventaxi vanaf luchthaven Istanbul en Sabiha Gökçen, per auto: sedan, minivan, V-Klasse en minibus.", h1: "Prijzen luchthaventaxi", to: "Naar" },
   book: {
     title: "Boek je luchthaventaxi · {brand}", h1: "Boek je luchthaventaxi",
     steps: ["Auto", "Gegevens", "Controleren"],

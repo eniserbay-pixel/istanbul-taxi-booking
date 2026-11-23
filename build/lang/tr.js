@@ -76,12 +76,12 @@ const ui = {
     otherH: "{from} çıkışlı diğer güzergahlar", back: "Tüm {from} taksi fiyatları"
   },
   hub: {
-    title: "{from} Taksi · Her Semte Sabit Fiyat",
+    title: "{from} Taksi · Her Semte Sabit Fiyat, €{price}'dan",
     desc: "{from} çıkışlı sabit fiyatlı özel taksi: Sultanahmet, Taksim, Kadıköy ve tüm merkezi semtlere araç başı €{price}'dan. İsim tabelası ve uçuş takibi.",
     h1: "{from} taksi fiyatları",
     lead: "{fromLong} çıkışlı, İstanbul'un merkezi semtlerine araç başı sabit fiyatlar. Dört aracın fiyatını görmek için varış noktanızı seçin."
   },
-  prices: { title: "İstanbul Havalimanı Taksi Fiyatları · {brand}", desc: "İstanbul Havalimanı ve Sabiha Gökçen çıkışlı tüm sabit havalimanı taksi fiyatları, araç başı: sedan, minivan, V-Class ve minibüs.", h1: "Havalimanı taksi fiyatları", to: "Nereye" },
+  prices: { title: "İstanbul Havalimanı Taksi Fiyatları €{min}'dan · {brand}", desc: "İstanbul Havalimanı ve Sabiha Gökçen çıkışlı tüm sabit havalimanı taksi fiyatları, araç başı: sedan, minivan, V-Class ve minibüs.", h1: "Havalimanı taksi fiyatları", to: "Nereye" },
   book: {
     title: "Havalimanı transferinizi ayırtın · {brand}", h1: "Havalimanı transferinizi ayırtın",
     steps: ["Araç", "Bilgiler", "Onay"],

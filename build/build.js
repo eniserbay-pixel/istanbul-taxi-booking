@@ -33,6 +33,7 @@ const FL = require("./fleet");
 const FQ = require("./faq");
 const HB = require("./hubs");
 const MAP = require("./map");
+const RT = require("./returns");
 // German, French, Italian and Dutch: page texts, blog posts and legal texts in one file per language
 ["de", "fr", "it", "nl"].forEach(l => {
   const X = require("./lang/" + l);
@@ -147,8 +148,13 @@ function write(p, html) {
   fs.mkdirSync(path.dirname(f), { recursive: true });
   fs.writeFileSync(f, html);
 }
+// Turkish: the ending after a price follows how the number is read ("€38'den", "€40'tan", "€46'dan"), so the
+// texts can write "€{price}'dan" whatever the price is
+const ABL = ["dan", "den", "den", "ten", "ten", "ten", "dan", "den", "den", "dan"], ABL10 = ["den", "dan", "den", "dan", "tan", "den", "tan", "ten", "den", "dan"];
+const trAbl = n => n % 100 === 0 ? "den" : n % 10 ? ABL[n % 10] : ABL10[(n / 10) % 10];
+const trFix = html => html.replace(/€(\d+)'(?:dan|den|tan|ten)\b/g, (m, n) => `€${n}'${trAbl(+n)}`);
 function page(o) {
-  write(o.path, layout(o));
+  write(o.path, o.lang === "tr" ? trFix(layout(o)) : layout(o));
   if (!o.noindex) pages.push({ path: o.path, alts: o.alts, hl: o.hl, lang: o.lang });
 }
 
@@ -265,6 +271,9 @@ ROUTES.push(["IST", "SAW"]);
 const PORT_TO = ["taksim", "sultanahmet"];
 PORT_TO.forEach(z => ROUTES.push(["galataport", z]));
 const isPort = id => id === "galataport";
+// The trip back: district → airport ("Taksim to Istanbul Airport taxi"), build/returns.js
+const RETURNS = RT.FROM.flatMap(z => AIRPORTS.map(a => [z, a.id]));
+const retPath = (lang, z, a) => RT.T[lang].path(Q.zone(P, z).slug, a);
 const routePath = (lang, a, z) => isPort(a) ? PORT[lang].route(Q.zone(P, z).slug) : z === "SAW" ? I[lang].paths.airportPair : I[lang].paths.route(a, Q.zone(P, z).slug);
 const hubPath = (lang, a) => isPort(a) ? PORT[lang].path : I[lang].paths[a];
 // Everything the Galataport page lists, as [route, destination]: the airports first, then the districts
@@ -324,7 +333,7 @@ ${about(lang, z)}
 <section class="sec ice"><div class="wrap"><h2>${port ? port.meetH : r.meetH}</h2>${port ? portMeet(lang) : meetCards(lang, a === "SAW" ? "SAW" : "IST")}</div></section>
 <section class="sec"><div class="wrap narrow"><h2>${t.home.faqH}</h2>${faqBlock(faq)}</div></section>
 <section class="sec ice"><div class="wrap"><h2>${esc(fill(r.otherH, v))}</h2><div class="chips">${others.map(([href, y, price]) => `<a href="${href}">${esc(Q.zone(P, y).short[lang])} <b>€${price}</b></a>`).join("")}</div>
-<p><a class="more" href="${hubPath(lang, a)}">${esc(fill(r.back, v))} →</a></p></div></section>`;
+<p>${!port && RT.FROM.includes(z) && AIRPORTS.some(x => x.id === a) ? `<a class="more" href="${retPath(lang, z, a)}">${esc(fill(RT.T[lang].home, { from: Z.short[lang], to: A.short[lang] }))} →</a><br>` : ""}<a class="more" href="${hubPath(lang, a)}">${esc(fill(r.back, v))} →</a></p></div></section>`;
   const offer = {
     "@context": "https://schema.org", "@type": "Service", serviceType: port ? PORT.en.service : "Airport taxi", name: fill(r.h1, v), provider: { "@id": URL_ + "/#service" },
     areaServed: "Istanbul", offers: P.cars.map(c => ({ "@type": "Offer", name: c.name[lang], price: Q.base(P, a, z, c.id), priceCurrency: P.currency, eligibleQuantity: { "@type": "QuantitativeValue", maxValue: c.seats, unitText: "passengers" } }))
@@ -333,6 +342,39 @@ ${about(lang, z)}
     lang, path: p, alts: ALL(l => routePath(l, a, z)), title: fill(r.title, v), desc: fill(port ? port.desc : d ? r.desc : r.desc.replace(/,? ?\{km\}[^.]*\./, "."), v), body,
     ld: [offer, faqLd(faq), crumbs([[site.brand, t.paths.home], [A.short[lang], hubPath(lang, a)], [fill(r.h1, v), p]])]
   });
+}
+
+// Taxi from a district to an airport: price, when to leave for the flight, pickup and drop-off, FAQ
+const DEC = { en: ".", ar: "." };
+function retRoute(lang, z, a) {
+  const t = I[lang], X = RT.T[lang], Z = Q.zone(P, z), A = Q.zone(P, a), d = dist(z, a);
+  const h = n => String(n).replace(".", DEC[lang] || ",");
+  const v = {
+    from: Z.short[lang], to: A.short[lang], fromLong: Z.name[lang], toLong: A.name[lang], brand: site.brand, ret: P.rules.returnDiscountPct,
+    price: Q.base(P, z, a, "sedan"), van: Q.base(P, z, a, "minivan"), vclass: Q.base(P, z, a, "vclass"), bus: Q.base(P, z, a, "minibus"),
+    km: d[0], min: d[1], leave: h(RT.hours(180, d[1])), leaveDom: h(RT.hours(120, d[1]))
+  };
+  const F = s => fill(s, v), p = retPath(lang, z, a);
+  const faq = X.faq.map(([q, ans]) => [F(q), F(ans)]);
+  const others = RETURNS.filter(([x, y]) => y === a && x !== z);
+  const body = `<section class="hero hero-s"><div class="wrap hero-in"><div class="hero-t">
+<nav class="crumbs"><a href="${t.paths.home}">${esc(site.brand)}</a> › <a href="${hubPath(lang, a)}">${esc(A.short[lang])}</a></nav>
+<h1>${esc(F(X.h1))}</h1><p class="lead answer">${F(X.answer)}</p>
+<ul class="facts"><li><strong>${d[0]} km</strong></li><li><strong>~${d[1]} ${t.ui.min}</strong></li><li><strong>€${v.price}</strong> ${t.book.perCar}</li></ul></div>
+${searchForm(lang, { from: z, to: a })}${assure(lang)}</div></section>
+<section class="sec"><div class="wrap narrow prose"><h2>${esc(F(X.leaveH))}</h2><p>${F(X.leave)}</p></div></section>
+<section class="sec ice"><div class="wrap"><h2>${esc(fill(t.route.pricesH, v))}</h2>${fleet(lang, z, a)}
+<p class="sub small">${t.home.routesLead} ${esc(F(X.ret))}</p></div></section>
+<section class="sec"><div class="wrap narrow prose"><h2>${esc(X.pickupH)}</h2><p>${esc(F(X.pickup))}</p><p>${esc(X.drop[a])}</p></div></section>
+<section class="sec ice"><div class="wrap narrow"><h2>${t.home.faqH}</h2>${faqBlock(faq)}</div></section>
+<section class="sec"><div class="wrap"><h2>${esc(F(X.otherH))}</h2><div class="chips">${others.map(([x]) => `<a href="${retPath(lang, x, a)}">${esc(Q.zone(P, x).short[lang])} <b>€${Q.base(P, x, a, "sedan")}</b></a>`).join("")}</div>
+<p><a class="more" href="${routePath(lang, a, z)}">${esc(F(X.fwd))} →</a><br><a class="more" href="${hubPath(lang, a)}">${esc(fill(t.route.back, { from: A.short[lang] }))} →</a></p></div></section>`;
+  const offer = {
+    "@context": "https://schema.org", "@type": "Service", serviceType: "Airport taxi", name: F(X.h1), provider: { "@id": URL_ + "/#service" },
+    areaServed: "Istanbul", offers: P.cars.map(c => ({ "@type": "Offer", name: c.name[lang], price: Q.base(P, z, a, c.id), priceCurrency: P.currency, eligibleQuantity: { "@type": "QuantitativeValue", maxValue: c.seats, unitText: "passengers" } }))
+  };
+  page({ lang, path: p, alts: ALL(l => retPath(l, z, a)), title: F(X.title), desc: F(X.desc), body,
+    ld: [offer, faqLd(faq), crumbs([[site.brand, t.paths.home], [A.short[lang], hubPath(lang, a)], [F(X.h1), p]])] });
 }
 
 // "About Taksim" on a route page: what the place is like, sights, the driver's tip, the areas at this price and
@@ -470,6 +512,7 @@ function hub(lang, a) {
 ${list.map(([x, y]) => { const d = dist(x, y), href = y === "IST" || y === "SAW" ? t.paths.airportPair : routePath(lang, x, y); return `<tr><td><a href="${href}">${esc(Q.zone(P, y).name[lang])}</a></td>${P.cars.map(c => `<td>€${Q.base(P, x, y, c.id)}</td>`).join("")}<td>${d ? d[0] : ""}</td><td>${d ? d[1] : ""}</td></tr>`; }).join("")}
 </tbody></table></div><p class="sub small">${t.home.routesLead}</p></div></section>
 <section class="sec ice"><div class="wrap"><h2>${t.route.meetH}</h2>${meetCards(lang, a)}</div></section>
+<section class="sec"><div class="wrap"><h2>${esc(fill(RT.T[lang].hubH, { to: A.short[lang] }))}</h2><div class="chips">${RETURNS.filter(([, y]) => y === a).map(([z]) => `<a href="${retPath(lang, z, a)}">${esc(Q.zone(P, z).short[lang])} → ${esc(A.short[lang])} <b>€${Q.base(P, z, a, "sedan")}</b></a>`).join("")}</div></div></section>
 ${ex.html}`;
   page({ lang, path: t.paths[a], alts: ALL(l => I[l].paths[a]), title: fill(hb.title, v), desc: fill(hb.desc, v), body, ld: [faqLd(ex.faq), crumbs([[site.brand, t.paths.home], [A.short[lang], t.paths[a]]])] });
 }
@@ -817,7 +860,7 @@ ${ROUTES.filter(([x, y]) => x === a.id || y === a.id).map(([x, y]) => { const to
 </tbody></table></div>`).join("")}
 <h2>${esc(PL.T[lang].more)}</h2><div class="chips">${PL.L.map(x => `<a href="${PL.T[lang].path(x.id)}">${esc(x.name[lang])}</a>`).join("")}</div></div></section>
 <section class="sec ice"><div class="wrap narrow"><h2>${esc(cat[0])}</h2>${faqBlock(faq.map(([q, a]) => [q, esc(a)]))}<p class="fq-rel"><a href="${FQ[lang].path}">${esc(FQ[lang].more)} →</a></p></div></section>`;
-  page({ lang, path: t.paths.prices, alts: ALL(l => I[l].paths.prices), title: fill(t.prices.title, { brand: site.brand }), desc: t.prices.desc, body, ld: [faqLd(faq)] });
+  page({ lang, path: t.paths.prices, alts: ALL(l => I[l].paths.prices), title: fill(t.prices.title, { brand: site.brand, min: minPrice }), desc: t.prices.desc, body, ld: [faqLd(faq)] });
 }
 
 function book(lang) {
@@ -908,6 +951,9 @@ Sitemap: ${URL_}/sitemap.xml
 ## Prices
 ${ROUTES.map(([a, z]) => line(a, z)).join("\n")}
 
+## Taxis to the airport (same fixed price; pickup at the hotel)
+${RETURNS.map(([z, a]) => `- ${Q.zone(P, z).name.en} → ${Q.zone(P, a).name.en}: from €${Q.base(P, z, a, "sedan")} per car. ${URL_}${retPath("en", z, a)}`).join("\n")}
+
 ## Guides
 ${GUIDES.map(g => `- ${g.nav}: ${URL_}${g.path}`).join("\n")}
 - Istanbul Airport taxi prices: ${URL_}${I.en.paths.IST}
@@ -943,7 +989,7 @@ function admin() {
   fs.readdirSync(path.join(__dirname, "static", "fonts")).forEach(f => put("static/fonts/" + f, "fonts/" + f));
 }
 
-LANGS.forEach(l => { home(l); AIRPORTS.forEach(a => hub(l, a.id)); portHub(l); aboutPage(l); howPage(l); fleetPage(l); faqPage(l); CO.ORDER.forEach(k => companyPage(l, k)); ROUTES.forEach(([a, z]) => route(l, a, z)); PL.L.forEach(x => place(l, x)); SV.S.forEach(x => service(l, x)); prices(l); book(l); legalPages(l); blogIndex(l); POSTS.forEach(x => x[l] && blogPost(l, x)); });
+LANGS.forEach(l => { home(l); AIRPORTS.forEach(a => hub(l, a.id)); portHub(l); aboutPage(l); howPage(l); fleetPage(l); faqPage(l); CO.ORDER.forEach(k => companyPage(l, k)); ROUTES.forEach(([a, z]) => route(l, a, z)); RETURNS.forEach(([z, a]) => retRoute(l, z, a)); PL.L.forEach(x => place(l, x)); SV.S.forEach(x => service(l, x)); prices(l); book(l); legalPages(l); blogIndex(l); POSTS.forEach(x => x[l] && blogPost(l, x)); });
 GUIDES.forEach(g => LANGS.forEach(l => guide(g, l)));
 mapPage();
 notFound();

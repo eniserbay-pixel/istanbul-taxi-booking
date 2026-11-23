@@ -62,12 +62,12 @@ module.exports = {
       otherH: "Other routes from {from}", back: "All {from} taxi prices"
     },
     hub: {
-      title: "{from} Taxi · Fixed Prices to Every District",
+      title: "{from} Taxi · Fixed Prices from €{price} per Car",
       desc: "Fixed-price private taxi from {from} to Sultanahmet, Taksim, Kadıköy and every central district, from €{price} per car. Name sign and flight tracking.",
       h1: "{from} taxi prices",
       lead: "Fixed prices per car from {fromLong} to Istanbul's central districts. Pick your destination to see all four cars."
     },
-    prices: { title: "Istanbul Airport Taxi Prices · {brand}", desc: "All fixed airport taxi prices from Istanbul Airport and Sabiha Gökçen, per car, for sedan, minivan, V-Class and minibus.", h1: "Airport taxi prices", to: "To" },
+    prices: { title: "Istanbul Airport Taxi Prices from €{min} · {brand}", desc: "All fixed airport taxi prices from Istanbul Airport and Sabiha Gökçen, per car, for sedan, minivan, V-Class and minibus.", h1: "Airport taxi prices", to: "To" },
     book: {
       title: "Book your airport taxi · {brand}", h1: "Book your airport taxi",
       steps: ["Car", "Details", "Confirm"],
