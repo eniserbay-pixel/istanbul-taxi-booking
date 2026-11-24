@@ -162,6 +162,25 @@ const ST = {
   toggle: "Sights", show: "Show on map", tip: "Tip", near: "Read more", transfer: "Transfer from {a}: €{p}", credit: "Photo: Pexels", close: "Close"
 };
 
+// Texts of the six category pages and the place widget (build/poi.js holds the places)
+const IT = {
+  catH: "Explore the map by category",
+  catLead: "Six maps of the places visitors travel to from the airports. Each one lists the places by area with the fixed transfer price to their door.",
+  catCount: "{n} places in {a} areas", catFrom: "Transfers from €{p}",
+  onMap: "On the category maps",
+  mapH: "{c} on the map", hint: "Tap a pin or a place's “Show route” to see the route and the price from the airport. Drag to move, pinch or use + and − to zoom.",
+  rev: "Swap direction", zone: "Price zone", per: "per car, one way, to the door",
+  ask: "Outside our fixed-price zones: price on request", askWa: "Ask for a price on WhatsApp", where: "Show on map",
+  show: "Show route and prices", bookFrom: "Book from {a}", fromP: "from €{p}",
+  outside: "Outside the fixed-price zones", outsideS: "Outside the zones", outsideP: "We drive here too; send the address and the date on WhatsApp and we reply with a fixed price.",
+  listLead: "{n} places grouped by the price zone they are in. Every {one} in the same zone has the same fixed price; the closer airport is marked.",
+  jump: "Jump to an area", bookAny: "Book with any address",
+  introH: "Getting to Istanbul's {c} from the airport",
+  tableH: "Transfer prices to {c} by area", tableLead: "Sedan price per car, one way, with road distance and the usual drive time. The closer airport is marked; minivan, V-Class and minibus prices are in the map's price card.",
+  colArea: "Area", faqH: "Questions about these transfers", othersH: "More maps of Istanbul", open: "Open the map", back: "Back to the Istanbul transfer map",
+  noRoute: "Pick an airport to see the price", toAirport: "Transfer to {a}"
+};
+
 const T = {
   path: "/istanbul-transfer-map",
   nav: "Transfer map",
@@ -223,4 +242,4 @@ const T = {
   ctaP: "Book it in a minute; you pay the driver in cash at the end of the ride."
 };
 
-module.exports = { W, H, X, Y, pts, SEA, HORN, ISLANDS, POS, PLACE_POS, CROSS, SEA_LABELS, VIEWS, AREA, SIGHTS, ST, T };
+module.exports = { W, H, X, Y, pts, SEA, HORN, ISLANDS, POS, PLACE_POS, CROSS, SEA_LABELS, VIEWS, AREA, SIGHTS, ST, IT, T };

@@ -1,5 +1,6 @@
-// Istanbul transfer map (/istanbul-transfer-map): pick a start (IST, SAW, Galataport) and a destination on the
-// map or in the list; the card shows km, minutes and the four cars' prices. Zoom with the buttons, the preset
+// Istanbul transfer map (/istanbul-transfer-map and its category pages): pick a start (IST, SAW, Galataport) and a
+// destination on the map or in the list, or a place (hotel, mall, hospital...) from its pin or its "Show route";
+// the card shows km, minutes and the four cars' prices, booked with the place as the drop-off. Zoom with the buttons, the preset
 // views, ctrl/⌘ + wheel or a pinch; drag to move. Data comes from window.TMAP (build/build.js mapPage).
 (function () {
   "use strict";
@@ -12,7 +13,9 @@
   var svg = $("[data-map]"), lines = $("[data-lines]"), cardEl = $("[data-card]"), T = D.T;
   var scaled = $$(".sc", svg);
   var NS = "http://www.w3.org/2000/svg";
-  var st = { from: "IST", to: "sultanahmet", cx: D.W / 2, cy: D.H / 2, z: 1 };
+  var S = D.s || {}, ST = D.ST || {};
+  var st = { from: "IST", to: "sultanahmet", item: null, rev: false, cx: D.W / 2, cy: D.H / 2, z: 1 };
+  if (D.first && S[D.first]) { st.item = D.first; st.to = S[D.first].zone; }
   var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   // ---- View: centre and zoom → viewBox; markers and labels keep their size ----
@@ -43,14 +46,14 @@
   }
   // fit the start and the destination in view
   function fit() {
-    var a = D.z[st.from].xy, b = D.z[st.to].xy;
+    var a = D.z[st.from].xy, b = st.item ? S[st.item].xy : D.z[st.to].xy;
     var bw = Math.abs(a[0] - b[0]) + 120, bh = Math.abs(a[1] - b[1]) + 120;
     go((a[0] + b[0]) / 2, (a[1] + b[1]) / 2, Math.min(D.W / bw, D.H / bh, 6));
   }
 
   // ---- Route lines, markers, list and card ----
   function curve(a, b) {
-    var p = D.z[a].xy, q = D.z[b].xy, dx = q[0] - p[0], dy = q[1] - p[1];
+    var p = D.z[a].xy, q = typeof b === "string" ? D.z[b].xy : b, dx = q[0] - p[0], dy = q[1] - p[1];
     return "M" + p[0] + " " + p[1] + "Q" + Math.round((p[0] + q[0]) / 2 - dy * .18) + " " + Math.round((p[1] + q[1]) / 2 + dx * .18) + " " + q[0] + " " + q[1];
   }
   function route(to) { return D.r[st.from + "|" + to]; }
@@ -62,14 +65,35 @@
       p.setAttribute("d", curve(st.from, id));
       p.setAttribute("data-to", id);
       p.setAttribute("vector-effect", "non-scaling-stroke");
-      if (id === st.to) p.setAttribute("class", "on");
+      if (id === st.to && !st.item) p.setAttribute("class", "on");
       lines.appendChild(p);
     });
+    // a place: its own line from the start to its pin
+    if (st.item) {
+      var q = document.createElementNS(NS, "path");
+      q.setAttribute("d", curve(st.from, S[st.item].xy));
+      q.setAttribute("data-item-line", "");
+      q.setAttribute("vector-effect", "non-scaling-stroke");
+      q.setAttribute("class", "on");
+      lines.appendChild(q);
+    }
     // the picked route on top
     var on = $("path.on", lines);
     if (on) lines.appendChild(on);
   }
+  function bookItem(x) {
+    return D.book + "?" + (st.rev ? "from=" + x.zone + "&to=" + st.from + "&pickup=" : "from=" + st.from + "&to=" + x.zone + "&dropoff=") + encodeURIComponent(x.n);
+  }
+  function itemCard() {
+    var x = S[st.item], r = route(x.zone), z = D.z[x.zone], f = D.z[st.from];
+    return '<p class="tm-rt">' + (st.rev ? esc(x.n) + " \u2192 " + esc(f.s) : esc(f.s) + " \u2192 " + esc(x.n)) + '<button type="button" class="tm-rev" data-rev aria-label="' + esc(ST.rev) + '">\u21c4</button></p><h3>' + esc(st.rev ? fill(ST.toAirport, { a: f.s }) : x.n) + "</h3>" +
+      '<p class="tm-meta">' + (r.km ? "<span>" + fill(T.km, r) + "</span><span>" + fill(T.min, r) + "</span>" : "<span>" + T.noKm + "</span>") + "<span>" + T.side[z.side] + "</span></p>" +
+      '<p class="tm-area"><strong>' + esc(ST.zone) + ":</strong> " + esc(z.n) + (x.area ? " \u00b7 " + esc(x.area) : "") + "</p>" +
+      '<ul class="tm-cars">' + D.cars.map(function (c, i) { return "<li><span>" + esc(c.n) + " <small>" + fill(T.seats, { n: c.seats }) + "</small></span><strong>\u20ac" + r.p[i] + "</strong></li>"; }).join("") + "</ul>" +
+      '<p class="small tm-per">' + esc(ST.per) + '</p><p class="tm-act"><a class="btn btn-y" href="' + esc(bookItem(x)) + '">' + T.book + "</a>" + (r.u ? '<a class="more" href="' + esc(r.u) + '">' + T.details + " \u2192</a>" : "") + "</p>";
+  }
   function card() {
+    if (st.item) return itemCard();
     var r = route(st.to), z = D.z[st.to], f = D.z[st.from];
     return '<p class="tm-rt">' + esc(f.s) + " → " + esc(z.s) + "</p><h3>" + esc(z.n) + "</h3>" +
       '<p class="tm-meta">' + (r.km ? "<span>" + fill(T.km, r) + "</span><span>" + fill(T.min, r) + "</span>" : "<span>" + T.noKm + "</span>") + "<span>" + T.side[z.side] + "</span></p>" +
@@ -85,7 +109,8 @@
       var r = route(id);
       if (r) m.setAttribute("href", r.u || r.b);
     });
-    $$("path", lines).forEach(function (p) { p.classList.toggle("on", p.getAttribute("data-to") === st.to); });
+    $$("path", lines).forEach(function (p) { p.classList.toggle("on", p.hasAttribute("data-item-line") || !st.item && p.getAttribute("data-to") === st.to); });
+    $$(".mk-sight", svg).forEach(function (m) { m.classList.toggle("sel", m.getAttribute("data-sight") === st.item); });
     var on = $("path.on", lines);
     if (on) lines.appendChild(on);
     $$(".tm-dests a").forEach(function (a) {
@@ -100,12 +125,25 @@
   function pick(to, zoom) {
     if (!D.z[to] || to === st.from || !route(to)) return false;
     st.to = to;
+    if (st.item) { st.item = null; st.rev = false; drawLines(); }
+    paint();
+    if (zoom) fit();
+    return true;
+  }
+  // a place of the pins: the route to its zone, the line to its pin
+  function pickItem(id, zoom) {
+    var x = S[id];
+    if (!x || !x.zone || !route(x.zone)) return false;
+    st.item = id;
+    st.to = x.zone;
+    drawLines();
     paint();
     if (zoom) fit();
     return true;
   }
   function start(from) {
     st.from = from;
+    if (st.item && !route(S[st.item].zone)) st.item = null;
     if (st.to === from || !route(st.to)) st.to = from === "galataport" ? "taksim" : "sultanahmet";
     drawLines();
     paint();
@@ -117,7 +155,7 @@
   $$("[data-zoom]").forEach(function (b) { b.addEventListener("click", function () { go(st.cx, st.cy, st.z * (b.getAttribute("data-zoom") === "1" ? 1.7 : 1 / 1.7)); }); });
   $$("[data-view]").forEach(function (b) { b.addEventListener("click", function () { var v = D.views[+b.getAttribute("data-view")]; go(v[0], v[1], v[2]); }); });
   // ---- Sights: pins, pop-up, toggle ----
-  var pop = $("[data-pop]"), S = D.s || {}, ST = D.ST || {};
+  var pop = $("[data-pop]");
   function hidePop() {
     pop.hidden = true;
     $$(".mk-sight.on", svg).forEach(function (m) { m.classList.remove("on"); });
@@ -125,14 +163,14 @@
   function showSight(id, zoom) {
     var x = S[id];
     if (!x) return;
-    var z = D.z[x.zone];
+    var z = D.z[x.zone] || { s: x.area };
     $$(".mk-sight", svg).forEach(function (m) { m.classList.toggle("on", m.getAttribute("data-sight") === id); });
-    var can = x.zone !== st.from && route(x.zone);
+    var can = x.zone && x.zone !== st.from && route(x.zone);
     pop.innerHTML = '<button type="button" class="tm-pop-x" data-pop-x aria-label="' + esc(ST.close) + '">×</button>' +
       (x.img ? '<img src="' + esc(x.img) + '" alt="" width="640" height="420">' : "") +
-      '<div class="tm-pop-t"><p class="tm-rt">' + esc(z.s) + "</p><h3>" + esc(x.n) + "</h3><p>" + esc(x.about) + '</p><p class="small"><strong>' + esc(ST.tip) + ":</strong> " + esc(x.tip) + "</p>" +
-      '<p class="tm-pop-a">' + (can ? '<button type="button" class="btn btn-y btn-sm" data-go-zone="' + esc(x.zone) + '">' + esc(D.z[st.from].s) + " → " + esc(z.s) + " · €" + route(x.zone).p[0] + "</button>" : "") +
-      '<a class="more" href="#sight-' + esc(id) + '">' + esc(ST.near) + " →</a></p></div>";
+      '<div class="tm-pop-t"><p class="tm-rt">' + esc(z.s) + "</p><h3>" + esc(x.n) + "</h3>" + (x.tip ? "<p>" + esc(x.about) + '</p><p class="small"><strong>' + esc(ST.tip) + ":</strong> " + esc(x.tip) + "</p>" : '<p class="small"><strong>' + esc(ST.tip) + ":</strong> " + esc(x.about) + "</p>") +
+      '<p class="tm-pop-a">' + (can ? '<button type="button" class="btn btn-y btn-sm" data-go-item="' + esc(id) + '">' + esc(D.z[st.from].s) + " \u2192 " + esc(x.n) + " \u00b7 \u20ac" + route(x.zone).p[0] + "</button>" : x.zone ? "" : '<a class="btn btn-y btn-sm" href="' + esc(D.wa) + '" rel="nofollow">' + esc(ST.askWa) + "</a>") +
+      '<a class="more" href="' + esc(x.more) + '">' + esc(ST.near) + " →</a></p></div>";
     pop.hidden = false;
     // the pop-up covers the left of a wide map: keep the pin to the right of it
     var zz = Math.max(st.z, 5), wide = svg.getBoundingClientRect().width > 620;
@@ -146,25 +184,34 @@
   });
   pop.addEventListener("click", function (e) {
     if (e.target.closest("[data-pop-x]")) { hidePop(); return; }
-    var b = e.target.closest("[data-go-zone]");
-    if (b) { hidePop(); pick(b.getAttribute("data-go-zone"), true); }
+    var b = e.target.closest("[data-go-item]");
+    if (b) { hidePop(); pickItem(b.getAttribute("data-go-item"), true); }
   });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !pop.hidden) hidePop(); });
-  // "Show on map" on the sight cards below the map
+  // "Show route" on the place cards below the map: the route and its price, or the pin's pop-up outside the zones
   document.addEventListener("click", function (e) {
-    var a = e.target.closest && e.target.closest("[data-show-sight]");
+    var a = e.target.closest && e.target.closest("[data-route-item]");
     if (!a) return;
     e.preventDefault();
-    var tog = $("[data-sights]");
+    var tog = $("[data-sights]"), id = a.getAttribute("data-route-item");
     if (tog.getAttribute("aria-pressed") !== "true") tog.click();
     document.getElementById("map").scrollIntoView({ behavior: reduce ? "auto" : "smooth" });
-    showSight(a.getAttribute("data-show-sight"), true);
+    hidePop();
+    if (!pickItem(id, true)) showSight(id, true);
+  });
+  // the swap button in the place card: from the place back to the airport (same price)
+  cardEl.addEventListener("click", function (e) {
+    if (!e.target.closest("[data-rev]")) return;
+    st.rev = !st.rev;
+    cardEl.innerHTML = card();
+    var b = $("[data-rev]", cardEl);
+    if (b) b.focus();
   });
 
   var dragged = false;
   root.addEventListener("click", function (e) {
     var sg = e.target.closest && e.target.closest("a[data-sight]");
-    if (sg) { e.preventDefault(); if (!dragged) showSight(sg.getAttribute("data-sight"), false); return; }
+    if (sg) { e.preventDefault(); if (!dragged) { pickItem(sg.getAttribute("data-sight"), false); showSight(sg.getAttribute("data-sight"), false); } return; }
     var a = e.target.closest && e.target.closest("a[data-id]");
     if (!a || !root.contains(a)) return;
     if (dragged) { e.preventDefault(); return; }

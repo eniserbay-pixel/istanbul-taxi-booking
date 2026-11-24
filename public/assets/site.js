@@ -167,7 +167,7 @@
     from: params.get("from") || "", to: params.get("to") || "", date: params.get("date") || "", time: params.get("time") || "",
     pax: Math.max(1, Math.min(16, +params.get("pax") || 2)),
     ret: params.get("ret") === "1" && params.get("rdate") ? { date: params.get("rdate"), time: params.get("rtime") || "" } : null,
-    car: "", bags: 0, childSeats: 0, name: "", email: "", phone: "", flight: "", pickup: "", dropoff: "", note: "",
+    car: "", bags: 0, childSeats: 0, name: "", email: "", phone: "", flight: "", pickup: (params.get("pickup") || "").slice(0, 120), dropoff: (params.get("dropoff") || "").slice(0, 120), note: "",
     retFlight: "", retPickup: "", retDropoff: "", step: 0, max: 0
   };
   // The return's route: its own one when "different return route" was ticked, otherwise the way back
