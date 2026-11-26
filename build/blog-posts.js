@@ -22,7 +22,122 @@ const E = {
 const MEET = site.meet.IST;
 const K = { sult: km("IST", "sultanahmet"), taksim: km("IST", "taksim") };
 
+// Price table from Istanbul Airport to every district: one row per zone, cheapest first, built from the same prices as the site.
+const ZAR = { SAW: "مطار صبيحة كوكجن", taksim: "تقسيم", sultanahmet: "السلطان أحمد", karakoy: "كاراكوي", galataport: "ميناء غلطة بورت", besiktas: "بشيكتاش", sisli: "شيشلي", sariyer: "ساريير", bakirkoy: "باكركوي", beylikduzu: "بيليكدوزو", kadikoy: "قاضي كوي", uskudar: "أسكدار", atasehir: "أتاشهير" };
+const ISTZ = Object.keys(P.dist.IST || {}).filter(z => pr("IST", z));
+const zName = (l, z) => l === "ar" ? (ZAR[z] || z) : (Q.zone(P, z).short || {})[l] || (Q.zone(P, z).short || {}).en || z;
+const eur = v => v ? "€" + v : "–";
+const istTable = (l, H) => `<table><thead><tr><th>${H[0]}</th><th>km</th><th>${H[1]}</th><th>${H[2]}</th><th>${H[3]}</th><th>${H[4]}</th></tr></thead><tbody>
+${ISTZ.slice().sort((a, b) => pr("IST", a) - pr("IST", b) || km("IST", a)[0] - km("IST", b)[0]).map(z => `<tr><td><a href="${z === "SAW" ? paths(l).airportPair : paths(l).route("IST", slug(z))}">${zName(l, z)}</a></td><td>${km("IST", z)[0]}</td><td>${km("IST", z)[1]}</td><td>${eur(pr("IST", z))}</td><td>${eur(pr("IST", z, "minivan"))}</td><td>${eur(pr("IST", z, "vclass"))}</td></tr>`).join("\n")}
+</tbody></table>`;
+const lo = Math.min(...ISTZ.map(z => pr("IST", z))), hi = Math.max(...ISTZ.filter(z => z !== "SAW").map(z => pr("IST", z)));
+const PK = (P.rules.peak && P.rules.peak.IST && P.rules.peak.IST.pct > 0) ? P.rules.peak.IST : null;
+
 module.exports = [
+  {
+    id: "ist-taxi-prices",
+    date: "2026-12-01",
+    en: {
+      slug: "istanbul-airport-taxi-prices-every-district",
+      title: "Istanbul Airport Taxi Prices 2026: Every District",
+      desc: `Fixed transfer prices from Istanbul Airport to every Istanbul district, from €${lo} per car: sedan, minivan and V-Class, with distance and travel time.`,
+      lead: `How much is a taxi from Istanbul Airport? The honest answer for a yellow taxi is "it depends on the meter and the traffic". For a pre-booked transfer it is a fixed number per car. Here are our prices to every district of Istanbul, from €${lo} to €${hi} in a sedan.`,
+      body: `<h2>Prices from Istanbul Airport</h2>
+<p>All prices are one way, per car (not per person), in euros, and include motorway tolls, luggage and meet and greet in arrivals. Times are without heavy traffic.</p>
+${istTable("en", ["District", "min", "Sedan (1–3)", "Minivan (1–6)", "V-Class (1–6)"])}
+<p>A minibus for up to 13 people is also available; see the <a href="${L.en.prices}">prices page</a> for every route and vehicle.</p>
+{widget}
+<h2>What is included</h2>
+<ul>
+<li><strong>Meet and greet:</strong> ${MEET.en}</li>
+<li><strong>Flight tracking</strong> and the first ${E.wait} minutes of waiting free.</li>
+<li><strong>Tolls and luggage</strong> in the price; a child seat is €${E.seat}.</li>
+<li><strong>Return trips</strong> are ${P.rules.returnDiscountPct}% cheaper when you book both ways together.</li>
+</ul>
+${PK ? `<h2>When does it cost more?</h2>
+<p>Pickups at Istanbul Airport between ${PK.from} and ${PK.to}, the airport's busiest hours, cost ${PK.pct}% more. The booking form shows the final price before you confirm. At night and in the morning the normal price applies.</p>` : ""}
+<h2>And a yellow taxi?</h2>
+<p>Istanbul taxis run on the meter, so the fare depends on the taxi class, the traffic and the route, and tolls are usually added on top. There is no price before you get in. For the same reason a taxi can be cheaper on an empty road and clearly more expensive at rush hour. With a transfer you know the price when you book.</p>
+<h2>How to book</h2>
+<p>Choose your route in the form, see the price for each vehicle and book in about a minute: no account and no payment up front. You pay the driver in cash at the end of the ride.</p>
+{widget}`
+    },
+    de: {
+      slug: "flughafen-istanbul-taxi-preise-alle-stadtteile",
+      title: "Taxipreise vom Flughafen Istanbul 2026: alle Stadtteile",
+      desc: `Festpreise vom Flughafen Istanbul in jeden Stadtteil, ab €${lo} pro Fahrzeug: Limousine, Minivan und V-Klasse, mit Entfernung und Fahrzeit.`,
+      lead: `Was kostet ein Taxi vom Flughafen Istanbul? Beim gelben Taxi lautet die ehrliche Antwort: "je nach Taxameter und Verkehr". Beim vorab gebuchten Transfer ist es ein fester Preis pro Fahrzeug. Hier sind unsere Preise in jeden Stadtteil Istanbuls, von €${lo} bis €${hi} in der Limousine.`,
+      body: `<h2>Preise ab Flughafen Istanbul</h2>
+<p>Alle Preise gelten für eine Fahrt, pro Fahrzeug (nicht pro Person), in Euro, inklusive Maut, Gepäck und Abholung in der Ankunftshalle. Fahrzeiten ohne dichten Verkehr.</p>
+${istTable("de", ["Stadtteil", "Min.", "Limousine (1–3)", "Minivan (1–6)", "V-Klasse (1–6)"])}
+<p>Ein Kleinbus für bis zu 13 Personen ist ebenfalls verfügbar; alle Strecken und Fahrzeuge finden Sie auf der <a href="${L.de.prices}">Preisseite</a>.</p>
+{widget}
+<h2>Was inklusive ist</h2>
+<ul>
+<li><strong>Abholung mit Namensschild:</strong> ${MEET.de}</li>
+<li><strong>Flugverfolgung</strong> und die ersten ${E.wait} Minuten Wartezeit kostenlos.</li>
+<li><strong>Maut und Gepäck</strong> im Preis; ein Kindersitz kostet €${E.seat}.</li>
+<li><strong>Rückfahrten</strong> sind ${P.rules.returnDiscountPct}% günstiger, wenn Sie Hin- und Rückfahrt zusammen buchen.</li>
+</ul>
+${PK ? `<h2>Wann kostet es mehr?</h2>
+<p>Abholungen am Flughafen Istanbul zwischen ${PK.from} und ${PK.to} Uhr, den verkehrsreichsten Stunden des Flughafens, kosten ${PK.pct}% mehr. Das Buchungsformular zeigt den Endpreis, bevor Sie bestätigen. Nachts und morgens gilt der normale Preis.</p>` : ""}
+<h2>Und das gelbe Taxi?</h2>
+<p>Istanbuler Taxis fahren nach Taxameter, der Preis hängt also von der Taxiklasse, dem Verkehr und der Route ab, und Maut kommt meist hinzu. Einen Preis vor der Fahrt gibt es nicht. Darum kann ein Taxi auf leerer Straße günstiger und im Berufsverkehr deutlich teurer sein. Beim Transfer kennen Sie den Preis schon bei der Buchung.</p>
+<h2>So buchen Sie</h2>
+<p>Wählen Sie Ihre Strecke im Formular, sehen Sie den Preis für jedes Fahrzeug und buchen Sie in etwa einer Minute: kein Konto, keine Vorauszahlung. Sie zahlen am Ende der Fahrt bar beim Fahrer.</p>
+{widget}`
+    },
+    ru: {
+      slug: "ceny-na-taksi-iz-aeroporta-stambula-vse-rayony",
+      title: "Цены на такси из аэропорта Стамбула 2026: все районы",
+      desc: `Фиксированные цены на трансфер из аэропорта Стамбула во все районы города, от €${lo} за машину: седан, минивэн и V-Class, расстояние и время в пути.`,
+      lead: `Сколько стоит такси из аэропорта Стамбула? Для жёлтого такси честный ответ — «зависит от счётчика и пробок». Для заранее заказанного трансфера это фиксированная цена за машину. Вот наши цены во все районы Стамбула: от €${lo} до €${hi} на седане.`,
+      body: `<h2>Цены из аэропорта Стамбула</h2>
+<p>Все цены указаны в одну сторону, за машину (а не за человека), в евро, и включают платные дороги, багаж и встречу в зале прилёта. Время в пути — без сильных пробок.</p>
+${istTable("ru", ["Район", "мин", "Седан (1–3)", "Минивэн (1–6)", "V-Class (1–6)"])}
+<p>Есть и микроавтобус до 13 человек; все маршруты и автомобили — на <a href="${L.ru.prices}">странице цен</a>.</p>
+{widget}
+<h2>Что входит в цену</h2>
+<ul>
+<li><strong>Встреча с табличкой:</strong> ${MEET.ru}</li>
+<li><strong>Отслеживание рейса</strong> и первые ${E.wait} минут ожидания бесплатно.</li>
+<li><strong>Платные дороги и багаж</strong> включены; детское кресло — €${E.seat}.</li>
+<li><strong>Обратная поездка</strong> на ${P.rules.returnDiscountPct}% дешевле, если заказать обе поездки вместе.</li>
+</ul>
+${PK ? `<h2>Когда дороже?</h2>
+<p>Подача в аэропорту Стамбула с ${PK.from} до ${PK.to}, в самые загруженные часы аэропорта, стоит на ${PK.pct}% дороже. Форма заказа показывает итоговую цену до подтверждения. Ночью и утром действует обычная цена.</p>` : ""}
+<h2>А жёлтое такси?</h2>
+<p>Такси в Стамбуле работают по счётчику, поэтому цена зависит от класса такси, пробок и маршрута, а платные дороги обычно оплачиваются сверху. Цены до посадки нет. Поэтому на пустой дороге такси может выйти дешевле, а в час пик — заметно дороже. С трансфером вы знаете цену уже при заказе.</p>
+<h2>Как заказать</h2>
+<p>Выберите маршрут в форме, посмотрите цену для каждого автомобиля и закажите примерно за минуту: без регистрации и без предоплаты. Вы платите водителю наличными в конце поездки.</p>
+{widget}`
+    },
+    ar: {
+      slug: "asaar-taksi-matar-istanbul-kull-almanatiq",
+      title: "أسعار التاكسي من مطار إسطنبول 2026: كل المناطق",
+      desc: `أسعار ثابتة للتوصيل من مطار إسطنبول إلى كل مناطق المدينة، من €${lo} للسيارة: سيدان وميني فان وV-Class، مع المسافة ومدة الرحلة.`,
+      lead: `كم يكلف التاكسي من مطار إسطنبول؟ مع التاكسي الأصفر الجواب الصادق هو "حسب العدّاد والزحام". أما التوصيل المحجوز مسبقًا فسعره ثابت للسيارة. هذه أسعارنا إلى كل مناطق إسطنبول، من €${lo} إلى €${hi} بسيارة سيدان.`,
+      body: `<h2>الأسعار من مطار إسطنبول</h2>
+<p>كل الأسعار لاتجاه واحد، للسيارة وليس للشخص، باليورو، وتشمل رسوم الطرق والأمتعة والاستقبال في صالة الوصول. مدة الرحلة بدون زحام شديد.</p>
+${istTable("ar", ["المنطقة", "دقيقة", "سيدان (1–3)", "ميني فان (1–6)", "V-Class (1–6)"])}
+<p>تتوفر أيضًا حافلة صغيرة حتى 13 شخصًا؛ جميع المسارات والسيارات في <a href="${L.ar.prices}">صفحة الأسعار</a>.</p>
+{widget}
+<h2>ماذا يشمل السعر</h2>
+<ul>
+<li><strong>الاستقبال باللوحة:</strong> ينتظرك السائق في صالة الوصول عند المخرج الذي تحدده عند الحجز (عادة المخرج 13) ومعه لوحة باسمك.</li>
+<li><strong>متابعة الرحلة الجوية</strong> وأول ${E.wait} دقيقة من الانتظار مجانًا.</li>
+<li><strong>رسوم الطرق والأمتعة</strong> مشمولة؛ مقعد الأطفال €${E.seat}.</li>
+<li><strong>رحلة العودة</strong> أرخص بنسبة ${P.rules.returnDiscountPct}% عند حجز الذهاب والعودة معًا.</li>
+</ul>
+${PK ? `<h2>متى يكون السعر أعلى؟</h2>
+<p>الاستقبال في مطار إسطنبول بين ${PK.from} و${PK.to}، وهي ساعات الذروة في المطار، أغلى بنسبة ${PK.pct}%. يعرض نموذج الحجز السعر النهائي قبل التأكيد. في الليل والصباح يُطبق السعر العادي.</p>` : ""}
+<h2>وماذا عن التاكسي الأصفر؟</h2>
+<p>تعمل سيارات التاكسي في إسطنبول بالعدّاد، فالأجرة تعتمد على فئة التاكسي والزحام والطريق، وغالبًا تُضاف رسوم الطرق فوقها. لا يوجد سعر قبل الركوب. لذلك قد يكون التاكسي أرخص على طريق فارغ وأغلى بوضوح في ساعة الذروة. مع التوصيل تعرف السعر عند الحجز.</p>
+<h2>طريقة الحجز</h2>
+<p>اختر مسارك في النموذج، وشاهد السعر لكل سيارة، واحجز في دقيقة تقريبًا: بدون حساب وبدون دفع مسبق. وتدفع للسائق نقدًا في نهاية الرحلة.</p>
+{widget}`
+    }
+  },
   {
     id: "ist-night-arrival",
     date: "2026-11-24",
